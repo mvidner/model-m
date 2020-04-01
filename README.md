@@ -1,2 +1,6 @@
 # model-m
-Model of an imaginary town Vyškov
+Model of an imaginary town 
+
+## Requirements 
+
+networkw, numpy, matplotlib, seaborn, click
