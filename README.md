@@ -3,4 +3,4 @@ Model of an imaginary town
 
 ## Requirements 
 
-networkw, numpy, matplotlib, seaborn, click
+networkx, numpy, matplotlib, seaborn, click
