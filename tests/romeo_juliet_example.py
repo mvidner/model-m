@@ -1,7 +1,7 @@
 from graphviz import Graph
 import networkx as nx
 
-import romeo-juliet-graph-gen
+from romeo_juliet_graph_gen import RomeoAndJuliet
 
 rj = RomeoAndJuliet()
 rj.printMulti()
