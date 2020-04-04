@@ -549,7 +549,7 @@ class ExtendedNetworkModel():
         # Run the simulation loop:
         # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         running = True
-        print_stopped = False
+        day = -1
 
         while running:
 
@@ -585,19 +585,21 @@ class ExtendedNetworkModel():
             #             checkpointTime=checkpoints['t'][checkpointIdx]
             # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
             # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-            # print_stopped ... helps to control that it is printed only once during print_interval-th day
-            # (int(self.t) rounds all values down, without print_stopped it would print all changes during given day)
-            if print_stopped and (int(self.t) % print_interval > 0):
-                print_stopped = False
-
-            if print_interval and not print_stopped and (int(self.t) % print_interval == 0):
-                print("t = %.2f" % self.t)
-                if verbose:
-                    for state in self.states:
-                        print(f"\t {state} = {self.current_state_count(state)}")
-                print_stopped = True
+            # print only if print_interval is set
+            # prints always at the beginning of a new day
+            if print_interval:
+                day_changed = day != int(self.t)
+                if day_changed:
+                    day = int(self.t)
+            
+                if day_changed and (day % print_interval == 0):
+                    print("t = %.2f" % self.t)
+                    if verbose:
+                        for state in self.states:
+                            print(f"\t {state} = {self.current_state_count(state)}")
+                            
 
         return True
 
