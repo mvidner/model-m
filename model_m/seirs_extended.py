@@ -178,12 +178,10 @@ class ExtendedNetworkModel():
         # self.numF[0] = int(initF)
         init_values = (0, 0, initE, initI_n, initI_a,
                        initI_s, initI_d, initR_u, initR_d, initD_u, initD_d)
-        print(init_values)
         for state, init_value in zip(self.states, init_values):
             self.state_counts[state][0] = int(init_value)
 
         S_plus_Ss = self.numNodes - sum(init_values)
-        print("S_plus_S", S_plus_Ss)
         self.state_counts["S_s"][0] = initSSrate * S_plus_Ss
         self.state_counts["S"][0] = S_plus_Ss - self.state_counts["S_s"][0]
 
@@ -196,10 +194,7 @@ class ExtendedNetworkModel():
         # X ... array of states
         tempX = []
         for state, count in self.state_counts.items():
-            print(state, count[0])
             tempX.extend([state]*count[0])
-        print(len(tempX))
-        print(self.N[0])
         self.X = np.array(tempX).reshape((self.numNodes, 1))
 
         # self.X = np.array([self.S]*int(self.numS[0])
@@ -229,7 +224,6 @@ class ExtendedNetworkModel():
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     def update_G(self, new_G):
-        print(type(new_G))
         if isinstance(new_G, np.ndarray):
             self.A = scipy.sparse.csr_matrix(new_G)
         elif type(new_G) == nx.classes.graph.Graph:
@@ -489,7 +483,6 @@ class ExtendedNetworkModel():
                 self.current_state_count("I_d")
                 )
 
-        print(self.current_state_count("I_n"), numI)
         if self.t >= self.tmax or (numI < 1 and self.current_state_count("E") < 1):
             self.finalize_data_series()
             return False
