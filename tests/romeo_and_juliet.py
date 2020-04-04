@@ -2,8 +2,24 @@ import timeit
 from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
 import networkx as nx
 import matplotlib.pyplot as plt
+import numpy as np
 
 from romeo_juliet_graph_gen import RomeoAndJuliet as Verona
+
+
+def magic_formula(gdict):
+
+    g = next(iter(gdict.values()))
+    a_shape = nx.adj_matrix(g).shape
+    ones = np.ones(shape=a_shape)
+
+    prob_no_contact = ones
+    for _, g in gdict.items():
+        a = nx.adj_matrix(g)
+        prob_no_contact = np.multiply(prob_no_contact, (ones-a))
+
+    # probability of contact (whatever layer)
+    return 1 - prob_no_contact
 
 
 def demo():
@@ -12,9 +28,9 @@ def demo():
     numNodes = verona.G.number_of_nodes()
     print("N = ", numNodes)
 
-    Gdict = verona.asDictOfGraphs()
+    A = magic_formula(verona.asDictOfGraphs())
 
-    model = ExtendedNetworkModel(G=Gdict,
+    model = ExtendedNetworkModel(G=A,
                                  beta=0.155,
                                  sigma=1/5.2,
                                  gamma=1/12.39,
@@ -38,9 +54,9 @@ def demo():
                                  symptoms_manifest_rate=0.9,
                                  initSSrate=0.2,
                                  initE=0,
-                                 initI_n=0.4*numNodes/100,
-                                 initI_a=0.2*numNodes/100,
-                                 initI_s=0.4*numNodes/100,
+                                 initI_n=2,
+                                 initI_a=1,
+                                 initI_s=4,
                                  initI_d=0,
                                  random_seed=42)
 
