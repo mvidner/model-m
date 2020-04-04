@@ -144,7 +144,7 @@ class ExtendedNetworkModel():
         # Each node can undergo up to 4 transitions (sans vitality/re-susceptibility returns to S state),
         # so there are ~numNodes*4 events/timesteps expected; initialize numNodes*5 timestep slots to start
         # (will be expanded during run if needed)
-        self.num_transitions = 4  # TO: change to our situation
+        self.num_transitions = 100  # TO: change to our situation
         self.tseries = np.zeros((self.num_transitions+1)*self.numNodes)
 
         # instead of original numE, numI, etc.
@@ -405,7 +405,7 @@ class ExtendedNetworkModel():
         self.tseries = np.pad(
             self.tseries, [(0, (self.num_transitions+1)*self.numNodes)], mode='constant', constant_values=0)
 
-        for state in states:
+        for state in self.states:
             self.state_counts[state] = np.pad(
                 self.state_counts[state], [
                     (0, (self.num_transtions+1)*self.numNodes)],
