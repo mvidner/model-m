@@ -3,7 +3,8 @@ import networkx as nx
 
 
 class RomeoAndJuliet:
-
+    EdgeNames = ['F', 'D', 'P', 'E', 'H', 'K', 'C', 'S', 'O', 'L', 'R', 'T', 'X', 'Z']
+    
     def __init__(self):
 
         self.G = nx.MultiGraph()
@@ -190,9 +191,15 @@ class RomeoAndJuliet:
     def asOneGraph(self):
         return nx.Graph(self.G)
 
-    def asListOfGraphs(self):
-        # will be back in 5 minutes
-        return 0
+    def asDictofGraphs(self):
+        Graphs = {}
+        for l in EdgeNames:
+            FG = nx.Graph()
+            FG.add_nodes_from(self.G)
+            selected_edges = [(u,v,e) for u,v,e in self.G.edges(data=True) if e['label'] == l]
+            FG.add_edges_from(selected_edges)
+            Graphs[l] = FG
+        return Graphs
 
     def printMulti(self):
         dot_G = nx.nx_pydot.to_pydot(self.G)
