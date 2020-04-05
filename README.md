@@ -82,3 +82,39 @@ t = 60.04
 
 Avg. number of events per day:  7.7
 ```
+
+
+Or with more nodes:
+```
+(covid_env) (initial_experiments) petra@totoro:~/covid/model-m/tests$ python first_test.py 10000
+t = 0.00
+	 S = 7919
+	 S_s = 1981
+	 E = 0
+	 I_n = 40
+	 I_a = 20
+	 I_s = 40
+	 I_d = 0
+	 R_d = 0
+	 R_u = 0
+	 D_d = 0
+	 D_u = 0
+
+...
+
+t = 60.00
+	 S = 6537
+	 S_s = 1616
+	 E = 155
+	 I_n = 97
+	 I_a = 15
+	 I_s = 99
+	 I_d = 263
+	 R_d = 699
+	 R_u = 515
+	 D_d = 4
+	 D_u = 0
+
+Avg. number of events per day:  3039.8
+
+```
