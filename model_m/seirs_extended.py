@@ -509,6 +509,7 @@ class ExtendedNetworkModel():
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+
     def run(self, T, checkpoints=None, print_interval=10, verbose=False):
         if(T > 0):
             self.tmax += T
@@ -587,6 +588,7 @@ class ExtendedNetworkModel():
                     if verbose:
                         for state in self.states:
                             print(f"\t {state} = {self.current_state_count(state)}")
+                    print(flush=True)
 
         return True
 
