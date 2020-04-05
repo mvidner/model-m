@@ -6,7 +6,7 @@ from graph_gen import RandomGraphGenerator
 
 # as multigraph - print
 rj = RomeoAndJuliet()
-sl = rj.get_sex_list()
+sl = rj.get_attr_list('age')
 print(sl)
 
 # as flattenned graph - get and print
