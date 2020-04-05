@@ -368,13 +368,17 @@ class RomeoAndJuliet:
 
     def asDictOfGraphs(self):
         Graphs = {}
+        i = 0
         for l in self.EdgeNames:
             FG = nx.Graph()
+            FG.graph['edge_name'] = l
+            FG.graph['edge_prob'] = self.G.graph['edge_probs'][i]
             FG.add_nodes_from(self.G)
             selected_edges = [(u, v, e) for u, v, e in self.G.edges(
                 data=True) if e['label'] == l]
             FG.add_edges_from(selected_edges)
             Graphs[l] = FG
+            i = i + 1
         return Graphs
 
     def printMulti(self):
