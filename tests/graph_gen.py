@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import networkx as nx
+import numpy as np
 
 
 class GraphGenerator:
@@ -8,10 +9,13 @@ class GraphGenerator:
                   'C', 'S', 'O', 'L', 'R', 'T', 'X', 'Z']
     edge_probs = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
-    def __init__(self):
+    def __init__(self, random_seed=None):
         self.G = nx.MultiGraph()
         self.G.graph['edge_names'] = self.edge_names
         self.G.graph['edge_probs'] = self.edge_probs
+
+        if random_seed:
+            np.random.seed(random_seed)
 
     def as_multigraph(self):
         return self.G

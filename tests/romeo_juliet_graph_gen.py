@@ -8,9 +8,9 @@ class RomeoAndJuliet(GraphGenerator):
     edge_probs = [0.9, 0.8, 0.9, 0.8, 0.7, 0.9,
                   1, 0.7, 0.5, 0.9, 0.9, 0.5, 0.3, 0.7]
 
-    def __init__(self):
+    def __init__(self, **kwargs):
 
-        super().__init__()
+        super().__init__(**kwargs)
         self.G.graph['edge_probs'] = self.edge_probs
 
         # Romeo and Juliet

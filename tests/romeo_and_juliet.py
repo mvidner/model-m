@@ -24,11 +24,11 @@ def magic_formula(gdict):
 
 def demo():
 
-    verona = Verona()
+    verona = Verona(random_seed=7)
     numNodes = verona.G.number_of_nodes()
     print("N = ", numNodes)
 
-    A = magic_formula(verona.asDictOfGraphs())
+    A = magic_formula(verona.as_dict_of_graphs())
 
     model = ExtendedNetworkModel(G=A,
                                  beta=0.155,
