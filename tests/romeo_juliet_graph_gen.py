@@ -4,7 +4,6 @@ import networkx as nx
 import scipy.stats as stats 
 
 class RomeoAndJuliet(GraphGenerator):
-
     EdgeProbs = [0.9, 0.8, 0.9, 0.8, 0.7, 0.9, 1, 0.7, 0.5, 0.9, 0.9, 0.5, 0.3, 0.7]
 
     def __init__(self):
@@ -12,7 +11,6 @@ class RomeoAndJuliet(GraphGenerator):
         super().__init__()
         self.G.graph['edge_probs'] = self.EdgeProbs
         
-
         # Romeo and Juliet
         self.G.add_node(1, label='Romeo', sex=0, age=18)
         self.G.add_node(2, label='Juliet', sex=1, age=13)

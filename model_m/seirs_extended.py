@@ -7,9 +7,6 @@ import numpy as np
 import scipy as scipy
 import scipy.integrate
 
-# just trying to use GPU
-# not finished, does not work yet - it is much slower :(
-# leave TF_ENABLED  False
 TF_ENABLED = False
 if TF_ENABLED:
     import tensorflow as tf
@@ -236,10 +233,10 @@ class ExtendedNetworkModel():
             self.A = scipy.sparse.csr_matrix(new_G)
         elif type(new_G) == nx.classes.graph.Graph:
             # adj_matrix gives scipy.sparse csr_matrix
-            self.A = nx.adj_matrix(new_G).astype("float32")
+            self.A = nx.adj_matrix(new_G)
         else:
             raise TypeError(
-                "Input an adjacency matrix, networkx object or dict of nx objects only.")
+                "Input an adjacency matrix or networkx object only.")
 
         self.numNodes = int(self.A.shape[1])
         self.degree = np.asarray(self.node_degrees(self.A)).astype(float)
@@ -590,7 +587,6 @@ class ExtendedNetworkModel():
                     if verbose:
                         for state in self.states:
                             print(f"\t {state} = {self.current_state_count(state)}")
-                    print(flush=True)
 
         return True
 
