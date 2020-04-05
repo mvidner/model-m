@@ -7,6 +7,11 @@ import numpy as np
 import scipy as scipy
 import scipy.integrate
 
+TF_ENABLED = False
+if TF_ENABLED:
+    import tensorflow as tf
+    from tf_utils import to_sparse_tensor
+
 
 class ExtendedNetworkModel():
 
@@ -231,10 +236,13 @@ class ExtendedNetworkModel():
             self.A = nx.adj_matrix(new_G)
         else:
             raise TypeError(
-                "Input an adjacency matrix, networkx object or dict of nx objects only.")
+                "Input an adjacency matrix or networkx object only.")
 
         self.numNodes = int(self.A.shape[1])
         self.degree = np.asarray(self.node_degrees(self.A)).astype(float)
+
+        if TF_ENABLED:
+            self.A = to_sparse_tensor(self.A)
 
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -262,9 +270,15 @@ class ExtendedNetworkModel():
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     # return numbers of contacts in given state
+
     def num_contacts(self, state):
-        return np.asarray(
-            scipy.sparse.csr_matrix.dot(self.A, self.X == state))
+        if TF_ENABLED:
+            with tf.device('/GPU:' + "0"):
+                x = tf.Variable(self.X == state, dtype="float32")
+                return tf.sparse.sparse_dense_matmul(self.A, x)
+        else:
+            return np.asarray(
+                scipy.sparse.csr_matrix.dot(self.A, self.X == state))
 
     def current_state_count(self, state):
         return self.state_counts[state][self.tidx]
@@ -494,7 +508,6 @@ class ExtendedNetworkModel():
 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 
     def run(self, T, checkpoints=None, print_interval=10, verbose=False):
         if(T > 0):
