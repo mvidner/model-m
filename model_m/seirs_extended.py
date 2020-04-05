@@ -413,9 +413,9 @@ class ExtendedNetworkModel():
 
         for state in self.states:
             self.state_counts[state] = np.array(self.state_counts[state],
-                                                dtype=float)[:self.tidx+1]
+                                                dtype=int)[:self.tidx+1]
 
-        self.N = np.array(self.N, dtype=float)[:self.tidx+1]
+        self.N = np.array(self.N, dtype=int)[:self.tidx+1]
         return None
 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
