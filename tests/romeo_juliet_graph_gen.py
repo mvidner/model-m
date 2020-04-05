@@ -5,10 +5,14 @@ import networkx as nx
 class RomeoAndJuliet:
     EdgeNames = ['F', 'D', 'P', 'E', 'H', 'K',
                  'C', 'S', 'O', 'L', 'R', 'T', 'X', 'Z']
+    EdgeProbs = [0.9, 0.8, 0.9, 0.8, 0.7, 0.9, 1, 0.7, 0.5, 0.9, 0.9, 0.5, 0.3, 0.7]
 
     def __init__(self):
 
         self.G = nx.MultiGraph()
+        self.G.graph['edge_names'] = self.EdgeNames
+        self.G.graph['edge_probs'] = self.EdgeProbs
+        
 
         # Romeo and Juliet
         self.G.add_node(1, label='Romeo', sex=0, age=18)
