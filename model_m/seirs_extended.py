@@ -9,8 +9,9 @@ import scipy.integrate
 
 TF_ENABLED = False
 if TF_ENABLED:
-    import tensorflow as tf 
+    import tensorflow as tf
     from tf_utils import to_sparse_tensor
+
 
 class ExtendedNetworkModel():
 
@@ -243,8 +244,6 @@ class ExtendedNetworkModel():
         if TF_ENABLED:
             self.A = to_sparse_tensor(self.A)
 
-        
-
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     def update_scenario_flags(self):
@@ -270,9 +269,8 @@ class ExtendedNetworkModel():
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    
-    
     # return numbers of contacts in given state
+
     def num_contacts(self, state):
         if TF_ENABLED:
             with tf.device('/GPU:' + "0"):
@@ -415,9 +413,9 @@ class ExtendedNetworkModel():
 
         for state in self.states:
             self.state_counts[state] = np.array(self.state_counts[state],
-                                                dtype=float)[:self.tidx+1]
+                                                dtype=int)[:self.tidx+1]
 
-        self.N = np.array(self.N, dtype=float)[:self.tidx+1]
+        self.N = np.array(self.N, dtype=int)[:self.tidx+1]
         return None
 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -510,7 +508,6 @@ class ExtendedNetworkModel():
 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 
     def run(self, T, checkpoints=None, print_interval=10, verbose=False):
         if(T > 0):
