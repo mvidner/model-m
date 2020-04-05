@@ -15,7 +15,6 @@ now we are living in initial_experiments branch
 ```
 $ python first_test.py 10000
 $ python first_test.py --help
-python 
 Usage: first_test.py [OPTIONS] [N_NODES] [TEST_ID]
 
 Options:
