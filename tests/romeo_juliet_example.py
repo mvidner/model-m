@@ -5,16 +5,16 @@ from romeo_juliet_graph_gen import RomeoAndJuliet
 
 # as multigraph - print
 rj = RomeoAndJuliet()
-rj.printMulti()
+rj.print_multi()
 
 # as flattenned graph - get and print
-H = rj.asOneGraph()
+H = rj.as_one_graph()
 dot_H = nx.nx_pydot.to_pydot(H)
 print(dot_H)
 
 # as a dictionary of simple graphs indexed by layer codes
-MyGraphs=rj.asDictOfGraphs()
-print(MyGraphs)
+my_graphs=rj.as_dict_of_graphs()
+print(my_graphs)
 #print(MyGraphs['D'].graph) 
-dot_D = nx.nx_pydot.to_pydot(MyGraphs['D'])
+dot_D = nx.nx_pydot.to_pydot(my_graphs['D'])
 print(dot_D)

@@ -1,16 +1,15 @@
 # from graphviz import Graph
+from graph_gen import GraphGenerator
 import networkx as nx
-import scipy.stats as stats
+import scipy.stats as stats 
 
-class RomeoAndJuliet:
-    EdgeNames = ['F', 'D', 'P', 'E', 'H', 'K',
-                 'C', 'S', 'O', 'L', 'R', 'T', 'X', 'Z']
+class RomeoAndJuliet(GraphGenerator):
+
     EdgeProbs = [0.9, 0.8, 0.9, 0.8, 0.7, 0.9, 1, 0.7, 0.5, 0.9, 0.9, 0.5, 0.3, 0.7]
 
     def __init__(self):
 
-        self.G = nx.MultiGraph()
-        self.G.graph['edge_names'] = self.EdgeNames
+        super().__init__()
         self.G.graph['edge_probs'] = self.EdgeProbs
         
 
@@ -366,32 +365,3 @@ class RomeoAndJuliet:
         for (u,v,k,d) in self.G.edges(data=True,keys=True):
             self.G[u][v][k]['weight'] = stats.truncnorm.rvs((lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
 
-    def asMultiGraph(self):
-        return self.G
-
-    def asOneGraph(self):
-        return nx.Graph(self.G)
-
-    def asDictOfGraphs(self):
-        Graphs = {}
-        i = 0
-        for l in self.EdgeNames:
-            FG = nx.Graph()
-            FG.graph['edge_name'] = l
-            FG.graph['edge_prob'] = self.G.graph['edge_probs'][i]
-            FG.add_nodes_from(self.G)
-            selected_edges = [(u, v, e) for u, v, e in self.G.edges(
-                data=True) if e['label'] == l]
-            FG.add_edges_from(selected_edges)
-            Graphs[l] = FG
-            i = i + 1
-        return Graphs
-
-    def printMulti(self):
-        dot_G = nx.nx_pydot.to_pydot(self.G)
-        print(dot_G)
-
-    def drawMulti(self, filename='raj.png'):
-        A = nx.nx_agraph.to_agraph(self.G)
-        A.layout('dot')
-        A.draw(filename)
