@@ -7,6 +7,9 @@ import numpy as np
 import scipy as scipy
 import scipy.integrate
 
+# just trying to use GPU
+# not finished, does not work yet - it is much slower :(
+# leave TF_ENABLED  False
 TF_ENABLED = False
 if TF_ENABLED:
     import tensorflow as tf
