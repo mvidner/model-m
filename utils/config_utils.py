@@ -16,6 +16,7 @@ class ConfigFile():
     def __init__(self, param_dict=None):
 
         self.config = configparser.ConfigParser()
+        self.config.optionxform = str
         if param_dict:
             for name, value in param_dict.items():
                 self.config[name] = value
