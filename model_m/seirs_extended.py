@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import networkx as networkx
+import networkx as nx
 import numpy as np
 import scipy as scipy
 import scipy.integrate
@@ -29,8 +29,10 @@ class ExtendedNetworkModel():
        R  - recovered
        D  - death
 
+    Params: 
+            G       Network adjacency matrix (numpy array) or Networkx graph object 
+
     Original Params:
-            G       Network adjacency matrix (numpy array) or Networkx graph object.
             beta    Rate of transmission (exposure)
             sigma   Rate of infection (upon exposure)
             gamma   Rate of recovery (upon infection)
@@ -181,7 +183,7 @@ class ExtendedNetworkModel():
         init_values = (0, 0, initE, initI_n, initI_a,
                        initI_s, initI_d, initR_u, initR_d, initD_u, initD_d)
         for state, init_value in zip(self.states, init_values):
-            self.state_counts[state][0] = init_value
+            self.state_counts[state][0] = int(init_value)
 
         S_plus_Ss = self.numNodes - sum(init_values)
         self.state_counts["S_s"][0] = initSSrate * S_plus_Ss
@@ -226,47 +228,18 @@ class ExtendedNetworkModel():
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     def update_G(self, new_G):
-        self.G = new_G
-        # Adjacency matrix:
-        if type(new_G) == np.ndarray:
+        if isinstance(new_G, np.ndarray):
             self.A = scipy.sparse.csr_matrix(new_G)
-        elif type(new_G) == networkx.classes.graph.Graph:
+        elif type(new_G) == nx.classes.graph.Graph:
             # adj_matrix gives scipy.sparse csr_matrix
-            self.A = networkx.adj_matrix(new_G).astype("float32")
+            self.A = nx.adj_matrix(new_G).astype("float32")
         else:
-            raise BaseException(
-                "Input an adjacency matrix or networkx object only.")
-                        
+            raise TypeError(
+                "Input an adjacency matrix, networkx object or dict of nx objects only.")
+
         self.numNodes = int(self.A.shape[1])
         self.degree = np.asarray(self.node_degrees(self.A)).astype(float)
 
-        if TF_ENABLED:
-            self.A = to_sparse_tensor(self.A)
-
-        return
-
-    # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    def update_Q(self, new_Q):
-        self.Q = new_Q
-        # Quarantine Adjacency matrix:
-        if type(new_Q) == np.ndarray:
-            self.A_Q = scipy.sparse.csr_matrix(new_Q)
-        elif type(new_Q) == networkx.classes.graph.Graph:
-            # adj_matrix gives scipy.sparse csr_matrix
-            self.A_Q = networkx.adj_matrix(new_Q)
-        else:
-            raise BaseException(
-                "Input an adjacency matrix or networkx object only.")
-
-        self.numNodes_Q = int(self.A_Q.shape[1])
-        self.degree_Q = np.asarray(
-            self.node_degrees(self.A_Q)).astype(float)
-
-        assert(self.numNodes ==
-               self.numNodes_Q), "The normal and quarantine adjacency graphs must be of the same size."
-
-        return
 
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -423,7 +396,7 @@ class ExtendedNetworkModel():
             self.state_counts[state] = np.pad(
                 self.state_counts[state], [
                     (0, (self.num_transtions+1)*self.numNodes)],
-                mode='constant', constant_values=0)
+                mode='constant', constant_values=int(0))
 
         self.N = np.pad(
             self.N, [(0, (self.num_transitions+1)*self.numNodes)], mode='constant', constant_values=0)
@@ -522,7 +495,7 @@ class ExtendedNetworkModel():
                 self.current_state_count("I_d")
                 )
 
-        if self.t >= self.tmax or (numI < 1 and self.current_state_count["E"] < 1):
+        if self.t >= self.tmax or (numI < 1 and self.current_state_count("E") < 1):
             self.finalize_data_series()
             return False
 
@@ -533,6 +506,7 @@ class ExtendedNetworkModel():
 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 
     def run(self, T, checkpoints=None, print_interval=10, verbose=False):
         if(T > 0):
@@ -599,21 +573,19 @@ class ExtendedNetworkModel():
             #             checkpointTime=checkpoints['t'][checkpointIdx]
             # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
             # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             # print only if print_interval is set
             # prints always at the beginning of a new day
-            if print_interval:
+            if print_interval or not running:
                 day_changed = day != int(self.t)
                 if day_changed:
                     day = int(self.t)
-            
-                if day_changed and (day % print_interval == 0):
+
+                if not running or (day_changed and (day % print_interval == 0)):
                     print("t = %.2f" % self.t)
                     if verbose:
                         for state in self.states:
                             print(f"\t {state} = {self.current_state_count(state)}")
-                            
 
         return True
 
@@ -921,7 +893,7 @@ def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n
         graph = base_graph.copy()
     else:
         assert(n is not None), "Argument n (number of nodes) must be provided when no base graph is given."
-        graph = networkx.barabasi_albert_graph(n=n, m=m)
+        graph = nx.barabasi_albert_graph(n=n, m=m)
 
     # To get a graph with power-law-esque properties but without the fixed minimum degree,
     # We modify the graph by probabilistically dropping some edges from each node.
@@ -951,7 +923,7 @@ def plot_degree_distn(graph, max_degree=None, show=True, use_seaborn=True):
     if type(graph) == np.ndarray:
         nodeDegrees = graph.sum(axis=0).reshape(
             (graph.shape[0], 1))   # sums of adj matrix cols
-    elif type(graph) == networkx.classes.graph.Graph:
+    elif type(graph) == nx.classes.graph.Graph:
         nodeDegrees = [d[1] for d in graph.degree()]
     else:
         raise BaseException(
