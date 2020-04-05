@@ -39,6 +39,12 @@ class GraphGenerator:
             i = i + 1
         return self.Graphs
 
+    def get_sex_list (self):
+        sexlist = []
+        for (p, d) in self.G.nodes(data=True):
+            sexlist.append(d['sex'])
+        return sexlist
+
     def print_multi(self):
         dot_G = nx.nx_pydot.to_pydot(self.G)
         print(dot_G)

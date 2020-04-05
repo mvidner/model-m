@@ -5,8 +5,9 @@ from romeo_juliet_graph_gen import RomeoAndJuliet
 from graph_gen import RandomGraphGenerator
 
 # as multigraph - print
-#rj = RomeoAndJuliet()
-#rj.print_multi()
+rj = RomeoAndJuliet()
+sl = rj.get_sex_list()
+print(sl)
 
 # as flattenned graph - get and print
 #H = rj.as_one_graph()
@@ -22,9 +23,9 @@ from graph_gen import RandomGraphGenerator
 #print(dot_D)
 #print(my_graphs)
 
-rn = RandomGraphGenerator(20)
-my_graphs = rn.as_dict_of_graphs()
-print(my_graphs)
+#rn = RandomGraphGenerator(20)
+#my_graphs = rn.as_dict_of_graphs()
+#print(my_graphs)
 
-dot_D = nx.nx_pydot.to_pydot(my_graphs['D'])
-print(dot_D)
+#dot_D = nx.nx_pydot.to_pydot(my_graphs['D'])
+#print(dot_D)
