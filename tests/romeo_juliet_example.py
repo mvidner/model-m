@@ -6,8 +6,11 @@ from graph_gen import RandomGraphGenerator
 
 # as multigraph - print
 rj = RomeoAndJuliet()
-sl = rj.get_attr_list('age')
+sl = rj.get_attr_list('label')
 print(sl)
+d = rj.get_layers_info()
+print(d)
+
 
 # as flattenned graph - get and print
 #H = rj.as_one_graph()

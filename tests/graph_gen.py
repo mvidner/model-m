@@ -45,6 +45,10 @@ class GraphGenerator:
             attr_list.append(d[attr])
         return attr_list
 
+# returns dictionary of layer names and probabilities
+    def get_layers_info (self):
+        return dict(zip(self.G.graph["layer_names"], self.G.graph["layer_probs"]))
+
     def print_multi(self):
         dot_G = nx.nx_pydot.to_pydot(self.G)
         print(dot_G)
