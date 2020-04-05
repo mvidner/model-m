@@ -7,6 +7,10 @@ import numpy as np
 import scipy as scipy
 import scipy.integrate
 
+TF_ENABLED = False
+if TF_ENABLED:
+    import tensorflow as tf 
+    from tf_utils import to_sparse_tensor
 
 class ExtendedNetworkModel():
 
@@ -228,13 +232,16 @@ class ExtendedNetworkModel():
             self.A = scipy.sparse.csr_matrix(new_G)
         elif type(new_G) == networkx.classes.graph.Graph:
             # adj_matrix gives scipy.sparse csr_matrix
-            self.A = networkx.adj_matrix(new_G)
+            self.A = networkx.adj_matrix(new_G).astype("float32")
         else:
             raise BaseException(
                 "Input an adjacency matrix or networkx object only.")
-
+                        
         self.numNodes = int(self.A.shape[1])
         self.degree = np.asarray(self.node_degrees(self.A)).astype(float)
+
+        if TF_ENABLED:
+            self.A = to_sparse_tensor(self.A)
 
         return
 
@@ -286,10 +293,17 @@ class ExtendedNetworkModel():
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+    
+    
     # return numbers of contacts in given state
     def num_contacts(self, state):
-        return np.asarray(
-            scipy.sparse.csr_matrix.dot(self.A, self.X == state))
+        if TF_ENABLED:
+            with tf.device('/GPU:' + "0"):
+                x = tf.Variable(self.X == state, dtype="float32")
+                return tf.sparse.sparse_dense_matmul(self.A, x)
+        else:
+            return np.asarray(
+                scipy.sparse.csr_matrix.dot(self.A, self.X == state))
 
     def current_state_count(self, state):
         return self.state_counts[state][self.tidx]
