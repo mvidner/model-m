@@ -240,6 +240,10 @@ class ExtendedNetworkModel():
         self.numNodes = int(self.A.shape[1])
         self.degree = np.asarray(self.node_degrees(self.A)).astype(float)
 
+        if TF_ENABLED:
+            self.A = to_sparse_tensor(self.A)
+
+        
 
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -586,6 +590,7 @@ class ExtendedNetworkModel():
                     if verbose:
                         for state in self.states:
                             print(f"\t {state} = {self.current_state_count(state)}")
+                    print(flush=True)
 
         return True
 
