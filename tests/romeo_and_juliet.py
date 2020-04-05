@@ -31,7 +31,7 @@ def demo():
 
     A = magic_formula(
         verona.as_dict_of_graphs(),
-        dict(zip(verona.G.graph["edge_names"], verona.G.graph["edge_probs"]))
+        dict(zip(verona.G.graph["layer_names"], verona.G.graph["layer_probs"]))
     )
 
     model = ExtendedNetworkModel(G=A,
