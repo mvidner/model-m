@@ -22,6 +22,19 @@ Options:
   --help                          Show this message and exit.
 
 ```
+- or using .ini file (so far with seirsplus exmaple graph,
+ but intended for future usage)
+
+```
+Usage: run_experiment.py [OPTIONS] [FILENAME] [TEST_ID]
+
+Options:
+  --set-random-seed / -r, --no-random-seed
+  --print_interval INTEGER
+  --help                          Show this message and exit.
+
+i.e. python run_experiment.py -r example.ini 
+```
 
 - example with Verona city (graph with layers)
 ```
