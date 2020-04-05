@@ -5,14 +5,14 @@ import numpy as np
 
 
 class GraphGenerator:
-    edge_names = ['F', 'D', 'P', 'E', 'H', 'K',
+    layer_names = ['F', 'D', 'P', 'E', 'H', 'K',
                   'C', 'S', 'O', 'L', 'R', 'T', 'X', 'Z']
-    edge_probs = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    layer_probs = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
     def __init__(self, random_seed=None):
         self.G = nx.MultiGraph()
-        self.G.graph['edge_names'] = self.edge_names
-        self.G.graph['edge_probs'] = self.edge_probs
+        self.G.graph['layer_names'] = self.layer_names
+        self.G.graph['layer_probs'] = self.layer_probs
 
         if random_seed:
             np.random.seed(random_seed)
@@ -26,10 +26,10 @@ class GraphGenerator:
     def as_dict_of_graphs(self):
         Graphs = {}
         i = 0
-        for l in self.edge_names:
+        for l in self.layer_names:
             FG = nx.Graph()
-            FG.graph['edge_name'] = l
-            FG.graph['edge_prob'] = self.G.graph['edge_probs'][i]
+            FG.graph['layer_name'] = l
+            FG.graph['layer_prob'] = self.G.graph['layer_probs'][i]
             FG.add_nodes_from(self.G)
             selected_edges = [(u, v, e) for u, v, e in self.G.edges(
                 data=True) if e['label'] == l]

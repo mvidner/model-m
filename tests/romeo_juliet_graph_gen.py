@@ -5,13 +5,13 @@ import scipy.stats as stats
 
 
 class RomeoAndJuliet(GraphGenerator):
-    edge_probs = [0.9, 0.8, 0.9, 0.8, 0.7, 0.9,
+    layer_probs = [0.9, 0.8, 0.9, 0.8, 0.7, 0.9,
                   1, 0.7, 0.5, 0.9, 0.9, 0.5, 0.3, 0.7]
 
     def __init__(self, **kwargs):
 
         super().__init__(**kwargs)
-        self.G.graph['edge_probs'] = self.edge_probs
+        self.G.graph['layer_probs'] = self.layer_probs
 
         # Romeo and Juliet
         self.G.add_node(1, label='Romeo', sex=0, age=18)
