@@ -1,16 +1,18 @@
 # from graphviz import Graph
 from graph_gen import GraphGenerator
 import networkx as nx
-import scipy.stats as stats 
+import scipy.stats as stats
+
 
 class RomeoAndJuliet(GraphGenerator):
-    EdgeProbs = [0.9, 0.8, 0.9, 0.8, 0.7, 0.9, 1, 0.7, 0.5, 0.9, 0.9, 0.5, 0.3, 0.7]
+    edge_probs = [0.9, 0.8, 0.9, 0.8, 0.7, 0.9,
+                  1, 0.7, 0.5, 0.9, 0.9, 0.5, 0.3, 0.7]
 
     def __init__(self):
 
         super().__init__()
-        self.G.graph['edge_probs'] = self.EdgeProbs
-        
+        self.G.graph['edge_probs'] = self.edge_probs
+
         # Romeo and Juliet
         self.G.add_node(1, label='Romeo', sex=0, age=18)
         self.G.add_node(2, label='Juliet', sex=1, age=13)
@@ -356,10 +358,10 @@ class RomeoAndJuliet(GraphGenerator):
         self.G.add_edge(34, 36, label='K')
 
         self.G.add_edge(35, 36, label='K')
-        
-        #weights from trunc norm for now
+
+        # weights from trunc norm for now
         lower, upper = 0, 1
         mu, sigma = 0.7, 0.3
-        for (u,v,k,d) in self.G.edges(data=True,keys=True):
-            self.G[u][v][k]['weight'] = stats.truncnorm.rvs((lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
-
+        for (u, v, k, d) in self.G.edges(data=True, keys=True):
+            self.G[u][v][k]['weight'] = stats.truncnorm.rvs(
+                (lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)

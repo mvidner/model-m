@@ -2,17 +2,17 @@
 
 import networkx as nx
 
+
 class GraphGenerator:
-    EdgeNames = ['F', 'D', 'P', 'E', 'H', 'K',
-                 'C', 'S', 'O', 'L', 'R', 'T', 'X', 'Z']
-    EdgeProbs = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    edge_names = ['F', 'D', 'P', 'E', 'H', 'K',
+                  'C', 'S', 'O', 'L', 'R', 'T', 'X', 'Z']
+    edge_probs = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
     def __init__(self):
         self.G = nx.MultiGraph()
-        self.G.graph['edge_names'] = self.EdgeNames
-        self.G.graph['edge_probs'] = self.EdgeProbs
-        
-        
+        self.G.graph['edge_names'] = self.edge_names
+        self.G.graph['edge_probs'] = self.edge_probs
+
     def as_multigraph(self):
         return self.G
 
@@ -22,7 +22,7 @@ class GraphGenerator:
     def as_dict_of_graphs(self):
         Graphs = {}
         i = 0
-        for l in self.EdgeNames:
+        for l in self.edge_names:
             FG = nx.Graph()
             FG.graph['edge_name'] = l
             FG.graph['edge_prob'] = self.G.graph['edge_probs'][i]
