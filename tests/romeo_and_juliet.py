@@ -7,15 +7,16 @@ import numpy as np
 from romeo_juliet_graph_gen import RomeoAndJuliet as Verona
 
 
-def magic_formula(gdict):
+def magic_formula(gdict, wdict):
 
     g = next(iter(gdict.values()))
     a_shape = nx.adj_matrix(g).shape
     ones = np.ones(shape=a_shape)
 
     prob_no_contact = ones
-    for _, g in gdict.items():
+    for name, g in gdict.items():
         a = nx.adj_matrix(g)
+        a = wdict[name] * a
         prob_no_contact = np.multiply(prob_no_contact, (ones-a))
 
     # probability of contact (whatever layer)
@@ -28,7 +29,10 @@ def demo():
     numNodes = verona.G.number_of_nodes()
     print("N = ", numNodes)
 
-    A = magic_formula(verona.as_dict_of_graphs())
+    A = magic_formula(
+        verona.as_dict_of_graphs(),
+        dict(zip(verona.G.graph["edge_names"], verona.G.graph["edge_probs"]))
+    )
 
     model = ExtendedNetworkModel(G=A,
                                  beta=0.155,
