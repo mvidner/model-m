@@ -72,7 +72,9 @@ def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n
 
 
 class RandomGraphGenerator(GraphGenerator):
- 
+    
+    layer_probs = [0.9, 0.8, 0.9, 0.8, 0.7, 0.9,
+                  1, 0.7, 0.5, 0.9, 0.9, 0.5, 0.3, 0.7] 
 
 
     def __init__(self, num_nodes=10000, **kwargs):
