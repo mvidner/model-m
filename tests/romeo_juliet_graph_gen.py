@@ -1,19 +1,16 @@
 # from graphviz import Graph
+from graph_gen import GraphGenerator
 import networkx as nx
+import scipy.stats as stats 
 
-
-class RomeoAndJuliet:
-    EdgeNames = ['F', 'D', 'P', 'E', 'H', 'K',
-                 'C', 'S', 'O', 'L', 'R', 'T', 'X', 'Z']
+class RomeoAndJuliet(GraphGenerator):
     EdgeProbs = [0.9, 0.8, 0.9, 0.8, 0.7, 0.9, 1, 0.7, 0.5, 0.9, 0.9, 0.5, 0.3, 0.7]
 
     def __init__(self):
 
-        self.G = nx.MultiGraph()
-        self.G.graph['edge_names'] = self.EdgeNames
+        super().__init__()
         self.G.graph['edge_probs'] = self.EdgeProbs
         
-
         # Romeo and Juliet
         self.G.add_node(1, label='Romeo', sex=0, age=18)
         self.G.add_node(2, label='Juliet', sex=1, age=13)
@@ -359,29 +356,10 @@ class RomeoAndJuliet:
         self.G.add_edge(34, 36, label='K')
 
         self.G.add_edge(35, 36, label='K')
+        
+        #weights from trunc norm for now
+        lower, upper = 0, 1
+        mu, sigma = 0.7, 0.3
+        for (u,v,k,d) in self.G.edges(data=True,keys=True):
+            self.G[u][v][k]['weight'] = stats.truncnorm.rvs((lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
 
-    def asMultiGraph(self):
-        return self.G
-
-    def asOneGraph(self):
-        return nx.Graph(self.G)
-
-    def asDictOfGraphs(self):
-        Graphs = {}
-        for l in self.EdgeNames:
-            FG = nx.Graph()
-            FG.add_nodes_from(self.G)
-            selected_edges = [(u, v, e) for u, v, e in self.G.edges(
-                data=True) if e['label'] == l]
-            FG.add_edges_from(selected_edges)
-            Graphs[l] = FG
-        return Graphs
-
-    def printMulti(self):
-        dot_G = nx.nx_pydot.to_pydot(self.G)
-        print(dot_G)
-
-    def drawMulti(self, filename='raj.png'):
-        A = nx.nx_agraph.to_agraph(self.G)
-        A.layout('dot')
-        A.draw(filename)
