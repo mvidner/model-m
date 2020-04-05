@@ -3,9 +3,10 @@ import click
 from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
 import networkx as nx
 import matplotlib.pyplot as plt
+import numpy as np
 
 
-def demo(numNodes=10000):
+def demo(numNodes=10000, test_id=None):
 
     baseGraph = nx.barabasi_albert_graph(n=numNodes, m=9)
     G_normal = custom_exponential_graph(baseGraph, scale=100)
@@ -44,13 +45,24 @@ def demo(numNodes=10000):
     model.run(T=ndays, verbose=True, print_interval=1)
     print("Avg. number of events per day: ", model.tidx/ndays)
 
+    plot = True
+    if plot:
+        counts = [model.state_counts[s]
+                  for s in ("I_n", "I_a", "I_s", "I_d", "E")]
+        y = np.sum(counts, axis=0)
+        x = model.tseries
+        plt.plot(x, y)
+        test_id = "_" + test_id if test_id else ""
+        plt.savefig(f"num_of_ill{test_id}.png")
+
 
 @click.command()
 @click.argument('n_nodes', default=10000)
-def test(n_nodes):
+@click.argument('test_id', default="")
+def test(n_nodes, test_id):
     # demo_fce = lambda: demo(n_nodes)
     # print(timeit.timeit(demo_fce, number=1))
-    demo(n_nodes)
+    demo(n_nodes, test_id)
 
 
 if __name__ == "__main__":

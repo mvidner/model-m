@@ -1,4 +1,5 @@
 import timeit
+import random
 from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -23,7 +24,7 @@ def magic_formula(gdict, wdict):
     return 1 - prob_no_contact
 
 
-def demo():
+def demo(plot=False):
 
     verona = Verona(random_seed=7)
     numNodes = verona.G.number_of_nodes()
@@ -62,17 +63,25 @@ def demo():
                                  initI_a=1,
                                  initI_s=4,
                                  initI_d=0,
-                                 random_seed=42)
+                                 random_seed=random.randint(0, 10000))
 
     ndays = 60
-    model.run(T=ndays, verbose=True, print_interval=1)
+    model.run(T=ndays, verbose=True)
     print("Avg. number of events per day: ", model.tidx/ndays)
+
+    if plot:
+        counts = [model.state_counts[s]
+                  for s in ("I_n", "I_a", "I_s", "I_d", "E")]
+        y = np.sum(counts, axis=0)
+        x = model.tseries
+        plt.plot(x, y)
+        plt.savefig("num_of_ill.png")
 
 
 def test():
     # demo_fce = lambda: demo(n_nodes)
     # print(timeit.timeit(demo_fce, number=1))
-    demo()
+    demo(plot=True)
 
 
 if __name__ == "__main__":
