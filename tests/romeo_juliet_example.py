@@ -14,7 +14,7 @@ print(dot_H)
 
 # as a dictionary of simple graphs indexed by layer codes
 MyGraphs=rj.asDictOfGraphs()
-#print(MyGraphs)
-print(MyGraphs['D'].graph) 
+print(MyGraphs)
+#print(MyGraphs['D'].graph) 
 dot_D = nx.nx_pydot.to_pydot(MyGraphs['D'])
 print(dot_D)

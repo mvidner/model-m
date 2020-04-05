@@ -1,6 +1,6 @@
 # from graphviz import Graph
 import networkx as nx
-
+import scipy.stats as stats
 
 class RomeoAndJuliet:
     EdgeNames = ['F', 'D', 'P', 'E', 'H', 'K',
@@ -359,6 +359,12 @@ class RomeoAndJuliet:
         self.G.add_edge(34, 36, label='K')
 
         self.G.add_edge(35, 36, label='K')
+        
+        #weights from trunc norm for now
+        lower, upper = 0, 1
+        mu, sigma = 0.7, 0.3
+        for (u,v,k,d) in self.G.edges(data=True,keys=True):
+            self.G[u][v][k]['weight'] = stats.truncnorm.rvs((lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
 
     def asMultiGraph(self):
         return self.G
