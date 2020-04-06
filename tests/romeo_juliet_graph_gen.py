@@ -6,7 +6,7 @@ import scipy.stats as stats
 
 class RomeoAndJuliet(GraphGenerator):
     layer_probs = [0.9, 0.8, 0.9, 0.8, 0.7, 0.9,
-                  1, 0.7, 0.5, 0.9, 0.9, 0.5, 0.3, 0.7]
+                   1, 0.7, 0.5, 0.9, 0.9, 0.5, 0.3, 0.7]
 
     def __init__(self, **kwargs):
 
@@ -86,7 +86,7 @@ class RomeoAndJuliet(GraphGenerator):
         self.G.add_edge(4, 15, label='D')
         self.G.add_edge(1, 15, label='D')
         self.G.add_edge(14, 15, label='D')
-        self.G.add_node(16, label='self.Gregory', sex=0, age=34)
+        self.G.add_node(16, label='Gregory', sex=0, age=34)
         self.G.add_node(17, label='Sampson', sex=0, age=36)
         self.G.add_edge(6, 16, label='P')
         self.G.add_edge(7, 16, label='P')
@@ -141,7 +141,7 @@ class RomeoAndJuliet(GraphGenerator):
         self.G.add_edge(7, 28, label='P')
 
         # Petruchio is a ghost at Capulet party
-        self.G.add_node(29, label='self.Ghost Petruchio', sex=0, age=27)
+        self.G.add_node(29, label='Ghost Petruchio', sex=0, age=27)
         self.G.add_edge(2, 29, label='T')
 
         # Valentine is Mercutio brother at a party
