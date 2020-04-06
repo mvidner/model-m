@@ -63,7 +63,7 @@ def demo(plot=False):
                                  initI_a=1,
                                  initI_s=4,
                                  initI_d=0,
-                                 random_seed=random.randint(0, 10000))
+                                 random_seed=42)
 
     ndays = 60
     model.run(T=ndays, verbose=True)
