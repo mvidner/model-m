@@ -115,4 +115,7 @@ class RandomGraphGenerator(GraphGenerator):
         return self.Graphs
     
     def as_multigraph(self):
-        assert False, "Musime to opravit!"
+#        assert False, "Musime to opravit!"
+        for l in self.layer_names:
+            self.G.add_edges_from(self.Graphs[l].edges(data=True))
+        return self.G
