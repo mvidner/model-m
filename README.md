@@ -128,7 +128,7 @@ Avg. number of events per day:  3039.8
 ```
 
 ## Saved history
-You may with to generate a novel from a model history. Output example: 
+You may wish to generate a novel from a model history. Output example: 
 
 > Once upon a time ...<br>
 > A gentleman Anthony stopped to be symptomatic and infectious with no  manifest of symptoms and started to be as famous as a taxidriver.<br>
