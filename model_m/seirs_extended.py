@@ -272,13 +272,32 @@ class ExtendedNetworkModel():
     # return numbers of contacts in given state
 
     def num_contacts(self, state):
-        if TF_ENABLED:
-            with tf.device('/GPU:' + "0"):
-                x = tf.Variable(self.X == state, dtype="float32")
-                return tf.sparse.sparse_dense_matmul(self.A, x)
+
+        if type(state) == str:
+            if TF_ENABLED:
+                with tf.device('/GPU:' + "0"):
+                    x = tf.Variable(self.X == state, dtype="float32")
+                    return tf.sparse.sparse_dense_matmul(self.A, x)
+            else:
+                return np.asarray(
+                    scipy.sparse.csr_matrix.dot(self.A, self.X == state))
+
+        elif type(state) == list:
+            state_flags = np.hstack(
+                [np.array(self.X == s, dtype=int) for s in state]
+            )
+            if TF_ENABLED:
+                with tf.device('/GPU:' + "0"):
+                    x = tf.Variable(state_flags, dtype="float32")
+                    nums = tf.sparse.sparse_dense_matmul(self.A, x)
+            else:
+                nums = scipy.sparse.csr_matrix.dot(self.A, state_flags)
+                return np.sum(nums, axis=1).reshape((self.numNodes, 1))
+            return np.sum(nums, axis=1).reshape((self.numNodes, 1))
+
         else:
-            return np.asarray(
-                scipy.sparse.csr_matrix.dot(self.A, self.X == state))
+            raise TypeException(
+                "num_contacts(state) accepts str or list of strings")
 
     def current_state_count(self, state):
         return self.state_counts[state][self.tidx]
@@ -296,9 +315,12 @@ class ExtendedNetworkModel():
         # sum of all I states
         numContacts_I = np.zeros(shape=(self.numNodes, 1))
         if any(self.beta):
-            for state in "I_n", "I_a", "I_s":
-                if self.current_state_count(state):
-                    numContacts_I += self.num_contacts(state)
+            infected = [
+                s for s in ("I_n", "I_a", "I_s")
+                if self.current_state_count(s)
+            ]
+            if infected:
+                numContacts_I = self.num_contacts(infected)
 
         numContacts_Id = np.zeros(shape=(self.numNodes, 1))
         if any(self.beta_D):
@@ -508,7 +530,6 @@ class ExtendedNetworkModel():
 
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 
     def run(self, T, checkpoints=None, print_interval=10, verbose=False):
         if(T > 0):
