@@ -128,9 +128,11 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
     model.run(T=ndays, verbose=verbose, print_interval=print_interval)
     print("Avg. number of events per day: ", model.tidx/ndays)
 
-    story = tell_the_story(model.history, graph)
-    with open("romeo_and_julie_the_true_story.txt", "w") as f:
-        f.write(story)
+    storyfile = cf.section_as_dict("OUTPUT").get("story", None)
+    if storyfile:
+        story = tell_the_story(model.history, graph)
+        with open(storyfile, "w") as f:
+            f.write(story)
 
     plot = True
     if plot:
