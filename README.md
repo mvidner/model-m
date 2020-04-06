@@ -10,14 +10,22 @@ now we are living in initial_experiments branch
 
 
 ## Usage 
- - example with graph from seirsplus examples 
+
+- example with graph from seirsplus examples 
 ```
-python first_test.py [N_NODES] 
+$ python first_test.py 10000
+$ python first_test.py --help
+Usage: first_test.py [OPTIONS] [N_NODES] [TEST_ID]
+
+Options:
+  --set-random-seed / -r, --no-random-seed
+  --help                          Show this message and exit.
+
 ```
 
 - example with Verona city (graph with layers)
 ```
-python romeo_and_juliet.py 
+$ python romeo_and_juliet.py 
 ```
 
 Output looks like:
