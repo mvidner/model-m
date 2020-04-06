@@ -131,159 +131,74 @@ Avg. number of events per day:  3039.8
 You may wish to generate a novel from a model history. Output example: 
 
 > Once upon a time ...<br>
-> A gentleman Anthony stopped to be symptomatic and infectious with no  manifest of symptoms and started to be as famous as a taxidriver.<br>
-> A gentleman Tybalt stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Page stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Watchmen 1 stopped to be infectious without symptoms and started to be healthy again.<br>
+> A gentleman Friar John stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Prince Escalus stopped to manifest symptoms and started to push up daisies.<br>
+> A gentleman Paris stopped to have flue symptoms and started to be healthy.<br>
+> A lady Lady Capulet stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Friar Lawrence stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Balthasar stopped to be symptomatic and infectious with no  manifest of symptoms and started to manifest symptoms.<br>
 > A gentleman Lord Capulet stopped to have flue symptoms and started to be healthy.<br>
-> A lady Rosaline stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Abram stopped to be infectious without symptoms and started to be healthy again.<br>
-> A gentleman Balthasar stopped to manifest symptoms and started to be as famous as a taxidriver.<br>
-> A gentleman Apothacary stopped to be infectious without symptoms and started to be healthy again.<br>
-> A gentleman Old Capulet stopped to be healthy and started to be exposed.<br>
+> A gentleman Old Capulet stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Chorus stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Chorus stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Friar Lawrence stopped to have flue symptoms and started to be healthy.<br>
+> A lady Rosaline stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Lord Capulet stopped to be healthy and started to have flue symptoms.<br>
 > A gentleman Gregory stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Anthony stopped to be as famous as a taxidriver and started to be an expert on epidemy.<br>
-> A gentleman Watchmen 1 stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Balthasar stopped to manifest symptoms and started to push up daisies.<br>
+> A lady Rosaline stopped to have flue symptoms and started to be healthy.<br>
+> A lady Queen Mab stopped to manifest symptoms and started to push up daisies.<br>
+> A gentleman Benvolio stopped to manifest symptoms and started to be as famous as a taxidriver.<br>
+> A gentleman Mercutio stopped to manifest symptoms and started to be healthy again.<br>
+> A gentleman Lord Capulet stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Lord Capulet stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Lord Capulet stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Friar John stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Benvolio stopped to be as famous as a taxidriver and started to pine for the fjords.<br>
+> A gentleman Servant 2 stopped to be healthy and started to have flue symptoms.<br>
+> A lady Nurse stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Servant 2 stopped to have flue symptoms and started to be healthy.<br>
 > A gentleman Servant 2 stopped to be healthy and started to have flue symptoms.<br>
 > A gentleman Servant 2 stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Watchmen 1 stopped to have flue symptoms and started to be healthy.<br>
-> A lady Lady Capulet stopped to manifest symptoms and started to be as famous as a taxidriver.<br>
-> A gentleman Old Capulet stopped to be exposed and started to be as famous as a taxidriver.<br>
-> A lady Lady Capulet stopped to be as famous as a taxidriver and started to be an expert on epidemy.<br>
-> A gentleman Balthasar stopped to be as famous as a taxidriver and started to be an expert on epidemy.<br>
-> A lady Juliet stopped to be healthy and started to have flue symptoms.<br>
-> A lady Lady Montague stopped to have flue symptoms and started to be healthy.<br>
+> A lady Nurse stopped to have flue symptoms and started to be healthy.<br>
 > A gentleman Valentine stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Lord Montague stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Old Capulet stopped to be as famous as a taxidriver and started to be an expert on epidemy.<br>
-> A gentleman Servant 2 stopped to be healthy and started to be exposed.<br>
-> A lady Juliet stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Friar Lawrence stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Friar Lawrence stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Valentine stopped to have flue symptoms and started to be healthy.<br>
+> A lady Nurse stopped to be healthy and started to have flue symptoms.<br>
+> A lady Nurse stopped to have flue symptoms and started to be healthy.<br>
+> A lady Lady Capulet stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Friar John stopped to be healthy and started to have flue symptoms.<br>
+> A lady Lady Capulet stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Friar John stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Lord Capulet stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Lord Capulet stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Apothacary stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Apothacary stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Apothacary stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Apothacary stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Sampson stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Lord Capulet stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Abram stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Lord Capulet stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Sampson stopped to have flue symptoms and started to be healthy.<br>
+> A lady Lady Capulet stopped to be healthy and started to have flue symptoms.<br>
+> A lady Lady Capulet stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Tybalt stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Tybalt stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Watchmen 2 stopped to be healthy and started to be exposed.<br>
+> A gentleman Abram stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Paris stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Watchmen 3 stopped to be infectious without symptoms and started to be healthy again.<br>
+> A gentleman Paris stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Page stopped to be healthy and started to have flue symptoms.<br>
+> A gentleman Watchmen 2 stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
+> A gentleman Page stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Watchmen 2 stopped to be symptomatic and infectious with no  manifest of symptoms and started to manifest symptoms.<br>
+> A gentleman Watchmen 2 stopped to manifest symptoms and started to be as famous as a taxidriver.<br>
 > A gentleman Peter stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Gregory stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Servant 2 stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A gentleman Peter stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Servant 2 stopped to be symptomatic and infectious with no  manifest of symptoms and started to manifest symptoms.<br>
-> A gentleman Valentine stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Gregory stopped to have flue symptoms and started to be healthy.<br>
-> A lady Juliet stopped to be healthy and started to be exposed.<br>
-> A gentleman Friar Lawrence stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Prince Escalus stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Romeo stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Tybalt stopped to be healthy and started to be exposed.<br>
-> A gentleman Romeo stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Prince Escalus stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Servant 2 stopped to manifest symptoms and started to be healthy again.<br>
-> A gentleman Friar Lawrence stopped to have flue symptoms and started to be healthy.<br>
-> A lady Juliet stopped to be exposed and started to be as famous as a taxidriver.<br>
-> A gentleman Valentine stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Musician 3 stopped to be healthy and started to be exposed.<br>
-> A gentleman Valentine stopped to have flue symptoms and started to be healthy.<br>
-> A lady Rosaline stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Friar Lawrence stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Musician 3 stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A gentleman Musician 1 stopped to be healthy and started to be exposed.<br>
-> A gentleman Valentine stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Watchmen 3 stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Peter stopped to be healthy and started to be exposed.<br>
-> A lady Nurse stopped to manifest symptoms and started to be as famous as a taxidriver.<br>
-> A gentleman Chorus stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Mercutio stopped to manifest symptoms and started to be healthy again.<br>
-> A gentleman Friar John stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Musician 3 stopped to be symptomatic and infectious with no  manifest of symptoms and started to manifest symptoms.<br>
-> A gentleman Friar Lawrence stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Chorus stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Watchmen 3 stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Tybalt stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A gentleman Ghost Petruchio stopped to be healthy and started to have flue symptoms.<br>
-> A lady Nurse stopped to be as famous as a taxidriver and started to be an expert on epidemy.<br>
-> A gentleman Ghost Petruchio stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Friar John stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Tybalt stopped to be symptomatic and infectious with no  manifest of symptoms and started to manifest symptoms.<br>
-> A gentleman Valentine stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Friar Lawrence stopped to be healthy and started to be exposed.<br>
-> A gentleman Potpan stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Friar Lawrence stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A gentleman Tybalt stopped to manifest symptoms and started to be as famous as a taxidriver.<br>
-> A gentleman Friar Lawrence stopped to be symptomatic and infectious with no  manifest of symptoms and started to manifest symptoms.<br>
-> A gentleman Potpan stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Musician 2 stopped to be healthy and started to be exposed.<br>
-> A gentleman Musician 1 stopped to be exposed and started to be infectious without symptoms.<br>
-> A gentleman Peter stopped to be exposed and started to be as famous as a taxidriver.<br>
-> A gentleman Potpan stopped to be healthy and started to be exposed.<br>
-> A gentleman Musician 3 stopped to manifest symptoms and started to be healthy again.<br>
-> A gentleman Potpan stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A gentleman Servant 1 stopped to be healthy and started to be exposed.<br>
-> A gentleman Friar Lawrence stopped to manifest symptoms and started to be as famous as a taxidriver.<br>
-> A gentleman Potpan stopped to be symptomatic and infectious with no  manifest of symptoms and started to be as famous as a taxidriver.<br>
-> A gentleman Potpan stopped to be as famous as a taxidriver and started to be an expert on epidemy.<br>
-> A gentleman Friar Lawrence stopped to be as famous as a taxidriver and started to be an expert on epidemy.<br>
-> A lady Rosaline stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Romeo stopped to be healthy and started to be exposed.<br>
-> A gentleman Friar John stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Peter stopped to be as famous as a taxidriver and started to pine for the fjords.<br>
-> A gentleman Friar John stopped to have flue symptoms and started to be healthy.<br>
-> A lady Juliet stopped to be as famous as a taxidriver and started to be an expert on epidemy.<br>
-> A gentleman Romeo stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A gentleman Musician 2 stopped to be exposed and started to be infectious without symptoms.<br>
-> A gentleman Tybalt stopped to be as famous as a taxidriver and started to be an expert on epidemy.<br>
-> A gentleman Ghost Petruchio stopped to be healthy and started to be exposed.<br>
-> A gentleman Paris stopped to be healthy and started to be exposed.<br>
-> A gentleman Servant 1 stopped to be exposed and started to be as famous as a taxidriver.<br>
-> A gentleman Paris stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A lady Lady Montague stopped to be healthy and started to be exposed.<br>
-> A gentleman Lord Montague stopped to be healthy and started to be exposed.<br>
-> A gentleman Benvolio stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Servant 1 stopped to be as famous as a taxidriver and started to pine for the fjords.<br>
-> A gentleman Benvolio stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Paris stopped to be symptomatic and infectious with no  manifest of symptoms and started to be as famous as a taxidriver.<br>
-> A gentleman Lord Capulet stopped to be healthy and started to be exposed.<br>
-> A gentleman Lord Capulet stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A gentleman Lord Capulet stopped to be symptomatic and infectious with no  manifest of symptoms and started to manifest symptoms.<br>
-> A gentleman Benvolio stopped to be healthy and started to have flue symptoms.<br>
-> A lady Rosaline stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Romeo stopped to be symptomatic and infectious with no  manifest of symptoms and started to manifest symptoms.<br>
-> A gentleman Watchmen 1 stopped to be healthy and started to have flue symptoms.<br>
-> A lady Rosaline stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Lord Montague stopped to be exposed and started to be as famous as a taxidriver.<br>
-> A gentleman Watchmen 1 stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Sampson stopped to be healthy and started to be exposed.<br>
-> A gentleman Benvolio stopped to have flue symptoms and started to be healthy.<br>
-> A gentleman Valentine stopped to be healthy and started to be exposed.<br>
-> A gentleman Lord Capulet stopped to manifest symptoms and started to be healthy again.<br>
-> A gentleman Gregory stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Ghost Petruchio stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A gentleman Gregory stopped to have flue symptoms and started to be healthy.<br>
-> A lady Lady Montague stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A lady Lady Montague stopped to be symptomatic and infectious with no  manifest of symptoms and started to be as famous as a taxidriver.<br>
-> A gentleman Ghost Petruchio stopped to be symptomatic and infectious with no  manifest of symptoms and started to manifest symptoms.<br>
-> A gentleman Chorus stopped to be healthy and started to be exposed.<br>
-> A gentleman Prince Escalus stopped to be healthy and started to be exposed.<br>
-> A gentleman Prince Escalus stopped to be exposed and started to be infectious without symptoms.<br>
-> A gentleman Chorus stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A gentleman Chorus stopped to be symptomatic and infectious with no  manifest of symptoms and started to manifest symptoms.<br>
-> A gentleman Romeo stopped to manifest symptoms and started to be healthy again.<br>
-> A gentleman Ghost Petruchio stopped to manifest symptoms and started to be healthy again.<br>
-> A gentleman Valentine stopped to be exposed and started to be as famous as a taxidriver.<br>
-> A gentleman Page stopped to be healthy and started to be exposed.<br>
-> A gentleman Paris stopped to be as famous as a taxidriver and started to be an expert on epidemy.<br>
-> A gentleman Lord Montague stopped to be as famous as a taxidriver and started to pine for the fjords.<br>
-> A gentleman Page stopped to be exposed and started to be infectious without symptoms.<br>
-> A gentleman Prince Escalus stopped to be infectious without symptoms and started to be healthy again.<br>
-> A gentleman Watchmen 1 stopped to be healthy and started to have flue symptoms.<br>
-> A gentleman Chorus stopped to manifest symptoms and started to be as famous as a taxidriver.<br>
-> A gentleman Gregory stopped to be healthy and started to be exposed.<br>
-> A gentleman Gregory stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A gentleman Gregory stopped to be symptomatic and infectious with no  manifest of symptoms and started to manifest symptoms.<br>
-> A gentleman Gregory stopped to manifest symptoms and started to be as famous as a taxidriver.<br>
-> A gentleman Sampson stopped to be exposed and started to be as famous as a taxidriver.<br>
-> A gentleman Page stopped to be infectious without symptoms and started to be healthy again.<br>
-> A gentleman Sampson stopped to be as famous as a taxidriver and started to be an expert on epidemy.<br>
-> A gentleman Chorus stopped to be as famous as a taxidriver and started to be an expert on epidemy.<br>
-> A gentleman Watchmen 3 stopped to be healthy and started to be exposed.<br>
-> A gentleman Watchmen 3 stopped to be exposed and started to be symptomatic and infectious with no  manifest of symptoms.<br>
-> A gentleman Watchmen 1 stopped to have flue symptoms and started to be healthy.<br>
+> A gentleman Watchmen 2 stopped to be as famous as a taxidriver and started to pine for the fjords.<br>
 > Well! I never wanted to do this in the first place. I wanted to be... an epidemiologist!<br>
-
 
 ## Config File Format
 example.ini
