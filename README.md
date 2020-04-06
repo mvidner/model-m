@@ -3,7 +3,7 @@ Model of an imaginary town
 
 ## Requirements 
 
-networkx, numpy, matplotlib, seaborn, click, (graphviz)
+networkx, numpy, matplotlib, seaborn, click
 
 ## Warning 
 now we are living in initial_experiments branch 
