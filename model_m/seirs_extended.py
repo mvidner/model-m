@@ -30,8 +30,8 @@ class ExtendedNetworkModel():
        R  - recovered
        D  - death
 
-    Params: 
-            G       Network adjacency matrix (numpy array) or Networkx graph object 
+    Params:
+            G       Network adjacency matrix (numpy array) or Networkx graph object
 
     Original Params:
             beta    Rate of transmission (exposure)
@@ -66,7 +66,8 @@ class ExtendedNetworkModel():
 
 
     Params of states not included in original SEIRS:
-         false_symptoms_rate                healthy individuals with symptoms rate
+         false_symptoms_rate                healthy individuals with symptoms rate 
+         false_symptoms_recovery rate       loosing false symptoms 
          asymptomatic_rate                  rate of infectous individuals without symptoms
          symptoms_manifest_rate             controls manifest of symptoms (from I_a to I_s)
          asymptomatic_testing_rate          detection of asymptomatic individual
@@ -120,12 +121,14 @@ class ExtendedNetworkModel():
                  phi_E=0, phi_Ia=0, phi_Is=0,
                  psi_E=0, psi_Ia=0, psi_Is=0,
                  q=0,
-                 false_symptoms_rate=0, asymptomatic_rate=0, symptoms_manifest_rate=1.0,
+                 false_symptoms_rate=0, false_symptoms_recovery_rate=1, asymptomatic_rate=0, symptoms_manifest_rate=1.0,
                  initSSrate=0, initE=0, initI_n=0, initI_a=0, initI_s=0, initI_d=0, initR_u=0, initR_d=0, initD_u=0, initD_d=0,
                  random_seed=None):
 
         if random_seed:
             np.random.seed(random_seed)
+
+        self.periodic_update_callback = None
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Setup Adjacency matrix:
@@ -136,7 +139,9 @@ class ExtendedNetworkModel():
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         model_param_names = ("beta", "sigma", "gamma", "mu_I", "p", "beta_D", "gamma_D", "mu_D",
                              "theta_E", "theta_Ia", "theta_Is", "phi_E", "phi_Ia", "phi_Is",
-                             "psi_E", "psi_Ia", "psi_Is", "q", "false_symptoms_rate", "asymptomatic_rate", "symptoms_manifest_rate")
+                             "psi_E", "psi_Ia", "psi_Is", "q", "false_symptoms_rate",
+                             "false_symptoms_recovery_rate",
+                             "asymptomatic_rate", "symptoms_manifest_rate")
 
         for param_name in model_param_names:
             param = locals()[param_name]
@@ -152,17 +157,22 @@ class ExtendedNetworkModel():
         # so there are ~numNodes*4 events/timesteps expected; initialize numNodes*5 timestep slots to start
         # (will be expanded during run if needed)
         self.num_transitions = 100  # TO: change to our situation
-        self.tseries = np.zeros((self.num_transitions+1)*self.numNodes)
+        tseries_len = (self.num_transitions + 1) * self.numNodes
+        self.tseries = np.zeros(tseries_len)
+
+        # history of events
+        max_state_len = max([len(s) for s in self.states])
+        self.history = np.chararray((tseries_len, 3), itemsize=5)
 
         # instead of original numE, numI, etc.
         # state_counts ... numbers of inidividuals in given states
         self.state_counts = dict()
         for state in self.states:
             self.state_counts[state] = np.zeros(
-                (self.num_transitions+1)*self.numNodes, dtype=int)
+                tseries_len, dtype=int)
 
         # N ... actual number of individuals in population
-        self.N = np.zeros((self.num_transitions+1)*self.numNodes)
+        self.N = np.zeros(tseries_len)
 
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Initialize Timekeeping:
@@ -220,6 +230,8 @@ class ExtendedNetworkModel():
 
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    def set_periodic_update(callback):
+        self.periodic_update_callback = callback
 
     def node_degrees(self, Amat):
         # sums of adj matrix cols
@@ -368,8 +380,8 @@ class ExtendedNetworkModel():
         #                                             self.degree, out=np.zeros_like(self.degree), where=self.degree != 0)
         #                      )*(self.X == self.S)
 
-        propensities[("S_s", "S")] = (
-            1-self.false_symptoms_rate)*(self.X == "S_s")
+        propensities[("S_s", "S")
+                     ] = self.false_symptoms_recovery_rate*(self.X == "S_s")
 
         # becoming exposed does not depend on unrelated symptoms
         propensities[("S_s", "E")] = S_to_E_koef * (self.X == "S_s")
@@ -414,7 +426,12 @@ class ExtendedNetworkModel():
 
     def increase_data_series_length(self):
         self.tseries = np.pad(
-            self.tseries, [(0, (self.num_transitions+1)*self.numNodes)], mode='constant', constant_values=0)
+            self.tseries,
+            [(0, (self.num_transitions+1)*self.numNodes)],
+            mode='constant', constant_values=0)
+
+        new_history = np.empty(((self.num_transitions+1)*self.numNodes, 3))
+        self.history = np.vstack([self.history, new_history])
 
         for state in self.states:
             self.state_counts[state] = np.pad(
@@ -432,6 +449,8 @@ class ExtendedNetworkModel():
     def finalize_data_series(self):
         """ throw away ending zeros """
         self.tseries = np.array(self.tseries, dtype=float)[:self.tidx+1]
+
+        self.history = self.history[:self.tidx+1]
 
         for state in self.states:
             self.state_counts[state] = np.array(self.state_counts[state],
@@ -497,6 +516,9 @@ class ExtendedNetworkModel():
         self.tidx += 1
 
         self.tseries[self.tidx] = self.t
+
+        self.history[self.tidx] = [transitionNode,
+                                   transitionType[0], transitionType[1]]
 
         for state in self.states:
             self.state_counts[state][self.tidx] = self.state_counts[state][self.tidx-1]
@@ -566,47 +588,23 @@ class ExtendedNetworkModel():
 
             running = self.run_iteration()
 
-            # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            # Handle checkpoints if applicable:
-            # if(checkpoints):
-            #     if(self.t >= checkpointTime):
-            #         print("[Checkpoint: Updating parameters]")
-            #         # A checkpoint has been reached, update param values:
-            #         for param in paramNames:
-            #             if(param in list(checkpoints.keys())):
-            #                 if(param == 'G'):
-            #                     self.update_G(
-            #                         checkpoints[param][checkpointIdx])
-            #                 elif(param == 'Q'):
-            #                     self.update_Q(
-            #                         checkpoints[param][checkpointIdx])
-            #                 else:
-            #                     setattr(self, param, checkpoints[param][checkpointIdx] if isinstance(checkpoints[param][checkpointIdx], (
-            #                         list, np.ndarray)) else np.full(fill_value=checkpoints[param][checkpointIdx], shape=(self.numNodes, 1)))
-            #         # Update scenario flags to represent new param values:
-            #         self.update_scenario_flags()
-            #         # Update the next checkpoint time:
-            #         # Finds 1st index in list greater than given val
-            #         checkpointIdx=np.searchsorted(
-            #             checkpoints['t'], self.t)
-            #         if(checkpointIdx >= numCheckpoints):
-            #             # We are out of checkpoints, stop checking them:
-            #             checkpoints=None
-            #         else:
-            #             checkpointTime=checkpoints['t'][checkpointIdx]
-            # # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            # true after the first event after midnight
+            day_changed = day != int(self.t)
+
+            # run periodical update
+            if self.periodic_update_callback and day != 1 and day_changed:
+                self.periodic_update_callback()
 
             # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             # print only if print_interval is set
             # prints always at the beginning of a new day
             if print_interval or not running:
-                day_changed = day != int(self.t)
                 if day_changed:
                     day = int(self.t)
 
                 if not running or (day_changed and (day % print_interval == 0)):
                     print("t = %.2f" % self.t)
-                    if verbose:
+                    if verbose or not running:
                         for state in self.states:
                             print(f"\t {state} = {self.current_state_count(state)}")
                     print(flush=True)
