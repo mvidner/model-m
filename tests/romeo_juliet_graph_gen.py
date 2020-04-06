@@ -170,6 +170,7 @@ class RomeoAndJuliet(GraphGenerator):
         self.G.add_node(37, label='Chorus', sex=0, age=61)
 
         # party at Capulet - is now a complete subgraph
+        self.G.add_edge(1, 2, label='K')
         self.G.add_edge(1, 5, label='K')
         self.G.add_edge(1, 6, label='K')
         self.G.add_edge(1, 7, label='K')
@@ -188,6 +189,25 @@ class RomeoAndJuliet(GraphGenerator):
         self.G.add_edge(1, 34, label='K')
         self.G.add_edge(1, 35, label='K')
         self.G.add_edge(1, 36, label='K')
+
+        self.G.add_edge(2, 5, label='K')
+        self.G.add_edge(2, 6, label='K')
+        self.G.add_edge(2, 7, label='K')
+        self.G.add_edge(2, 8, label='K')
+        self.G.add_edge(2, 9, label='K')
+        self.G.add_edge(2, 10, label='K')
+        self.G.add_edge(2, 11, label='K')
+        self.G.add_edge(2, 16, label='K')
+        self.G.add_edge(2, 17, label='K')
+        self.G.add_edge(2, 22, label='K')
+        self.G.add_edge(2, 25, label='K')
+        self.G.add_edge(2, 26, label='K')
+        self.G.add_edge(2, 27, label='K')
+        self.G.add_edge(2, 28, label='K')
+        self.G.add_edge(2, 29, label='K')
+        self.G.add_edge(2, 34, label='K')
+        self.G.add_edge(2, 35, label='K')
+        self.G.add_edge(2, 36, label='K')
 
         self.G.add_edge(5, 6, label='K')
         self.G.add_edge(5, 7, label='K')
