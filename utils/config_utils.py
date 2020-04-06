@@ -29,7 +29,7 @@ class ConfigFile():
         self.config.read(filename)
 
     def section_as_dict(self, section_name):
-        sdict = self.config._sections[section_name]
+        sdict = self.config._sections.get(section_name, {})
         return {name: string_to_number(value) for name, value in sdict.items()}
 
 
