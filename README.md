@@ -5,8 +5,6 @@ Model of an imaginary town
 
 networkx, numpy, matplotlib, seaborn, click
 
-## Warning 
-now we are living in initial_experiments branch 
 
 
 ## Usage 
