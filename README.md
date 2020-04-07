@@ -252,7 +252,7 @@ from romeo_juliet_graph_gen import RomeoAndJuliet as Verona
 from run_experiment import magic_formula
 ```
 
-# 1. **Define whatever you need**
+1. **Define whatever you need**
 ```
 model_definition = {
     # model definition comes here
@@ -304,34 +304,34 @@ def calc_propensities(model):
     return stacked_propensities, model.transitions
 ```
 
-# 2. **Create custom class**
+2. **Create custom class**
 
 ```
 CustomModel = create_custom_model("CustomModel", **model_definition,
                                   calc_propensities=calc_propensities)
 ```
 
-# 3. **Load your graph**
+3. **Load your graph**
 ```
 g = Verona()
 A = magic_formula(g.as_dict_of_graphs(), g.get_layers_info())
 ```
 
-# 4. **Create model**
+4. **Create model**
 ```
 tiredability = 0.01 * np.array(g.get_attr_list("age"))
 model = CustomModel(A,  wake_up_rate=0.8, init_alert=10, tiredability=tiredability,
                     init_tired=10, random_seed=35)
 ```
 
-# 5. **Run**
+5. **Run**
 ```
 ndays = 60
 model.run(T=ndays, verbose=True, print_interval=5)
 print("Avg. number of events per day: ", model.tidx/ndays)
 ```
 
-# 6. **Inspect results**
+6. **Inspect results**
 ```
 x = model.tseries
 population = model.N
@@ -342,7 +342,7 @@ plt.legend()
 plt.savefig("alert_pop.png")
 # etc
 ```
-# 7. **Procrastinate**
+7. **Procrastinate**
 ```
 # text = tell_the_story(model.history, g)
 # print()
