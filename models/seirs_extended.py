@@ -122,7 +122,7 @@ class ExtendedNetworkModel():
                  psi_E=0, psi_Ia=0, psi_Is=0,
                  q=0,
                  false_symptoms_rate=0, false_symptoms_recovery_rate=1, asymptomatic_rate=0, symptoms_manifest_rate=1.0,
-                 initSSrate=0, initE=0, initI_n=0, initI_a=0, initI_s=0, initI_d=0, initR_u=0, initR_d=0, initD_u=0, initD_d=0,
+                 init_S=0, init_S_s=0, init_E=0, init_I_n=0, init_I_a=0, init_I_s=0, init_I_d=0, init_R_u=0, init_R_d=0, init_D_u=0, init_D_d=0,
                  random_seed=None):
 
         if random_seed:
@@ -191,20 +191,18 @@ class ExtendedNetworkModel():
         # self.numD_I[0] = int(initD_I)
         # self.numR[0] = int(initR)
         # self.numF[0] = int(initF)
-        init_values = (0, 0, initE, initI_n, initI_a,
-                       initI_s, initI_d, initR_u, initR_d, initD_u, initD_d)
+        init_values = (init_S, init_S_s, init_E, init_I_n, init_I_a,
+                       init_I_s, init_I_d, init_R_u, init_R_d, init_D_u, init_D_d)
         for state, init_value in zip(self.states, init_values):
             self.state_counts[state][0] = int(init_value)
 
-        S_plus_Ss = self.numNodes - sum(init_values)
-        self.state_counts["S_s"][0] = initSSrate * S_plus_Ss
-        self.state_counts["S"][0] = S_plus_Ss - self.state_counts["S_s"][0]
-
+        nodes_left = self.numNodes - sum(init_values)
+        self.state_counts["S"][0] += nodes_left
         # self.numS[0] = self.numNodes - self.numE[0] - self.numI[0] - \
         #     self.numD_E[0] - self.numD_I[0] - self.numR[0] - self.numF[0]
 
         # all individuals except death ones
-        self.N[0] = self.numNodes - initD_u - initD_d
+        self.N[0] = self.numNodes - init_D_u - init_D_d
 
         # X ... array of states
         tempX = []
