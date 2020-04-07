@@ -64,8 +64,8 @@ def tell_the_story(history, graph):
         "I_d": "be as famous as a taxidriver",
         "R_d": "be an expert on epidemy",
         "R_u":  "be healthy again",
-        "D_u":  "push up daisies",
-        "D_d":  "pine for the fjords"
+        "D_d":  "push up daisies",
+        "D_u":  "pine for the fjords"
     }
 
     if isinstance(graph, GraphGenerator):
