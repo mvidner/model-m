@@ -9,7 +9,7 @@ from config_utils import ConfigFile
 from graph_gen import GraphGenerator
 
 #from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
-from model_zoo import ExtendedNetworkModel
+from model_zoo import model_zoo
 from seirs import custom_exponential_graph
 
 verona_available = True
@@ -119,9 +119,15 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
     else:
         A = None
 
-    model = ExtendedNetworkModel(G=graph if A is None else A,
-                                 **model_params,
-                                 random_seed=model_random_seed)
+    class_name = cf.section_as_dict("TASK").get(
+        "model", "ExtendedNetworkModel")
+    Model = model_zoo[class_name]
+    model = Model(G=graph if A is None else A,
+                  **model_params,
+                  random_seed=model_random_seed)
+
+    print(model.__class__.__name__)
+    print(model)
 
     ndays = cf.section_as_dict("TASK").get("duration_in_days", 60)
     print_interval = cf.section_as_dict("TASK").get("print_interval", 1)
