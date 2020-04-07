@@ -239,3 +239,67 @@ initI_s = 40
 initI_d = 0
 ```
 
+## Implementing custom network models
+
+You can derive your customized network model.
+
+
+```
+# just how the code may look like, not ready to run
+
+from model import create_custom_model
+from romeo_juliet_graph_gen import RomeoAndJuliet as Verona
+```
+
+1.  **define whatever you need** 
+```
+...
+model_definition = {
+  # model definition comes here
+  ...
+}
+def calc_propensities(model):
+  # define your calculations here 
+  # you may use various model utilities, as
+  #       model.num_contacts(state or list of states),
+  #       model.current_state_count(state), model.current_N(),
+  #       etc.; access list of states, transitions, parameters.   
+  raise NotImplementedY
+```
+
+2.  **create custom class**
+```
+CustomModel = create_custom_model("CustomModel", **model_definition,
+                                   calc_propensities=calc_propensities)
+```
+
+3. **load your graph**
+```
+g = Verona()
+A = magic_formula(g.as_dict_of_graphs(), g.get_layers_info())
+```
+
+4. **create model**
+```
+model = CustomModel(A,  beta=0.5, gamma=0.2, init_I=5)
+```
+
+5. **run**
+```
+model.run(T=60, verbose=True, print_interval=5)
+```
+
+6. **inspect results**
+```
+x = model.tseries 
+y = model.N
+plot_population(x, y)
+# etc 
+```
+
+7.  **procrastinate**
+```
+from run_experiment import tell_the_story 
+text = tell_the_story(model.history, g)
+print(text) 
+```
