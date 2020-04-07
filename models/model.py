@@ -7,8 +7,8 @@ from history_utils import TimeSeries, TransitionHistory
 
 
 def create_custom_model(clsname, states, transitions,
-                        final_states=None, invisible_states=None,
-                        unstable_states=None,
+                        final_states=[], invisible_states=[],
+                        unstable_states=[],
                         init_arguments={},
                         model_parameters={},
                         calc_propensities="None"):
