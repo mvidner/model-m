@@ -16,6 +16,7 @@ class ConfigFile():
     def __init__(self, param_dict=None):
 
         self.config = configparser.ConfigParser()
+        self.config.optionxform = str
         if param_dict:
             for name, value in param_dict.items():
                 self.config[name] = value
@@ -28,7 +29,7 @@ class ConfigFile():
         self.config.read(filename)
 
     def section_as_dict(self, section_name):
-        sdict = self.config._sections[section_name]
+        sdict = self.config._sections.get(section_name, {})
         return {name: string_to_number(value) for name, value in sdict.items()}
 
 
