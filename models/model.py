@@ -6,12 +6,12 @@ import networkx as nx
 from history_utils import TimeSeries, TransitionHistory
 
 
-def create_model_base(clsname, states, transitions,
-                      final_states=None, invisible_states=None,
-                      unstable_states=None,
-                      init_arguments={},
-                      model_parameters={},
-                      calc_propensities="None"):
+def create_custom_model(clsname, states, transitions,
+                        final_states=None, invisible_states=None,
+                        unstable_states=None,
+                        init_arguments={},
+                        model_parameters={},
+                        calc_propensities="None"):
     """ Creates base model class
 
     Params:
@@ -266,7 +266,7 @@ def num_contacts(self, state):
         # else:
 
         nums = scipy.sparse.csr_matrix.dot(self.A, state_flags)
-        return np.sum(nums, axis=1).reshape((self.numNodes, 1))
+        return np.sum(nums, axis=1).reshape((self.num_nodes, 1))
     else:
         raise TypeException(
             "num_contacts(state) accepts str or list of strings")
