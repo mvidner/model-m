@@ -12,8 +12,11 @@ class BaseSeries():
     def __setitem__(self, idx, data):
         self.values[idx] = data
 
-    def save(filename):
+    def save(self, filename):
         np.save(self.values, filename)
+
+    def len(self):
+        return len(self.values)
 
 
 class TimeSeries(BaseSeries):
