@@ -8,7 +8,7 @@ import numpy as np
 from config_utils import ConfigFile
 from graph_gen import GraphGenerator
 
-#from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
+# from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
 from model_zoo import model_zoo
 from seirs import custom_exponential_graph
 
@@ -125,6 +125,13 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
     model = Model(G=graph if A is None else A,
                   **model_params,
                   random_seed=model_random_seed)
+
+    policy_cfg = cf.section_as_dict("POLICY")
+    if policy_cfg and policy_cfg.get("filename", None):
+        PolicyClass = getattr(__import__(
+            policy_cfg["filename"]), policy_cfg.get("name", "Policy"))
+        policy = PolicyClass(graph)
+        model.set_periodic_update(policy.apply_policy)
 
     print(model.__class__.__name__)
     print(model)
