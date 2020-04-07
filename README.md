@@ -253,18 +253,32 @@ from romeo_juliet_graph_gen import RomeoAndJuliet as Verona
 
 1.  **define whatever you need** 
 ```
-...
 model_definition = {
   # model definition comes here
-  ...
+  "states": ["sleeping", "alert", "tired", "dead"],
+  "transitions": [
+  	("sleeping", "alert"),
+	("alert", "tired"),
+	("tired", "sleeping"),
+	("tired", "dead")
+  ],
+  # optionally:
+  "final_states": ["dead"],
+  "model_parameters": { 
+  	"wake_up_rate": (0.2, "wake up prob"),
+  	"tiredibility": (0.3, "getting tired rate"),
+	"mu": (0.01, "death rate"),
+	"sleepiness": (0.7, "rate of falling in sleep")
+  }
 }
+
 def calc_propensities(model):
   # define your calculations here 
   # you may use various model utilities, as
   #       model.num_contacts(state or list of states),
   #       model.current_state_count(state), model.current_N(),
   #       etc.; access list of states, transitions, parameters.   
-  raise NotImplementedY
+  raise NotImplementedYet
 ```
 
 2.  **create custom class**
@@ -281,7 +295,7 @@ A = magic_formula(g.as_dict_of_graphs(), g.get_layers_info())
 
 4. **create model**
 ```
-model = CustomModel(A,  beta=0.5, gamma=0.2, init_I=5)
+model = CustomModel(A,  wake_up_rate=0.8, init_alert=10, init_tired=10, random_seed=42)
 ```
 
 5. **run**
