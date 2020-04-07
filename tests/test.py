@@ -13,6 +13,8 @@ model_params = {"beta": (0.5, "pst of transition to anather state"),
                 "gamma": (0.02, "death rate")}
 
 
+# note: I use "self" since it will become a method of a model class
+# self is object model
 def calc_propensities(self):
     """ example of propensities function 
     you will typically use information from graph here 
