@@ -45,6 +45,19 @@ class GraphGenerator:
             attr_list.append(d[attr])
         return attr_list
 
+    def modify_layer_for_node(self, node_id, what_by_what):
+        for key in what_by_what:
+            node = [ x for x in self.G.nodes() if x == node_id ]
+#            print(node)
+            e_to_mod = self.G.edges(node,data=True,keys=True)
+#            print(len(e_to_mod))
+            for e in e_to_mod:
+                if e[3]['label'] == key:
+#                    print(e)
+                    self.G.edges[e[0],e[1],e[2]]['weight'] *= what_by_what[key] 
+ #               print(e[0], e[1]) 
+ #               print (self.G.edges[e[0]][e[1]])
+
 # returns dictionary of layer names and probabilities
     def get_layers_info (self):
         return dict(zip(self.G.graph["layer_names"], self.G.graph["layer_probs"]))
@@ -73,7 +86,7 @@ def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n
     for node in graph:
         neighbors = list(graph[node].keys())
         quarantineEdgeNum = int( max(min(np.random.exponential(scale=scale, size=1), len(neighbors)), min_num_edges) )
-        print(quarantineEdgeNum)
+#        print(quarantineEdgeNum)
         quarantineKeepNeighbors = np.random.choice(neighbors, size=quarantineEdgeNum, replace=False)
         for neighbor in neighbors:
             if(neighbor not in quarantineKeepNeighbors):
@@ -82,10 +95,8 @@ def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n
 
 
 class RandomGraphGenerator(GraphGenerator):
-    
-    layer_probs = [0.9, 0.8, 0.9, 0.8, 0.7, 0.9,
-                  1, 0.7, 0.5, 0.9, 0.9, 0.5, 0.3, 0.7] 
-
+# generating random graph aith mean degree 13 and num_nodes nodes 
+# both weights and layer weights are initialized randomly from trunc. norm (0.7, 0.3)  
 
     def __init__(self, num_nodes=10000, **kwargs):
         super().__init__(**kwargs)
@@ -104,6 +115,7 @@ class RandomGraphGenerator(GraphGenerator):
                 FG[u][v]['label'] = l
             # other params of the graph
             FG.graph['layer_name'] = l
+            self.G.graph['layer_probs'][i] = stats.truncnorm.rvs((lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
             FG.graph['layer_prob'] = self.G.graph['layer_probs'][i]
             self.Graphs[l] = FG
             i = i + 1
@@ -115,7 +127,6 @@ class RandomGraphGenerator(GraphGenerator):
         return self.Graphs
     
     def as_multigraph(self):
-#        assert False, "Musime to opravit!"
         for l in self.layer_names:
             self.G.add_edges_from(self.Graphs[l].edges(data=True))
         return self.G
