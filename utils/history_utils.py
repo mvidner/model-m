@@ -15,8 +15,14 @@ class BaseSeries():
     def save(self, filename):
         np.save(self.values, filename)
 
+    def __len__(self):
+        return len(self.values)
+
     def len(self):
         return len(self.values)
+
+    def asarray(self):
+        return self.values
 
 
 class TimeSeries(BaseSeries):
