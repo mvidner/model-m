@@ -1,7 +1,6 @@
 import timeit
 import click
 import random
-from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,6 +8,9 @@ import numpy as np
 from config_utils import ConfigFile
 from graph_gen import GraphGenerator
 
+#from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
+from model_zoo import ExtendedNetworkModel
+from seirs import custom_exponential_graph
 
 verona_available = True
 try:
@@ -134,12 +136,12 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
         with open(storyfile, "w") as f:
             f.write(story)
 
-    plot = True
+    plot = False
     if plot:
-        counts = [model.state_counts[s]
+        counts = [model.state_counts[s].asarray()
                   for s in ("I_n", "I_a", "I_s", "I_d", "E")]
         y = np.sum(counts, axis=0)
-        x = model.tseries
+        x = model.tseries.asarray()
         plt.plot(x, y)
         test_id = "_" + test_id if test_id else ""
         plt.savefig(f"num_of_ill{test_id}.png")
