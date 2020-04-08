@@ -98,6 +98,16 @@ def tell_the_story(history, graph):
     return "\n".join(story)
 
 
+def matrix(graph):
+    if isinstance(graph, GraphGenerator):
+        return magic_formula(
+            graph.as_dict_of_graphs(),
+            graph.get_layers_info()
+        )
+    else:
+        return None
+
+
 def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
 
     cf = ConfigFile()
@@ -111,13 +121,7 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
     graph = create_graph(graph_name, num_nodes)
     print(graph)
 
-    if isinstance(graph, GraphGenerator):
-        A = magic_formula(
-            graph.as_dict_of_graphs(),
-            graph.get_layers_info()
-        )
-    else:
-        A = None
+    A = matrix(graph)
 
     class_name = cf.section_as_dict("TASK").get(
         "model", "ExtendedNetworkModel")
@@ -128,10 +132,11 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
 
     policy_cfg = cf.section_as_dict("POLICY")
     if policy_cfg and policy_cfg.get("filename", None):
-        PolicyClass = getattr(__import__(
-            policy_cfg["filename"]), policy_cfg.get("name", "Policy"))
-        policy = PolicyClass(graph)
-        model.set_periodic_update(policy.apply_policy)
+        Policy = getattr(__import__(
+            policy_cfg["filename"]), "Policy")
+        policy = Policy(graph)
+
+        model.set_periodic_update(policy.get_policy_function())
 
     print(model.__class__.__name__)
     print(model)
@@ -149,7 +154,7 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
         with open(storyfile, "w") as f:
             f.write(story)
 
-    plot = False
+    plot = True
     if plot:
         counts = [model.state_counts[s].asarray()
                   for s in ("I_n", "I_a", "I_s", "I_d", "E")]

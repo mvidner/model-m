@@ -103,7 +103,7 @@ class BaseModel():
         return Amat.sum(axis=0).reshape(self.num_nodes, 1)
 
     def set_periodic_update(self, callback):
-        """ set callback function 
+        """ set callback function
         callback function is called every midnigh """
         self.periodic_update_callback = callback
 
@@ -130,7 +130,7 @@ class BaseModel():
         )
 
     def num_contacts(self, state):
-        """ return numbers of contacts from given state 
+        """ return numbers of contacts from given state
         if state is a list, it is sum over all states """
 
         if type(state) == str:
@@ -264,7 +264,11 @@ class BaseModel():
 
             # run periodical update
             if self.periodic_update_callback and day != 1 and day_changed:
-                self.periodic_update_callback(self.X, self.history)
+                changes = self.periodic_update_callback(self.X, self.history)
+#                print(changes)
+
+                if "graph" in changes:
+                    self.update_graph(changes["graph"])
 
             # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             # print only if print_interval is set

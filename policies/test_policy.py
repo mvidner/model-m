@@ -1,3 +1,6 @@
+from run_experiment import matrix  # TODO what to DO?
+
+
 class Policy():
 
     def __init__(self, graph):
@@ -13,15 +16,16 @@ class Policy():
         quarantine["F"] = 100
 
         # overkill,  budou se brat jen ty, co se presli do Id dnes
+        nodes = list(self.graph.G.nodes)
         detected_states = [
-            idx for idx, x in enumerate(states) if x == "I_d"
+            nodes[idx] for idx, x in enumerate(states) if x == "I_d"
         ]
-        return
 
         for node in detected_states:
             self.graph.modify_layers_for_node(node, quarantine)
+        A = matrix(self.graph)
 
-        to_change = {"graph": self.graph}
+        to_change = {"graph": self.graph if A is None else A}
         return to_change
 
     def get_policy_function(self):
