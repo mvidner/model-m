@@ -4,13 +4,16 @@ import random
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 from config_utils import ConfigFile
 from graph_gen import GraphGenerator
+from policy import bound_policy
 
 # from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
 from model_zoo import model_zoo
 from seirs import custom_exponential_graph
+
 
 verona_available = True
 try:
@@ -89,7 +92,7 @@ def tell_the_story(history, graph):
         else:
             name = node
 
-        src_s, dst_s = states[src], states[dst]
+        src_s, dst_s = states.get(src, src), states.get(dst, dst)
         story.append(f"{who} {name} stopped to {src_s} and started to {dst_s}.")
 
     story.append(
@@ -131,12 +134,11 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
                   random_seed=model_random_seed)
 
     policy_cfg = cf.section_as_dict("POLICY")
-    if policy_cfg and policy_cfg.get("filename", None):
-        Policy = getattr(__import__(
-            policy_cfg["filename"]), "Policy")
-        policy = Policy(graph)
-
-        model.set_periodic_update(policy.get_policy_function())
+    if policy_cfg and "filename" in policy_cfg and "name" in policy_cfg:
+        policy = getattr(__import__(
+            policy_cfg["filename"]), policy_cfg["name"])
+        policy = bound_policy(policy, graph)
+        model.set_periodic_update(policy)
 
     print(model.__class__.__name__)
     print(model)
@@ -154,7 +156,7 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
         with open(storyfile, "w") as f:
             f.write(story)
 
-    plot = True
+    plot = False
     if plot:
         counts = [model.state_counts[s].asarray()
                   for s in ("I_n", "I_a", "I_s", "I_d", "E")]
@@ -163,6 +165,14 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
         plt.plot(x, y)
         test_id = "_" + test_id if test_id else ""
         plt.savefig(f"num_of_ill{test_id}.png")
+
+    # save history
+    index = model.tseries
+    columns = model.state_counts
+    df = pd.DataFrame(model.state_counts, index=model.tseries)
+    test_id = "_" + test_id if test_id else ""
+    df.to_csv(f"history{test_id}.csv")
+    print(df)
 
 
 @click.command()
