@@ -3,7 +3,7 @@
 import networkx as nx
 import numpy as np
 import scipy.stats as stats
-
+import pandas as pd
 
 class GraphGenerator:
     layer_names = ['F', 'D', 'P', 'E', 'H', 'K',
@@ -149,11 +149,41 @@ class RandomGraphGenerator(GraphGenerator):
             i = i + 1
 #            dot = nx.nx_pydot.to_pydot(FG)
 #            print(dot)
+        for l in self.layer_names:
+            self.G.add_edges_from(self.Graphs[l].edges(data=True))
 
     def as_dict_of_graphs(self):
         return self.Graphs
 
-    def as_multigraph(self):
-        for l in self.layer_names:
-            self.G.add_edges_from(self.Graphs[l].edges(data=True))
-        return self.G
+class CSVGraphGenerator(GraphGenerator):
+    layer_names = []
+    layer_probs = []
+
+    
+    def __init__(self, path_to_nodes='nodes.csv', path_to_edges='edges.csv', path_to_layers='etypes.csv', **kwargs):
+        super().__init__(**kwargs)
+
+        csv_hacking = {'na_values' : 'undef', 'skipinitialspace' : True}
+        nodes = pd.read_csv(path_to_nodes, **csv_hacking)
+        edges = pd.read_csv(path_to_edges, **csv_hacking)
+        layers = pd.read_csv(path_to_layers, **csv_hacking)
+#        print(layers)        
+        # fill the layers
+#        layer_names = tuple(zip(layers.loc('id'), layers.loc('id2')))
+        layers_to_add = layers.to_dict('list')
+        self.layer_names = layers_to_add['id']
+#        print(layers_names)
+        self.layer_probs = layers_to_add['weight']
+
+        # fill the nodes
+        nodes_to_add = nodes.to_dict('records')
+        idx_s = list(range(0,len(nodes_to_add)))
+        self.G.add_nodes_from(zip(idx_s, nodes_to_add))
+       
+        # fill the edges
+        edges_to_add = edges.to_dict('list') 
+        froms = edges_to_add['vertex1']
+        tos = edges_to_add['vertex2']
+        datas = [{k: v for k, v in d.items() if k != 'vertex1' and k != 'vertex2'} for d in edges.to_dict('records')]
+        self.G.add_edges_from(zip(froms,tos,datas))
+                  

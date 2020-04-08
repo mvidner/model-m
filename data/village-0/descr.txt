@@ -1,0 +1,16 @@
+
+enum eedgetype {etnone, efamily, enurseryc2c, enurseryt2c ,
+                  eelementaryc2c, eelementaryt2c, ehighc2c, ehight2c,
+                  efriends, enumedgetypes};
+
+inline string edgetypelabels(eedgetype t)
+{
+    static vector<string> labels =  { "none (should not appear)",
+                    "family",
+                    "nursary children", "nursary teachers to children",
+                    "elementary children", "elementary teachers to children",
+                    "highschool children", "highschool teachers to children",
+                    "friend network" };
+    assert(t < enumedgetypes);
+    return labels[t];
+}
