@@ -261,13 +261,15 @@ class BaseModel():
 
             # true after the first event after midnight
             day_changed = day != int(self.t)
+            day = int(self.t)
 
             # run periodical update
             if self.periodic_update_callback and day != 1 and day_changed:
+                print(self.periodic_update_callback)
                 changes = self.periodic_update_callback(self.X, self.history)
-#                print(changes)
 
                 if "graph" in changes:
+                    print("CHANGING GRAPH")
                     self.update_graph(changes["graph"])
 
             # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
