@@ -169,6 +169,7 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
     # save history
     index = model.tseries
     columns = model.state_counts
+    columns["day"] = np.floor(index).astype(int)
     df = pd.DataFrame(model.state_counts, index=model.tseries)
     test_id = "_" + test_id if test_id else ""
     df.to_csv(f"history{test_id}.csv")
