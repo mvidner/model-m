@@ -9,7 +9,7 @@ def plot_history(filename):
     history = pd.read_csv(filename)
     history["all_infectious"] = history[[
         "I_n", "I_a", "I_s", "I_d", "E"]].sum(axis=1)
-    history.plot(y="all_infectious")
+    history.plot(x="T", y="all_infectious")
     plt.show()
 
 
