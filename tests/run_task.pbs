@@ -1,0 +1,21 @@
+
+#  pbs template
+#  to be run with qsub -v FILE=name_of_ini_file, ID=whatever_label
+source .bashrc
+conda activate covid
+cd /home/vidnerova/covid/model-m/tests/
+export PYTHONPATH=$PYTHONPATH:/home/vidnerova/covid/model-m/models:/home/vidnerova/covid/model-m/graphs:/home/vidnerova/covid/model-m/utils:/home/vidnerova/covid/model-m/policies
+
+# run processes and store pids in array
+for I in `seq 0 10`; do
+    echo $FILE ${ID}
+    python run_experiment.py -r ${FILE}  ${ID}_$I > demo_${ID}_$I.log  &
+    pids[${I}]=$!
+done
+
+echo ${pids[*]} > pids.log
+
+# wait for all pids
+for pid in ${pids[*]}; do
+    wait $pid
+done
