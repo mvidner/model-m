@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from config_utils import ConfigFile
-from graph_gen import GraphGenerator
+from graph_gen import GraphGenerator, CSVGraphGenerator
 from policy import bound_policy
 
 # from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
@@ -46,6 +46,9 @@ def create_graph(name, num_nodes=None):
                 "Verona not available. Contact Roman Neruda for source files.")
         else:
             return Verona(random_seed=7)
+
+    if name == "chocerady":
+        return CSVGraphGenerator()
 
     if name == "seirsplus_example":
         base_graph = nx.barabasi_albert_graph(n=num_nodes, m=9, seed=7)
