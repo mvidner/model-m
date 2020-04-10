@@ -114,7 +114,7 @@ def matrix(graph):
         return None
 
 
-def demo(filename, test_id=None, model_random_seed=42, use_policy=False, print_interval=1):
+def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_interval=1):
 
     cf = ConfigFile()
     cf.load(filename)
@@ -139,11 +139,14 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=False, print_i
                   **model_params,
                   random_seed=model_random_seed)
 
-    if use_policy:
+    if use_policy:  # TODO: cfg versus --policy option
         policy_cfg = cf.section_as_dict("POLICY")
-        if policy_cfg and "filename" in policy_cfg and "name" in policy_cfg:
+        if use_policy not in policy_cfg["name"]:
+            raise ValueError("Unknown policy name.")
+        
+        if policy_cfg and "filename" in policy_cfg:
             policy = getattr(__import__(
-                policy_cfg["filename"]), policy_cfg["name"])
+                policy_cfg["filename"]), use_policy)
             policy = bound_policy(policy, graph)
             model.set_periodic_update(policy)
         else:
@@ -189,17 +192,16 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=False, print_i
 
 @click.command()
 @click.option('--set-random-seed/--no-random-seed', ' /-r', default=True)
-# casem to bude brat jmeno policy
-@click.option('--use-policy/--no-policy', '-p/ ', default=False)
+@click.option('--policy', '-p', default=None) 
 @click.option('--print_interval',  default=1)
 @click.argument('filename', default="example.ini")
 @click.argument('test_id', default="")
-def test(set_random_seed, use_policy, print_interval, filename, test_id):
+def test(set_random_seed, policy, print_interval, filename, test_id):
     """ Run the demo test inside the timeit """
 
     random_seed = 42 if set_random_seed else random.randint(0, 10000)
     def demo_fce(): return demo(filename, test_id,
-                                model_random_seed=random_seed, use_policy=use_policy, print_interval=print_interval)
+                                model_random_seed=random_seed, use_policy=policy, print_interval=print_interval)
     print(timeit.timeit(demo_fce, number=1))
 
 

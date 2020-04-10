@@ -133,3 +133,10 @@ dmypy.json
 \#*
 *.png
 .*
+*.o[0-9][0-9][0-9][0-9]
+*.e[0-9][0-9][0-9][0-9]
+*.csv
+!*/model-m/tests/edges.csv
+!*/model-m/tests/etypes.csv
+!*/model-m/tests/nodes.csv
+!*/model-m/results_storage/*.csv
