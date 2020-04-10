@@ -12,12 +12,12 @@ def simple_policy(policy_func):
        
         print("Current time:", time)
         print("Current day:", int(time))
-        print("whole", tseries.values)
+        print("whole", tseries)
         current_day = int(time)
         start = np.searchsorted(tseries, current_day-1, side="left")
         end = np.searchsorted(tseries, current_day, side="left")
         print(start, end, len(tseries))
-        print("today", tseries.values[start:end])
+        print("today", tseries[start:end])
         
         if not isinstance(graph, GraphGenerator):
             raise TypeError("This policy works with GraphGenerator derived graphs only.")
@@ -25,7 +25,7 @@ def simple_policy(policy_func):
         # overkill,  budou se brat jen ty, co se presli do Id dnes
         nodes = list(graph.G.nodes)
         detected_nodes = [
-            nodes[idx] for idx, x in enumerate(states[:]) if x == "I_d"
+            nodes[idx] for idx, x in enumerate(states[start:end]) if x == "I_d"
         ]
 
         print(f"Qurantined nodes: {detected_nodes}")
