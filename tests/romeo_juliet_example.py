@@ -59,7 +59,11 @@ from graph_gen import CSVGraphGenerator
 
 print('bahoj')
 rc = CSVGraphGenerator()
-#GG = rc.as_multigraph()
+GG = rc.as_multigraph()
+dot_GG = nx.nx_pydot.to_pydot(GG)
+print(dot_GG)
+print(GG)
+
 
 e = rc.get_edges_for_node(5)
 
