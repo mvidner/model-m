@@ -47,7 +47,7 @@ def create_graph(name, num_nodes=None):
         else:
             return Verona(random_seed=7)
 
-    if name == "chocerady":
+    if name == "village0":
         return CSVGraphGenerator()
 
     if name == "seirsplus_example":
@@ -114,7 +114,7 @@ def matrix(graph):
         return None
 
 
-def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
+def demo(filename, test_id=None, model_random_seed=42, use_policy=False, print_interval=1):
 
     cf = ConfigFile()
     cf.load(filename)
@@ -136,12 +136,16 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
                   **model_params,
                   random_seed=model_random_seed)
 
-    policy_cfg = cf.section_as_dict("POLICY")
-    if policy_cfg and "filename" in policy_cfg and "name" in policy_cfg:
-        policy = getattr(__import__(
-            policy_cfg["filename"]), policy_cfg["name"])
-        policy = bound_policy(policy, graph)
-        model.set_periodic_update(policy)
+    if use_policy:
+        policy_cfg = cf.section_as_dict("POLICY")
+        if policy_cfg and "filename" in policy_cfg and "name" in policy_cfg:
+            policy = getattr(__import__(
+                policy_cfg["filename"]), policy_cfg["name"])
+            policy = bound_policy(policy, graph)
+            model.set_periodic_update(policy)
+        else:
+            print("Warning: NO POLICY IN CFG")
+            print(policy_cfg)
 
     print(model.__class__.__name__)
     print(model)
@@ -182,15 +186,16 @@ def demo(filename, test_id=None, model_random_seed=42, print_interval=1):
 
 @click.command()
 @click.option('--set-random-seed/--no-random-seed', ' /-r', default=True)
+@click.option('--use-policy/--no-policy', '-p/ ', default=False) # casem to bude brat jmeno policy
 @click.option('--print_interval',  default=1)
 @click.argument('filename', default="example.ini")
 @click.argument('test_id', default="")
-def test(set_random_seed, print_interval, filename, test_id):
+def test(set_random_seed, use_policy, print_interval, filename, test_id):
     """ Run the demo test inside the timeit """
 
     random_seed = 42 if set_random_seed else random.randint(0, 10000)
     def demo_fce(): return demo(filename, test_id,
-                                model_random_seed=random_seed, print_interval=print_interval)
+                                model_random_seed=random_seed, use_policy=use_policy, print_interval=print_interval)
     print(timeit.timeit(demo_fce, number=1))
 
 

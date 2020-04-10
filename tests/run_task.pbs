@@ -9,7 +9,7 @@ export PYTHONPATH=$PYTHONPATH:/home/vidnerova/covid/model-m/models:/home/vidnero
 # run processes and store pids in array
 for I in `seq 0 10`; do
     echo $FILE ${ID}
-    python run_experiment.py -r ${FILE}  ${ID}_$I > demo_${ID}_$I.log  &
+    python run_experiment.py -r $P ${FILE}  ${ID}_$I > demo_${ID}_$I.log  &
     pids[${I}]=$!
 done
 

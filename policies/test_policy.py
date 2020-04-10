@@ -3,7 +3,7 @@ from graph_gen import GraphGenerator
 
 def simple_policy(graph, states, history):
     # ?? do changes in place or shall I make a copy of a graph?
-    # to do go through history
+    # to do: go through history (consider only last day)
     print("Hello world! This is the policy function speaking.")
 
     if isinstance(graph, GraphGenerator):
