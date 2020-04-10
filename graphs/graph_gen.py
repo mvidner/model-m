@@ -93,8 +93,8 @@ class GraphGenerator:
         # for e in self.G.edges(node, data=True, keys=True):
         #     print(*e)
 
-        for e in self.G.edges([node_id], data=True, keys=True):
-            print(*e)
+        # for e in self.G.edges([node_id], data=True, keys=True):
+        #     print(*e)
         
         for u, v, k, d in self.G.edges([node_id], data=True, keys=True):
             layer_label = d["type"]
