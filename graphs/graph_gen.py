@@ -70,12 +70,19 @@ class GraphGenerator:
         # for e in self.G.edges(node, data=True, keys=True):
         #     print(*e)
 
+        for e in self.G.edges([node_id], data=True, keys=True):
+            print(*e)
+        
         for u, v, k, d in self.G.edges([node_id], data=True, keys=True):
             layer_label = d["type"]
             if layer_label in what_by_what:
                 self.G.edges[(u, v, k)
-                             ]['weight'] = max(self.G.edges[(u, v, k)]['weight'] * what_by_what[layer_label], 1.0)
+                             ]['weight'] = min(self.G.edges[(u, v, k)]['weight'] * what_by_what[layer_label], 1.0)
 
+        for e in self.G.edges([node_id], data=True, keys=True):
+            print(*e)
+
+                
         # for e in self.G.edges(node, data=True, keys=True):
         #     print(*e)
 
