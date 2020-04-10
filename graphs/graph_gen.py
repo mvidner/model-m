@@ -71,7 +71,7 @@ class GraphGenerator:
         #     print(*e)
 
         for u, v, k, d in self.G.edges([node_id], data=True, keys=True):
-            layer_label = d["label"]
+            layer_label = d["type"]
             if layer_label in what_by_what:
                 self.G.edges[(u, v, k)
                              ]['weight'] = max(self.G.edges[(u, v, k)]['weight'] * what_by_what[layer_label], 1.0)
@@ -141,7 +141,7 @@ class RandomGraphGenerator(GraphGenerator):
             for (u, v, d) in FG.edges(data=True):
                 FG[u][v]['weight'] = stats.truncnorm.rvs(
                     (lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
-                FG[u][v]['label'] = l
+                FG[u][v]['type'] = l
             # other params of the graph
             FG.graph['layer_name'] = l
             self.G.graph['layer_probs'][i] = stats.truncnorm.rvs(
@@ -158,6 +158,7 @@ class RandomGraphGenerator(GraphGenerator):
         return self.Graphs
 
 class CSVGraphGenerator(GraphGenerator):
+    
     layer_names = []
     layer_probs = []
 
