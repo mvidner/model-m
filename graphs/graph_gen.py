@@ -28,13 +28,15 @@ class GraphGenerator:
     def as_dict_of_graphs(self):
         self.Graphs = {}
         i = 0
+        print (self.G.graph['layer_names'])
+        print (self.G.graph['layer_probs'])
         for l in self.layer_names:
             FG = nx.Graph()
             FG.graph['layer_name'] = l
             FG.graph['layer_prob'] = self.G.graph['layer_probs'][i]
             FG.add_nodes_from(self.G)
             selected_edges = [(u, v, e) for u, v, e in self.G.edges(
-                data=True) if e['label'] == l]
+                data=True) if e['type'] == l]
             FG.add_edges_from(selected_edges)
             self.Graphs[l] = FG
             i = i + 1
@@ -174,6 +176,10 @@ class CSVGraphGenerator(GraphGenerator):
         self.layer_names = layers_to_add['id']
 #        print(layers_names)
         self.layer_probs = layers_to_add['weight']
+
+        self.G.graph['layer_names'] = self.layer_names
+        self.G.graph['layer_probs'] = self.layer_probs
+
 
         # fill the nodes
         nodes_to_add = nodes.to_dict('records')

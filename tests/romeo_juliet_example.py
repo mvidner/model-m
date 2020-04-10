@@ -53,7 +53,11 @@ from graph_gen import CSVGraphGenerator
 
 rc = CSVGraphGenerator()
 GG = rc.as_multigraph()
+GGs = rc.as_dict_of_graphs()
 dot_GG = nx.nx_pydot.to_pydot(GG)
 print(dot_GG)
-print (rc.layer_names)
-print (rc.layer_probs)
+
+for k,g in GGs.items():
+    dg = nx.nx_pydot.to_pydot(g)
+    print(dg)
+    
