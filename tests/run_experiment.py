@@ -38,7 +38,7 @@ def magic_formula(gdict, wdict):
     return 1 - prob_no_contact
 
 
-def create_graph(name, num_nodes=None):
+def create_graph(name, nodes="nodes.csv", edges="edges.csv", layers="etypes.csv", num_nodes=None):
 
     if name == "romeo_and_juliet":
         if not verona_available:
@@ -47,8 +47,8 @@ def create_graph(name, num_nodes=None):
         else:
             return Verona(random_seed=7)
 
-    if name == "village0":
-        return CSVGraphGenerator()
+    if name == "csv":
+        return CSVGraphGenerator(path_to_nodes=nodes, path_to_edges=edges, path_to_layers=layers)
 
     if name == "seirsplus_example":
         base_graph = nx.barabasi_albert_graph(n=num_nodes, m=9, seed=7)
@@ -123,8 +123,11 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=False, print_i
     model_params = cf.section_as_dict("MODEL")
 
     graph_name = cf.section_as_dict("GRAPH")["name"]
-
-    graph = create_graph(graph_name, num_nodes)
+    nodes = cf.section_as_dict("GRAPH").get("nodes", "nodes.csv")
+    edges = cf.section_as_dict("GRAPH").get("edges", "edges.csv")
+    layers = cf.section_as_dict("GRAPH").get("layers", "etypes.csv")
+    graph = create_graph(graph_name, nodes=nodes, edges=edges,
+                         layers=layers, num_nodes=num_nodes)
     print(graph)
 
     A = matrix(graph)
@@ -186,7 +189,8 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=False, print_i
 
 @click.command()
 @click.option('--set-random-seed/--no-random-seed', ' /-r', default=True)
-@click.option('--use-policy/--no-policy', '-p/ ', default=False) # casem to bude brat jmeno policy
+# casem to bude brat jmeno policy
+@click.option('--use-policy/--no-policy', '-p/ ', default=False)
 @click.option('--print_interval',  default=1)
 @click.argument('filename', default="example.ini")
 @click.argument('test_id', default="")
