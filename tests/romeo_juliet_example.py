@@ -6,7 +6,13 @@ from graph_gen import RandomGraphGenerator
 from graph_gen import CSVGraphGenerator
 
 # as multigraph - print
-#rj = RomeoAndJuliet()
+rj = RomeoAndJuliet()
+Grj = rj.as_multigraph()
+A = nx.nx_agraph.to_agraph(Grj)
+A.layout('dot')
+A.draw('raj.png')
+
+
 #sl = rj.get_attr_list('label')
 #print(rj.G.number_of_edges())
 
@@ -53,11 +59,15 @@ from graph_gen import CSVGraphGenerator
 
 rc = CSVGraphGenerator()
 GG = rc.as_multigraph()
-GGs = rc.as_dict_of_graphs()
-dot_GG = nx.nx_pydot.to_pydot(GG)
-print(dot_GG)
 
-for k,g in GGs.items():
-    dg = nx.nx_pydot.to_pydot(g)
-    print(dg)
+#dot_GG = nx.nx_pydot.to_pydot(GG)
+#print(dot_GG)
+print(GG)
+A = nx.nx_agraph.to_agraph(GG)
+A.layout('dot')
+A.draw('chocerady.png')
+
+#for k,g in GGs.items():
+#    dg = nx.nx_pydot.to_pydot(g)
+#    print(dg)
     

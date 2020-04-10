@@ -1,4 +1,4 @@
-from engine import BaseModel
+from engine_seirspluslike import SeirsPlusLikeEngine
 
 
 def not_implemented_yet(): raise NotImplementedError()
@@ -10,7 +10,7 @@ def create_custom_model(clsname, states, transitions,
                         init_arguments={},
                         model_parameters={},
                         calc_propensities=not_implemented_yet,
-                        engine=BaseModel):
+                        engine=SeirsPlusLikeEngine):
     """ Creates base model class
 
     Params:
