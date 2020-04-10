@@ -16,7 +16,8 @@ def plot_histories(*args, group_days=None, group_func="mean"):
 
         if group_days is not None and group_days > 0:
             history['day'] = history['day'] // group_days * group_days
-            history = history.groupby('day', as_index=False).agg(func=group_func)
+            history = history.groupby(
+                'day', as_index=False).agg(func=group_func)
 
         history.insert(0, 'filename', filename)
         return history
@@ -36,4 +37,7 @@ def _load_history(filename: str) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    plot_history("../tests/history.csv")
+
+    history = pd.read_csv(
+        "../result_storage/tmp/history_seirsplus_quarantine_1.csv")
+    plot_history(history)
