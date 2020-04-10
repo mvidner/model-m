@@ -48,6 +48,29 @@ class GraphGenerator:
             attr_list.append(d[attr])
         return attr_list
 
+    def get_edges_for_node(self, node_id):
+        """ changes edges' weights """
+
+        if not self.G.has_node(node_id):
+            print(f"Warning: modify_layer_for_node called for nonexisting node_id {node_id}")
+            return
+
+        # for key in what_by_what:
+        #     edges_to_modify = [
+        #         (u, v, k) for u, v, k, d in self.G.edges(node, data=True, keys=True)
+        #         if d['label'] == key
+        #     ]
+        #     print(edges_to_modify)
+        #     for e in edges_to_modify:
+        #         self.G.edges[e]['weight'] *= what_by_what[key]
+
+        # for e in self.G.edges(node, data=True, keys=True):
+        #     print(*e)
+
+#        for e in self.G.edges([node_id], data=True, keys=True):
+#            print(*e)
+        return self.G.edges([node_id], data=True, keys=True) 
+       
     def modify_layers_for_node(self, node_id, what_by_what):
         """ changes edges' weights """
 
@@ -79,12 +102,8 @@ class GraphGenerator:
                 self.G.edges[(u, v, k)
                              ]['weight'] = min(self.G.edges[(u, v, k)]['weight'] * what_by_what[layer_label], 1.0)
 
-        for e in self.G.edges([node_id], data=True, keys=True):
-            print(*e)
-
-                
-        # for e in self.G.edges(node, data=True, keys=True):
-        #     print(*e)
+#        for e in self.G.edges([node_id], data=True, keys=True):
+#            print(*e)
 
 
 # returns dictionary of layer names and probabilities
