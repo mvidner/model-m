@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
-
+# how to rewrite roman's approach in petra's framework
 import random
 
 from engine import BaseEngine
+from model import create_custom_model
 
+# ENGINE PART
+TIME_OF_SIMULATION = 30
 
 HEALTHY = 0
 INFECTED = 1
 TIME_OF_INFECTION = 3
-AVG_CONTACTS = 3
-TRANS_RATE = 0.8
-TIME_OF_SIMULATION = 30
 
 
 class Person():
@@ -43,43 +43,43 @@ class Person():
 
 class NoModel(BaseEngine):
 
-    def __init__(self, number_of_people=10, number_of_infected=1, avg_contacts=AVG_CONTACTS, avg_trans=TRANS_RATE,
-                 random_seed=42):
+    def inicialization(self):
+        """ model inicialization """
 
-        if random_seed:
-            random.seed(random_seed)
+        if self.random_seed:
+            random.seed(self.random_seed)
 
-        self.N = number_of_people
-        self.Ni = number_of_infected
-        self.contacts_per_day = avg_contacts
-        self.transmission_rate = avg_trans
+        self.N = self.number_of_people
+        self.num_nodes = self.N  # pocitat to ze takhle se jmenuje pocet nodu
+        self.by_whom = [None] * self.num_nodes
 
-        self.People = []
-        inf_idx = random.sample(range(self.N), self.Ni)
+        self.people = []
+        inf_idx = random.sample(range(self.N), self.number_of_infected)
         for p in range(self.N):
             new_person = Person(p)
             if p in inf_idx:
                 new_person.infect(-1)
             else:
                 new_person.heal()
-            self.People.append(new_person)
+            self.people.append(new_person)
 
     def is_it_transmission(self, a, b):
         # ignore everything, just toss a coin with transmission_rate if b is infected
         if b.state == HEALTHY:
             return False
         else:
-            if random.random() < self.transmission_rate:
+            if random.random() < self.trans_rate:
                 return True
             else:
                 return False
 
     def run_iteration(self):
-        for p in self.People:
+        self.contacts_per_day = self.average_contacts
+        for p in self.people:
             if p.state == HEALTHY:
                 contacts = random.sample(range(self.N), self.contacts_per_day)
                 for c in contacts:
-                    if self.is_it_transmission(p, self.People[c]):
+                    if self.is_it_transmission(p, self.people[c]):
                         p.infect(c)
             if p.state == INFECTED:
                 p.stay_infected()
@@ -90,6 +90,35 @@ class NoModel(BaseEngine):
             self.run_iteration()
 
 
+# MODEL PART
+
+model_definition = {
+    "states": ["HEALTHY", "INFECTED"],
+    "transitions": [
+        ("HEALTHY", "INFECTED"),
+        ("INFECTED", "HEALTHY")
+    ],
+    "init_arguments": {
+        "time_of_infection": (3, "time of infection"),
+        "average_contacts": (3, "average contacts"),
+        "trans_rate": (0.8, "transition rate"),
+        "number_of_infected": (1, "number of infected"),
+        "number_of_people": (10, "number of people")
+    }
+}
+
+
+def calc_propensities(model):
+    """ na propensity se tu nehraje """
+    pass
+
+
+RoModel = create_custom_model("RoModel",
+                              **model_definition,
+                              calc_propensities=calc_propensities,
+                              engine=NoModel)
+
+
 if __name__ == "__main__":
-    m = NoModel(random_seed=42)
+    m = RoModel(None, random_seed=42)  # None je graph, ten je povinej
     m.run()
