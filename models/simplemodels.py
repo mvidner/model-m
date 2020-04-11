@@ -8,7 +8,9 @@ from engine import BaseEngine
 HEALTHY = 0
 INFECTED = 1
 TIME_OF_INFECTION = 3
-TIME_OF_SIMULATION = 10
+AVG_CONTACTS = 3
+TRANS_RATE = 0.8
+TIME_OF_SIMULATION = 30
 
 class Person():
     def __init__(self, id, init_state=HEALTHY):
@@ -40,7 +42,7 @@ class Person():
 
 class NoModel(BaseEngine):
 
-    def __init__(self, number_of_people=10, number_of_infected=1, avg_contacts=3, avg_trans=0.5):
+    def __init__(self, number_of_people = 10, number_of_infected = 1, avg_contacts = AVG_CONTACTS, avg_trans= TRANS_RATE):
         self.N = number_of_people
         self.Ni = number_of_infected
         self.contacts_per_day = avg_contacts
@@ -84,4 +86,4 @@ class NoModel(BaseEngine):
  
 
 m = NoModel()
-m.run(20)        
+m.run()        
