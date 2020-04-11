@@ -5,6 +5,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy.sparse import identity
 
 from config_utils import ConfigFile
 from graph_gen import GraphGenerator, CSVGraphGenerator
@@ -22,17 +23,25 @@ except ModuleNotFoundError:
     verona_available = False
 
 
-def magic_formula(gdict, wdict):
+def magic_formula(graph):
 
-    g = next(iter(gdict.values()))
-    a_shape = nx.adj_matrix(g).shape
-    ones = np.ones(shape=a_shape)
+    N = graph.number_of_nodes() 
 
-    prob_no_contact = ones
-    for name, g in gdict.items():
-        a = nx.adj_matrix(g)
-        a = wdict[name] * a
-        prob_no_contact = np.multiply(prob_no_contact, (ones-a))
+    print(graph.get_layers_info())
+    ones = np.ones(shape=(N, N))
+
+    prob_no_contact =  np.ones(shape=(N, N))
+    for name, prob in graph.get_layers_info().items():
+        print(name)
+        a = nx.adj_matrix(graph.get_graph_for_layer(name))
+        a = prob * a
+        not_a = ones - a 
+        #        not_a = 1.0 - a 
+        # # not a (without 1.0 members)
+        # a.data *= -1 
+        # a.data += 1.0 
+        prob_no_contact = np.multiply(prob_no_contact, not_a) 
+        del a
 
     # probability of contact (whatever layer)
     return 1 - prob_no_contact
@@ -107,8 +116,7 @@ def tell_the_story(history, graph):
 def matrix(graph):
     if isinstance(graph, GraphGenerator):
         return magic_formula(
-            graph.as_dict_of_graphs(),
-            graph.get_layers_info()
+            graph
         )
     else:
         return None

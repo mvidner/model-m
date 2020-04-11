@@ -19,18 +19,34 @@ class GraphGenerator:
         if random_seed:
             np.random.seed(random_seed)
 
+    def number_of_nodes(self):
+        return self.G.number_of_nodes()
+
     def as_multigraph(self):
         return self.G
 
     def as_one_graph(self):
         return nx.Graph(self.G)
 
+    def get_graph_for_layer(self, layer_name):
+        ret_g = nx.Graph()
+        ret_g.graph['layer_name'] = layer_name
+        layer_index = self.layer_names.index(layer_name)
+        ret_g.graph['layer_prob'] = self.G.graph['layer_probs'][layer_index]
+
+        ret_g.add_nodes_from(self.G)
+        selected_edges = [(u, v, e) 
+                          for u, v, e in self.G.edges(data=True) 
+                          if e['type'] == layer_name]
+        ret_g.add_edges_from(selected_edges)
+
+        return ret_g
+
     def as_dict_of_graphs(self):
         self.Graphs = {}
-        i = 0
-        print (self.G.graph['layer_names'])
-        print (self.G.graph['layer_probs'])
-        for l in self.layer_names:
+        print(self.G.graph['layer_names'])
+        print(self.G.graph['layer_probs'])
+        for i, l in enumerate(self.layer_names):
             FG = nx.Graph()
             FG.graph['layer_name'] = l
             FG.graph['layer_prob'] = self.G.graph['layer_probs'][i]
@@ -39,7 +55,6 @@ class GraphGenerator:
                 data=True) if e['type'] == l]
             FG.add_edges_from(selected_edges)
             self.Graphs[l] = FG
-            i = i + 1
         return self.Graphs
 
     def get_attr_list(self, attr):
@@ -148,7 +163,7 @@ def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n
 
 
 class RandomGraphGenerator(GraphGenerator):
-    """ generating random graph aith mean degree 13 and num_nodes nodes
+    """ generating random graph with mean degree 13 and num_nodes nodes
     both weights and layer weights are initialized randomly from trunc. norm (0.7, 0.3)
     """
 
