@@ -58,6 +58,7 @@ def create_custom_model(clsname, states, transitions,
         # 1. set member variables acording to init arguments
         # definition is couple (default value, description)
         self.G = G
+        self.A = None
         for argdict in (self.fixed_model_parameters,
                         self.common_arguments,
                         self.model_parameters):

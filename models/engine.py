@@ -10,39 +10,33 @@ class BaseEngine():
 
     def inicialization(self):
         """ model inicialization """
-        pass
+        if self.random_seed:
+            np.random.seed(self.random_seed)
+
+        # setup adjacency matrix
+        self.update_graph(self.G)
+
+        # create arrays for model params
+        for param_name in self.model_parameters:
+            param = self.__getattribute__(param_name)
+            if isinstance(param, (list, np.ndarray)):
+                setattr(self, param_name,
+                        np.array(param).reshape((self.num_nodes, 1)))
+            else:
+                setattr(self, param_name,
+                        np.full(fill_value=param, shape=(self.num_nodes, 1)))
 
     def setup_series_and_time_keeping(self):
         pass
 
     def states_and_counts_init(self, state_counts):
-        """ Initialize Counts of inidividuals with each state """
-
-        for state, init_value in state_counts.items():
-            self.state_counts[state][0] = init_value
-
-        nodes_left = self.num_nodes - sum(
-            [self.state_counts[s][0] for s in self.states]
-        )
-
-        self.state_counts[self.states[0]][0] += nodes_left
-
-        # invisible nodes does not count to population (death ones)
-        self.N[0] = self.num_nodes - sum(
-            [self.state_counts[s][0] for s in self.invisible_states]
-        )
-
-        # X ... array of states
-        tempX = []
-        for state, count in self.state_counts.items():
-            tempX.extend([state]*count[0])
-        self.X = np.array(tempX).reshape((self.num_nodes, 1))
-        # distribute the states randomly
-        np.random.shuffle(self.X)
+        pass
 
     def update_graph(self, new_G):
         """ create adjacency matrix for G """
         self.G = new_G
+        if self.A:
+            del self.A
 
         if isinstance(new_G, np.ndarray):
             self.A = scipy.sparse.csr_matrix(new_G)
