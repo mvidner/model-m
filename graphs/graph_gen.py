@@ -163,7 +163,7 @@ def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n
 
 
 class RandomGraphGenerator(GraphGenerator):
-    """ generating random graph aith mean degree 13 and num_nodes nodes
+    """ generating random graph with mean degree 13 and num_nodes nodes
     both weights and layer weights are initialized randomly from trunc. norm (0.7, 0.3)
     """
 
