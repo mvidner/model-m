@@ -16,10 +16,13 @@ class Person():
         self.time_of_state = 0
         self.id = id
         
-    def infect(self,by_whom):
+    def infect(self, by_whom):
         self.state = INFECTED
         self.time_of_state = 0
-        print(self.id, " infected by", by_whom)
+        if by_whom == -1:
+            print(self.id, " infected initially")
+        else:
+            print(self.id, " infected by", by_whom)
 
     def heal(self):
         self.state = HEALTHY
@@ -48,7 +51,7 @@ class NoModel(BaseEngine):
         for p in range(self.N):
             new_person = Person(p)
             if p in inf_idx: 
-                new_person.infect(0)
+                new_person.infect(-1)
             else:
                 new_person.heal()                
             self.People.append(new_person)  
