@@ -32,7 +32,9 @@ def magic_formula(gdict, wdict):
     for name, g in gdict.items():
         a = nx.adj_matrix(g)
         a = wdict[name] * a
-        prob_no_contact = np.multiply(prob_no_contact, (ones-a))
+        nota = ones - a 
+        del a # do not need a any more
+        prob_no_contact = np.multiply(prob_no_contact, nota)
 
     # probability of contact (whatever layer)
     return 1 - prob_no_contact
