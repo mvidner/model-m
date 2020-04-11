@@ -35,12 +35,13 @@ XI = 0
 MJU_I = 0.01
 MJU_ALL = 0.00003 # 11 ppl per 1000 ppl per year ... 3 ppl per day per 100k ppl
 
+
 class Person():
     def __init__ (self, id, init_state=HEALTHY):
         self.state = init_state
         self.time_of_state = 0
         self.id = id
-        
+
     def infect(self, by_whom):
         self.state = INFECTED
         self.time_of_state = 0
@@ -53,40 +54,52 @@ class Person():
         self.state = HEALTHY
         self.time_of_state = 0
         print(self.id, " is healed")
-        
+
     def stay_infected(self):
         self.time_of_state += 1
         if self.time_of_state == TIME_OF_INFECTION:
             self.heal()
-            
+
     def stay_healthy(self):
         self.time_of_state += 1
+<<<<<<< HEAD
          
 class SEIRSPerson(Person):
     def __init__ (self, id, init_state=SUSCEPTIBLE):
         super.__init(self, id, init_state)
         
     
+=======
+>>>>>>> origin/master
 
 
 class NoModel(BaseEngine):
 
+<<<<<<< HEAD
     def __init__ (self, number_of_people = NUMBER_OF_PEOPLE, number_of_infected = 1, avg_contacts = AVG_CONTACTS, avg_trans= TRANS_RATE):
+=======
+    def __init__(self, number_of_people=10, number_of_infected=1, avg_contacts=AVG_CONTACTS, avg_trans=TRANS_RATE,
+                 random_seed=42):
+
+        if random_seed:
+            random.seed(random_seed)
+
+>>>>>>> origin/master
         self.N = number_of_people
         self.Ni = number_of_infected
         self.contacts_per_day = avg_contacts
         self.transmission_rate = avg_trans
-        
+
         self.People = []
-        inf_idx = random.sample(range(self.N),self.Ni)
+        inf_idx = random.sample(range(self.N), self.Ni)
         for p in range(self.N):
             new_person = Person(p)
-            if p in inf_idx: 
+            if p in inf_idx:
                 new_person.infect(-1)
             else:
-                new_person.heal()                
-            self.People.append(new_person)  
-    
+                new_person.heal()
+            self.People.append(new_person)
+
     def is_it_transmission(self, a, b):
         # ignore everything, just toss a coin with transmission_rate if b is infected
         if b.state == HEALTHY:
@@ -100,18 +113,19 @@ class NoModel(BaseEngine):
     def run_iteration(self):
         for p in self.People:
             if p.state == HEALTHY:
-                contacts = random.sample(range(self.N),self.contacts_per_day)
+                contacts = random.sample(range(self.N), self.contacts_per_day)
                 for c in contacts:
-                    if self.is_it_transmission(p,self.People[c]):
+                    if self.is_it_transmission(p, self.People[c]):
                         p.infect(c)
             if p.state == INFECTED:
-                p.stay_infected()                            
-    
+                p.stay_infected()
+
     def run(self, T=TIME_OF_SIMULATION):
         for self.t in range(1, T+1):
             print("t = %.2f" % self.t)
             self.run_iteration()
 
+<<<<<<< HEAD
 class NoSEIRSModel(NoModel):
     def __init__(self, number_of_people = NUMBER_OF_PEOPLE):
         super.__init__(self)    
@@ -120,6 +134,9 @@ class NoGraphModel(NoModel):
     def __init__ (self, graph, **kwargs):
         super().__init__(**kwargs)
         self.G = graph
+=======
+>>>>>>> origin/master
 
-m = NoModel()
-m.run()        
+if __name__ == "__main__":
+    m = NoModel(random_seed=42)
+    m.run()
