@@ -143,7 +143,7 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
     layers = cf.section_as_dict("GRAPH").get("layers", "etypes.csv")
     graph = create_graph(graph_name, nodes=nodes, edges=edges,
                          layers=layers, num_nodes=num_nodes)
-    print(graph)
+#    print(graph)
 
     A = matrix(graph)
 
