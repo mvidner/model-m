@@ -1,4 +1,4 @@
-import numpy as np 
+B1;5202;0cimport numpy as np 
 from run_experiment import matrix  # TODO what to DO?
 from graph_gen import GraphGenerator
 
@@ -24,8 +24,11 @@ def simple_policy(policy_func):
         
         # overkill,  budou se brat jen ty, co se presli do Id dnes
         nodes = list(graph.G.nodes)
+        history = history[start:end] 
         detected_nodes = [
-            nodes[idx] for idx, x in enumerate(states[start:end]) if x == "I_d"
+            node  
+            for node, (s, e)  in history 
+            if e == "I_d"
         ]
 
         print(f"Qurantined nodes: {detected_nodes}")
