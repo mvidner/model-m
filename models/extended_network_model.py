@@ -73,7 +73,7 @@ model_definition = {
         "D_d"
     ],
 
-    "unstable_stats": [
+    "unstable_states": [
         "E",
         "I_n",
         "I_a",
