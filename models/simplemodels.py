@@ -62,29 +62,22 @@ class Person():
 
     def stay_healthy(self):
         self.time_of_state += 1
-<<<<<<< HEAD
+
          
 class SEIRSPerson(Person):
     def __init__ (self, id, init_state=SUSCEPTIBLE):
         super.__init(self, id, init_state)
         
-    
-=======
->>>>>>> origin/master
-
 
 class NoModel(BaseEngine):
 
-<<<<<<< HEAD
-    def __init__ (self, number_of_people = NUMBER_OF_PEOPLE, number_of_infected = 1, avg_contacts = AVG_CONTACTS, avg_trans= TRANS_RATE):
-=======
+
     def __init__(self, number_of_people=10, number_of_infected=1, avg_contacts=AVG_CONTACTS, avg_trans=TRANS_RATE,
                  random_seed=42):
 
         if random_seed:
             random.seed(random_seed)
 
->>>>>>> origin/master
         self.N = number_of_people
         self.Ni = number_of_infected
         self.contacts_per_day = avg_contacts
@@ -125,7 +118,6 @@ class NoModel(BaseEngine):
             print("t = %.2f" % self.t)
             self.run_iteration()
 
-<<<<<<< HEAD
 class NoSEIRSModel(NoModel):
     def __init__(self, number_of_people = NUMBER_OF_PEOPLE):
         super.__init__(self)    
@@ -134,8 +126,6 @@ class NoGraphModel(NoModel):
     def __init__ (self, graph, **kwargs):
         super().__init__(**kwargs)
         self.G = graph
-=======
->>>>>>> origin/master
 
 if __name__ == "__main__":
     m = NoModel(random_seed=42)
