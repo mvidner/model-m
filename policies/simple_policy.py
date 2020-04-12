@@ -1,4 +1,4 @@
-B1;5202;0cimport numpy as np 
+import numpy as np 
 from run_experiment import matrix  # TODO what to DO?
 from graph_gen import GraphGenerator
 
