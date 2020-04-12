@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 
-import random
 
 from engine import BaseEngine
 
+from bisect import bisect_left
+from itertools import accumulate
+import random
 
 # constants for Models
+
+MAGIC_SEED_BY_PETRA = 42
 TIME_OF_SIMULATION = 30
 NUMBER_OF_PEOPLE = 10
+NUMBER_OF_INFECTED = 3
 
 # constants for Person
 HEALTHY = 0
@@ -22,7 +27,10 @@ SUSCEPTIBLE = 0
 EXPOSED = 1
 INFECTIOUS = 2
 RECOVERED = 3
-DEAD = 4
+FATAL = 4
+
+SEIRSNAMES = [ 'S', 'E', 'I', 'R', 'F' ]
+
 # β: rate of transmission (transmissions per S-I contact per time)
 # σ: rate of progression (inverse of incubation period)
 # γ: rate of recovery (inverse of infectious period)
@@ -66,13 +74,33 @@ class Person():
          
 class SEIRSPerson(Person):
     def __init__ (self, id, init_state=SUSCEPTIBLE):
-        super.__init(self, id, init_state)
+        self.state = init_state
+        self.time_of_state = 0
+        self.id = id
         
+    def get_state(self):
+        return self.state
+
+    def set_state(self, s=SUSCEPTIBLE):
+        old_state = self.state
+        self.state = s
+        print (self.id, ':', SEIRSNAMES[old_state], '->', SEIRSNAMES[s])
+        
+    def prob_change_state(self, probs):
+        su = sum(probs)
+        if su < 1 :
+            probs[self.state] = 1 - su
+        cum_p   = list(accumulate(probs))
+        total_p = cum_p[-1]
+        value = random.random() * total_p
+        new_state = bisect_left(cum_p, value)
+        if new_state != self.state :
+            self.set_state(new_state)
+
 
 class NoModel(BaseEngine):
 
-
-    def __init__(self, number_of_people=10, number_of_infected=1, avg_contacts=AVG_CONTACTS, avg_trans=TRANS_RATE,
+    def __init__(self, T_time=TIME_OF_SIMULATION, number_of_people=NUMBER_OF_PEOPLE, number_of_infected=NUMBER_OF_INFECTED, avg_contacts=AVG_CONTACTS, avg_trans=TRANS_RATE,
                  random_seed=42):
 
         if random_seed:
@@ -82,6 +110,7 @@ class NoModel(BaseEngine):
         self.Ni = number_of_infected
         self.contacts_per_day = avg_contacts
         self.transmission_rate = avg_trans
+        self.T = T_time
 
         self.People = []
         inf_idx = random.sample(range(self.N), self.Ni)
@@ -102,7 +131,9 @@ class NoModel(BaseEngine):
                 return True
             else:
                 return False
-
+    def do_statistics(self):
+        print("t = %.2f" % self.t)
+        
     def run_iteration(self):
         for p in self.People:
             if p.state == HEALTHY:
@@ -113,14 +144,55 @@ class NoModel(BaseEngine):
             if p.state == INFECTED:
                 p.stay_infected()
 
-    def run(self, T=TIME_OF_SIMULATION):
-        for self.t in range(1, T+1):
-            print("t = %.2f" % self.t)
+    def run(self):
+        for self.t in range(1, self.T + 1):
+            self.do_statistics()
             self.run_iteration()
 
 class NoSEIRSModel(NoModel):
-    def __init__(self, number_of_people = NUMBER_OF_PEOPLE):
-        super.__init__(self)    
+    def __init__(self, T_time=TIME_OF_SIMULATION, number_of_people=NUMBER_OF_PEOPLE, number_of_infected=NUMBER_OF_INFECTED, prob=1, beta=BETA, sigma=SIGMA, gamma=GAMMA, xi=XI, mju_i=MJU_I,
+                 random_seed=MAGIC_SEED_BY_PETRA):
+
+        if random_seed:
+            random.seed(random_seed)
+
+        self.N = number_of_people
+        self.Ni = number_of_infected
+        self.p = prob
+        self.beta = beta
+        self.sigma = sigma
+        self.gamma = gamma
+        self.xi = xi
+        self.mju_i = mju_i
+        self.T = T_time
+        self.People = []
+        inf_idx = random.sample(range(self.N), self.Ni)
+        for p in range(self.N):
+            new_person = SEIRSPerson(p)
+            if p in inf_idx:
+                new_person.set_state(INFECTIOUS)
+            else:
+                new_person.set_state(SUSCEPTIBLE)
+            self.People.append(new_person)
+ 
+    def run_iteration(self):
+        inf_p = [ x for x in self.People if x.get_state() == INFECTIOUS ]
+        self.Ni = len(inf_p)
+        
+        for p in self.People:
+            probs = [0, 0, 0, 0, 0]
+            if p.state == SUSCEPTIBLE:
+                probs[EXPOSED] = self.beta * self.Ni / self.N
+#                print (self.beta * self.Ni / self.N)
+            if p.state == EXPOSED:
+                probs[INFECTIOUS] = self.sigma
+            if p.state == INFECTIOUS:
+                probs[RECOVERED] = self.gamma
+                probs[FATAL] = self.mju_i
+            if p.state == RECOVERED:
+                probs[SUSCEPTIBLE] = self.xi
+            p.prob_change_state(probs)    
+    
  
 class NoGraphModel(NoModel):
     def __init__ (self, graph, **kwargs):
@@ -128,5 +200,5 @@ class NoGraphModel(NoModel):
         self.G = graph
 
 if __name__ == "__main__":
-    m = NoModel(random_seed=42)
+    m = NoSEIRSModel(100, 100, 30)
     m.run()
