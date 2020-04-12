@@ -1,4 +1,5 @@
 import timeit
+import time 
 import click
 import random
 import networkx as nx
@@ -35,14 +36,14 @@ def magic_formula(graph):
 
     prob_no_contact =  np.ones(shape=(N, N))
     for name, prob in graph.get_layers_info().items():
-        print(name)
         a = nx.adj_matrix(graph.get_graph_for_layer(name))
         a = prob * a
         not_a = ones - a 
         #        not_a = 1.0 - a 
         # # not a (without 1.0 members)
         # a.data *= -1 
-        # a.data += 1.0 
+        # a.data += 1.0
+        # no a ted bych potrebovala pronasobit jen ty, kde jsou nenuly 
         prob_no_contact = np.multiply(prob_no_contact, not_a) 
         del a
 
@@ -141,10 +142,17 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
     nodes = cf.section_as_dict("GRAPH").get("nodes", "nodes.csv")
     edges = cf.section_as_dict("GRAPH").get("edges", "edges.csv")
     layers = cf.section_as_dict("GRAPH").get("layers", "etypes.csv")
+
+    start = time.time()
     graph = create_graph(graph_name, nodes=nodes, edges=edges,
                          layers=layers, num_nodes=num_nodes)
-#    print(graph)
+    end = time.time()
+    print("Graph loading: ", end-start, "seconds")
+        
+    #    print(graph)
 
+    
+    
     A = matrix(graph)
 
     class_name = cf.section_as_dict("TASK").get(

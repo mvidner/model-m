@@ -2,7 +2,7 @@ import numpy as np
 import scipy as scipy
 import scipy.integrate
 import networkx as nx
-
+import time
 
 from history_utils import TimeSeries, TransitionHistory
 from engine import BaseEngine
@@ -256,7 +256,8 @@ class SeirsPlusLikeEngine(BaseEngine):
 
         running = True
         day = -1
-
+        start = time.time()
+        
         while running:
 
             running = self.run_iteration()
@@ -264,6 +265,10 @@ class SeirsPlusLikeEngine(BaseEngine):
             # true after the first event after midnight
             day_changed = day != int(self.t)
             day = int(self.t)
+            if day_changed:
+                end = time.time()
+                print("Last day took: ", end - start, "seconds")
+                start = time.time()
 
             # run periodical update
             if self.periodic_update_callback and day != 1 and day_changed:
