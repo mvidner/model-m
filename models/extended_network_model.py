@@ -73,6 +73,14 @@ model_definition = {
         "D_d"
     ],
 
+    "unstable_stats": [
+        "E",
+        "I_n",
+        "I_a",
+        "I_s",
+        "I_d"
+    ],
+
     "init_arguments": {
         "p": (0, "probability of interaction outside adjacent nodes"),
         "q": (0, " probability of detected individuals interaction outside adjacent nodes"),
