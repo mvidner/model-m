@@ -26,9 +26,9 @@ def simple_policy(policy_func):
         nodes = list(graph.G.nodes)
         history = history[start:end] 
         detected_nodes = [
-            node  
-            for node, (s, e)  in history 
-            if e == "I_d"
+            int(node.decode())
+            for node, s, e  in history 
+            if e.decode() == "I_d"
         ]
 
         print(f"Qurantined nodes: {detected_nodes}")
