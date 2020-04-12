@@ -140,7 +140,7 @@ class CSVGraph(GraphGenerator):
             return
         
         for u, v, d in self.G.edges([node_id], data=True):
-            print(u, v, d)
+            #            print(u, v, d)
             layer_info = d["info"]
             for layer_type in what_by_what:
                 layer_keys = [ (t, s) for (t, s) in layer_info
