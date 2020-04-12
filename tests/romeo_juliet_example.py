@@ -57,8 +57,9 @@ from graph_gen import CSVGraphGenerator
 #dot_D = nx.nx_pydot.to_pydot(my_graphs['D'])
 #print(dot_D)
 
-print('bahoj')
+print('ahoj')
 rc = CSVGraphGenerator()
+print('bahoj')
 GG = rc.as_multigraph()
 dot_GG = nx.nx_pydot.to_pydot(GG)
 print(dot_GG)
@@ -67,7 +68,7 @@ print(GG)
 
 e = rc.get_edges_for_node(5)
 
-print('ahoj')
+print('cahoj')
 print (e)
 
 
