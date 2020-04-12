@@ -10,14 +10,14 @@ def simple_policy(policy_func):
     def wrapper(graph, states, history, tseries, time):
         print("Hello world! This is the policy function speaking.")
        
-        print("Current time:", time)
-        print("Current day:", int(time))
-        print("whole", tseries)
+        # print("Current time:", time)
+        # print("Current day:", int(time))
+        # print("whole", tseries)
         current_day = int(time)
         start = np.searchsorted(tseries, current_day-1, side="left")
         end = np.searchsorted(tseries, current_day, side="left")
-        print(start, end, len(tseries))
-        print("today", tseries[start:end])
+        # print(start, end, len(tseries))
+        # print("today", tseries[start:end])
         
         if not isinstance(graph, GraphGenerator):
             raise TypeError("This policy works with GraphGenerator derived graphs only.")
@@ -29,16 +29,23 @@ def simple_policy(policy_func):
         ]
 
         print(f"Qurantined nodes: {detected_nodes}")
+        if detected_nodes:
 
-        quarantine = policy_func(graph, states, history)
+            quarantine = policy_func(graph, states, history)
         
-        for node in detected_nodes:
-            print(f"Node {node} goes to quarntine")
-            graph.modify_layers_for_node(node, quarantine)
+            for node in detected_nodes:
+                print(f"Node {node} goes to quarntine")
+                graph.modify_layers_for_node(node, quarantine)
 
-        A = matrix(graph)
-        to_change = {"graph": A}
-        return to_change
+                if isinstance(graph, GraphGenerator):
+                    A = graph.G
+                else:
+                    A = matrix(graph)
+
+            to_change = {"graph": A}
+            return to_change
+        else:
+            return {}
 
     return wrapper
 

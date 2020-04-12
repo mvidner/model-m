@@ -114,8 +114,7 @@ class CSVGraph(GraphGenerator):
             tos.append(k[1])
             if magic_formula: 
                 w = magic_formula(edge_info, dict(zip(self.layer_names, self.layer_probs))) 
-                edge_info["weight"] = w
-            data.append(edge_info)
+            data.append({"info": edge_info, "weight": w})
             
         # edges_to_add = edges.to_dict('list') 
         # pprint(edges_to_add)
@@ -127,8 +126,34 @@ class CSVGraph(GraphGenerator):
         self.G.add_edges_from(zip(froms,tos,data))
         
         
-
-
     def __str__(self):
         return "\n".join([str(e) for  e in self.G.edges(data=True)])
-            
+        
+    def modify_layers_for_node(self, node_id, what_by_what):
+        """ changes edges' weights """
+
+        if not what_by_what:
+            return
+
+        if not self.G.has_node(node_id):
+            print(f"Warning: modify_layer_for_node called for nonexisting node_id {node_id}")
+            return
+        
+        for u, v, d in self.G.edges([node_id], data=True):
+            print(u, v, d)
+            layer_info = d["info"]
+            for layer_type in what_by_what:
+                layer_keys = [ (t, s) for (t, s) in layer_info
+                               if t == layer_type ]
+                for k in layer_keys:
+                    layer_info[k]['weight_on_layer'] = min(
+                        what_by_what[layer_type] * layer_info[k]['weight_on_layer'],
+                        1.0
+                    )
+            d["info"] = layer_info 
+            d["weight"] = magic_formula(layer_info, dict(zip(self.layer_names, self.layer_probs))) 
+
+            # layer_label = d["type"]
+            # if layer_label in what_by_what:
+            #     self.G.edges[(u, v, k)
+            #                  ]['weight'] = min(self.G.edges[(u, v, k)]['weight'] * what_by_what[layer_label], 1.0)
