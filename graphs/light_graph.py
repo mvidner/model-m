@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 from scipy.sparse import csr_matrix as sparse_matrix
+from scipy.sparse import lil_matrix
 from pprint import pprint
+from sparse_utils import multiply_col, multiply_row
 
 
 def sum_sparse(m):
@@ -164,7 +166,7 @@ class LightGraph():
                 if layer == layer_type and node_id in m.indices
             ]
             for m in matrices_to_change:
-                # print(m.data, type(m.data))
-                # print(weight*m.data, type(weight*m.data))
-                m.data = np.minimum(m.data, weight*m.data)
+                # diagonal is empty!
+                multiply_col(m, node_id, weight)
+                multiply_row(m, node_id, weight)
         self.A = self.computeA()
