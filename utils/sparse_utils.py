@@ -27,7 +27,7 @@ def multiply_zeros_as_ones(a, b):
     r, c = c.nonzero()
 
     data = np.ones(len(r))
-    ones = csr_matrix((data, (r, c)), shape=a.shape)
+    ones = sparse.csr_matrix((data, (r, c)), shape=a.shape)
 
     # get common elements
     ones_a = ones.multiply(a)
