@@ -6,7 +6,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from scipy.sparse import identity
+from scipy.sparse import csr_matrix
 
 from config_utils import ConfigFile
 from graph_gen import GraphGenerator, CSVGraphGenerator
@@ -33,20 +33,22 @@ def magic_formula(graph):
     N = graph.number_of_nodes() 
 
     print(graph.get_layers_info())
-    ones = np.ones(shape=(N, N))
 
-    prob_no_contact =  np.ones(shape=(N, N))
+    ones = np.ones((N,N))
+    prob_no_contact = np.ones((N,N))
+
     for name, prob in graph.get_layers_info().items():
         a = nx.adj_matrix(graph.get_graph_for_layer(name))
-        a = prob * a
-        not_a = ones - a 
-        #        not_a = 1.0 - a 
-        # # not a (without 1.0 members)
-        # a.data *= -1 
-        # a.data += 1.0
+        if len(a.data) == 0:
+            continue
+        a = a.multiply(prob) # contact on layer 
+        # not_a = a 
+        #        not_a.data = 1.0 - not_a.data 
         # no a ted bych potrebovala pronasobit jen ty, kde jsou nenuly 
-        prob_no_contact = np.multiply(prob_no_contact, not_a) 
+        not_a = ones - a 
+        prob_no_contact = np.multiply(prob_no_contact, not_a)
         del a
+        del not_a
 
     # probability of contact (whatever layer)
     return 1 - prob_no_contact
@@ -154,14 +156,14 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
     start = time.time()
     graph = create_graph(graph_name, nodes=nodes, edges=edges,
                          layers=layers, num_nodes=num_nodes)
+    
+    A = matrix(graph)
     end = time.time()
     print("Graph loading: ", end-start, "seconds")
         
     #    print(graph)
 
     
-    
-    A = matrix(graph)
 
     class_name = cf.section_as_dict("TASK").get(
         "model", "ExtendedNetworkModel")
