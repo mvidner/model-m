@@ -61,6 +61,8 @@ print('ahoj')
 rc = CSVGraphGenerator()
 print('bahoj')
 GG = rc.as_multigraph()
+print('cahoj')
+
 dot_GG = nx.nx_pydot.to_pydot(GG)
 print(dot_GG)
 print(GG)

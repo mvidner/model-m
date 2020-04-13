@@ -167,6 +167,23 @@ def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n
                 graph.remove_edge(node, neighbor)
     return graph
 
+class RandomSingleGraphGenerator(GraphGenerator):
+    def __init__(self, num_nodes=10000, **kwargs):
+        super().__init__(**kwargs)
+        self.nodes = num_nodes
+
+        # generate random connections
+        baseGraph = nx.barabasi_albert_graph(n=num_nodes, m=9)
+        FG = custom_exponential_graph(baseGraph, scale=100)
+        # generate random weights from trunc norm
+        lower, upper = 0, 1
+        mu, sigma = 0.7, 0.3
+        for (u, v, d) in FG.edges(data=True):
+            FG[u][v]['weight'] = stats.truncnorm.rvs(
+                (lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
+
+        self.G = FG
+    
 
 class RandomGraphGenerator(GraphGenerator):
     """ generating random graph with mean degree 13 and num_nodes nodes

@@ -2,10 +2,50 @@
 
 
 from engine import BaseEngine
+from graph_gen import RandomSingleGraphGenerator
 
+import scipy.stats as stats
 from bisect import bisect_left
 from itertools import accumulate
 import random
+import sys
+import time
+
+
+
+# =============================================================================
+# model = SEIRSNetworkModel(G       =G_normal, 
+#                           beta    =0.155, 
+#                           sigma   =1/5.2, 
+#                           gamma   =1/12.39, 
+#                           mu_I    =0.0004,
+#                           mu_0    =0, 
+#                           nu      =0, 
+#                           xi      =0,
+#                           p       =0.5,
+#                           Q       =G_quarantine, 
+#                           beta_D  =0.155, 
+#                           sigma_D =1/5.2, 
+#                           gamma_D =1/12.39, 
+#                           mu_D    =0.0004,
+#                           theta_E =0, 
+#                           theta_I =0, 
+#                           phi_E   =0, 
+#                           phi_I   =0, 
+#                           psi_E   =1.0, 
+#                           psi_I   =1.0,
+#                           q       =0.5,
+#                           initI   =numNodes/100, 
+#                           initE   =0, 
+#                           initD_E =0, 
+#                           initD_I =0, 
+#                           initR   =0, 
+#                           initF   =0)
+# 
+# =============================================================================
+
+
+
 
 # constants for Models
 
@@ -18,7 +58,6 @@ NUMBER_OF_INFECTED = 3
 HEALTHY = 0
 INFECTED = 1
 TIME_OF_INFECTION = 3
-AVG_CONTACTS = 3
 TRANS_RATE = 0.8
 
 
@@ -36,13 +75,24 @@ SEIRSNAMES = [ 'S', 'E', 'I', 'R', 'F' ]
 # γ: rate of recovery (inverse of infectious period)
 # ξ: rate of re-susceptibility (inverse of temporary immunity period; 0 if permanent immunity)
 # μI: rate of mortality from the disease (deaths per infectious individual per time)
-BETA = 0.5
-SIGMA = 0.5
-GAMMA = 0.05
+BETA = 0.155
+SIGMA = 1/5.2
+GAMMA = 1/12.39
 XI = 0
-MJU_I = 0.01
+MJU_I = 0.0004
 MJU_ALL = 0.00003 # 11 ppl per 1000 ppl per year ... 3 ppl per day per 100k ppl
 
+# probability of distant contact, 1 means only distant contacts, 0 means only close contacts
+# in deterministic model, there are only distant contacts
+# the ration of p / (1-p) tells the distribution of contacts between distant and close
+# average number of contacts is per day, actual values are sampled from normal distribution (truncated at LTRUNC and HTRUNC)
+
+PROB_FOR_DETERMINISTIC = 1  
+PROB_FOR_GRAPH = 0.5
+AVG_CONTACTS = 30
+VAR_CONTACTS = 10
+LTRUNC = 0
+HTRUNC = 1000
 
 class Person():
     def __init__ (self, id, init_state=HEALTHY):
@@ -78,13 +128,16 @@ class SEIRSPerson(Person):
         self.time_of_state = 0
         self.id = id
         
+    def get_id():
+        return self.id
+    
     def get_state(self):
         return self.state
 
     def set_state(self, s=SUSCEPTIBLE):
         old_state = self.state
         self.state = s
-        print (self.id, ':', SEIRSNAMES[old_state], '->', SEIRSNAMES[s])
+#        print (self.id, ':', SEIRSNAMES[old_state], '->', SEIRSNAMES[s])
         
     def prob_change_state(self, probs):
         su = sum(probs)
@@ -111,6 +164,7 @@ class NoModel(BaseEngine):
         self.contacts_per_day = avg_contacts
         self.transmission_rate = avg_trans
         self.T = T_time
+
 
         self.People = []
         inf_idx = random.sample(range(self.N), self.Ni)
@@ -145,12 +199,17 @@ class NoModel(BaseEngine):
                 p.stay_infected()
 
     def run(self):
+#        print('This is run ', self.t, self.T)
         for self.t in range(1, self.T + 1):
             self.do_statistics()
             self.run_iteration()
 
+# model working with SEIRS dynamic and deterministic sampling from the whole population
+
 class NoSEIRSModel(NoModel):
-    def __init__(self, T_time=TIME_OF_SIMULATION, number_of_people=NUMBER_OF_PEOPLE, number_of_infected=NUMBER_OF_INFECTED, prob=1, beta=BETA, sigma=SIGMA, gamma=GAMMA, xi=XI, mju_i=MJU_I,
+    def __init__(self, T_time=TIME_OF_SIMULATION, number_of_people=NUMBER_OF_PEOPLE, 
+                 number_of_infected=NUMBER_OF_INFECTED, prob=PROB_FOR_DETERMINISTIC, 
+                 beta=BETA, sigma=SIGMA, gamma=GAMMA, xi=XI, mju_i=MJU_I, 
                  random_seed=MAGIC_SEED_BY_PETRA):
 
         if random_seed:
@@ -166,6 +225,8 @@ class NoSEIRSModel(NoModel):
         self.mju_i = mju_i
         self.T = T_time
         self.People = []
+        self.t = 0
+        
         inf_idx = random.sample(range(self.N), self.Ni)
         for p in range(self.N):
             new_person = SEIRSPerson(p)
@@ -193,12 +254,75 @@ class NoSEIRSModel(NoModel):
                 probs[SUSCEPTIBLE] = self.xi
             p.prob_change_state(probs)    
     
- 
-class NoGraphModel(NoModel):
+# model working with SEIRS dynamic and simple graph of contacts
+    
+class NoGraphSEIRShModel(NoSEIRSModel):
     def __init__ (self, graph, **kwargs):
         super().__init__(**kwargs)
         self.G = graph
+#        print('This is ngsm Init')
+        # THIS IS HACk, CHNGE!!!        
+        self.p = PROB_FOR_GRAPH
+
+    def rand_no_of_contacts(self):
+        
+        x = stats.truncnorm.rvs((LTRUNC - AVG_CONTACTS) / VAR_CONTACTS, 
+                               (HTRUNC - AVG_CONTACTS) / VAR_CONTACTS, 
+                               loc=AVG_CONTACTS, scale=VAR_CONTACTS)
+        return(int(round(x)))
+
+    def run_iteration(self):
+#        print ('This is run_iteration: ', self.t)
+        for p in self.People:
+            probs = [0, 0, 0, 0, 0]
+            if p.state == SUSCEPTIBLE:
+# sample graph for close and distant contacts 
+# for distant contacts get N*p random samples from the graph
+# for close contacts get degree(person) * (1-p) from samples from neighbourhood(person)
+
+                num_of_contacts = self.rand_no_of_contacts()
+                num_of_distant_contacts = int(round(num_of_contacts * self.p))
+                num_of_close_contacts = num_of_contacts - num_of_distant_contacts                
+#                print ('MEANWHILE IN THE S=>E', p.id, num_of_contacts, num_of_distant_contacts, num_of_close_contacts)               
+                nbrs  =  [ n for n in self.G[p.id] ] 
+                if nbrs == [] :
+                    close_contacts = []
+                else : 
+                    close_contacts = random.choices(nbrs, k=num_of_close_contacts)
+                othrs = [ n for n in range(self.N) if n not in nbrs ]
+                if othrs == [] :
+                    distant_contacts = []
+                else : 
+                    distant_contacts = random.choices(othrs, k=num_of_distant_contacts)
+
+                prod = 1;                
+                for contact in close_contacts + distant_contacts:
+                    if self.People[contact].state == INFECTIOUS:
+                        prod *= (1-self.beta)
+                probs[EXPOSED] = 1 - prod
+            if p.state == EXPOSED:
+                probs[INFECTIOUS] = self.sigma
+            if p.state == INFECTIOUS:
+                probs[RECOVERED] = self.gamma
+                probs[FATAL] = self.mju_i
+            if p.state == RECOVERED:
+                probs[SUSCEPTIBLE] = self.xi
+            p.prob_change_state(probs)    
+                 
 
 if __name__ == "__main__":
-    m = NoSEIRSModel(100, 100, 30)
+#    m = NoSEIRSModel(100, 100, 30)
+#    m.run()
+
+    N_ppl = 100000
+    T_iter = 10
+    N_inf = 1000
+    print('Doing the graph')    
+    g = RandomSingleGraphGenerator(N_ppl).as_one_graph()
+    print('Doing the model')       
+    m = NoGraphSEIRShModel(g, T_time=T_iter, number_of_people=N_ppl, number_of_infected=N_inf)
+    print('Running')        
+    time1 = time.time()
     m.run()
+    e = int(time.time() - time1)
+    print('{:02d}:{:02d}:{:02d}'.format(e // 3600, (e % 3600 // 60), e % 60), '  Bye')        
