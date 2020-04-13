@@ -19,6 +19,10 @@ class GraphGenerator:
         if random_seed:
             np.random.seed(random_seed)
 
+    @property
+    def nodes(self):
+        return self.G.nodes
+
     def number_of_nodes(self):
         return self.G.number_of_nodes()
 

@@ -146,11 +146,14 @@ class LightGraph():
             print(f"Warning: modify_layer_for_node called for nonexisting node_id {node_id}")
             return
 
-        for layer_type, weight in what_by_what:
+        for layer_type, weight in what_by_what.items():
             matrices_to_change = [
                 m
-                for (layer, sublayer), m in A_layered.items()
+                for (layer, sublayer), m in self.A_layered.items()
                 if layer == layer_type
             ]
             for m in matrices_to_change:
-                m.data = min(m.data, weight*m.data)
+                # print(m.data, type(m.data))
+                # print(weight*m.data, type(weight*m.data))
+                m.data = np.minimum(m.data, weight*m.data)
+                

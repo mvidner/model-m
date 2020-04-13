@@ -1,7 +1,7 @@
 import numpy as np 
 from run_experiment import matrix  # TODO what to DO?
 from graph_gen import GraphGenerator
-
+from light_graph import LightGraph
 
 def simple_policy(policy_func):
     """ decorarotor for creation of simple policies 
@@ -19,11 +19,11 @@ def simple_policy(policy_func):
         # print(start, end, len(tseries))
         # print("today", tseries[start:end])
         
-        if not isinstance(graph, GraphGenerator):
+        if not isinstance(graph, GraphGenerator) and not isinstance(graph, LightGraph):
             raise TypeError("This policy works with GraphGenerator derived graphs only.")
         
         # overkill,  budou se brat jen ty, co se presli do Id dnes
-        nodes = list(graph.G.nodes)
+        nodes = list(graph.nodes) 
         history = history[start:end] 
         detected_nodes = [
             int(node.decode())
@@ -40,10 +40,10 @@ def simple_policy(policy_func):
                 print(f"Node {node} goes to quarntine")
                 graph.modify_layers_for_node(node, quarantine)
 
-                if isinstance(graph, GraphGenerator):
-                    A = graph.G
-                else:
-                    A = matrix(graph)
+            #                if isinstance(graph, GraphGenerator):
+            #                    A = graph.G
+            #                else:
+            A = matrix(graph)
 
             to_change = {"graph": A}
             return to_change
