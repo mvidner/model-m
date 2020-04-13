@@ -11,12 +11,15 @@ def sum_sparse(m):
     return x
 
 
-def weighted_sparse_sum(m, probs):
+def magic_formula(m, probs):
     assert len(m) == len(probs)
-    x = sparse_matrix(m[0].shape)
+    ones = np.ones(shape=m[0].shape)
+    prob_no_contact = np.ones(shape=m[0].shape)
     for a, p in zip(m, probs):
-        x += p * a
-    return x
+        pa = p * a
+        prob_no_contact *= (ones - pa)
+        del pa
+    return sparse_matrix(1 - prob_no_contact)
 
 
 class LightGraph():
@@ -100,6 +103,8 @@ class LightGraph():
             # print("matrix", a)
             return a
 
+        # misto dictu udelat neco jako nd.array ?
+        # pocet vrstev x podvrstvy x NxN sparse matice
         self.A_layered = {
             k: create_matrix(v)
             for k, v in g.items()
@@ -126,7 +131,7 @@ class LightGraph():
                     (self.num_nodes, self.num_nodes))
 
         #        print(A_high_level)
-        A = weighted_sparse_sum(
+        A = magic_formula(
             [A_high_level[l] for l in self.layer_names],
             self.layer_probs
         )
@@ -156,4 +161,3 @@ class LightGraph():
                 # print(m.data, type(m.data))
                 # print(weight*m.data, type(weight*m.data))
                 m.data = np.minimum(m.data, weight*m.data)
-                
