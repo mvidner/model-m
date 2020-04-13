@@ -20,3 +20,21 @@ def multiply_col(A, col_idx, alpha):
     '''
     col_indices = A.indices == col_idx
     A.data[col_indices] = (alpha * A.data[col_indices])
+
+
+def multiply_zeros_as_ones(a, b):
+    c = a.minimum(b)
+    r, c = c.nonzero()
+
+    data = np.ones(len(r))
+    ones = csr_matrix((data, (r, c)), shape=a.shape)
+
+    # get common elements
+    ones_a = ones.multiply(a)
+    ones_b = ones.multiply(b)
+
+    a_dif = a - ones_a
+    b_dif = b - ones_b
+
+    result = ones_a.multiply(ones_b)
+    return result + a_dif + b_dif
