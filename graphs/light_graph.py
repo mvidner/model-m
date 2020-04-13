@@ -161,9 +161,10 @@ class LightGraph():
             matrices_to_change = [
                 m
                 for (layer, sublayer), m in self.A_layered.items()
-                if layer == layer_type
+                if layer == layer_type and node_id in m.indices
             ]
             for m in matrices_to_change:
                 # print(m.data, type(m.data))
                 # print(weight*m.data, type(weight*m.data))
                 m.data = np.minimum(m.data, weight*m.data)
+        self.A = self.computeA()
