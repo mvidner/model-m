@@ -11,6 +11,7 @@ from scipy.sparse import identity
 from config_utils import ConfigFile
 from graph_gen import GraphGenerator, CSVGraphGenerator
 from csv_graph import CSVGraph
+from light_graph import LightGraph
 from policy import bound_policy
 
 # from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
@@ -64,6 +65,9 @@ def create_graph(name, nodes="nodes.csv", edges="edges.csv", layers="etypes.csv"
 
     if name == "csv_petra":
         return CSVGraph(path_to_nodes=nodes, path_to_edges=edges, path_to_layers=layers)
+
+    if name == "csv_light":
+        return LightGraph(path_to_nodes=nodes, path_to_edges=edges, path_to_layers=layers)
 
     if name == "seirsplus_example":
         base_graph = nx.barabasi_albert_graph(n=num_nodes, m=9, seed=7)
@@ -122,6 +126,10 @@ def tell_the_story(history, graph):
 def matrix(graph):
     if isinstance(graph, CSVGraph):
         return graph.G
+
+    if isinstance(graph, LightGraph):
+        return graph.A
+
     if isinstance(graph, GraphGenerator):
         return magic_formula(
             graph
