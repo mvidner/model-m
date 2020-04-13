@@ -5,6 +5,7 @@ import numpy as np
 import scipy.stats as stats
 import pandas as pd
 
+
 class GraphGenerator:
     layer_names = ['F', 'D', 'P', 'E', 'H', 'K',
                    'C', 'S', 'O', 'L', 'R', 'T', 'X', 'Z']
@@ -39,8 +40,8 @@ class GraphGenerator:
         ret_g.graph['layer_prob'] = self.G.graph['layer_probs'][layer_index]
 
         ret_g.add_nodes_from(self.G)
-        selected_edges = [(u, v, e) 
-                          for u, v, e in self.G.edges(data=True) 
+        selected_edges = [(u, v, e)
+                          for u, v, e in self.G.edges(data=True)
                           if e['type'] == layer_name]
         ret_g.add_edges_from(selected_edges)
 
@@ -88,8 +89,8 @@ class GraphGenerator:
 
 #        for e in self.G.edges([node_id], data=True, keys=True):
 #            print(*e)
-        return self.G.edges([node_id], data=True, keys=True) 
-       
+        return self.G.edges([node_id], data=True, keys=True)
+
     def modify_layers_for_node(self, node_id, what_by_what):
         """ changes edges' weights """
 
@@ -114,7 +115,7 @@ class GraphGenerator:
 
         # for e in self.G.edges([node_id], data=True, keys=True):
         #     print(*e)
-        
+
         for u, v, k, d in self.G.edges([node_id], data=True, keys=True):
             layer_label = d["type"]
             if layer_label in what_by_what:
@@ -126,6 +127,7 @@ class GraphGenerator:
 
 
 # returns dictionary of layer names and probabilities
+
 
     def get_layers_info(self):
         return dict(zip(self.G.graph["layer_names"], self.G.graph["layer_probs"]))
@@ -202,20 +204,27 @@ class RandomGraphGenerator(GraphGenerator):
     def as_dict_of_graphs(self):
         return self.Graphs
 
+
 class CSVGraphGenerator(GraphGenerator):
-    
+
     layer_names = []
     layer_probs = []
 
-    
     def __init__(self, path_to_nodes='nodes.csv', path_to_edges='edges.csv', path_to_layers='etypes.csv', **kwargs):
         super().__init__(**kwargs)
 
-        csv_hacking = {'na_values' : 'undef', 'skipinitialspace' : True}
+        csv_hacking = {'na_values': 'undef', 'skipinitialspace': True}
         nodes = pd.read_csv(path_to_nodes, **csv_hacking)
         edges = pd.read_csv(path_to_edges, **csv_hacking)
         layers = pd.read_csv(path_to_layers, **csv_hacking)
-#        print(layers)        
+
+        # TODO: nebude treba
+        indexNames = edges[edges['vertex1'] == edges['vertex2']].index
+        if len(indexNames):
+            print("Warning: dropping self edges!!!!")
+            edges.drop(indexNames, inplace=True)
+
+        #        print(layers)
         # fill the layers
 #        layer_names = tuple(zip(layers.loc('id'), layers.loc('id2')))
         layers_to_add = layers.to_dict('list')
@@ -226,16 +235,21 @@ class CSVGraphGenerator(GraphGenerator):
         self.G.graph['layer_names'] = self.layer_names
         self.G.graph['layer_probs'] = self.layer_probs
 
-
         # fill the nodes
         nodes_to_add = nodes.to_dict('records')
-        idx_s = list(range(0,len(nodes_to_add)))
+        idx_s = list(range(0, len(nodes_to_add)))
         self.G.add_nodes_from(zip(idx_s, nodes_to_add))
-       
+
         # fill the edges
-        edges_to_add = edges.to_dict('list') 
+        edges_to_add = edges.to_dict('list')
         froms = edges_to_add['vertex1']
         tos = edges_to_add['vertex2']
-        datas = [{k: v for k, v in d.items() if k != 'vertex1' and k != 'vertex2'} for d in edges.to_dict('records')]
-        self.G.add_edges_from(zip(froms,tos,datas))
-                  
+        datas = [{
+            k: v
+            for k, v in d.items()
+            if k != 'vertex1' and k != 'vertex2'
+        } for d in edges.to_dict('records')]
+        self.G.add_edges_from(zip(froms, tos, datas))
+
+    def __str__(self):
+        return "\n".join([str(e) for e in self.G.edges(data=True)])

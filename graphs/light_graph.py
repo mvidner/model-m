@@ -35,6 +35,12 @@ class LightGraph():
         edges = pd.read_csv(path_to_edges, **csv_hacking)
         layers = pd.read_csv(path_to_layers, **csv_hacking)
 
+        # TODO: nebude treba
+        indexNames = edges[edges['vertex1'] == edges['vertex2']].index
+        if len(indexNames):
+            print("Warning: dropping self edges!!!!")
+            edges.drop(indexNames, inplace=True)
+
         layers_to_add = layers.to_dict('list')
         self.layer_names = layers_to_add['id']
         self.layer_probs = layers_to_add['weight']
