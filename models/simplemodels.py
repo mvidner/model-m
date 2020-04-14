@@ -315,7 +315,7 @@ class NoGraphSEIRShModel(NoSEIRSModel):
                 # else : 
                 #     distant_contacts = random.choices(othrs, k=num_of_distant_contacts)
                     
-
+# computing probability  of infection by 1 - product of (1-beta) for sampled contacts
                 prod = 1;                
                 for contact in close_contacts + distant_contacts:
                     if self.People[contact].state == INFECTIOUS:
@@ -336,7 +336,7 @@ if __name__ == "__main__":
 #    m.run()
 
     N_ppl = 100000
-    T_iter = 10
+    T_iter = 100
     N_inf = N_ppl // 10
     
     print('Doing the graph', N_ppl) 
