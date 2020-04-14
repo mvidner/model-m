@@ -2,7 +2,7 @@ import numpy as np
 import scipy.sparse as sparse
 
 
-def multiply_row(A, row_idx, alpha):
+def multiply_row(A, row_idx, alpha, trunc=False):
     '''
     multiply values in row_idx in place 
     '''
@@ -12,15 +12,18 @@ def multiply_row(A, row_idx, alpha):
     A.data[idx_start_row:idx_end_row] = (alpha *
                                          A.data[idx_start_row:idx_end_row]
                                          )
+    if trunc:
+        A.data[idx_start_row:idx_end_row] = np.clip(A.data[idx_start_row:idx_end_row], 0.0, 1.0)
 
 
-def multiply_col(A, col_idx, alpha):
+def multiply_col(A, col_idx, alpha, trunc=False):
     '''
     multiply values in col_idx in place 
     '''
     col_indices = A.indices == col_idx
     A.data[col_indices] = (alpha * A.data[col_indices])
-
+    if trunc:
+        A.data[col_indices] = np.clip(A.data[col_indices], 0.0, 1.0)
 
 def multiply_zeros_as_ones(a, b):
     c = a.minimum(b)

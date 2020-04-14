@@ -167,6 +167,6 @@ class LightGraph():
             ]
             for m in matrices_to_change:
                 # diagonal is empty!
-                multiply_col(m, node_id, weight)
-                multiply_row(m, node_id, weight)
+                multiply_col(m, node_id, weight, trunc=True)
+                multiply_row(m, node_id, weight, trunc=True)
         self.A = self.computeA()
