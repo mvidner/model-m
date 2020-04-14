@@ -9,6 +9,7 @@ import pandas as pd
 from scipy.sparse import csr_matrix
 
 from config_utils import ConfigFile
+from sparse_utils import multiply_zeros_as_ones
 from graph_gen import GraphGenerator, CSVGraphGenerator
 from csv_graph import CSVGraph
 from light_graph import LightGraph
@@ -34,24 +35,22 @@ def magic_formula(graph):
 
     print(graph.get_layers_info())
 
-    ones = np.ones((N, N))
-    prob_no_contact = np.ones((N, N))
+    prob_no_contact = csr_matrix((N, N))  # empty values = 1.0
 
     for name, prob in graph.get_layers_info().items():
         a = nx.adj_matrix(graph.get_graph_for_layer(name))
         if len(a.data) == 0:
             continue
         a = a.multiply(prob)  # contact on layer
-        # not_a = a
-        #        not_a.data = 1.0 - not_a.data
-        # no a ted bych potrebovala pronasobit jen ty, kde jsou nenuly
-        not_a = ones - a
-        prob_no_contact = np.multiply(prob_no_contact, not_a)
+        not_a = a  # empty values = 1.0
+        not_a.data = 1.0 - not_a.data
+        prob_no_contact = multiply_zeros_as_ones(prob_no_contact, not_a)
         del a
-        del not_a
 
     # probability of contact (whatever layer)
-    return 1 - prob_no_contact
+    prob_of_contact = prob_no_contact
+    prob_of_contact.data = 1.0 - prob_no_contact.data
+    return prob_of_contact
 
 
 def create_graph(name, nodes="nodes.csv", edges="edges.csv", layers="etypes.csv", num_nodes=None):

@@ -256,6 +256,21 @@ class NoSEIRSModel(NoModel):
     
 # model working with SEIRS dynamic and simple graph of contacts
     
+def dirty_choice2(limit, number, exclude):
+    ll = list(range(limit))
+    ll.remove(exclude)
+    return(random.choices(ll,number))
+
+def dirty_choice(limit, number, exclude):
+    ll = []
+    for i in range(number):
+        x = int(limit * random.random())
+        if x == exclude:
+# this is dirty, IMPROVE!
+            x = int(limit * random.random())
+        ll.append(x)    
+    return (ll)
+    
 class NoGraphSEIRShModel(NoSEIRSModel):
     def __init__ (self, graph, **kwargs):
         super().__init__(**kwargs)
@@ -284,16 +299,22 @@ class NoGraphSEIRShModel(NoSEIRSModel):
                 num_of_distant_contacts = int(round(num_of_contacts * self.p))
                 num_of_close_contacts = num_of_contacts - num_of_distant_contacts                
 #                print ('MEANWHILE IN THE S=>E', p.id, num_of_contacts, num_of_distant_contacts, num_of_close_contacts)               
+                
+# sample close contacts in a proper way   
                 nbrs  =  [ n for n in self.G[p.id] ] 
                 if nbrs == [] :
                     close_contacts = []
                 else : 
                     close_contacts = random.choices(nbrs, k=num_of_close_contacts)
-                othrs = [ n for n in range(self.N) if n not in nbrs ]
-                if othrs == [] :
-                    distant_contacts = []
-                else : 
-                    distant_contacts = random.choices(othrs, k=num_of_distant_contacts)
+                    
+# sample distant contacts in a dirty way   
+                distant_contacts = dirty_choice(self.N, num_of_distant_contacts, p.id)                
+                # othrs = [ n for n in range(self.N) if n not in nbrs ]
+                # if othrs == [] :
+                #     distant_contacts = []
+                # else : 
+                #     distant_contacts = random.choices(othrs, k=num_of_distant_contacts)
+                    
 
                 prod = 1;                
                 for contact in close_contacts + distant_contacts:
@@ -316,9 +337,11 @@ if __name__ == "__main__":
 
     N_ppl = 100000
     T_iter = 10
-    N_inf = 1000
-    print('Doing the graph')    
-    g = RandomSingleGraphGenerator(N_ppl).as_one_graph()
+    N_inf = N_ppl // 10
+    
+    print('Doing the graph', N_ppl) 
+    gg =  RandomSingleGraphGenerator(N_ppl)
+    g = gg.as_one_graph()
     print('Doing the model')       
     m = NoGraphSEIRShModel(g, T_time=T_iter, number_of_people=N_ppl, number_of_infected=N_inf)
     print('Running')        

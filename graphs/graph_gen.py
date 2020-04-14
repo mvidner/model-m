@@ -20,7 +20,7 @@ class GraphGenerator:
         if random_seed:
             np.random.seed(random_seed)
 
-    @property
+#    @property
     def nodes(self):
         return self.G.nodes
 
@@ -49,8 +49,7 @@ class GraphGenerator:
 
     def as_dict_of_graphs(self):
         self.Graphs = {}
-        print(self.G.graph['layer_names'])
-        print(self.G.graph['layer_probs'])
+
         for i, l in enumerate(self.layer_names):
             FG = nx.Graph()
             FG.graph['layer_name'] = l
@@ -168,6 +167,7 @@ def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n
     return graph
 
 class RandomSingleGraphGenerator(GraphGenerator):
+    
     def __init__(self, num_nodes=10000, **kwargs):
         super().__init__(**kwargs)
         self.nodes = num_nodes
