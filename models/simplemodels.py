@@ -289,6 +289,9 @@ class NoGraphSEIRShModel(NoSEIRSModel):
     def run_iteration(self):
 #        print ('This is run_iteration: ', self.t)
         for p in self.People:
+#
+# set probabilites of transmision from p.state to a new p.state
+#
             probs = [0, 0, 0, 0, 0]
             if p.state == SUSCEPTIBLE:
 # sample graph for close and distant contacts 
@@ -319,7 +322,7 @@ class NoGraphSEIRShModel(NoSEIRSModel):
                 prod = 1;                
                 for contact in close_contacts + distant_contacts:
                     if self.People[contact].state == INFECTIOUS:
-                        prod *= (1-self.beta)
+                        prod *= (1 - self.beta)
                 probs[EXPOSED] = 1 - prod
             if p.state == EXPOSED:
                 probs[INFECTIOUS] = self.sigma
