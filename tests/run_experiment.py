@@ -1,5 +1,5 @@
 import timeit
-import time 
+import time
 import click
 import random
 import networkx as nx
@@ -31,26 +31,27 @@ def magic_formula(graph):
 
     # rozvrtany ... nutno opravit
 
-    N = graph.number_of_nodes() 
+    N = graph.number_of_nodes()
 
     print(graph.get_layers_info())
 
-    prob_no_contact = csr_matrix((N,N)) # empty values = 1.0
+    prob_no_contact = csr_matrix((N, N))  # empty values = 1.0
 
     for name, prob in graph.get_layers_info().items():
         a = nx.adj_matrix(graph.get_graph_for_layer(name))
         if len(a.data) == 0:
             continue
-        a = a.multiply(prob) # contact on layer 
-        not_a = a # empty values = 1.0 
-        not_a.data = 1.0 - not_a.data 
+        a = a.multiply(prob)  # contact on layer
+        not_a = a  # empty values = 1.0
+        not_a.data = 1.0 - not_a.data
         prob_no_contact = multiply_zeros_as_ones(prob_no_contact, not_a)
         del a
 
     # probability of contact (whatever layer)
-    prob_of_contact = prob_no_contact 
-    prob_of_contact.data = 1.0 - prob_no_contact.data 
+    prob_of_contact = prob_no_contact
+    prob_of_contact.data = 1.0 - prob_no_contact.data
     return prob_of_contact
+
 
 def create_graph(name, nodes="nodes.csv", edges="edges.csv", layers="etypes.csv", num_nodes=None):
 
@@ -155,14 +156,12 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
     start = time.time()
     graph = create_graph(graph_name, nodes=nodes, edges=edges,
                          layers=layers, num_nodes=num_nodes)
-    
+
     A = matrix(graph)
     end = time.time()
     print("Graph loading: ", end-start, "seconds")
-        
-    #    print(graph)
 
-    
+    #    print(graph)
 
     class_name = cf.section_as_dict("TASK").get(
         "model", "ExtendedNetworkModel")
@@ -175,7 +174,7 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
         policy_cfg = cf.section_as_dict("POLICY")
         if use_policy not in policy_cfg["name"]:
             raise ValueError("Unknown policy name.")
-        
+
         if policy_cfg and "filename" in policy_cfg:
             policy = getattr(__import__(
                 policy_cfg["filename"]), use_policy)
@@ -224,7 +223,7 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
 
 @click.command()
 @click.option('--set-random-seed/--no-random-seed', ' /-r', default=True)
-@click.option('--policy', '-p', default=None) 
+@click.option('--policy', '-p', default=None)
 @click.option('--print_interval',  default=1)
 @click.argument('filename', default="example.ini")
 @click.argument('test_id', default="")
