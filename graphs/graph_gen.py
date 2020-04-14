@@ -238,7 +238,8 @@ class CSVGraphGenerator(GraphGenerator):
         # TODO: nebude treba
         indexNames = edges[edges['vertex1'] == edges['vertex2']].index
         if len(indexNames):
-            print("Warning: dropping self edges!!!!")
+            print(f"Warning: dropping self edges!!!! {indexNames}")
+            #            print(edges[edges['vertex1'] == edges['vertex2']])
             edges.drop(indexNames, inplace=True)
 
         #        print(layers)
