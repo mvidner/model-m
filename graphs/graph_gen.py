@@ -20,7 +20,7 @@ class GraphGenerator:
         if random_seed:
             np.random.seed(random_seed)
 
-#    @property
+    @property
     def nodes(self):
         return self.G.nodes
 
@@ -170,7 +170,7 @@ class RandomSingleGraphGenerator(GraphGenerator):
     
     def __init__(self, num_nodes=10000, **kwargs):
         super().__init__(**kwargs)
-        self.nodes = num_nodes
+        self.num_nodes = num_nodes
 
         # generate random connections
         baseGraph = nx.barabasi_albert_graph(n=num_nodes, m=9)
@@ -192,7 +192,7 @@ class RandomGraphGenerator(GraphGenerator):
 
     def __init__(self, num_nodes=10000, **kwargs):
         super().__init__(**kwargs)
-        self.nodes = num_nodes
+        self.num_nodes = num_nodes
 
         i = 0
         for l in self.layer_names:
@@ -238,7 +238,8 @@ class CSVGraphGenerator(GraphGenerator):
         # TODO: nebude treba
         indexNames = edges[edges['vertex1'] == edges['vertex2']].index
         if len(indexNames):
-            print("Warning: dropping self edges!!!!")
+            print(f"Warning: dropping self edges!!!! {indexNames}")
+            #            print(edges[edges['vertex1'] == edges['vertex2']])
             edges.drop(indexNames, inplace=True)
 
         #        print(layers)
