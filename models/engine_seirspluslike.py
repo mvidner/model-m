@@ -1,10 +1,11 @@
+import pandas as pd
 import numpy as np
 import scipy as scipy
 import scipy.integrate
 import networkx as nx
 import time
 
-from history_utils import TimeSeries, TransitionHistory
+from history_utils import TimeSeries, TransitionHistoryInt
 from engine import BaseEngine
 
 
@@ -36,8 +37,7 @@ class SeirsPlusLikeEngine(BaseEngine):
 
         self.tseries = TimeSeries(tseries_len, dtype=float)
 
-        max_state_len = max([len(s) for s in self.states])
-        self.history = TransitionHistory(tseries_len, itemsize=max_state_len)
+        self.history = TransitionHistoryInt(tseries_len)
 
         # state_counts ... numbers of inidividuals in given states
         self.state_counts = {
@@ -116,7 +116,7 @@ class SeirsPlusLikeEngine(BaseEngine):
         """ return numbers of contacts from given state
         if state is a list, it is sum over all states """
 
-        if type(state) == str:
+        if type(state) == int:
             # if TF_ENABLED:
             #     with tf.device('/GPU:' + "0"):
             #         x = tf.Variable(self.X == state, dtype="float32")
@@ -162,6 +162,17 @@ class SeirsPlusLikeEngine(BaseEngine):
         for state in self.states:
             self.state_counts[state].finalize(self.tidx)
         self.N.finalize(self.tidx)
+
+    def save(self, filename):
+        index = self.tseries
+        columns = self.state_counts
+        columns["day"] = np.floor(index).astype(int)
+        df = pd.DataFrame(self.state_counts, index=self.tseries)
+        df.index.rename('T', inplace=True)
+        df.columns = [self.state_str_dict[x] for x in self.states] + ["day"] 
+        df.to_csv("filename")
+        print(df)
+
 
     def run_iteration(self):
 
@@ -272,7 +283,7 @@ class SeirsPlusLikeEngine(BaseEngine):
                     print("t = %.2f" % self.t)
                     if verbose or not running:
                         for state in self.states:
-                            print(f"\t {state} = {self.current_state_count(state)}")
+                            print(f"\t {self.state_str_dict(state)} = {self.current_state_count(state)}")
                     print(flush=True)
 
         return True

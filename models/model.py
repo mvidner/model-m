@@ -4,7 +4,7 @@ from engine_seirspluslike import SeirsPlusLikeEngine
 def not_implemented_yet(): raise NotImplementedError()
 
 
-def create_custom_model(clsname, states, transitions,
+def create_custom_model(clsname, states, state_str_dict, transitions,
                         final_states=[], invisible_states=[],
                         unstable_states=[],
                         init_arguments={},
@@ -26,6 +26,7 @@ def create_custom_model(clsname, states, transitions,
     # dictionary of future class variables
     attributes = {
         "states": states,
+        "state_str_dict": state_str_dict, 
         "transitions": transitions,
         "final_states": final_states,
         "invisible_states": invisible_states,
@@ -74,7 +75,7 @@ def create_custom_model(clsname, states, transitions,
 
         # 4. init states and their counts
         init_state_counts = {
-            s: kwargs.get(f"init_{s}", 0)
+            s: kwargs.get(f"init_{self.state_str_dict[s]}", 0)
             for s in self.states
         }
         print(init_state_counts)

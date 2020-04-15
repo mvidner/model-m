@@ -51,8 +51,8 @@ class DailyEngine(SeirsPlusLikeEngine):
 
     def update_states(self):
         print("updating states")
-        for t, (transition_node, transition_type) in zip(self.todo_t, self.todo_list):
-            print(t, transition_node, "-->", transition_type)
+        # for t, (transition_node, transition_type) in zip(self.todo_t, self.todo_list):
+        #     print(t, transition_node, "-->", transition_type)
         # 6. Update node states and data series
         for t, (transition_node, transition_type) in zip(self.todo_t, self.todo_list):
             self.tidx += 1
@@ -100,7 +100,7 @@ class DailyEngine(SeirsPlusLikeEngine):
         print("t = %.2f" % self.t)
         if verbose:
             for state in self.states:
-                print(f"\t {state} = {self.current_state_count(state)}")
+                print(f"\t {self.state_str_dict[state]} = {self.current_state_count(state)}")
                 print(flush=True)
 
     def propensities_recalc(self):

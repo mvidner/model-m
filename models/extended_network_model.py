@@ -9,6 +9,35 @@ from engine_daily import DailyEngine
 # engine is not cofigurable yet
 # you can specify your model definition
 
+class STATES():
+    S = 0
+    S_s = 1
+    E = 2
+    I_n = 3
+    I_a = 4
+    I_s = 5 
+    I_d = 6
+    R_d = 7
+    R_u = 8
+    D_d = 9
+    D_u = 10
+
+    pass 
+
+state_codes = {
+    STATES.S:     "S",    
+    STATES.S_s:   "S_s",    
+    STATES.E:     "E", 
+    STATES.I_n:   "I_n", 
+    STATES.I_a:   "I_a", 
+    STATES.I_s:   "I_s", 
+    STATES.I_d:   "I_d", 
+    STATES.R_d:   "R_d", 
+    STATES.R_u:   "R_u", 
+    STATES.D_d:   "D_d", 
+    STATES.D_u:    "D_u"
+}
+
 
 # MODEL DEFINITION
 
@@ -31,55 +60,56 @@ model_definition = {
     # the rest of population is assing the the first state)
 
     "states":  [
-        "S",
-        "S_s",
-        "E",
-        "I_n",
-        "I_a",
-        "I_s",
-        "I_d",
-        "R_d",
-        "R_u",
-        "D_d",
-        "D_u"
+        STATES.S, STATES.S_s,
+        STATES.E, 
+        STATES.I_n,
+        STATES.I_a,
+        STATES.I_s,
+        STATES.I_d,
+        STATES.R_d,
+        STATES.R_u,
+        STATES.D_d,
+        STATES.D_u
     ],
 
+    "state_str_dict": state_codes,
+
     "transitions":  [
-        ("S", "S_s"),
-        ("S", "E"),
-        ("S_s", "S"),
-        ("S_s", "E"),
-        ("E", "I_n"),
-        ("E", "I_a"),
-        ("I_n", "R_u"),
-        ("I_a", "I_s"),
-        ("I_s", "R_u"),
-        ("I_s", "D_u"),
-        ("I_s", "I_d"),
-        ("I_d", "R_d"),
-        ("I_d", "D_d"),
-        ("I_a", "I_d"),
-        ("E", "I_d")
+        (STATES.S, STATES.S_s),
+        (STATES.S, STATES.E),
+        (STATES.S_s, STATES.S),
+        (STATES.S_s, STATES.E),
+        (STATES.E, STATES.I_n),
+        (STATES.E, STATES.I_a),
+        (STATES.I_n, STATES.R_u),
+        (STATES.I_a, STATES.I_s),
+        (STATES.I_s, STATES.R_u),
+        (STATES.I_s, STATES.D_u),
+        (STATES.I_s, STATES.I_d),
+        (STATES.I_d, STATES.R_d),
+        (STATES.I_d, STATES.D_d),
+        (STATES.I_a, STATES.I_d),
+        (STATES.E, STATES.I_d)
     ],
 
     "final_states": [
-        "R_d",
-        "R_u",
-        "D_d",
-        "D_u"
+        STATES.R_d,
+        STATES.R_u,
+        STATES.D_d,
+        STATES.D_u
     ],
 
     "invisible_states": [
-        "D_u",
-        "D_d"
+        STATES.D_u,
+        STATES.D_d
     ],
 
     "unstable_states": [
-        "E",
-        "I_n",
-        "I_a",
-        "I_s",
-        "I_d"
+        STATES.E,
+        STATES.I_n,
+        STATES.I_a,
+        STATES.I_s,
+        STATES.I_d
     ],
 
     "init_arguments": {
@@ -125,7 +155,7 @@ def calc_propensities(model):
     numContacts_I = np.zeros(shape=(model.num_nodes, 1))
     if any(model.beta):
         infected = [
-            s for s in ("I_n", "I_a", "I_s")
+            s for s in (STATES.I_n, STATES.I_a, STATES.I_s)
             if model.current_state_count(s)
         ]
         if infected:
@@ -133,7 +163,7 @@ def calc_propensities(model):
 
     numContacts_Id = np.zeros(shape=(model.num_nodes, 1))
     if any(model.beta_D):
-        numContacts_Id = model.num_contacts("I_d")
+        numContacts_Id = model.num_contacts(STATES.I_d)
 
     # STEP 2
     # create dict of propensities
@@ -142,16 +172,16 @@ def calc_propensities(model):
     propensities = dict()
 
     #  "S" ->  "S_s"
-    propensities[("S", "S_s")] = model.false_symptoms_rate*(model.X == "S")
+    propensities[(STATES.S, STATES.S_s)] = model.false_symptoms_rate*(model.X == STATES.S)
 
     #  "S" -> "E"
     numI = model.current_state_count(
-        "I_n") + model.current_state_count("I_a") + model.current_state_count("I_s")
+        STATES.I_n) + model.current_state_count(STATES.I_a) + model.current_state_count(STATES.I_s)
 
     S_to_E_koef = (
         model.p * (
             model.beta * numI +
-            model.q * model.beta_D * model.current_state_count("I_d")
+            model.q * model.beta_D * model.current_state_count(STATES.I_d)
         ) / model.current_N()
         +
         (1 - model.p) * np.divide(
@@ -159,42 +189,42 @@ def calc_propensities(model):
             model.beta_D * numContacts_Id, model.degree, out=np.zeros_like(model.degree), where=model.degree != 0
         )
     )
-    propensities[("S", "E")] = S_to_E_koef * (model.X == "S")
+    propensities[(STATES.S, STATES.E)] = S_to_E_koef * (model.X == STATES.S)
 
-    propensities[("S_s", "S")
-                 ] = model.false_symptoms_recovery_rate*(model.X == "S_s")
+    propensities[(STATES.S_s, STATES.S)
+                 ] = model.false_symptoms_recovery_rate*(model.X == STATES.S_s)
 
     # becoming exposed does not depend on unrelated symptoms
-    propensities[("S_s", "E")] = S_to_E_koef * (model.X == "S_s")
+    propensities[(STATES.S_s, STATES.E)] = S_to_E_koef * (model.X == STATES.S_s)
 
-    exposed = model.X == "E"
-    propensities[("E", "I_n")] = model.asymptomatic_rate * \
+    exposed = model.X == STATES.E
+    propensities[(STATES.E, STATES.I_n)] = model.asymptomatic_rate * \
         model.sigma * exposed
-    propensities[("E", "I_a")] = (
+    propensities[(STATES.E, STATES.I_a)] = (
         1-model.asymptomatic_rate) * model.sigma * exposed
 
-    propensities[("I_n", "R_u")] = model.gamma * (model.X == "I_n")
+    propensities[(STATES.I_n, STATES.R_u)] = model.gamma * (model.X == STATES.I_n)
 
-    asymptomatic = model.X == "I_a"
-    propensities[("I_a", "I_s")
+    asymptomatic = model.X == STATES.I_a
+    propensities[(STATES.I_a, STATES.I_s)
                  ] = model.symptoms_manifest_rate * asymptomatic
 
-    symptomatic = model.X == "I_s"
-    propensities[("I_s", "R_u")] = model.gamma * symptomatic
-    propensities[("I_s", "D_u")] = model.mu_I * symptomatic
+    symptomatic = model.X == STATES.I_s
+    propensities[(STATES.I_s, STATES.R_u)] = model.gamma * symptomatic
+    propensities[(STATES.I_s, STATES.D_u)] = model.mu_I * symptomatic
 
-    detected = model.X == "I_d"
-    propensities[("I_d", "R_d")] = model.gamma_D * detected
-    propensities[("I_d", "D_d")] = model.mu_D * detected
+    detected = model.X == STATES.I_d
+    propensities[(STATES.I_d, STATES.R_d)] = model.gamma_D * detected
+    propensities[(STATES.I_d, STATES.D_d)] = model.mu_D * detected
 
     # testing  TODO
-    propensities[("I_a", "I_d")] = (
+    propensities[(STATES.I_a, STATES.I_d)] = (
         model.theta_Ia + model.phi_Ia * numContacts_Id) * model.psi_Ia * asymptomatic
 
-    propensities[("I_s", "I_d")] = (
+    propensities[(STATES.I_s, STATES.I_d)] = (
         model.theta_Is + model.phi_Is * numContacts_Id) * model.psi_Is * symptomatic
 
-    propensities[("E", "I_d")] = (
+    propensities[(STATES.E, STATES.I_d)] = (
         model.theta_E + model.phi_E * numContacts_Id) * model.psi_E * exposed
 
     # STEP 3
