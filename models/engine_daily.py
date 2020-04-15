@@ -51,8 +51,8 @@ class DailyEngine(SeirsPlusLikeEngine):
 
     def update_states(self):
         print("updating states")
-        for t, (transition_node, transition_type) in zip(self.todo_t, self.todo_list):
-            print(t, transition_node, "-->", transition_type)
+        # for t, (transition_node, transition_type) in zip(self.todo_t, self.todo_list):
+        #     print(t, transition_node, "-->", transition_type)
         # 6. Update node states and data series
         for t, (transition_node, transition_type) in zip(self.todo_t, self.todo_list):
             self.tidx += 1

@@ -2,7 +2,7 @@ import numpy as np
 from run_experiment import matrix  # TODO what to DO?
 from graph_gen import GraphGenerator
 from light_graph import LightGraph
-
+from extended_network_model import STATES as s 
 
 def simple_policy(policy_func):
     """ decorarotor for creation of simple policies 
@@ -33,7 +33,7 @@ def simple_policy(policy_func):
         detected_nodes = [
             int(node.decode())
             for node, s, e in history
-            if e.decode() == "I_d"
+            if e.decode() == s.I_d
         ]
 
         print(f"Qurantined nodes: {detected_nodes}")
