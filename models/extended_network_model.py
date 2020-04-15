@@ -1,5 +1,6 @@
 import numpy as np
 from model import create_custom_model
+from engine_daily import DailyEngine
 
 # models
 
@@ -212,6 +213,11 @@ def calc_propensities(model):
 ExtendedNetworkModel = create_custom_model("ExtendedNetworkModel",
                                            **model_definition,
                                            calc_propensities=calc_propensities)
+
+ExtendedDailyNetworkModel = create_custom_model("ExtendedDailyNetworkModel",
+                                                **model_definition,
+                                                calc_propensities=calc_propensities,
+                                                engine=DailyEngine)
 
 
 # TODO: inherit from ExtendedNetworkModel a new model (high level) that includes the workaround

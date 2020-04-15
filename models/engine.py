@@ -35,15 +35,16 @@ class BaseEngine():
     def update_graph(self, new_G):
         """ create adjacency matrix for G """
         self.G = new_G
-        if self.A:
-            del self.A
 
-        if isinstance(new_G, np.ndarray):
+        if isinstance(new_G, scipy.sparse.csr_matrix):
+            self.A = new_G
+        elif isinstance(new_G, np.ndarray):
             self.A = scipy.sparse.csr_matrix(new_G)
         elif type(new_G) == nx.classes.graph.Graph:
             # adj_matrix gives scipy.sparse csr_matrix
             self.A = nx.adj_matrix(new_G)
         else:
+            print(type(new_G))
             raise TypeError(
                 "Input an adjacency matrix or networkx object only.")
 

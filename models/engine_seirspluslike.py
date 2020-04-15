@@ -79,28 +79,6 @@ class SeirsPlusLikeEngine(BaseEngine):
         # distribute the states randomly
         np.random.shuffle(self.X)
 
-    def update_graph(self, new_G):
-        """ create adjacency matrix for G """
-        self.G = new_G
-
-        if isinstance(new_G, scipy.sparse.csr_matrix):
-            self.A = new_G
-        elif isinstance(new_G, np.ndarray):
-            self.A = scipy.sparse.csr_matrix(new_G)
-        elif type(new_G) == nx.classes.graph.Graph:
-            # adj_matrix gives scipy.sparse csr_matrix
-            self.A = nx.adj_matrix(new_G)
-        else:
-            print(type(new_G))
-            raise TypeError(
-                "Input an adjacency matrix or networkx object only.")
-
-        self.num_nodes = self.A.shape[1]
-        self.degree = np.asarray(self.node_degrees(self.A)).astype(float)
-
-        # if TF_ENABLED:
-        #     self.A = to_sparse_tensor(self.A)
-
     def node_degrees(self, Amat):
         """ return number of degrees of  nodes,
         i.e. sums of adj matrix cols """
@@ -260,7 +238,7 @@ class SeirsPlusLikeEngine(BaseEngine):
         running = True
         day = -1
         start = time.time()
-        
+
         while running:
 
             running = self.run_iteration()
@@ -276,7 +254,8 @@ class SeirsPlusLikeEngine(BaseEngine):
             # run periodical update
             if self.periodic_update_callback and day != 1 and day_changed:
                 print(self.periodic_update_callback)
-                changes = self.periodic_update_callback(self.X, self.history, self.tseries[:self.tidx+1], self.t)
+                changes = self.periodic_update_callback(
+                    self.X, self.history, self.tseries[:self.tidx+1], self.t)
 
                 if "graph" in changes:
                     print("CHANGING GRAPH")
