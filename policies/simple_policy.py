@@ -31,9 +31,9 @@ def simple_policy(policy_func):
         history = history[start:end]
         #        print(start, end)
         detected_nodes = [
-            int(node.decode())
+            node
             for node, s, e in history
-            if e.decode() == s.I_d
+            if e == s.I_d
         ]
 
         print(f"Qurantined nodes: {detected_nodes}")
