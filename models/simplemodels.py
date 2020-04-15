@@ -75,7 +75,7 @@ SEIRSNAMES = [ 'S', 'E', 'I', 'R', 'F' ]
 # γ: rate of recovery (inverse of infectious period)
 # ξ: rate of re-susceptibility (inverse of temporary immunity period; 0 if permanent immunity)
 # μI: rate of mortality from the disease (deaths per infectious individual per time)
-BETA = 0.155
+BETA = 0.355
 SIGMA = 1/5.2
 GAMMA = 1/12.39
 XI = 0
@@ -186,8 +186,16 @@ class NoModel(BaseEngine):
             else:
                 return False
     def do_statistics(self):
-        print("t = %.2f" % self.t)
-        
+        print(self.t, end = ' ')
+        stat = [0, 0, 0, 0, 0]
+        for e in self.People:
+            stat[e.state] += 1
+        for i in stat:
+            print (i, end = ' ')
+        print()
+# this is ugly!
+        self.Ni = stat[INFECTIOUS]
+            
     def run_iteration(self):
         for p in self.People:
             if p.state == HEALTHY:
@@ -199,7 +207,7 @@ class NoModel(BaseEngine):
                 p.stay_infected()
 
     def run(self):
-#        print('This is run ', self.t, self.T)
+        self.do_statistics()
         for self.t in range(1, self.T + 1):
             self.do_statistics()
             self.run_iteration()
@@ -280,50 +288,60 @@ class NoGraphSEIRShModel(NoSEIRSModel):
         self.p = PROB_FOR_GRAPH
 
     def rand_no_of_contacts(self):
-        
+ # random           
         x = stats.truncnorm.rvs((LTRUNC - AVG_CONTACTS) / VAR_CONTACTS, 
                                (HTRUNC - AVG_CONTACTS) / VAR_CONTACTS, 
                                loc=AVG_CONTACTS, scale=VAR_CONTACTS)
         return(int(round(x)))
 
+# compute S->E probabilty by sampling the graph 
+
+    def s_to_e_sampling(self, p):
+        num_of_contacts = self.rand_no_of_contacts()
+        num_of_distant_contacts = int(round(num_of_contacts * self.p))
+        num_of_close_contacts = num_of_contacts - num_of_distant_contacts                
+#                print ('MEANWHILE IN THE S=>E', p.id, num_of_contacts, num_of_distant_contacts, num_of_close_contacts)               
+# sample close contacts in a proper way   
+        nbrs  =  [ n for n in self.G[p.id] ] 
+        if nbrs == [] :
+            close_contacts = []
+        else : 
+            close_contacts = random.choices(nbrs, k=num_of_close_contacts)
+# sample distant contacts in a dirty way   
+        distant_contacts = dirty_choice(self.N, num_of_distant_contacts, p.id)                            
+# computing probability  of infection by 1 - product of (1-beta) for sampled contacts
+        prod = 1;                
+        for contact in close_contacts + distant_contacts:
+            if self.People[contact].state == INFECTIOUS:
+                prod *= (1 - self.beta)                
+        return 1- prod
+
+# compute S->E probabilty by estimate and sampling
+    def s_to_e_estimate(self, p):
+        distant_part = self.Ni / self.N
+        if self.G.degree(p.id) == 0:
+            close_part = 0
+        else:
+            nbrs  =  [ n for n in self.G[p.id]  ] 
+            inf_nbrs = [ n for n in nbrs if p.state == INFECTIOUS ]
+            s = 0
+            for i in inf_nbrs:
+                s += self.G.edges[(p.id,i)]['weight']
+            close_part = s / len(nbrs)    
+
+        return self.beta * (self.p * distant_part + (1-self.p ) * close_part)
+
+
     def run_iteration(self):
 #        print ('This is run_iteration: ', self.t)
         for p in self.People:
-#
+
 # set probabilites of transmision from p.state to a new p.state
-#
+
             probs = [0, 0, 0, 0, 0]
             if p.state == SUSCEPTIBLE:
-# sample graph for close and distant contacts 
-# for distant contacts get N*p random samples from the graph
-# for close contacts get degree(person) * (1-p) from samples from neighbourhood(person)
-
-                num_of_contacts = self.rand_no_of_contacts()
-                num_of_distant_contacts = int(round(num_of_contacts * self.p))
-                num_of_close_contacts = num_of_contacts - num_of_distant_contacts                
-#                print ('MEANWHILE IN THE S=>E', p.id, num_of_contacts, num_of_distant_contacts, num_of_close_contacts)               
-                
-# sample close contacts in a proper way   
-                nbrs  =  [ n for n in self.G[p.id] ] 
-                if nbrs == [] :
-                    close_contacts = []
-                else : 
-                    close_contacts = random.choices(nbrs, k=num_of_close_contacts)
-                    
-# sample distant contacts in a dirty way   
-                distant_contacts = dirty_choice(self.N, num_of_distant_contacts, p.id)                
-                # othrs = [ n for n in range(self.N) if n not in nbrs ]
-                # if othrs == [] :
-                #     distant_contacts = []
-                # else : 
-                #     distant_contacts = random.choices(othrs, k=num_of_distant_contacts)
-                    
-# computing probability  of infection by 1 - product of (1-beta) for sampled contacts
-                prod = 1;                
-                for contact in close_contacts + distant_contacts:
-                    if self.People[contact].state == INFECTIOUS:
-                        prod *= (1 - self.beta)
-                probs[EXPOSED] = 1 - prod
+#                print('S->E: ', self.s_to_e_sampling(p), self.s_to_e_estimate(p))
+                probs[EXPOSED] = self.s_to_e_estimate(p)
             if p.state == EXPOSED:
                 probs[INFECTIOUS] = self.sigma
             if p.state == INFECTIOUS:
@@ -339,7 +357,7 @@ if __name__ == "__main__":
 #    m.run()
 
     N_ppl = 100000
-    T_iter = 100
+    T_iter = 300
     N_inf = N_ppl // 10
     
     print('Doing the graph', N_ppl) 
