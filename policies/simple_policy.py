@@ -32,7 +32,7 @@ def simple_policy(policy_func):
         #        print(start, end)
         detected_nodes = [
             node
-            for node, s, e in history
+            for node, _, e in history
             if e == s.I_d
         ]
 
