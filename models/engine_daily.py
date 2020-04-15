@@ -100,7 +100,7 @@ class DailyEngine(SeirsPlusLikeEngine):
         print("t = %.2f" % self.t)
         if verbose:
             for state in self.states:
-                print(f"\t {state} = {self.current_state_count(state)}")
+                print(f"\t {self.state_str_dict[state]} = {self.current_state_count(state)}")
                 print(flush=True)
 
     def propensities_recalc(self):
