@@ -3,7 +3,7 @@ import numpy as np
 from scipy.sparse import csr_matrix as sparse_matrix
 from scipy.sparse import lil_matrix
 from pprint import pprint
-from sparse_utils import multiply_col, multiply_row
+from sparse_utils import multiply_col, multiply_row, multiply_zeros_as_ones
 
 
 def sum_sparse(m):
@@ -15,13 +15,20 @@ def sum_sparse(m):
 
 def magic_formula(m, probs):
     assert len(m) == len(probs)
-    ones = np.ones(shape=m[0].shape)
-    prob_no_contact = np.ones(shape=m[0].shape)
+    N = m[0].shape[0] # m must have at least one member  
+
+    prob_no_contact = sparse_matrix((N, N))
     for a, p in zip(m, probs):
-        pa = p * a
-        prob_no_contact *= (ones - pa)
+        if len(a.data) == 0:
+            continue
+        pa = a.multiply(p)
+        not_a = pa 
+        not_a.data = 1.0 - not_a.data 
+        prob_no_contact = multiply_zeros_as_ones(prob_no_contact, not_a) 
         del pa
-    return sparse_matrix(1 - prob_no_contact)
+    prob_of_contact = prob_no_contact 
+    prob_of_contact.data = 1.0 - prob_of_contact.data
+    return  prob_of_contact
 
 
 class LightGraph():
@@ -167,6 +174,6 @@ class LightGraph():
             ]
             for m in matrices_to_change:
                 # diagonal is empty!
-                multiply_col(m, node_id, weight)
-                multiply_row(m, node_id, weight)
+                multiply_col(m, node_id, weight, trunc=True)
+                multiply_row(m, node_id, weight, trunc=True)
         self.A = self.computeA()
