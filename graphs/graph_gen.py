@@ -175,13 +175,20 @@ class RandomSingleGraphGenerator(GraphGenerator):
         # generate random connections
         baseGraph = nx.barabasi_albert_graph(n=num_nodes, m=9)
         FG = custom_exponential_graph(baseGraph, scale=100)
+        
+#       list_of_zeroes = [ n for n, d in FG.degree() if d == 0 ]
+#       if list_of_zeroes != []:
+#           print('OMG: ', list_of_zeroes)
+
         # generate random weights from trunc norm
         lower, upper = 0, 1
         mu, sigma = 0.7, 0.3
+        iii=0
         for (u, v, d) in FG.edges(data=True):
+            iii += 1
             FG[u][v]['weight'] = stats.truncnorm.rvs(
                 (lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
-
+        print(iii, 'Edges')
         self.G = FG
     
 
