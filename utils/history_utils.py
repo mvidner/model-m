@@ -63,10 +63,10 @@ class TransitionHistoryInt(BaseSeries):
 
     def __init__(self, len, itemsize=5):
         super().__init__()
-        self.values = np.zeros((len, 3), dtype="int8")
+        self.values = np.zeros((len, 3), dtype=int)
 
     def bloat(self, len):
-        new_space = np.zeros((len, 3), dtype="int8")
+        new_space = np.zeros((len, 3), dtype=int)
         self.values = np.vstack([self.values, new_space])
 
     def finalize(self, tidx):
