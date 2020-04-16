@@ -46,7 +46,6 @@ import time
 
 
 
-
 # constants for Models
 
 MAGIC_SEED_BY_PETRA = 42
@@ -360,7 +359,7 @@ if __name__ == "__main__":
 
     N_ppl = 100000
     T_iter = 300
-    N_inf = N_ppl // 10
+    N_inf = N_ppl // 100
     
     print('Doing the graph', N_ppl) 
     gg =  RandomSingleGraphGenerator(N_ppl)
