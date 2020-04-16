@@ -1,6 +1,11 @@
 # model-m
 Model of an imaginary town 
 
+The model started as an extension of [seirsplus
+model](https://github.com/ryansmcgee/seirsplus) adding more states. Later it
+started to deverge by modifying the simulation cycle. See
+[doc/model.pdf](doc/model.pdf) for more details
+
 ## Requirements 
 
 networkx, numpy, matplotlib, seaborn, click
