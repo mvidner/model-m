@@ -3,8 +3,10 @@ Model of an imaginary town
 
 The model started as an extension of [seirsplus
 model](https://github.com/ryansmcgee/seirsplus) adding more states. Later it
-started to deverge by modifying the simulation cycle. See
-[doc/model.pdf](doc/model.pdf) for more details
+started to diverge by modifying the simulation cycle. Currently, the main
+diffence is the state-update only once a day and possibility of plugin callback
+policy function that may modify the given graph (i.e. delete or weaken adges
+for nodes in quarantine).  See [doc/model.pdf](doc/model.pdf) for more details
 
 ## Requirements 
 
