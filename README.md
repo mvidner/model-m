@@ -22,8 +22,10 @@ Usage: run_experiment.py [OPTIONS] [FILENAME] [TEST_ID]
 
 Options:
   --set-random-seed / -r, --no-random-seed
+  -p, --policy TEXT
   --print_interval INTEGER
   --help                          Show this message and exit.
+
 ```
 
 See example .ini files romeo_and_juliet.ini (toy example) and seirsplus_example.ini (uses same
@@ -31,6 +33,9 @@ graph as examples in the seirsplus project)
 
 ```
 (covid_env) (initial_experiments) petra@totoro:~/covid/model-m/tests$ python run_experiment.py -r romeo_and_juliet.ini
+
+(covid_env) (initial_experiments) petra@totoro:~/covid/model-m/tests$ python
+run_experiment.py -r -p strong_policy town0.ini
 ```
 
 Output looks like:
