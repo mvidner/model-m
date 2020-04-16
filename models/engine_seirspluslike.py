@@ -163,16 +163,15 @@ class SeirsPlusLikeEngine(BaseEngine):
             self.state_counts[state].finalize(self.tidx)
         self.N.finalize(self.tidx)
 
-    def save(self, filename):
+    def save(self, file_or_filename):
         index = self.tseries
         columns = self.state_counts
         columns["day"] = np.floor(index).astype(int)
         df = pd.DataFrame(self.state_counts, index=self.tseries)
         df.index.rename('T', inplace=True)
-        df.columns = [self.state_str_dict[x] for x in self.states] + ["day"] 
-        df.to_csv("filename")
+        df.columns = [self.state_str_dict[x] for x in self.states] + ["day"]
+        df.to_csv(file_or_filename)
         print(df)
-
 
     def run_iteration(self):
 

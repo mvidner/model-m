@@ -22,8 +22,11 @@ class ConfigFile():
                 self.config[name] = value
 
     def save(self, filename):
-        with open(filename, 'w') as configfile:
-            self.config.write(configfile)
+        if type(filename) == str:
+            with open(filename, 'w') as configfile:
+                self.config.write(configfile)
+        else:
+            self.config.write(filename)
 
     def load(self, filename):
         self.config.read(filename)

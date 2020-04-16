@@ -211,14 +211,13 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
         plt.savefig(f"num_of_ill{test_id}.png")
 
     # save history
-    index = model.tseries
-    columns = model.state_counts
-    columns["day"] = np.floor(index).astype(int)
-    df = pd.DataFrame(model.state_counts, index=model.tseries)
-    df.index.rename('T', inplace=True)
-    test_id = "_" + test_id if test_id else ""
-    df.to_csv(f"history{test_id}.csv")
-    print(df)
+    cf.save("tmpxxxx.tmp")
+    with open("tmpxxxx.tmp") as f:
+        config_string = "#".join(f.readlines())
+    with open(f"history{test_id}.csv", "w") as f:
+        f.write(f"# RANDOM_SEED = {model_random_seed}\n")
+        f.write("#"+config_string)
+        model.save(f)
 
 
 @click.command()
