@@ -344,12 +344,12 @@ class NoGraphSEIRShModel(NoSEIRSModel):
             if p.state == SUSCEPTIBLE:
 #                print('S->E: ', self.s_to_e_sampling(p), self.s_to_e_estimate(p))
                 probs[EXPOSED] = self.s_to_e_estimate(p)
-            if p.state == EXPOSED:
+            elif p.state == EXPOSED:
                 probs[INFECTIOUS] = self.sigma
-            if p.state == INFECTIOUS:
+            elif p.state == INFECTIOUS:
                 probs[RECOVERED] = self.gamma
                 probs[FATAL] = self.mju_i
-            if p.state == RECOVERED:
+            elif p.state == RECOVERED:
                 probs[SUSCEPTIBLE] = self.xi
             p.prob_change_state(probs)    
                  
@@ -358,7 +358,7 @@ if __name__ == "__main__":
 #    m = NoSEIRSModel(100, 100, 30)
 #    m.run()
 
-    N_ppl = 10000
+    N_ppl = 100000
     T_iter = 300
     N_inf = N_ppl // 10
     
