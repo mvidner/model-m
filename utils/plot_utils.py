@@ -15,10 +15,11 @@ def plot_history(filename: str):
 
 
 def plot_histories(*args, group_days: int = None, group_func: str = "max", **kwargs):
-    histories = [_history_with_fname(filename, group_days=group_days, group_func=group_func) for filename in args]
+    histories = [_history_with_fname(
+        filename, group_days=group_days, group_func=group_func) for filename in args]
     history_one_df = pd.concat(histories)
     _plot_lineplot(history_one_df, "day", "all_infectious", **kwargs)
-    
+
 
 def plot_mutliple_policies(policy_dict: Dict[str, List[str]],
                            group_days: int = None, group_func: str = "max", **kwargs):
@@ -31,7 +32,8 @@ def plot_mutliple_policies(policy_dict: Dict[str, List[str]],
                           for filename in history_list])
 
     history_one_df = pd.concat(histories)
-    _plot_lineplot(history_one_df, "day", "all_infectious", hue="policy_name", **kwargs)
+    _plot_lineplot(history_one_df, "day", "all_infectious",
+                   hue="policy_name", **kwargs)
 
 
 def plot_state_histogram(filename: str, title: str = "Simulation", states: List[str] = None, save_path: str = None):
@@ -50,7 +52,8 @@ def plot_state_histogram(filename: str, title: str = "Simulation", states: List[
     if states is not None:
         data = data[states]
 
-    bars = plt.bar(range(data.shape[1]), data.values.max(), tick_label=data.columns)
+    bars = plt.bar(range(data.shape[1]),
+                   data.values.max(), tick_label=data.columns)
 
     anim = animation.FuncAnimation(fig, animate, repeat=False, blit=False, frames=history.shape[0],
                                    interval=100)
@@ -59,9 +62,10 @@ def plot_state_histogram(filename: str, title: str = "Simulation", states: List[
         anim.save(save_path, writer=animation.FFMpegWriter(fps=10))
     plt.show()
 
-    
+
 def _plot_lineplot(history_df, x, y, hue=None, save_path=None, **kwargs):
-    sns_plot = sns.lineplot(x=x, y=y, data=history_df, hue=hue, estimator=np.median, **kwargs)
+    sns_plot = sns.lineplot(x=x, y=y, data=history_df,
+                            hue=hue, estimator=np.median, **kwargs)
     if save_path is not None:
         sns_plot.get_figure().savefig(save_path)
 
@@ -87,7 +91,7 @@ def _history_with_fname(filename, group_days: int = None, group_func: str = "max
 
 
 def _load_history(filename: str) -> pd.DataFrame:
-    history = pd.read_csv(filename)
+    history = pd.read_csv(filename, comment="#")
     history["all_infectious"] = history[[
         "I_n", "I_a", "I_s", "I_d", "E"]].sum(axis=1)
     return history
