@@ -295,7 +295,6 @@ class NoGraphSEIRShModel(NoSEIRSModel):
         return(int(round(x)))
 
 # compute S->E probabilty by sampling the graph 
-
     def s_to_e_sampling(self, p):
         num_of_contacts = self.rand_no_of_contacts()
         num_of_distant_contacts = int(round(num_of_contacts * self.p))
@@ -324,10 +323,13 @@ class NoGraphSEIRShModel(NoSEIRSModel):
         else:
             nbrs  =  [ n for n in self.G[p.id]  ] 
             inf_nbrs = [ n for n in nbrs if p.state == INFECTIOUS ]
-            s = 0
-            for i in inf_nbrs:
-                s += self.G.edges[(p.id,i)]['weight']
-            close_part = s / len(nbrs)    
+            if len(inf_nbrs) == 0:
+                close_part = 0
+            else: 
+                s = 0
+                for i in inf_nbrs:
+                    s += self.G.edges[(p.id,i)]['weight']
+                close_part = s / len(inf_nbrs)    
 
         return self.beta * (self.p * distant_part + (1-self.p ) * close_part)
 
@@ -356,7 +358,7 @@ if __name__ == "__main__":
 #    m = NoSEIRSModel(100, 100, 30)
 #    m.run()
 
-    N_ppl = 100000
+    N_ppl = 10000
     T_iter = 300
     N_inf = N_ppl // 10
     
