@@ -41,7 +41,7 @@ run_experiment.py -r -p strong_policy town0.ini
 Output looks like:
 (prints states overiew after the first event every day)
 ```
-(covid_env) (initial_experiments) petra@totoro:~/covid/model-m/tests$ python romeo_and_juliet.py
+(covid_env) (initial_experiments) petra@totoro:~/covid/model-m/tests$ python run_experiment.py romeo_and_juliet.ini 
 
 N =  37
 t = 0.03
@@ -101,41 +101,64 @@ t = 60.04
 Avg. number of events per day:  7.7
 ```
 
-
-Or with more nodes:
+## Config File Format
+town0.ini
 ```
-(covid_env) (initial_experiments) petra@totoro:~/covid/model-m/tests$ python first_test.py 10000
-t = 0.00
-	 S = 7919
-	 S_s = 1981
-	 E = 0
-	 I_n = 40
-	 I_a = 20
-	 I_s = 40
-	 I_d = 0
-	 R_d = 0
-	 R_u = 0
-	 D_d = 0
-	 D_u = 0
+[TASK]
+duration_in_days = 100
 
-...
+# print_interval  -  0:  do not print state counts during simulation
+#                 -  N:  print every N-th day
+print_interval = 1
+verbose = Yes
+model = ExtendedDailyNetworkModel
 
-t = 60.00
-	 S = 6537
-	 S_s = 1616
-	 E = 155
-	 I_n = 97
-	 I_a = 15
-	 I_s = 99
-	 I_d = 263
-	 R_d = 699
-	 R_u = 515
-	 D_d = 4
-	 D_u = 0
+[GRAPH]
+# name: romeo_and_juliet   - verona 
+#       seirsplus_example  - graph from seirsplus example
+#       csv                - from .csv file
+name = csv
+nodes = ../graphinput/hodonin.raw/20-04-12/nodes.csv
+edges = ../graphinput/hodonin.raw/20-04-12/edges.csv
+layers = ../graphinput/hodonin.raw/20-04-12/etypes.csv
 
-Avg. number of events per day:  3039.8
+[POLICY]
+filename = test_policy
+name = strong_policy, weighted_policy
+
+[MODEL]
+beta = 0.155
+sigma = 0.1923076923076923
+gamma = 0.099
+mu_I = 0.0004
+p = 0.2
+beta_D = 0.155
+gamma_D = 0.1
+mu_D = 0.0004
+theta_E = 0.1
+theta_Ia = 0.1
+theta_Is = 0.1
+phi_E = 0
+phi_Ia = 0
+phi_Is = 0
+psi_E = 1.0
+psi_Ia = 1.0
+psi_Is = 1.0
+q = 0.1
+false_symptoms_rate = 0.05
+false_symptoms_recovery_rate = 0.4
+asymptomatic_rate = 0.3
+symptoms_manifest_rate = 0.9
+init_E = 0
+init_I_n =  15
+init_I_a = 15
+init_I_s = 70
+init_I_d = 0
+
+
 
 ```
+
 
 ## Saved history
 You may wish to generate a novel from a model history. Output example: 
@@ -210,46 +233,6 @@ You may wish to generate a novel from a model history. Output example:
 > A gentleman Watchmen 2 stopped to be as famous as a taxidriver and started to pine for the fjords.<br>
 > Well! I never wanted to do this in the first place. I wanted to be... an epidemiologist!<br>
 
-## Config File Format
-example.ini
-```
-[TASK]
-num_nodes = 100
-duration_in_days = 60
-
-# print_interval  -  0:  do not print state counts during simulation
-#                 -  N:  print every N-th day
-print_interval = 0  
-
-[MODEL]
-beta = 0.155
-sigma = 0.1923076923076923
-gamma = 0.08071025020177562
-mu_I = 0.0004
-p = 0.2
-beta_D = 0.155
-gamma_D = 0.08071025020177562
-mu_D = 0.0004
-theta_E = 0.1
-theta_Ia = 0.1
-theta_Is = 0.1
-phi_E = 0
-phi_Ia = 0
-phi_Is = 0
-psi_E = 1.0
-psi_Ia = 1.0
-psi_Is = 1.0
-q = 0.1
-false_symptoms_rate = 0.2
-asymptomatic_rate = 0.3
-symptoms_manifest_rate = 0.9
-initSSrate = 0.2
-initE = 0
-initI_n =  40
-initI_a = 20
-initI_s = 40
-initI_d = 0
-```
 
 ## Implementing custom network models
 
