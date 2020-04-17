@@ -92,6 +92,7 @@ class SeirsPlusLikeEngine(BaseEngine):
             np.random.shuffle(x)  # in place
             tempX.append(x.reshape((self.num_nodes, 1)))
 
+        # 0/1 num_states x num_nodes
         self.memberships = np.stack(tempX)
 
     def node_degrees(self, Amat):

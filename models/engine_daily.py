@@ -60,10 +60,10 @@ class DailyEngine(SeirsPlusLikeEngine):
                 # Room has run out in the timeseries storage arrays; double the size of these arrays
                 self.increase_data_series_length()
 
-            assert (self.X[transition_node] == transition_type[0] and
-                    self.X[transition_node] not in self.final_states), (f"Assertion error: Node {transition_node} has unexpected current state " + f"{self.X[transition_node]} given the intended transition of {transition_type}.")
+            assert (self.memberships[transition_type[0], transition_node] == 1), (f"Assertion error: Node {transition_node} has unexpected current state, given the intended transition of {transition_type}.")
 
-            self.X[transition_node] = transition_type[1]
+            self.memberships[transition_type[0], transition_node] = 0
+            self.memberships[transition_type[1], transition_node] = 1
             self.tseries[self.tidx] = t
             self.history[self.tidx] = (transition_node, *transition_type)
 
@@ -105,12 +105,12 @@ class DailyEngine(SeirsPlusLikeEngine):
 
     def propensities_recalc(self):
         # 2. Calculate propensities
-        propenities = self.stack_propensities(self.calc_propensities())
+        propensities = np.hstack(self.calc_propensities())
         transition_types = self.transitions
 
         # 3. Calculate alpha
-        assert False, "FIXME todo fix flatten"
-        propensities_flat = propensities.reshape(-1)
+        # nebylo by rychlejsi order=C a prohodi // a % ?
+        propensities_flat = propensities.ravel(order="F")
         cumsum = propensities_flat.cumsum()
         alpha = propensities_flat.sum()
         return alpha, cumsum, propensities.sum() > 0.0, transition_types
