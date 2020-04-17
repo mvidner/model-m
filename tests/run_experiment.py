@@ -10,7 +10,7 @@ from scipy.sparse import csr_matrix
 
 from config_utils import ConfigFile
 from sparse_utils import multiply_zeros_as_ones
-from graph_gen import GraphGenerator, CSVGraphGenerator
+from graph_gen import GraphGenerator, CSVGraphGenerator, RandomSingleGraphGenerator, RandomGraphGenerator
 from csv_graph import CSVGraph
 from light_graph import LightGraph
 from policy import bound_policy
@@ -76,6 +76,9 @@ def create_graph(name, nodes="nodes.csv", edges="edges.csv", layers="etypes.csv"
         np.random.seed(42)
         return custom_exponential_graph(base_graph, scale=100)
 
+    if name == "random":
+        return RandomGraphGenerator()
+
     raise ValueError(f"Graph {name} not available.")
 
 
@@ -131,6 +134,9 @@ def matrix(graph):
 
     if isinstance(graph, LightGraph):
         return graph.A
+
+    if isinstance(graph, RandomSingleGraphGenerator):
+        return graph.G
 
     if isinstance(graph, GraphGenerator):
         return magic_formula(
@@ -214,6 +220,7 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
     cf.save("tmpxxxx.tmp")
     with open("tmpxxxx.tmp") as f:
         config_string = "#".join(f.readlines())
+    test_id = "_" + test_id if test_id else ""
     with open(f"history{test_id}.csv", "w") as f:
         f.write(f"# RANDOM_SEED = {model_random_seed}\n")
         f.write("#"+config_string)

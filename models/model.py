@@ -26,8 +26,10 @@ def create_custom_model(clsname, states, state_str_dict, transitions,
     # dictionary of future class variables
     attributes = {
         "states": states,
-        "state_str_dict": state_str_dict, 
+        "num_states": len(states),
+        "state_str_dict": state_str_dict,
         "transitions": transitions,
+        "num_transitions": len(transitions),
         "final_states": final_states,
         "invisible_states": invisible_states,
         "unstable_states": unstable_states or states,
@@ -60,6 +62,7 @@ def create_custom_model(clsname, states, state_str_dict, transitions,
         # definition is couple (default value, description)
         self.G = G
         self.A = None
+
         for argdict in (self.fixed_model_parameters,
                         self.common_arguments,
                         self.model_parameters):

@@ -1,7 +1,7 @@
 import numpy as np
 from model import create_custom_model
 from engine_daily import DailyEngine
-
+from engine_sequential import SequentialEngine
 # models
 
 # model = ENGINE + MODEL DEFINITION
@@ -9,34 +9,54 @@ from engine_daily import DailyEngine
 # engine is not cofigurable yet
 # you can specify your model definition
 
+
 class STATES():
     S = 0
     S_s = 1
     E = 2
     I_n = 3
     I_a = 4
-    I_s = 5 
+    I_s = 5
     I_d = 6
     R_d = 7
     R_u = 8
     D_d = 9
     D_u = 10
 
-    pass 
+    pass
+
 
 state_codes = {
-    STATES.S:     "S",    
-    STATES.S_s:   "S_s",    
-    STATES.E:     "E", 
-    STATES.I_n:   "I_n", 
-    STATES.I_a:   "I_a", 
-    STATES.I_s:   "I_s", 
-    STATES.I_d:   "I_d", 
-    STATES.R_d:   "R_d", 
-    STATES.R_u:   "R_u", 
-    STATES.D_d:   "D_d", 
+    STATES.S:     "S",
+    STATES.S_s:   "S_s",
+    STATES.E:     "E",
+    STATES.I_n:   "I_n",
+    STATES.I_a:   "I_a",
+    STATES.I_s:   "I_s",
+    STATES.I_d:   "I_d",
+    STATES.R_d:   "R_d",
+    STATES.R_u:   "R_u",
+    STATES.D_d:   "D_d",
     STATES.D_u:    "D_u"
 }
+
+
+# constants - have to be consisten with transtion list
+S_to_S_s = 0
+S_to_E = 1
+S_s_to_S = 2
+S_s_to_E = 3
+E_to_I_n = 4
+E_to_I_a = 5
+I_n_to_R_u = 6
+I_a_to_I_s = 7
+I_s_to_R_u = 8
+I_s_to_D_u = 9
+I_s_to_I_d = 10
+I_d_to_R_d = 11
+I_d_to_D_d = 12
+I_a_to_I_d = 13
+E_to_I_d = 14
 
 
 # MODEL DEFINITION
@@ -61,7 +81,7 @@ model_definition = {
 
     "states":  [
         STATES.S, STATES.S_s,
-        STATES.E, 
+        STATES.E,
         STATES.I_n,
         STATES.I_a,
         STATES.I_s,
@@ -144,7 +164,7 @@ model_definition = {
 # 2. propensities function
 
 
-def calc_propensities(model):
+def calc_propensities(model, use_dict=True):
 
     # STEP 1
     # pre-calculate matrix multiplication terms that may be used in multiple propensity calculations,
@@ -168,11 +188,8 @@ def calc_propensities(model):
     # STEP 2
     # create dict of propensities
     # { transition name: probability values }
-
-    propensities = dict()
-
-    #  "S" ->  "S_s"
-    propensities[(STATES.S, STATES.S_s)] = model.false_symptoms_rate*(model.X == STATES.S)
+    propensity_S_to_S_s = model.false_symptoms_rate * \
+        (model.memberships[STATES.S])
 
     #  "S" -> "E"
     numI = model.current_state_count(
@@ -189,54 +206,64 @@ def calc_propensities(model):
             model.beta_D * numContacts_Id, model.degree, out=np.zeros_like(model.degree), where=model.degree != 0
         )
     )
-    propensities[(STATES.S, STATES.E)] = S_to_E_koef * (model.X == STATES.S)
 
-    propensities[(STATES.S_s, STATES.S)
-                 ] = model.false_symptoms_recovery_rate*(model.X == STATES.S_s)
+    propensity_S_to_E = S_to_E_koef * \
+        (model.memberships[STATES.S])
+
+    propensity_S_s_to_S = model.false_symptoms_recovery_rate * \
+        (model.memberships[STATES.S_s])
 
     # becoming exposed does not depend on unrelated symptoms
-    propensities[(STATES.S_s, STATES.E)] = S_to_E_koef * (model.X == STATES.S_s)
+    propensity_S_s_to_E = S_to_E_koef * \
+        (model.memberships[STATES.S_s])
 
-    exposed = model.X == STATES.E
-    propensities[(STATES.E, STATES.I_n)] = model.asymptomatic_rate * \
+    exposed = model.memberships[STATES.E]
+    propensity_E_to_I_n = model.asymptomatic_rate * \
         model.sigma * exposed
-    propensities[(STATES.E, STATES.I_a)] = (
+    propensity_E_to_I_a = (
         1-model.asymptomatic_rate) * model.sigma * exposed
 
-    propensities[(STATES.I_n, STATES.R_u)] = model.gamma * (model.X == STATES.I_n)
+    propensity_I_n_to_R_u = model.gamma * \
+        (model.memberships[STATES.I_n])
 
-    asymptomatic = model.X == STATES.I_a
-    propensities[(STATES.I_a, STATES.I_s)
-                 ] = model.symptoms_manifest_rate * asymptomatic
+    asymptomatic = model.memberships[STATES.I_a]
+    propensity_I_a_to_I_s = model.symptoms_manifest_rate * asymptomatic
 
-    symptomatic = model.X == STATES.I_s
-    propensities[(STATES.I_s, STATES.R_u)] = model.gamma * symptomatic
-    propensities[(STATES.I_s, STATES.D_u)] = model.mu_I * symptomatic
+    symptomatic = model.memberships[STATES.I_s]
+    propensity_I_s_to_R_u = model.gamma * symptomatic
+    propensity_I_s_to_D_u = model.mu_I * symptomatic
 
-    detected = model.X == STATES.I_d
-    propensities[(STATES.I_d, STATES.R_d)] = model.gamma_D * detected
-    propensities[(STATES.I_d, STATES.D_d)] = model.mu_D * detected
+    detected = model.memberships[STATES.I_d]
+    propensity_I_d_to_R_d = model.gamma_D * detected
+    propensity_I_d_to_D_d = model.mu_D * detected
 
     # testing  TODO
-    propensities[(STATES.I_a, STATES.I_d)] = (
+    propensity_I_a_to_I_d = (
         model.theta_Ia + model.phi_Ia * numContacts_Id) * model.psi_Ia * asymptomatic
 
-    propensities[(STATES.I_s, STATES.I_d)] = (
+    propensity_I_s_to_I_d = (
         model.theta_Is + model.phi_Is * numContacts_Id) * model.psi_Is * symptomatic
 
-    propensities[(STATES.E, STATES.I_d)] = (
+    propensity_E_to_I_d = (
         model.theta_E + model.phi_E * numContacts_Id) * model.psi_E * exposed
 
-    # STEP 3
-    # return list of all propensities, list of transition names
-    # TODO move this step to model.py
-    propensities_list = []
-    for t in model.transitions:
-        propensities_list.append(propensities[t])
-
-    stacked_propensities = np.hstack(propensities_list)
-
-    return stacked_propensities, model.transitions
+    return [
+        propensity_S_to_S_s,
+        propensity_S_to_E,
+        propensity_S_s_to_S,
+        propensity_S_s_to_E,
+        propensity_E_to_I_n,
+        propensity_E_to_I_a,
+        propensity_I_n_to_R_u,
+        propensity_I_a_to_I_s,
+        propensity_I_s_to_R_u,
+        propensity_I_s_to_D_u,
+        propensity_I_s_to_I_d,
+        propensity_I_d_to_R_d,
+        propensity_I_d_to_D_d,
+        propensity_I_a_to_I_d,
+        propensity_E_to_I_d,
+    ]
 
 
 # 3. model class
@@ -249,6 +276,10 @@ ExtendedDailyNetworkModel = create_custom_model("ExtendedDailyNetworkModel",
                                                 calc_propensities=calc_propensities,
                                                 engine=DailyEngine)
 
+ExtendedSequentialNetworkModel = create_custom_model("ExtendedDailyNetworkModel",
+                                                     **model_definition,
+                                                     calc_propensities=calc_propensities,
+                                                     engine=SequentialEngine)
 
 # TODO: inherit from ExtendedNetworkModel a new model (high level) that includes the workaround
 #      about multi-graphs, manages call backs, etc.
