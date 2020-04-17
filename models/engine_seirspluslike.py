@@ -150,8 +150,6 @@ class SeirsPlusLikeEngine(BaseEngine):
             #         x = tf.Variable(state_flags, dtype="float32")
             #         nums = tf.sparse.sparse_dense_matmul(self.A, x)
             # else:
-            print(self.A.shape)
-            print(state_flags.shape)
             nums = scipy.sparse.csr_matrix.dot(self.A, state_flags)
             return np.sum(nums, axis=1).reshape((self.num_nodes, 1))
         else:
@@ -182,8 +180,6 @@ class SeirsPlusLikeEngine(BaseEngine):
         self.history.finalize(self.tidx)
         for state in self.states:
             self.state_counts[state].finalize(self.tidx)
-        for tran in self.transitions:
-            self.propensities_repo[tran].bloat()
         self.N.finalize(self.tidx)
 
     def save(self, file_or_filename):
@@ -207,20 +203,18 @@ class SeirsPlusLikeEngine(BaseEngine):
         r2 = np.random.rand()
 
         # 2. Calculate propensities
-        propensities = self.calc_propensities()
-        assert False, "FIXME todo fix flatten"
-        propensities = self.stack_propensities(propensities)
+        propensities = np.hstack(self.calc_propensities())
         transition_types = self.transitions
+        alpha = propensities.sum()
 
         # Terminate when probability of all events is 0:
-        if propensities.sum() <= 0.0:
+        if alpha <= 0.0:
             self.finalize_data_series()
             return False
 
         # 3. Calculate alpha
-        propensities_flat = propensities.reshape(-1)
-        cumsum = propensities_flat.cumsum()
-        alpha = propensities_flat.sum()
+        propensities = propensities.ravel(order="F")
+        cumsum = propensities.cumsum()
 
         # 4. Compute the time until the next event takes place
         tau = (1/alpha)*np.log(float(1/r1))
@@ -232,12 +226,10 @@ class SeirsPlusLikeEngine(BaseEngine):
         transition_type = transition_types[int(transition_idx/self.num_nodes)]
 
         # 6. Update node states and data series
-        assert(self.X[transition_node] == transition_type[0] and self.X[transition_node] not in self.final_states), "Assertion error: Node " + \
-            str(transition_node)+" has unexpected current state " + \
-            str(self.X[transition_node]) + \
-            " given the intended transition of "+str(transition_type)+"."
+        assert (self.memberships[transition_type[0], transition_node] == 1), (f"Assertion error: Node {transition_node} has unexpected current state, given the intended transition of {transition_type}.")
 
-        self.X[transition_node] = transition_type[1]
+        self.memberships[transition_type[0], transition_node] = 0
+        self.memberships[transition_type[1], transition_node] = 1
 
         self.tidx += 1
         self.tseries[self.tidx] = self.t
