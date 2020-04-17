@@ -5,7 +5,7 @@ import scipy.integrate
 import networkx as nx
 import time
 
-from history_utils import TimeSeries, TransitionHistoryInt
+from history_utils import TimeSeries, TransitionHistory
 from engine import BaseEngine
 
 
@@ -77,12 +77,22 @@ class SeirsPlusLikeEngine(BaseEngine):
         )
 
         # X ... array of states
+        # tempX = []
+        # for state, count in self.state_counts.items():
+        #     tempX.extend([state]*count[0])
+        # self.X = np.array(tempX).reshape((self.num_nodes, 1))
+        # # distribute the states randomly
+        # np.random.shuffle(self.X)
+
         tempX = []
-        for state, count in self.state_counts.items():
-            tempX.extend([state]*count[0])
-        self.X = np.array(tempX).reshape((self.num_nodes, 1))
-        # distribute the states randomly
-        np.random.shuffle(self.X)
+        for state_idx, state in enumerate(self.states):
+            count = self.state_counts[state][0]
+            x = np.pad(np.ones(count), [(0, self.num_nodes - count)],
+                       mode='constant', constant_values=0)
+            np.random.shuffle(x)  # in place
+            tempX.append(x)
+
+        self.memberships = np.vstack(tempX)
 
     def node_degrees(self, Amat):
         """ return number of degrees of  nodes,
@@ -193,7 +203,10 @@ class SeirsPlusLikeEngine(BaseEngine):
         r2 = np.random.rand()
 
         # 2. Calculate propensities
-        propensities, transition_types = self.calc_propensities()
+        propensities = self.calc_propensities()
+        assert False, "FIXME todo fix flatten"
+        propensities = self.stack_propensities(propensities)
+        transition_types = self.transitions
 
         # Terminate when probability of all events is 0:
         if propensities.sum() <= 0.0:
@@ -201,7 +214,7 @@ class SeirsPlusLikeEngine(BaseEngine):
             return False
 
         # 3. Calculate alpha
-        propensities_flat = propensities.ravel(order='F')
+        propensities_flat = propensities.reshape(-1)
         cumsum = propensities_flat.cumsum()
         alpha = propensities_flat.sum()
 
