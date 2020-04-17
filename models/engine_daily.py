@@ -105,10 +105,12 @@ class DailyEngine(SeirsPlusLikeEngine):
 
     def propensities_recalc(self):
         # 2. Calculate propensities
-        propensities, transition_types = self.calc_propensities()
+        propenities = self.stack_propensities(self.calc_propensities())
+        transition_types = self.transitions
 
         # 3. Calculate alpha
-        propensities_flat = propensities.ravel(order='F')
+        assert False, "FIXME todo fix flatten"
+        propensities_flat = propensities.reshape(-1)
         cumsum = propensities_flat.cumsum()
         alpha = propensities_flat.sum()
         return alpha, cumsum, propensities.sum() > 0.0, transition_types
@@ -158,3 +160,17 @@ class DailyEngine(SeirsPlusLikeEngine):
         self.print(verbose)
         self.finalize_data_series()
         return True
+
+    def increase_data_series_length(self):
+        self.tseries.bloat()
+        self.history.bloat()
+        for state in self.states:
+            self.state_counts[state].bloat()
+        self.N.bloat()
+
+    def finalize_data_series(self):
+        self.tseries.finalize(self.tidx)
+        self.history.finalize(self.tidx)
+        for state in self.states:
+            self.state_counts[state].finalize(self.tidx)
+        self.N.finalize(self.tidx)

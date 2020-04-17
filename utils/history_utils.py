@@ -43,32 +43,34 @@ class TimeSeries(BaseSeries):
         self.values = self.values[:tidx+1]
 
 
+# class TransitionHistory(BaseSeries):
+
+#     def __init__(self, len):
+#         super().__init__()
+#         self.itemsize = itemsize
+#         self.values = np.chararray((len, 3), itemsize=itemsize)
+
+
+#     def bloat(self, len):
+#         new_space = np.empty((len, 3))
+#         self.values = np.vstack([self.values, new_space])
+
+#     def finalize(self, tidx):
+#         """ throw away ending zeros """
+#         self.values = self.values[:tidx+1]
+
 class TransitionHistory(BaseSeries):
 
-    def __init__(self, len):
+    def __init__(self, len, dtype=int, width=3):
         super().__init__()
-        self.itemsize = itemsize
-        self.values = np.chararray((len, 3), itemsize=itemsize)
-
+        self.values = np.zeros((len, width), dtype=dtype)
+        self.width = 3
+        self.dtype = dtype
 
     def bloat(self, len):
-        new_space = np.empty((len, 3))
+        new_space = np.zeros((len, self.width), dtype=self.dtype)
         self.values = np.vstack([self.values, new_space])
 
     def finalize(self, tidx):
         """ throw away ending zeros """
-        self.values = self.values[:tidx+1]
-
-class TransitionHistoryInt(BaseSeries):
-
-    def __init__(self, len, itemsize=5):
-        super().__init__()
-        self.values = np.zeros((len, 3), dtype=int)
-
-    def bloat(self, len):
-        new_space = np.zeros((len, 3), dtype=int)
-        self.values = np.vstack([self.values, new_space])
-
-    def finalize(self, tidx):
-        """ throw away ending zeros """
-        self.values = self.values[:tidx+1,:]
+        self.values = self.values[:tidx+1, :]
