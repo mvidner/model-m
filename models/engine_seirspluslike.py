@@ -45,6 +45,11 @@ class SeirsPlusLikeEngine(BaseEngine):
             for state in self.states
         }
 
+        self.propensities_repo = {
+            transition: TimeSeries(tseries_len, dtype=float)
+            for transition in self.transitions
+        }
+
         # N ... actual number of individuals in population
         self.N = TimeSeries(tseries_len, dtype=float)
 
@@ -153,6 +158,8 @@ class SeirsPlusLikeEngine(BaseEngine):
         self.history.bloat()
         for state in self.states:
             self.state_counts[state].bloat()
+        for tran in self.transitions:
+            self.propensities_repo[tran].bloat()
         self.N.bloat()
 
     def finalize_data_series(self):
@@ -161,6 +168,8 @@ class SeirsPlusLikeEngine(BaseEngine):
         self.history.finalize(self.tidx)
         for state in self.states:
             self.state_counts[state].finalize(self.tidx)
+        for tran in self.transitions:
+            self.propensities_repo[tran].bloat()
         self.N.finalize(self.tidx)
 
     def save(self, file_or_filename):
