@@ -6,11 +6,16 @@ from graph_gen import RandomGraphGenerator
 from graph_gen import CSVGraphGenerator
 
 # as multigraph - print
-#rj = RomeoAndJuliet()
+rj = RomeoAndJuliet()
 #Grj = rj.as_multigraph()
 #A = nx.nx_agraph.to_agraph(Grj)
 #A.layout('dot')
 #A.draw('raj.png')
+
+rj.draw_multi('raj.png')
+rj.write_to_csv()
+
+
 
 
 #sl = rj.get_attr_list('label')
@@ -58,7 +63,7 @@ from graph_gen import CSVGraphGenerator
 #print(dot_D)
 
 print('ahoj')
-rc = CSVGraphGenerator()
+rc = CSVGraphGenerator('raj-nodes.csv','raj-edges.csv','raj-etypes.csv')
 print('bahoj')
 GG = rc.as_multigraph()
 print('cahoj')
@@ -68,20 +73,20 @@ print(dot_GG)
 print(GG)
 
 
-e = rc.get_edges_for_node(5)
+# e = rc.get_edges_for_node(5)
 
-print('cahoj')
-print (e)
+# print('cahoj')
+# print (e)
 
 
-#dot_GG = nx.nx_pydot.to_pydot(GG)
-#print(dot_GG)
-#print(GG)
-#A = nx.nx_agraph.to_agraph(GG)
-#A.layout('dot')
-#A.draw('chocerady.png')
+# #dot_GG = nx.nx_pydot.to_pydot(GG)
+# #print(dot_GG)
+# #print(GG)
+# #A = nx.nx_agraph.to_agraph(GG)
+# #A.layout('dot')
+# #A.draw('chocerady.png')
 
-#for k,g in GGs.items():
-#    dg = nx.nx_pydot.to_pydot(g)
-#    print(dg)
+# #for k,g in GGs.items():
+# #    dg = nx.nx_pydot.to_pydot(g)
+# #    print(dg)
     

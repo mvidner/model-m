@@ -49,32 +49,13 @@ import time
 # constants for Models
 
 MAGIC_SEED_BY_PETRA = 42
-TIME_OF_SIMULATION = 30
-NUMBER_OF_PEOPLE = 10
-NUMBER_OF_INFECTED = 3
-
-# constants for Person
-HEALTHY = 0
-INFECTED = 1
-TIME_OF_INFECTION = 3
-TRANS_RATE = 0.8
-
-
-# constants for SEIRPerson
-SUSCEPTIBLE = 0
-EXPOSED = 1
-INFECTIOUS = 2
-RECOVERED = 3
-FATAL = 4
-
-SEIRSNAMES = [ 'S', 'E', 'I', 'R', 'F' ]
 
 # β: rate of transmission (transmissions per S-I contact per time)
 # σ: rate of progression (inverse of incubation period)
 # γ: rate of recovery (inverse of infectious period)
 # ξ: rate of re-susceptibility (inverse of temporary immunity period; 0 if permanent immunity)
 # μI: rate of mortality from the disease (deaths per infectious individual per time)
-BETA = 0.355
+BETA = 0.155
 SIGMA = 1/5.2
 GAMMA = 1/12.39
 XI = 0
@@ -86,46 +67,31 @@ MJU_ALL = 0.00003 # 11 ppl per 1000 ppl per year ... 3 ppl per day per 100k ppl
 # the ration of p / (1-p) tells the distribution of contacts between distant and close
 # average number of contacts is per day, actual values are sampled from normal distribution (truncated at LTRUNC and HTRUNC)
 
-PROB_FOR_DETERMINISTIC = 1  
+
 PROB_FOR_GRAPH = 0.5
-AVG_CONTACTS = 30
-VAR_CONTACTS = 10
-LTRUNC = 0
-HTRUNC = 1000
 
-class Person():
-    def __init__ (self, id, init_state=HEALTHY):
+SUSCEPTIBLE = 0
+SUSCEPTIBLE_S = 1
+EXPOSED = 2
+INFECTIOUS_N = 3
+INFECTIOUS_A = 4
+INFECTIOUS_S = 5
+INFECTIOUS_D = 6
+RECOVERED_D = 7
+RECOVERED_U = 8
+DEAD_D = 9
+DEAD_U = 10
+
+NO_OF_STATES = 11
+       
+class Person:
+    def __init__ (self, id, degree, sex, age, init_state=SUSCEPTIBLE):
         self.state = init_state
         self.time_of_state = 0
         self.id = id
-
-    def infect(self, by_whom):
-        self.state = INFECTED
-        self.time_of_state = 0
-        if by_whom == -1:
-            print(self.id, " infected initially")
-        else:
-            print(self.id, " infected by", by_whom)
-
-    def heal(self):
-        self.state = HEALTHY
-        self.time_of_state = 0
-        print(self.id, " is healed")
-
-    def stay_infected(self):
-        self.time_of_state += 1
-        if self.time_of_state == TIME_OF_INFECTION:
-            self.heal()
-
-    def stay_healthy(self):
-        self.time_of_state += 1
-
-         
-class SEIRSPerson(Person):
-    def __init__ (self, id, init_state=SUSCEPTIBLE):
-        self.state = init_state
-        self.time_of_state = 0
-        self.id = id
+        self.degree = degree
+        self.sex = sec
+        self.age = age
         
     def get_id():
         return self.id
@@ -143,84 +109,26 @@ class SEIRSPerson(Person):
         if su < 1 :
             probs[self.state] = 1 - su
         cum_p   = list(accumulate(probs))
-        total_p = cum_p[-1]
-        value = random.random() * total_p
+        value = random.random()
         new_state = bisect_left(cum_p, value)
         if new_state != self.state :
             self.set_state(new_state)
 
-
-class NoModel(BaseEngine):
-
-    def __init__(self, T_time=TIME_OF_SIMULATION, number_of_people=NUMBER_OF_PEOPLE, number_of_infected=NUMBER_OF_INFECTED, avg_contacts=AVG_CONTACTS, avg_trans=TRANS_RATE,
-                 random_seed=42):
-
-        if random_seed:
-            random.seed(random_seed)
-
-        self.N = number_of_people
-        self.Ni = number_of_infected
-        self.contacts_per_day = avg_contacts
-        self.transmission_rate = avg_trans
-        self.T = T_time
-
-
-        self.People = []
-        inf_idx = random.sample(range(self.N), self.Ni)
-        for p in range(self.N):
-            new_person = Person(p)
-            if p in inf_idx:
-                new_person.infect(-1)
-            else:
-                new_person.heal()
-            self.People.append(new_person)
-
-    def is_it_transmission(self, a, b):
-        # ignore everything, just toss a coin with transmission_rate if b is infected
-        if b.state == HEALTHY:
-            return False
-        else:
-            if random.random() < self.transmission_rate:
-                return True
-            else:
-                return False
-    def do_statistics(self):
-        print(self.t, end = ' ')
-        stat = [0, 0, 0, 0, 0]
-        for e in self.People:
-            stat[e.state] += 1
-        for i in stat:
-            print (i, end = ' ')
-        print()
-# this is ugly!
-        self.Ni = stat[INFECTIOUS]
-            
-    def run_iteration(self):
-        for p in self.People:
-            if p.state == HEALTHY:
-                contacts = random.sample(range(self.N), self.contacts_per_day)
-                for c in contacts:
-                    if self.is_it_transmission(p, self.People[c]):
-                        p.infect(c)
-            if p.state == INFECTED:
-                p.stay_infected()
-
-    def run(self):
-        self.do_statistics()
-        for self.t in range(1, self.T + 1):
-            self.do_statistics()
-            self.run_iteration()
-
-# model working with SEIRS dynamic and deterministic sampling from the whole population
-
-class NoSEIRSModel(NoModel):
-    def __init__(self, T_time=TIME_OF_SIMULATION, number_of_people=NUMBER_OF_PEOPLE, 
+    
+# model working with SEIRS dynamic and simple graph of contacts
+    
+   
+class NoGraphSEIRShModel(NoSEIRSModel):
+    def __init__ (self, graph, T_time=TIME_OF_SIMULATION, number_of_people=NUMBER_OF_PEOPLE, 
                  number_of_infected=NUMBER_OF_INFECTED, prob=PROB_FOR_DETERMINISTIC, 
                  beta=BETA, sigma=SIGMA, gamma=GAMMA, xi=XI, mju_i=MJU_I, 
                  random_seed=MAGIC_SEED_BY_PETRA):
 
+
         if random_seed:
             random.seed(random_seed)
+
+        self.G = graph
 
         self.N = number_of_people
         self.Ni = number_of_infected
@@ -235,84 +143,17 @@ class NoSEIRSModel(NoModel):
         self.t = 0
         
         inf_idx = random.sample(range(self.N), self.Ni)
+        
         for p in range(self.N):
+#            get data from nodes
             new_person = SEIRSPerson(p)
             if p in inf_idx:
                 new_person.set_state(INFECTIOUS)
             else:
                 new_person.set_state(SUSCEPTIBLE)
             self.People.append(new_person)
- 
-    def run_iteration(self):
-        inf_p = [ x for x in self.People if x.get_state() == INFECTIOUS ]
-        self.Ni = len(inf_p)
-        
-        for p in self.People:
-            probs = [0, 0, 0, 0, 0]
-            if p.state == SUSCEPTIBLE:
-                probs[EXPOSED] = self.beta * self.Ni / self.N
-#                print (self.beta * self.Ni / self.N)
-            if p.state == EXPOSED:
-                probs[INFECTIOUS] = self.sigma
-            if p.state == INFECTIOUS:
-                probs[RECOVERED] = self.gamma
-                probs[FATAL] = self.mju_i
-            if p.state == RECOVERED:
-                probs[SUSCEPTIBLE] = self.xi
-            p.prob_change_state(probs)    
-    
-# model working with SEIRS dynamic and simple graph of contacts
-    
-def dirty_choice2(limit, number, exclude):
-    ll = list(range(limit))
-    ll.remove(exclude)
-    return(random.choices(ll,number))
-
-def dirty_choice(limit, number, exclude):
-    ll = []
-    for i in range(number):
-        x = int(limit * random.random())
-        if x == exclude:
-# this is dirty, IMPROVE!
-            x = int(limit * random.random())
-        ll.append(x)    
-    return (ll)
-    
-class NoGraphSEIRShModel(NoSEIRSModel):
-    def __init__ (self, graph, **kwargs):
-        super().__init__(**kwargs)
-        self.G = graph
-#        print('This is ngsm Init')
-        # THIS IS HACk, CHNGE!!!        
         self.p = PROB_FOR_GRAPH
 
-    def rand_no_of_contacts(self):
- # random           
-        x = stats.truncnorm.rvs((LTRUNC - AVG_CONTACTS) / VAR_CONTACTS, 
-                               (HTRUNC - AVG_CONTACTS) / VAR_CONTACTS, 
-                               loc=AVG_CONTACTS, scale=VAR_CONTACTS)
-        return(int(round(x)))
-
-# compute S->E probabilty by sampling the graph 
-    def s_to_e_sampling(self, p):
-        num_of_contacts = self.rand_no_of_contacts()
-        num_of_distant_contacts = int(round(num_of_contacts * self.p))
-        num_of_close_contacts = num_of_contacts - num_of_distant_contacts                
-#                print ('MEANWHILE IN THE S=>E', p.id, num_of_contacts, num_of_distant_contacts, num_of_close_contacts)               
-# sample close contacts in a proper way   
-        nbrs  =  [ n for n in self.G[p.id] ] 
-        if nbrs == [] :
-            close_contacts = []
-        else : 
-            close_contacts = random.choices(nbrs, k=num_of_close_contacts)
-# sample distant contacts in a dirty way   
-        distant_contacts = dirty_choice(self.N, num_of_distant_contacts, p.id)                            
-# computing probability  of infection by 1 - product of (1-beta) for sampled contacts
-        prod = 1;                
-        for contact in close_contacts + distant_contacts:
-            if self.People[contact].state == INFECTIOUS:
-                prod *= (1 - self.beta)                
-        return 1- prod
 
 # compute S->E probabilty by estimate and sampling
     def s_to_e_estimate(self, p):
@@ -336,9 +177,7 @@ class NoGraphSEIRShModel(NoSEIRSModel):
     def run_iteration(self):
 #        print ('This is run_iteration: ', self.t)
         for p in self.People:
-
 # set probabilites of transmision from p.state to a new p.state
-
             probs = [0, 0, 0, 0, 0]
             if p.state == SUSCEPTIBLE:
 #                print('S->E: ', self.s_to_e_sampling(p), self.s_to_e_estimate(p))
@@ -351,7 +190,24 @@ class NoGraphSEIRShModel(NoSEIRSModel):
             elif p.state == RECOVERED:
                 probs[SUSCEPTIBLE] = self.xi
             p.prob_change_state(probs)    
-                 
+
+    def do_statistics(self):
+        print(self.t, end = ' ')
+        stat = [0, 0, 0, 0, 0]
+        for e in self.People:
+            stat[e.state] += 1
+        for i in stat:
+            print (i, end = ' ')
+        print()
+# this is ugly!
+        self.Ni = stat[INFECTIOUS]
+
+    def run(self):
+        self.do_statistics()
+        for self.t in range(1, self.T + 1):
+            self.do_statistics()
+            self.run_iteration()
+             
 
 if __name__ == "__main__":
 #    m = NoSEIRSModel(100, 100, 30)

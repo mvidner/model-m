@@ -33,6 +33,28 @@ class GraphGenerator:
     def as_one_graph(self):
         return nx.Graph(self.G)
 
+    def as_aggregated_graph(self):
+        ag = nx.Graph();
+        ag.add_nodes_from(self.G)
+# iterate through nodes n
+#   for neighbours of n denoted m, m > n 
+#       for all layers types 
+#           for all layer sub-types
+#               sum weights in sub-layers
+#       1 - product (leyer weight * (1-sum of sub-layers))         
+        
+
+
+        lp = []
+        selected_edges = []
+    
+        for i, l in enumerate(self.layer_names):
+            lp[i] = self.G.graph['layer_probs'][i]
+            selected_edges[i] = [(u, v, e) for u, v, e in self.G.edges(
+                data=True) if e['type'] == l]
+
+        return ag       
+
     def get_graph_for_layer(self, layer_name):
         ret_g = nx.Graph()
         ret_g.graph['layer_name'] = layer_name
