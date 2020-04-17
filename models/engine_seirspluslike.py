@@ -32,12 +32,12 @@ class SeirsPlusLikeEngine(BaseEngine):
 
     def setup_series_and_time_keeping(self):
 
-        self.num_transitions = 100  # TO: change to our situation
+        self.expected_num_transitions = 100  # TO: change to our situation
         tseries_len = (self.num_transitions + 1) * self.num_nodes
 
         self.tseries = TimeSeries(tseries_len, dtype=float)
 
-        self.history = TransitionHistoryInt(tseries_len)
+        self.history = TransitionHistory(tseries_len)
 
         # state_counts ... numbers of inidividuals in given states
         self.state_counts = {
@@ -90,9 +90,9 @@ class SeirsPlusLikeEngine(BaseEngine):
             x = np.pad(np.ones(count), [(0, self.num_nodes - count)],
                        mode='constant', constant_values=0)
             np.random.shuffle(x)  # in place
-            tempX.append(x)
+            tempX.append(x.reshape((self.num_nodes, 1)))
 
-        self.memberships = np.vstack(tempX)
+        self.memberships = np.stack(tempX)
 
     def node_degrees(self, Amat):
         """ return number of degrees of  nodes,
@@ -138,18 +138,19 @@ class SeirsPlusLikeEngine(BaseEngine):
             #         return tf.sparse.sparse_dense_matmul(self.A, x)
             # else:
             return np.asarray(
-                scipy.sparse.csr_matrix.dot(self.A, self.X == state))
+                scipy.sparse.csr_matrix.dot(self.A, self.memberships[state]))
 
         elif type(state) == list:
             state_flags = np.hstack(
-                [np.array(self.X == s, dtype=int) for s in state]
+                [self.memberships[s] for s in state]
             )
             # if TF_ENABLED:
             #     with tf.device('/GPU:' + "0"):
             #         x = tf.Variable(state_flags, dtype="float32")
             #         nums = tf.sparse.sparse_dense_matmul(self.A, x)
             # else:
-
+            print(self.A.shape)
+            print(state_flags.shape)
             nums = scipy.sparse.csr_matrix.dot(self.A, state_flags)
             return np.sum(nums, axis=1).reshape((self.num_nodes, 1))
         else:
@@ -163,14 +164,16 @@ class SeirsPlusLikeEngine(BaseEngine):
         return self.N[self.tidx]
 
     def increase_data_series_length(self):
+        self.expected_num_transitions = 100  # TO: change to our situation
+        tseries_len = (self.expected_num_transitions + 1) * self.num_nodes
 
-        self.tseries.bloat()
-        self.history.bloat()
+        self.tseries.bloat(tseries_len)
+        self.history.bloat(tseries_len)
         for state in self.states:
-            self.state_counts[state].bloat()
+            self.state_counts[state].bloat(tseries_len)
         for tran in self.transitions:
-            self.propensities_repo[tran].bloat()
-        self.N.bloat()
+            self.propensities_repo[tran].bloat(tseries_len)
+        self.N.bloat(tseries_len)
 
     def finalize_data_series(self):
 
