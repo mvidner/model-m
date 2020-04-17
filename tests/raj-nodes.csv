@@ -1,0 +1,38 @@
+type,label,sex,age
+0,Chorus,0,61
+1,Romeo,0,18
+2,Juliet,1,13
+3,Lord Montague,0,58
+4,Lady Montague,1,40
+5,Benvolio,0,17
+6,Lord Capulet,0,50
+7,Lady Capulet,1,35
+8,Tybalt,0,17
+9,Prince Escalus,0,60
+10,Paris,0,24
+11,Mercutio,0,20
+12,Nurse,1,28
+13,Peter,0,60
+14,Balthasar,0,23
+15,Abram,0,68
+16,Gregory,0,34
+17,Sampson,0,36
+18,Page,0,11
+19,Friar Lawrence,0,68
+20,Friar John,0,42
+21,Apothacary,0,75
+22,Rosaline,1,16
+23,Queen Mab,1,20
+24,Old Capulet,0,82
+25,Anthony,0,38
+26,Potpan,0,35
+27,Servant 1,0,49
+28,Servant 2,0,31
+29,Ghost Petruchio,0,27
+30,Valentine,0,26
+31,Watchmen 1,0,29
+32,Watchmen 2,0,25
+33,Watchmen 3,0,30
+34,Musician 1,0,39
+35,Musician 2,0,31
+36,Musician 3,0,49

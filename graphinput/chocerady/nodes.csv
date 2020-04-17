@@ -1,0 +1,1322 @@
+type ,sex, age, ecactivity, worktype, commutetime, town,x,y
+0,M,37.5,working,education,not commuting,529796,1051.25,5566.18
+1,M,1.5,at home,undef,not commuting,529796,1051.13,5566.27
+2,F,67.5,retired,undef,not commuting,529796,1051.17,5566.46
+3,F,42.5,working,tradeandmoto,15 to 30 min,529796,1051.91,5566.48
+4,F,42.5,working,publicsector,not commuting,529796,1051.55,5566.83
+5,M,32.5,at home,undef,not commuting,529796,1051.69,5565.95
+6,M,52.5,working,industry,not commuting,529796,1051.17,5566.23
+7,M,72.5,working,adminetc,not commuting,529796,1051.57,5566.75
+8,F,37.5,at home,undef,not commuting,529796,1051.95,5566.39
+9,F,57.5,at home,undef,not commuting,529796,1051.47,5566.24
+10,M,32.5,working,industry,not commuting,529796,1051.61,5566.19
+11,F,57.5,working,industry,not commuting,529796,1052.02,5566.72
+12,M,37.5,working,it,not commuting,529796,1051.61,5566.49
+13,F,57.5,at home,undef,not commuting,529796,1051.57,5565.79
+14,F,12.5,student,undef,not commuting,529796,1051.27,5566.11
+15,M,32.5,working,it,15 to 30 min,529796,1051.7,5566.8
+16,F,62.5,working,tradeandmoto,45 to 60 mins,529796,1051.68,5565.86
+17,M,22.5,at home,undef,not commuting,529796,1051.29,5566.06
+18,M,37.5,at home,undef,not commuting,529796,1051.65,5566.77
+19,F,52.5,working,it,30 to 45 mins,529796,1052.17,5566.24
+20,M,47.5,working,tradeandmoto,30 to 45 mins,529796,1051.97,5566.8
+21,F,37.5,working,eatinghousing,not commuting,529796,1052,5566.5
+22,F,67.5,retired,undef,not commuting,529796,1051.7,5566.46
+23,M,67.5,retired,undef,not commuting,529796,1051.26,5566.84
+24,M,37.5,working,it,not commuting,529796,1051.64,5566.61
+25,F,32.5,at home,undef,not commuting,529796,1052,5566.13
+26,F,27.5,working,tradeandmoto,45 to 60 mins,529796,1052.13,5565.71
+27,F,47.5,working,agriculture,more than 90 mins,529796,1051.43,5565.96
+28,M,32.5,working,construction,not commuting,529796,1052.11,5566.1
+29,F,42.5,working,it,not commuting,529796,1051.88,5566.6
+30,F,16.5,student,undef,not commuting,529796,1051.24,5566.26
+31,M,52.5,working,eatinghousing,not commuting,529796,1052.16,5566.3
+32,M,62.5,working,construction,not commuting,529796,1051.55,5566.16
+33,F,72.5,retired,undef,not commuting,529796,1052,5566.78
+34,M,27.5,working,eatinghousing,not commuting,529796,1051.92,5566.36
+35,F,77.5,retired,undef,not commuting,529796,1051.89,5566.75
+36,F,37.5,working,adminetc,less than 15min,529796,1051.66,5565.63
+37,M,16.5,student,undef,45 to 60 mins,529796,1052.03,5565.61
+38,F,8,student,undef,not commuting,529796,1051.1,5566.25
+39,F,37.5,working,tradeandmoto,not commuting,529796,1051.36,5566.39
+40,M,8,student,undef,not commuting,529796,1051.22,5566.57
+41,M,77.5,retired,undef,not commuting,529796,1051.29,5565.97
+42,F,16.5,working,health,not commuting,529796,1051.28,5566.65
+43,F,42.5,working,industry,not commuting,529796,1051.13,5566.22
+44,F,72.5,retired,undef,not commuting,529796,1051.86,5565.76
+45,F,62.5,retired,undef,not commuting,529796,1051.41,5566.13
+46,M,37.5,working,industry,not commuting,529796,1051.65,5566.43
+47,F,77.5,retired,undef,not commuting,529796,1051.95,5566.65
+48,F,47.5,working,banks,not commuting,529796,1052.05,5565.92
+49,M,57.5,working,industry,not commuting,529796,1051.37,5566.42
+50,F,22.5,working,adminetc,not commuting,529796,1051.92,5566.79
+51,F,77.5,retired,undef,not commuting,529796,1051.74,5565.68
+52,F,72.5,retired,undef,not commuting,529796,1052.02,5565.82
+53,M,19,student,undef,not commuting,529796,1051.24,5565.8
+54,F,37.5,at home,undef,not commuting,529796,1051.81,5566.55
+55,M,37.5,working,construction,not commuting,529796,1051.54,5566.17
+56,F,37.5,working,transportation,30 to 45 mins,529796,1051.75,5566.68
+57,M,32.5,working,education,not commuting,529796,1051.09,5566.43
+58,F,57.5,working,it,not commuting,529796,1051.52,5566.24
+59,M,37.5,working,banks,not commuting,529796,1052.05,5566.25
+60,M,72.5,retired,undef,not commuting,529796,1051.56,5565.89
+61,F,19,working,eatinghousing,not commuting,529796,1051.13,5565.64
+62,M,27.5,working,education,30 to 45 mins,529796,1052.3,5566.69
+63,M,27.5,working,industry,not commuting,529796,1051.81,5566.78
+64,F,32.5,working,tradeandmoto,not commuting,529796,1052.16,5566.45
+65,M,3.5,at home,undef,not commuting,529796,1051.37,5566.34
+66,F,67.5,retired,undef,not commuting,529796,1052.04,5565.7
+67,F,3.5,at home,undef,not commuting,529796,1052.13,5566.36
+68,F,8,student,undef,not commuting,529796,1051.29,5566.32
+69,F,32.5,at home,undef,not commuting,529796,1051.92,5566.29
+70,M,3.5,at home,undef,not commuting,529796,1051.64,5566.23
+71,M,19,student,undef,30 to 45 mins,529796,1051.74,5565.65
+72,F,32.5,working,banks,not commuting,529796,1052.05,5566.21
+73,M,37.5,working,education,30 to 45 mins,529796,1051.44,5566.27
+74,F,32.5,at home,undef,not commuting,529796,1051.38,5566.73
+75,M,22.5,at home,undef,not commuting,529796,1052.16,5566.79
+76,M,52.5,working,tradeandmoto,not commuting,529796,1051.22,5565.73
+77,M,88,retired,undef,not commuting,529796,1051.34,5566.82
+78,M,57.5,working,it,not commuting,529796,1051.29,5565.79
+79,M,32.5,working,eatinghousing,not commuting,529796,1052.21,5566.73
+80,F,72.5,retired,undef,not commuting,529796,1051.82,5566.62
+81,F,37.5,working,publicsector,not commuting,529796,1052.19,5565.84
+82,F,52.5,working,publicsector,not commuting,529796,1051.61,5566.45
+83,M,16.5,student,undef,not commuting,529796,1051.56,5566.46
+84,M,57.5,at home,undef,not commuting,529796,1052.31,5566.45
+85,M,16.5,student,undef,30 to 45 mins,529796,1052.31,5566.45
+86,M,16.5,student,undef,more than 90 mins,529796,1052.26,5565.79
+87,M,32.5,working,eatinghousing,not commuting,529796,1052.26,5565.79
+88,M,27.5,at home,undef,not commuting,529796,1051.55,5566.35
+89,M,62.5,retired,undef,not commuting,529796,1051.55,5566.35
+90,F,27.5,at home,undef,not commuting,529796,1051.56,5566.2
+91,M,57.5,working,industry,not commuting,529796,1051.56,5566.2
+92,F,67.5,retired,undef,not commuting,529796,1051.48,5566.36
+93,M,42.5,working,it,not commuting,529796,1051.48,5566.36
+94,F,52.5,working,tradeandmoto,15 to 30 min,529796,1051.28,5566.44
+95,M,37.5,working,industry,not commuting,529796,1051.28,5566.44
+96,M,57.5,working,transportation,45 to 60 mins,529796,1051.62,5565.97
+97,M,8,student,undef,not commuting,529796,1051.62,5565.97
+98,M,19,student,undef,45 to 60 mins,529796,1051.83,5566.68
+99,M,1.5,at home,undef,not commuting,529796,1051.83,5566.68
+100,F,37.5,at home,undef,not commuting,529796,1051.33,5566.26
+101,F,32.5,at home,undef,not commuting,529796,1051.33,5566.26
+102,M,67.5,retired,undef,not commuting,529796,1051.76,5566.01
+103,M,22.5,at home,undef,not commuting,529796,1051.76,5566.01
+104,F,67.5,retired,undef,not commuting,529796,1051.51,5566.27
+105,F,19,working,industry,30 to 45 mins,529796,1051.51,5566.27
+106,F,62.5,working,banks,not commuting,529796,1051.87,5566.44
+107,M,3.5,at home,undef,not commuting,529796,1051.87,5566.44
+108,M,12.5,student,undef,not commuting,529796,1052.16,5566.43
+109,M,47.5,working,publicsector,not commuting,529796,1052.16,5566.43
+110,M,67.5,retired,undef,not commuting,529796,1051.95,5566.31
+111,M,42.5,working,transportation,45 to 60 mins,529796,1051.95,5566.31
+112,F,77.5,retired,undef,not commuting,529796,1051.36,5566.58
+113,M,22.5,at home,undef,not commuting,529796,1051.36,5566.58
+114,F,32.5,working,publicsector,not commuting,529796,1051.72,5565.75
+115,F,32.5,at home,undef,not commuting,529796,1051.72,5565.75
+116,F,37.5,working,industry,not commuting,529796,1051.22,5566.05
+117,F,32.5,at home,undef,not commuting,529796,1051.22,5566.05
+118,F,52.5,working,industry,not commuting,529796,1051.52,5566.48
+119,F,42.5,working,adminetc,not commuting,529796,1051.52,5566.48
+120,F,52.5,working,tradeandmoto,45 to 60 mins,529796,1052.25,5565.94
+121,F,22.5,working,industry,30 to 45 mins,529796,1052.25,5565.94
+122,F,32.5,working,tradeandmoto,45 to 60 mins,529796,1051.11,5565.75
+123,M,62.5,retired,undef,not commuting,529796,1051.11,5565.75
+124,M,57.5,working,publicsector,30 to 45 mins,529796,1051.25,5566.78
+125,M,67.5,retired,undef,not commuting,529796,1051.25,5566.78
+126,F,47.5,working,tradeandmoto,not commuting,529796,1052.24,5566.53
+127,M,22.5,working,adminetc,not commuting,529796,1052.24,5566.53
+128,F,57.5,working,education,not commuting,529796,1051.38,5566.46
+129,M,27.5,working,it,not commuting,529796,1051.38,5566.46
+130,F,77.5,retired,undef,not commuting,529796,1052.1,5565.64
+131,M,37.5,working,construction,not commuting,529796,1052.1,5565.64
+132,F,57.5,at home,undef,not commuting,529796,1052.26,5566.24
+133,F,22.5,at home,undef,not commuting,529796,1052.26,5566.24
+134,F,12.5,student,undef,not commuting,529796,1051.12,5565.86
+135,M,22.5,working,eatinghousing,30 to 45 mins,529796,1051.12,5565.86
+136,F,67.5,retired,undef,not commuting,529796,1051.54,5565.98
+137,F,52.5,working,banks,not commuting,529796,1051.54,5565.98
+138,F,3.5,at home,undef,not commuting,529796,1051.59,5566.19
+139,F,62.5,working,banks,not commuting,529796,1051.59,5566.19
+140,M,42.5,working,adminetc,not commuting,529796,1051.13,5565.84
+141,M,1.5,at home,undef,not commuting,529796,1051.13,5565.84
+142,M,52.5,working,tradeandmoto,not commuting,529796,1051.52,5566.22
+143,F,47.5,at home,undef,not commuting,529796,1051.52,5566.22
+144,M,32.5,working,industry,not commuting,529796,1052.34,5566.04
+145,F,22.5,at home,undef,not commuting,529796,1052.34,5566.04
+146,F,12.5,student,undef,not commuting,529796,1051.27,5566.26
+147,F,32.5,at home,undef,not commuting,529796,1051.27,5566.26
+148,M,62.5,retired,undef,not commuting,529796,1051.5,5566.53
+149,F,22.5,at home,undef,not commuting,529796,1051.5,5566.53
+150,M,32.5,working,adminetc,not commuting,529796,1051.14,5566.03
+151,M,16.5,student,undef,not commuting,529796,1051.14,5566.03
+152,M,12.5,student,undef,not commuting,529796,1051.79,5566.27
+153,M,22.5,at home,undef,not commuting,529796,1051.79,5566.27
+154,F,67.5,retired,undef,not commuting,529796,1051.25,5565.68
+155,F,12.5,student,undef,not commuting,529796,1051.25,5565.68
+156,F,77.5,retired,undef,not commuting,529796,1052.15,5566.43
+157,M,47.5,working,industry,45 to 60 mins,529796,1052.15,5566.43
+158,M,32.5,working,banks,not commuting,529796,1051.44,5566.14
+159,M,32.5,at home,undef,not commuting,529796,1051.44,5566.14
+160,F,32.5,working,transportation,not commuting,529796,1051.09,5565.83
+161,M,67.5,retired,undef,not commuting,529796,1051.09,5565.83
+162,M,1.5,at home,undef,not commuting,529796,1052.19,5565.86
+163,M,22.5,at home,undef,not commuting,529796,1052.19,5565.86
+164,F,62.5,retired,undef,not commuting,529796,1051.4,5565.64
+165,M,82.5,retired,undef,not commuting,529796,1051.4,5565.64
+166,M,32.5,working,health,not commuting,529796,1051.78,5566.54
+167,F,62.5,retired,undef,not commuting,529796,1051.78,5566.54
+168,F,5.5,at home,undef,not commuting,529796,1052.14,5566.49
+169,M,16.5,student,undef,not commuting,529796,1052.14,5566.49
+170,M,27.5,working,industry,not commuting,529796,1052.04,5566.41
+171,M,32.5,at home,undef,not commuting,529796,1052.04,5566.41
+172,M,52.5,working,industry,not commuting,529796,1051.51,5566.05
+173,M,88,retired,undef,not commuting,529796,1051.51,5566.05
+174,M,19,student,undef,not commuting,529796,1051.91,5565.61
+175,M,22.5,at home,undef,not commuting,529796,1051.91,5565.61
+176,M,37.5,working,publicsector,not commuting,529796,1051.36,5565.92
+177,F,62.5,retired,undef,not commuting,529796,1051.36,5565.92
+178,F,42.5,working,it,not commuting,529796,1052.34,5566.07
+179,F,57.5,at home,undef,not commuting,529796,1052.34,5566.07
+180,F,57.5,working,adminetc,not commuting,529796,1051.45,5566.82
+181,M,57.5,working,it,not commuting,529796,1051.45,5566.82
+182,F,62.5,retired,undef,not commuting,529796,1052.06,5566.49
+183,F,1.5,at home,undef,not commuting,529796,1052.06,5566.49
+184,M,32.5,working,education,not commuting,529796,1052.02,5566.47
+185,F,62.5,retired,undef,not commuting,529796,1052.02,5566.47
+186,M,52.5,working,banks,30 to 45 mins,529796,1051.42,5565.9
+187,F,8,student,undef,not commuting,529796,1051.42,5565.9
+188,M,62.5,retired,undef,not commuting,529796,1052.02,5566.55
+189,F,32.5,working,construction,45 to 60 mins,529796,1052.02,5566.55
+190,M,62.5,retired,undef,not commuting,529796,1052.22,5566.82
+191,F,22.5,working,industry,not commuting,529796,1052.22,5566.82
+192,F,32.5,working,tradeandmoto,not commuting,529796,1051.58,5566.3
+193,M,42.5,working,publicsector,not commuting,529796,1051.58,5566.3
+194,M,57.5,working,construction,not commuting,529796,1051.9,5565.69
+195,F,62.5,retired,undef,not commuting,529796,1051.9,5565.69
+196,M,27.5,working,industry,not commuting,529796,1052.32,5566.32
+197,M,57.5,working,construction,15 to 30 min,529796,1052.32,5566.32
+198,F,3.5,at home,undef,not commuting,529796,1051.4,5566.29
+199,M,57.5,working,education,not commuting,529796,1051.4,5566.29
+200,M,8,student,undef,not commuting,529796,1051.59,5566.61
+201,M,22.5,at home,undef,not commuting,529796,1051.59,5566.61
+202,M,47.5,at home,undef,not commuting,529796,1051.35,5566.64
+203,M,52.5,working,banks,not commuting,529796,1051.35,5566.64
+204,F,62.5,working,construction,not commuting,529796,1051.29,5565.85
+205,F,62.5,retired,undef,not commuting,529796,1051.29,5565.85
+206,F,32.5,at home,undef,not commuting,529796,1052.32,5566.63
+207,M,62.5,retired,undef,not commuting,529796,1052.32,5566.63
+208,M,47.5,working,tradeandmoto,not commuting,529796,1051.69,5566.62
+209,F,32.5,at home,undef,not commuting,529796,1051.69,5566.62
+210,M,47.5,working,industry,not commuting,529796,1051.92,5566.42
+211,M,42.5,working,transportation,45 to 60 mins,529796,1051.92,5566.42
+212,M,72.5,retired,undef,not commuting,529796,1051.4,5566.46
+213,F,57.5,at home,undef,not commuting,529796,1051.4,5566.46
+214,F,47.5,working,it,15 to 30 min,529796,1051.28,5566.1
+215,M,42.5,working,adminetc,not commuting,529796,1051.28,5566.1
+216,F,72.5,retired,undef,not commuting,529796,1052.14,5566.78
+217,F,57.5,working,publicsector,45 to 60 mins,529796,1052.14,5566.78
+218,M,62.5,retired,undef,not commuting,529796,1052.18,5566.54
+219,M,57.5,working,publicsector,45 to 60 mins,529796,1052.18,5566.54
+220,M,62.5,retired,undef,not commuting,529796,1051.61,5566.51
+221,F,82.5,working,industry,not commuting,529796,1051.61,5566.51
+222,M,27.5,working,industry,not commuting,529796,1051.39,5566.45
+223,F,37.5,at home,undef,not commuting,529796,1051.39,5566.45
+224,F,57.5,working,construction,30 to 45 mins,529796,1052.01,5565.87
+225,F,22.5,at home,undef,not commuting,529796,1052.01,5565.87
+226,M,19,student,undef,not commuting,529796,1052,5566.12
+227,F,27.5,at home,undef,not commuting,529796,1052,5566.12
+228,M,72.5,retired,undef,not commuting,529796,1051.19,5565.66
+229,F,57.5,working,banks,30 to 45 mins,529796,1051.19,5565.66
+230,F,37.5,working,construction,30 to 45 mins,529796,1051.32,5566.27
+231,F,62.5,working,transportation,not commuting,529796,1051.32,5566.27
+232,M,27.5,at home,undef,not commuting,529796,1051.3,5565.99
+233,F,19,student,undef,not commuting,529796,1051.3,5565.99
+234,M,52.5,working,industry,not commuting,529796,1051.82,5565.8
+235,F,47.5,working,health,less than 15min,529796,1051.82,5565.8
+236,F,32.5,working,industry,not commuting,529796,1051.28,5566.31
+237,F,52.5,working,eatinghousing,15 to 30 min,529796,1051.28,5566.31
+238,F,16.5,student,undef,not commuting,529796,1051.73,5566.2
+239,M,3.5,at home,undef,not commuting,529796,1051.73,5566.2
+240,M,32.5,working,industry,45 to 60 mins,529796,1052.04,5566.11
+241,F,52.5,working,publicsector,not commuting,529796,1052.04,5566.11
+242,M,37.5,working,tradeandmoto,not commuting,529796,1051.16,5566.41
+243,F,52.5,working,adminetc,not commuting,529796,1051.16,5566.41
+244,F,37.5,working,industry,not commuting,529796,1051.97,5566.5
+245,F,37.5,working,industry,not commuting,529796,1051.97,5566.5
+246,F,32.5,at home,undef,not commuting,529796,1051.75,5566.03
+247,F,52.5,working,industry,30 to 45 mins,529796,1051.75,5566.03
+248,M,19,student,undef,45 to 60 mins,529796,1051.12,5565.95
+249,M,1.5,at home,undef,not commuting,529796,1051.12,5565.95
+250,M,52.5,at home,undef,not commuting,529796,1051.87,5565.99
+251,F,42.5,working,tradeandmoto,not commuting,529796,1051.87,5565.99
+252,F,62.5,retired,undef,not commuting,529796,1052.19,5566.37
+253,F,52.5,working,industry,not commuting,529796,1052.19,5566.37
+254,M,27.5,working,industry,not commuting,529796,1051.5,5565.92
+255,M,37.5,working,tradeandmoto,not commuting,529796,1051.5,5565.92
+256,F,77.5,retired,undef,not commuting,529796,1051.5,5565.92
+257,F,32.5,working,construction,not commuting,529796,1052.25,5566.59
+258,M,82.5,retired,undef,not commuting,529796,1052.25,5566.59
+259,F,62.5,retired,undef,not commuting,529796,1052.25,5566.59
+260,F,52.5,working,industry,45 to 60 mins,529796,1051.33,5565.89
+261,M,47.5,working,banks,not commuting,529796,1051.33,5565.89
+262,M,37.5,working,tradeandmoto,not commuting,529796,1051.33,5565.89
+263,F,67.5,retired,undef,not commuting,529796,1051.49,5566.43
+264,M,52.5,working,industry,not commuting,529796,1051.49,5566.43
+265,F,3.5,at home,undef,not commuting,529796,1051.49,5566.43
+266,F,77.5,retired,undef,not commuting,529796,1051.77,5566.37
+267,M,32.5,working,education,not commuting,529796,1051.77,5566.37
+268,M,32.5,working,publicsector,not commuting,529796,1051.77,5566.37
+269,F,42.5,working,transportation,not commuting,529796,1051.19,5565.74
+270,M,42.5,working,health,not commuting,529796,1051.19,5565.74
+271,F,3.5,at home,undef,not commuting,529796,1051.19,5565.74
+272,M,52.5,at home,undef,not commuting,529796,1051.84,5566.53
+273,M,19,working,adminetc,not commuting,529796,1051.84,5566.53
+274,M,27.5,working,industry,15 to 30 min,529796,1051.84,5566.53
+275,F,88,retired,undef,not commuting,529796,1051.81,5566.34
+276,M,57.5,working,health,not commuting,529796,1051.81,5566.34
+277,F,27.5,at home,undef,not commuting,529796,1051.81,5566.34
+278,M,32.5,working,industry,not commuting,529796,1051.53,5566.7
+279,M,22.5,working,tradeandmoto,not commuting,529796,1051.53,5566.7
+280,F,12.5,student,undef,not commuting,529796,1051.53,5566.7
+281,F,22.5,working,tradeandmoto,45 to 60 mins,529796,1051.32,5565.8
+282,F,67.5,retired,undef,not commuting,529796,1051.32,5565.8
+283,F,52.5,working,publicsector,not commuting,529796,1051.32,5565.8
+284,M,32.5,working,banks,not commuting,529796,1051.91,5566.08
+285,M,22.5,working,industry,15 to 30 min,529796,1051.91,5566.08
+286,M,47.5,working,transportation,not commuting,529796,1051.91,5566.08
+287,F,52.5,working,construction,not commuting,529796,1051.23,5565.79
+288,F,32.5,working,industry,not commuting,529796,1051.23,5565.79
+289,F,57.5,working,industry,less than 15min,529796,1051.23,5565.79
+290,M,37.5,working,publicsector,not commuting,529796,1052.04,5565.62
+291,F,67.5,retired,undef,not commuting,529796,1052.04,5565.62
+292,M,52.5,working,industry,60 to 90 mins,529796,1052.04,5565.62
+293,F,47.5,working,industry,not commuting,529796,1051.89,5566.78
+294,M,57.5,working,adminetc,30 to 45 mins,529796,1051.89,5566.78
+295,M,62.5,retired,undef,not commuting,529796,1051.89,5566.78
+296,F,47.5,working,industry,not commuting,529796,1051.87,5566.19
+297,M,47.5,working,adminetc,15 to 30 min,529796,1051.87,5566.19
+298,M,12.5,student,undef,not commuting,529796,1051.87,5566.19
+299,F,16.5,working,transportation,not commuting,529796,1051.95,5566.85
+300,M,37.5,working,industry,30 to 45 mins,529796,1051.95,5566.85
+301,M,72.5,retired,undef,not commuting,529796,1051.95,5566.85
+302,F,1.5,at home,undef,not commuting,529796,1051.5,5566.74
+303,M,27.5,at home,undef,not commuting,529796,1051.5,5566.74
+304,F,1.5,at home,undef,not commuting,529796,1051.5,5566.74
+305,F,62.5,working,education,not commuting,529796,1051.7,5565.95
+306,M,47.5,working,health,not commuting,529796,1051.7,5565.95
+307,F,16.5,student,undef,less than 15min,529796,1051.7,5565.95
+308,M,19,student,undef,30 to 45 mins,529796,1051.76,5565.66
+309,F,52.5,working,industry,15 to 30 min,529796,1051.76,5565.66
+310,F,32.5,at home,undef,not commuting,529796,1051.76,5565.66
+311,M,57.5,working,construction,not commuting,529796,1052.25,5565.68
+312,M,77.5,retired,undef,not commuting,529796,1052.25,5565.68
+313,F,52.5,working,industry,not commuting,529796,1052.25,5565.68
+314,M,52.5,at home,undef,not commuting,529796,1052.3,5566.35
+315,M,37.5,working,industry,not commuting,529796,1052.3,5566.35
+316,F,16.5,working,construction,45 to 60 mins,529796,1052.3,5566.35
+317,M,37.5,working,banks,15 to 30 min,529796,1051.53,5565.77
+318,M,42.5,at home,undef,not commuting,529796,1051.53,5565.77
+319,M,32.5,working,industry,not commuting,529796,1051.53,5565.77
+320,M,27.5,working,publicsector,45 to 60 mins,529796,1051.53,5566.05
+321,F,57.5,at home,undef,not commuting,529796,1051.53,5566.05
+322,F,72.5,retired,undef,not commuting,529796,1051.53,5566.05
+323,M,52.5,working,education,30 to 45 mins,529796,1051.55,5565.62
+324,F,67.5,retired,undef,not commuting,529796,1051.55,5565.62
+325,M,27.5,working,it,30 to 45 mins,529796,1051.55,5565.62
+326,M,57.5,working,construction,not commuting,529796,1051.85,5566.26
+327,M,32.5,working,eatinghousing,not commuting,529796,1051.85,5566.26
+328,F,47.5,working,adminetc,not commuting,529796,1051.85,5566.26
+329,M,52.5,working,publicsector,not commuting,529796,1052.16,5566.52
+330,M,32.5,working,industry,not commuting,529796,1052.16,5566.52
+331,F,77.5,retired,undef,not commuting,529796,1052.16,5566.52
+332,M,67.5,retired,undef,not commuting,529796,1051.55,5565.95
+333,F,67.5,retired,undef,not commuting,529796,1051.55,5565.95
+334,M,42.5,working,publicsector,45 to 60 mins,529796,1051.55,5565.95
+335,M,32.5,working,eatinghousing,not commuting,529796,1052.24,5565.65
+336,M,3.5,at home,undef,not commuting,529796,1052.24,5565.65
+337,F,22.5,working,it,not commuting,529796,1052.24,5565.65
+338,M,27.5,working,health,not commuting,529796,1051.66,5566.52
+339,M,22.5,at home,undef,not commuting,529796,1051.66,5566.52
+340,F,22.5,working,construction,not commuting,529796,1051.66,5566.52
+341,F,32.5,working,education,not commuting,529796,1051.17,5566.21
+342,M,37.5,working,it,not commuting,529796,1051.17,5566.21
+343,M,16.5,working,publicsector,less than 15min,529796,1051.17,5566.21
+344,M,47.5,working,education,not commuting,529796,1051.41,5566.79
+345,F,57.5,working,publicsector,not commuting,529796,1051.41,5566.79
+346,F,62.5,working,publicsector,not commuting,529796,1051.41,5566.79
+347,M,32.5,working,health,less than 15min,529796,1051.7,5565.61
+348,F,32.5,working,tradeandmoto,not commuting,529796,1051.7,5565.61
+349,M,62.5,working,tradeandmoto,not commuting,529796,1051.7,5565.61
+350,M,62.5,retired,undef,not commuting,529796,1051.88,5566.55
+351,M,67.5,retired,undef,not commuting,529796,1051.88,5566.55
+352,M,72.5,retired,undef,not commuting,529796,1051.88,5566.55
+353,M,62.5,retired,undef,not commuting,529796,1051.73,5566.83
+354,M,32.5,working,industry,not commuting,529796,1051.73,5566.83
+355,F,37.5,working,adminetc,not commuting,529796,1051.73,5566.83
+356,F,47.5,working,industry,not commuting,529796,1051.91,5565.74
+357,F,57.5,at home,undef,not commuting,529796,1051.91,5565.74
+358,M,32.5,working,banks,not commuting,529796,1051.91,5565.74
+359,F,67.5,retired,undef,not commuting,529796,1052.22,5565.82
+360,M,82.5,retired,undef,not commuting,529796,1052.22,5565.82
+361,F,19,working,adminetc,not commuting,529796,1052.22,5565.82
+362,F,77.5,retired,undef,not commuting,529796,1051.1,5565.68
+363,M,57.5,at home,undef,not commuting,529796,1051.1,5565.68
+364,M,52.5,working,it,not commuting,529796,1051.1,5565.68
+365,F,22.5,at home,undef,not commuting,529796,1051.28,5565.66
+366,M,62.5,retired,undef,not commuting,529796,1051.28,5565.66
+367,F,32.5,working,publicsector,not commuting,529796,1051.28,5565.66
+368,F,77.5,retired,undef,not commuting,529796,1052,5566.02
+369,M,3.5,at home,undef,not commuting,529796,1052,5566.02
+370,F,12.5,student,undef,not commuting,529796,1052,5566.02
+371,M,47.5,working,adminetc,not commuting,529796,1051.45,5566.22
+372,M,1.5,at home,undef,not commuting,529796,1051.45,5566.22
+373,M,67.5,retired,undef,not commuting,529796,1051.45,5566.22
+374,M,62.5,retired,undef,not commuting,529796,1051.93,5566.29
+375,M,47.5,at home,undef,not commuting,529796,1051.93,5566.29
+376,M,52.5,at home,undef,not commuting,529796,1051.93,5566.29
+377,F,62.5,working,education,15 to 30 min,529796,1051.23,5565.62
+378,F,57.5,at home,undef,not commuting,529796,1051.23,5565.62
+379,M,52.5,working,eatinghousing,not commuting,529796,1051.23,5565.62
+380,F,1.5,at home,undef,not commuting,529796,1051.34,5566.77
+381,M,57.5,working,banks,not commuting,529796,1051.34,5566.77
+382,F,12.5,student,undef,not commuting,529796,1051.34,5566.77
+383,F,47.5,at home,undef,not commuting,529796,1051.99,5566.48
+384,F,47.5,working,transportation,not commuting,529796,1051.99,5566.48
+385,M,1.5,at home,undef,not commuting,529796,1051.99,5566.48
+386,F,47.5,working,industry,45 to 60 mins,529796,1051.63,5566.77
+387,F,37.5,working,industry,not commuting,529796,1051.63,5566.77
+388,M,57.5,working,industry,45 to 60 mins,529796,1051.63,5566.77
+389,M,32.5,working,tradeandmoto,15 to 30 min,529796,1051.58,5566.37
+390,M,19,student,undef,not commuting,529796,1051.58,5566.37
+391,M,32.5,working,construction,not commuting,529796,1051.58,5566.37
+392,M,8,student,undef,not commuting,529796,1051.42,5566.16
+393,F,67.5,retired,undef,not commuting,529796,1051.42,5566.16
+394,F,77.5,retired,undef,not commuting,529796,1051.42,5566.16
+395,F,57.5,at home,undef,not commuting,529796,1052.15,5566.8
+396,M,1.5,at home,undef,not commuting,529796,1052.15,5566.8
+397,M,57.5,working,adminetc,not commuting,529796,1052.15,5566.8
+398,M,88,retired,undef,not commuting,529796,1051.7,5565.78
+399,F,77.5,retired,undef,not commuting,529796,1051.7,5565.78
+400,F,37.5,working,adminetc,not commuting,529796,1051.7,5565.78
+401,F,16.5,student,undef,not commuting,529796,1052.11,5566.26
+402,F,42.5,working,publicsector,not commuting,529796,1052.11,5566.26
+403,F,32.5,working,construction,not commuting,529796,1052.11,5566.26
+404,M,1.5,at home,undef,not commuting,529796,1052.11,5566.26
+405,M,62.5,retired,undef,not commuting,529796,1051.69,5565.76
+406,M,52.5,working,tradeandmoto,not commuting,529796,1051.69,5565.76
+407,M,67.5,retired,undef,not commuting,529796,1051.69,5565.76
+408,M,19,student,undef,30 to 45 mins,529796,1051.69,5565.76
+409,F,27.5,working,industry,not commuting,529796,1051.19,5566.08
+410,F,62.5,retired,undef,not commuting,529796,1051.19,5566.08
+411,F,52.5,working,construction,not commuting,529796,1051.19,5566.08
+412,F,22.5,at home,undef,not commuting,529796,1051.19,5566.08
+413,M,37.5,working,industry,not commuting,529796,1052.2,5566.55
+414,F,47.5,working,industry,30 to 45 mins,529796,1052.2,5566.55
+415,F,12.5,student,undef,not commuting,529796,1052.2,5566.55
+416,M,16.5,working,eatinghousing,not commuting,529796,1052.2,5566.55
+417,F,1.5,at home,undef,not commuting,529796,1052.23,5566.56
+418,F,72.5,retired,undef,not commuting,529796,1052.23,5566.56
+419,F,72.5,retired,undef,not commuting,529796,1052.23,5566.56
+420,F,67.5,retired,undef,not commuting,529796,1052.23,5566.56
+421,F,47.5,working,eatinghousing,less than 15min,529796,1051.66,5566.52
+422,F,42.5,working,publicsector,not commuting,529796,1051.66,5566.52
+423,F,62.5,retired,undef,not commuting,529796,1051.66,5566.52
+424,M,52.5,working,industry,30 to 45 mins,529796,1051.66,5566.52
+425,F,47.5,working,eatinghousing,45 to 60 mins,529796,1051.44,5566.69
+426,F,77.5,retired,undef,not commuting,529796,1051.44,5566.69
+427,F,62.5,retired,undef,not commuting,529796,1051.44,5566.69
+428,F,27.5,at home,undef,not commuting,529796,1051.44,5566.69
+429,F,5.5,at home,undef,not commuting,529796,1051.8,5566.58
+430,F,27.5,working,tradeandmoto,not commuting,529796,1051.8,5566.58
+431,M,57.5,working,it,45 to 60 mins,529796,1051.8,5566.58
+432,M,67.5,working,banks,not commuting,529796,1051.8,5566.58
+433,M,37.5,working,publicsector,not commuting,529796,1052.07,5566.17
+434,F,88,retired,undef,not commuting,529796,1052.07,5566.17
+435,M,52.5,working,publicsector,not commuting,529796,1052.07,5566.17
+436,M,47.5,working,transportation,not commuting,529796,1052.07,5566.17
+437,M,57.5,working,industry,not commuting,529796,1052.14,5566.27
+438,F,12.5,student,undef,not commuting,529796,1052.14,5566.27
+439,F,62.5,retired,undef,not commuting,529796,1052.14,5566.27
+440,M,37.5,working,publicsector,not commuting,529796,1052.14,5566.27
+441,F,16.5,student,undef,45 to 60 mins,529796,1052.01,5565.88
+442,M,67.5,retired,undef,not commuting,529796,1052.01,5565.88
+443,F,12.5,student,undef,not commuting,529796,1052.01,5565.88
+444,M,67.5,retired,undef,not commuting,529796,1052.01,5565.88
+445,F,67.5,retired,undef,not commuting,529796,1051.62,5566.02
+446,M,27.5,at home,undef,not commuting,529796,1051.62,5566.02
+447,M,57.5,at home,undef,not commuting,529796,1051.62,5566.02
+448,F,37.5,working,publicsector,not commuting,529796,1051.62,5566.02
+449,F,67.5,retired,undef,not commuting,529796,1052.17,5565.88
+450,M,47.5,at home,undef,not commuting,529796,1052.17,5565.88
+451,M,47.5,working,education,not commuting,529796,1052.17,5565.88
+452,F,8,student,undef,not commuting,529796,1052.17,5565.88
+453,F,12.5,student,undef,not commuting,529796,1051.84,5566.18
+454,F,47.5,working,eatinghousing,not commuting,529796,1051.84,5566.18
+455,M,12.5,student,undef,not commuting,529796,1051.84,5566.18
+456,F,8,student,undef,not commuting,529796,1051.84,5566.18
+457,M,42.5,at home,undef,not commuting,529796,1052.14,5566.29
+458,F,57.5,at home,undef,not commuting,529796,1052.14,5566.29
+459,F,62.5,retired,undef,not commuting,529796,1052.14,5566.29
+460,M,42.5,working,industry,not commuting,529796,1052.14,5566.29
+461,F,22.5,working,tradeandmoto,not commuting,529796,1051.96,5566.85
+462,F,82.5,retired,undef,not commuting,529796,1051.96,5566.85
+463,F,52.5,at home,undef,not commuting,529796,1051.96,5566.85
+464,F,62.5,retired,undef,not commuting,529796,1051.96,5566.85
+465,M,3.5,at home,undef,not commuting,529796,1051.1,5565.82
+466,F,32.5,at home,undef,not commuting,529796,1051.1,5565.82
+467,F,82.5,retired,undef,not commuting,529796,1051.1,5565.82
+468,F,57.5,working,transportation,more than 90 mins,529796,1051.1,5565.82
+469,M,62.5,retired,undef,not commuting,529796,1051.71,5566.44
+470,M,16.5,working,adminetc,not commuting,529796,1051.71,5566.44
+471,M,37.5,working,transportation,not commuting,529796,1051.71,5566.44
+472,M,67.5,retired,undef,not commuting,529796,1051.71,5566.44
+473,F,32.5,working,banks,45 to 60 mins,529796,1051.86,5566.26
+474,F,62.5,retired,undef,not commuting,529796,1051.86,5566.26
+475,F,67.5,retired,undef,not commuting,529796,1051.86,5566.26
+476,F,88,retired,undef,not commuting,529796,1051.86,5566.26
+477,M,37.5,at home,undef,not commuting,529796,1051.46,5566.67
+478,F,72.5,retired,undef,not commuting,529796,1051.46,5566.67
+479,F,32.5,working,adminetc,not commuting,529796,1051.46,5566.67
+480,M,72.5,retired,undef,not commuting,529796,1051.46,5566.67
+481,F,16.5,working,banks,15 to 30 min,529796,1052.28,5566.34
+482,F,57.5,at home,undef,not commuting,529796,1052.28,5566.34
+483,M,42.5,working,agriculture,not commuting,529796,1052.28,5566.34
+484,M,52.5,working,eatinghousing,30 to 45 mins,529796,1052.28,5566.34
+485,F,32.5,working,transportation,30 to 45 mins,529796,1051.6,5565.92
+486,M,57.5,working,eatinghousing,30 to 45 mins,529796,1051.6,5565.92
+487,M,12.5,student,undef,not commuting,529796,1051.6,5565.92
+488,M,27.5,working,industry,not commuting,529796,1051.6,5565.92
+489,F,62.5,retired,undef,not commuting,529796,1051.21,5565.67
+490,M,16.5,student,undef,60 to 90 mins,529796,1051.21,5565.67
+491,M,57.5,working,tradeandmoto,not commuting,529796,1051.21,5565.67
+492,M,67.5,retired,undef,not commuting,529796,1051.21,5565.67
+493,F,3.5,at home,undef,not commuting,529796,1052.05,5566.58
+494,F,27.5,at home,undef,not commuting,529796,1052.05,5566.58
+495,M,1.5,at home,undef,not commuting,529796,1052.05,5566.58
+496,F,22.5,at home,undef,not commuting,529796,1052.05,5566.58
+497,F,37.5,working,industry,not commuting,529796,1052.16,5566.2
+498,M,16.5,working,industry,not commuting,529796,1052.16,5566.2
+499,M,52.5,working,health,not commuting,529796,1052.16,5566.2
+500,M,37.5,working,adminetc,15 to 30 min,529796,1052.16,5566.2
+501,F,82.5,retired,undef,not commuting,529796,1051.77,5566.09
+502,F,12.5,student,undef,not commuting,529796,1051.77,5566.09
+503,M,42.5,working,transportation,not commuting,529796,1051.77,5566.09
+504,F,52.5,working,eatinghousing,not commuting,529796,1051.77,5566.09
+505,M,47.5,working,health,not commuting,529796,1051.59,5566.8
+506,F,47.5,working,adminetc,not commuting,529796,1051.59,5566.8
+507,F,72.5,retired,undef,not commuting,529796,1051.59,5566.8
+508,F,3.5,at home,undef,not commuting,529796,1051.59,5566.8
+509,M,8,student,undef,not commuting,529796,1052.27,5566.37
+510,F,52.5,working,transportation,not commuting,529796,1052.27,5566.37
+511,M,42.5,working,industry,15 to 30 min,529796,1052.27,5566.37
+512,F,82.5,retired,undef,not commuting,529796,1052.27,5566.37
+513,M,42.5,at home,undef,not commuting,529796,1052.33,5565.94
+514,M,19,student,undef,60 to 90 mins,529796,1052.33,5565.94
+515,F,37.5,at home,undef,not commuting,529796,1052.33,5565.94
+516,F,37.5,working,education,not commuting,529796,1052.33,5565.94
+517,M,47.5,working,tradeandmoto,not commuting,529796,1051.22,5566.32
+518,M,67.5,retired,undef,not commuting,529796,1051.22,5566.32
+519,M,32.5,working,industry,not commuting,529796,1051.22,5566.32
+520,M,8,student,undef,not commuting,529796,1051.22,5566.32
+521,F,47.5,working,tradeandmoto,not commuting,529796,1051.97,5565.82
+522,M,19,working,tradeandmoto,not commuting,529796,1051.97,5565.82
+523,M,47.5,working,transportation,not commuting,529796,1051.97,5565.82
+524,F,12.5,student,undef,not commuting,529796,1051.97,5565.82
+525,F,57.5,working,publicsector,not commuting,529796,1052.26,5566.73
+526,M,57.5,working,adminetc,30 to 45 mins,529796,1052.26,5566.73
+527,F,37.5,working,industry,45 to 60 mins,529796,1052.26,5566.73
+528,F,22.5,working,transportation,not commuting,529796,1052.26,5566.73
+529,M,12.5,student,undef,not commuting,529796,1052.26,5566.59
+530,M,47.5,at home,undef,not commuting,529796,1052.26,5566.59
+531,F,32.5,working,eatinghousing,not commuting,529796,1052.26,5566.59
+532,F,47.5,working,industry,not commuting,529796,1052.26,5566.59
+533,F,77.5,retired,undef,not commuting,529796,1051.44,5566.84
+534,F,52.5,at home,undef,not commuting,529796,1051.44,5566.84
+535,M,57.5,working,transportation,not commuting,529796,1051.44,5566.84
+536,F,16.5,working,tradeandmoto,not commuting,529796,1051.44,5566.84
+537,F,57.5,at home,undef,not commuting,529796,1051.61,5566.49
+538,F,12.5,student,undef,not commuting,529796,1051.61,5566.49
+539,M,62.5,retired,undef,not commuting,529796,1051.61,5566.49
+540,M,62.5,retired,undef,not commuting,529796,1051.61,5566.49
+541,M,82.5,retired,undef,not commuting,529796,1051.35,5565.93
+542,F,8,student,undef,not commuting,529796,1051.35,5565.93
+543,F,42.5,working,construction,30 to 45 mins,529796,1051.35,5565.93
+544,M,57.5,working,education,60 to 90 mins,529796,1051.35,5565.93
+545,F,32.5,working,publicsector,more than 90 mins,529796,1051.69,5566.29
+546,F,5.5,at home,undef,not commuting,529796,1051.69,5566.29
+547,F,47.5,working,industry,not commuting,529796,1051.69,5566.29
+548,M,27.5,at home,undef,not commuting,529796,1051.69,5566.29
+549,M,3.5,at home,undef,not commuting,529796,1052.26,5566.48
+550,F,37.5,working,industry,45 to 60 mins,529796,1052.26,5566.48
+551,F,52.5,at home,undef,not commuting,529796,1052.26,5566.48
+552,M,57.5,at home,undef,not commuting,529796,1052.26,5566.48
+553,M,37.5,working,health,not commuting,529796,1052.33,5566.3
+554,M,37.5,working,publicsector,not commuting,529796,1052.33,5566.3
+555,M,82.5,retired,undef,not commuting,529796,1052.33,5566.3
+556,M,62.5,working,tradeandmoto,not commuting,529796,1052.33,5566.3
+557,F,52.5,working,tradeandmoto,not commuting,529796,1051.84,5565.83
+558,M,27.5,at home,undef,not commuting,529796,1051.84,5565.83
+559,F,27.5,at home,undef,not commuting,529796,1051.84,5565.83
+560,M,16.5,student,undef,30 to 45 mins,529796,1051.84,5565.83
+561,M,52.5,working,construction,15 to 30 min,529796,1051.25,5566.31
+562,F,32.5,at home,undef,not commuting,529796,1051.25,5566.31
+563,M,37.5,working,construction,not commuting,529796,1051.25,5566.31
+564,F,47.5,working,education,45 to 60 mins,529796,1051.25,5566.31
+565,F,52.5,working,construction,15 to 30 min,529796,1052.34,5566.19
+566,F,42.5,working,transportation,not commuting,529796,1052.34,5566.19
+567,M,67.5,retired,undef,not commuting,529796,1052.34,5566.19
+568,M,16.5,student,undef,60 to 90 mins,529796,1052.34,5566.19
+569,M,57.5,working,industry,less than 15min,529796,1051.35,5566.44
+570,M,57.5,working,education,not commuting,529796,1051.35,5566.44
+571,M,47.5,working,health,less than 15min,529796,1051.35,5566.44
+572,F,32.5,working,tradeandmoto,not commuting,529796,1051.35,5566.44
+573,M,62.5,working,adminetc,not commuting,529796,1051.85,5566.04
+574,F,42.5,working,publicsector,not commuting,529796,1051.85,5566.04
+575,F,67.5,retired,undef,not commuting,529796,1051.85,5566.04
+576,F,8,student,undef,not commuting,529796,1051.85,5566.04
+577,F,37.5,working,transportation,not commuting,529796,1051.8,5566.27
+578,F,37.5,working,banks,30 to 45 mins,529796,1051.8,5566.27
+579,F,32.5,working,health,not commuting,529796,1051.8,5566.27
+580,M,8,student,undef,not commuting,529796,1051.8,5566.27
+581,M,67.5,retired,undef,not commuting,529796,1052.29,5565.78
+582,M,52.5,working,publicsector,not commuting,529796,1052.29,5565.78
+583,M,57.5,working,industry,not commuting,529796,1052.29,5565.78
+584,F,62.5,retired,undef,not commuting,529796,1052.29,5565.78
+585,M,62.5,retired,undef,not commuting,529796,1051.15,5565.67
+586,M,67.5,retired,undef,not commuting,529796,1051.15,5565.67
+587,M,52.5,working,publicsector,not commuting,529796,1051.15,5565.67
+588,M,16.5,working,health,not commuting,529796,1051.15,5565.67
+589,F,57.5,at home,undef,not commuting,529796,1051.83,5566.61
+590,F,32.5,at home,undef,not commuting,529796,1051.83,5566.61
+591,F,52.5,working,transportation,not commuting,529796,1051.83,5566.61
+592,F,62.5,working,publicsector,15 to 30 min,529796,1051.83,5566.61
+593,F,42.5,at home,undef,not commuting,529796,1052.16,5565.67
+594,F,12.5,student,undef,not commuting,529796,1052.16,5565.67
+595,M,22.5,at home,undef,not commuting,529796,1052.16,5565.67
+596,M,37.5,working,industry,45 to 60 mins,529796,1052.16,5565.67
+597,M,12.5,student,undef,not commuting,529796,1052.03,5566.59
+598,F,32.5,working,transportation,15 to 30 min,529796,1052.03,5566.59
+599,M,37.5,working,tradeandmoto,not commuting,529796,1052.03,5566.59
+600,F,47.5,working,industry,not commuting,529796,1052.03,5566.59
+601,F,62.5,retired,undef,not commuting,529796,1051.79,5565.75
+602,M,37.5,working,construction,30 to 45 mins,529796,1051.79,5565.75
+603,F,47.5,working,it,not commuting,529796,1051.79,5565.75
+604,M,77.5,retired,undef,not commuting,529796,1051.79,5565.75
+605,M,12.5,student,undef,not commuting,529796,1052.3,5566.19
+606,M,1.5,at home,undef,not commuting,529796,1052.3,5566.19
+607,F,12.5,student,undef,not commuting,529796,1052.3,5566.19
+608,F,32.5,working,tradeandmoto,not commuting,529796,1052.3,5566.19
+609,F,57.5,working,industry,not commuting,529796,1052.26,5565.63
+610,F,32.5,at home,undef,not commuting,529796,1052.26,5565.63
+611,M,52.5,at home,undef,not commuting,529796,1052.26,5565.63
+612,M,12.5,student,undef,not commuting,529796,1052.26,5565.63
+613,M,37.5,at home,undef,not commuting,529796,1051.92,5566.32
+614,F,57.5,at home,undef,not commuting,529796,1051.92,5566.32
+615,F,62.5,retired,undef,not commuting,529796,1051.92,5566.32
+616,M,8,student,undef,not commuting,529796,1051.92,5566.32
+617,M,37.5,working,health,not commuting,529796,1051.73,5566.59
+618,M,52.5,working,transportation,15 to 30 min,529796,1051.73,5566.59
+619,M,32.5,working,publicsector,30 to 45 mins,529796,1051.73,5566.59
+620,F,37.5,working,eatinghousing,45 to 60 mins,529796,1051.73,5566.59
+621,F,62.5,retired,undef,not commuting,529796,1051.19,5566.22
+622,F,3.5,at home,undef,not commuting,529796,1051.19,5566.22
+623,M,57.5,at home,undef,not commuting,529796,1051.19,5566.22
+624,F,52.5,at home,undef,not commuting,529796,1051.19,5566.22
+625,F,16.5,student,undef,30 to 45 mins,529796,1051.19,5566.22
+626,M,1.5,at home,undef,not commuting,529796,1051.95,5566.2
+627,M,32.5,working,tradeandmoto,not commuting,529796,1051.95,5566.2
+628,F,1.5,at home,undef,not commuting,529796,1051.95,5566.2
+629,F,72.5,retired,undef,not commuting,529796,1051.95,5566.2
+630,F,52.5,working,industry,not commuting,529796,1051.95,5566.2
+631,F,72.5,retired,undef,not commuting,529796,1051.16,5566.62
+632,F,42.5,working,it,not commuting,529796,1051.16,5566.62
+633,M,62.5,retired,undef,not commuting,529796,1051.16,5566.62
+634,F,47.5,working,eatinghousing,15 to 30 min,529796,1051.16,5566.62
+635,M,57.5,working,publicsector,not commuting,529796,1051.16,5566.62
+636,F,37.5,working,banks,15 to 30 min,529796,1051.3,5566.38
+637,M,42.5,working,it,not commuting,529796,1051.3,5566.38
+638,F,32.5,at home,undef,not commuting,529796,1051.3,5566.38
+639,F,62.5,retired,undef,not commuting,529796,1051.3,5566.38
+640,F,67.5,retired,undef,not commuting,529796,1051.3,5566.38
+641,F,72.5,retired,undef,not commuting,529796,1051.15,5566.16
+642,M,37.5,working,publicsector,not commuting,529796,1051.15,5566.16
+643,M,62.5,working,adminetc,not commuting,529796,1051.15,5566.16
+644,M,5.5,at home,undef,not commuting,529796,1051.15,5566.16
+645,M,52.5,working,education,45 to 60 mins,529796,1051.15,5566.16
+646,M,12.5,student,undef,not commuting,529796,1052.25,5566.5
+647,M,3.5,at home,undef,not commuting,529796,1052.25,5566.5
+648,M,57.5,at home,undef,not commuting,529796,1052.25,5566.5
+649,F,22.5,at home,undef,not commuting,529796,1052.25,5566.5
+650,F,77.5,retired,undef,not commuting,529796,1052.25,5566.5
+651,M,27.5,working,construction,not commuting,529796,1051.33,5565.88
+652,F,27.5,working,tradeandmoto,not commuting,529796,1051.33,5565.88
+653,F,32.5,at home,undef,not commuting,529796,1051.33,5565.88
+654,F,57.5,at home,undef,not commuting,529796,1051.33,5565.88
+655,M,62.5,working,transportation,not commuting,529796,1051.33,5565.88
+656,M,22.5,at home,undef,not commuting,529796,1052.29,5566.21
+657,M,47.5,working,eatinghousing,30 to 45 mins,529796,1052.29,5566.21
+658,M,47.5,working,it,not commuting,529796,1052.29,5566.21
+659,M,37.5,at home,undef,not commuting,529796,1052.29,5566.21
+660,F,47.5,working,construction,less than 15min,529796,1052.29,5566.21
+661,F,27.5,at home,undef,not commuting,529796,1051.98,5566.51
+662,M,52.5,working,tradeandmoto,not commuting,529796,1051.98,5566.51
+663,F,62.5,retired,undef,not commuting,529796,1051.98,5566.51
+664,F,62.5,working,adminetc,not commuting,529796,1051.98,5566.51
+665,F,67.5,retired,undef,not commuting,529796,1051.98,5566.51
+666,M,52.5,at home,undef,not commuting,529796,1052.28,5566.02
+667,M,67.5,retired,undef,not commuting,529796,1052.28,5566.02
+668,M,72.5,retired,undef,not commuting,529796,1052.28,5566.02
+669,F,62.5,retired,undef,not commuting,529796,1052.28,5566.02
+670,M,57.5,working,construction,less than 15min,529796,1052.28,5566.02
+671,M,42.5,at home,undef,not commuting,529796,1052.08,5566.26
+672,M,32.5,working,it,30 to 45 mins,529796,1052.08,5566.26
+673,F,42.5,working,construction,not commuting,529796,1052.08,5566.26
+674,F,8,student,undef,not commuting,529796,1052.08,5566.26
+675,F,72.5,retired,undef,not commuting,529796,1052.08,5566.26
+676,F,62.5,retired,undef,not commuting,529796,1051.19,5565.85
+677,F,42.5,working,industry,not commuting,529796,1051.19,5565.85
+678,M,27.5,working,publicsector,not commuting,529796,1051.19,5565.85
+679,M,52.5,at home,undef,not commuting,529796,1051.19,5565.85
+680,M,37.5,working,publicsector,not commuting,529796,1051.19,5565.85
+681,F,47.5,working,transportation,15 to 30 min,529796,1051.45,5565.72
+682,F,27.5,at home,undef,not commuting,529796,1051.45,5565.72
+683,M,5.5,at home,undef,not commuting,529796,1051.45,5565.72
+684,F,22.5,at home,undef,not commuting,529796,1051.45,5565.72
+685,M,42.5,working,construction,not commuting,529796,1051.45,5565.72
+686,F,57.5,at home,undef,not commuting,529796,1051.6,5566.21
+687,M,42.5,working,health,not commuting,529796,1051.6,5566.21
+688,F,52.5,working,publicsector,not commuting,529796,1051.6,5566.21
+689,F,67.5,retired,undef,not commuting,529796,1051.6,5566.21
+690,F,16.5,student,undef,not commuting,529796,1051.6,5566.21
+691,M,37.5,at home,undef,not commuting,529796,1051.47,5565.88
+692,M,27.5,working,adminetc,not commuting,529796,1051.47,5565.88
+693,F,32.5,working,industry,not commuting,529796,1051.47,5565.88
+694,M,32.5,at home,undef,not commuting,529796,1051.47,5565.88
+695,F,42.5,working,industry,not commuting,529796,1051.47,5565.88
+696,M,22.5,at home,undef,not commuting,529796,1052.26,5566.49
+697,F,62.5,retired,undef,not commuting,529796,1052.26,5566.49
+698,M,62.5,working,industry,not commuting,529796,1052.26,5566.49
+699,F,67.5,retired,undef,not commuting,529796,1052.26,5566.49
+700,M,62.5,working,adminetc,45 to 60 mins,529796,1052.26,5566.49
+701,M,12.5,student,undef,not commuting,529796,1051.36,5566.41
+702,F,57.5,at home,undef,not commuting,529796,1051.36,5566.41
+703,F,32.5,at home,undef,not commuting,529796,1051.36,5566.41
+704,F,72.5,retired,undef,not commuting,529796,1051.36,5566.41
+705,M,16.5,student,undef,more than 90 mins,529796,1051.36,5566.41
+706,M,57.5,at home,undef,not commuting,529796,1051.3,5566.67
+707,M,16.5,student,undef,not commuting,529796,1051.3,5566.67
+708,M,19,student,undef,45 to 60 mins,529796,1051.3,5566.67
+709,F,42.5,working,education,45 to 60 mins,529796,1051.3,5566.67
+710,F,22.5,working,education,not commuting,529796,1051.3,5566.67
+711,M,16.5,student,undef,60 to 90 mins,529796,1051.26,5566.75
+712,F,52.5,working,industry,less than 15min,529796,1051.26,5566.75
+713,M,12.5,student,undef,not commuting,529796,1051.26,5566.75
+714,F,62.5,retired,undef,not commuting,529796,1051.26,5566.75
+715,F,37.5,working,industry,not commuting,529796,1051.26,5566.75
+716,M,5.5,at home,undef,not commuting,529796,1051.75,5565.76
+717,F,62.5,working,publicsector,not commuting,529796,1051.75,5565.76
+718,F,57.5,working,construction,15 to 30 min,529796,1051.75,5565.76
+719,M,52.5,working,industry,not commuting,529796,1051.75,5565.76
+720,M,62.5,retired,undef,not commuting,529796,1051.75,5565.76
+721,F,12.5,student,undef,not commuting,529796,1052.06,5565.67
+722,M,16.5,student,undef,more than 90 mins,529796,1052.06,5565.67
+723,M,16.5,student,undef,less than 15min,529796,1052.06,5565.67
+724,F,32.5,working,transportation,not commuting,529796,1052.06,5565.67
+725,M,62.5,retired,undef,not commuting,529796,1052.06,5565.67
+726,F,22.5,working,industry,not commuting,529796,1052.23,5566.02
+727,F,27.5,working,industry,not commuting,529796,1052.23,5566.02
+728,F,77.5,retired,undef,not commuting,529796,1052.23,5566.02
+729,F,12.5,student,undef,not commuting,529796,1052.23,5566.02
+730,M,19,working,adminetc,not commuting,529796,1052.23,5566.02
+731,F,1.5,at home,undef,not commuting,529796,1052.06,5566.26
+732,F,19,student,undef,not commuting,529796,1052.06,5566.26
+733,M,37.5,at home,undef,not commuting,529796,1052.06,5566.26
+734,M,37.5,working,agriculture,45 to 60 mins,529796,1052.06,5566.26
+735,F,62.5,retired,undef,not commuting,529796,1052.06,5566.26
+736,M,37.5,working,agriculture,not commuting,529796,1051.9,5565.68
+737,M,72.5,retired,undef,not commuting,529796,1051.9,5565.68
+738,F,37.5,at home,undef,not commuting,529796,1051.9,5565.68
+739,M,82.5,retired,undef,not commuting,529796,1051.9,5565.68
+740,F,47.5,working,construction,45 to 60 mins,529796,1051.9,5565.68
+741,F,77.5,retired,undef,not commuting,529796,1052.21,5566.58
+742,F,67.5,retired,undef,not commuting,529796,1052.21,5566.58
+743,M,1.5,at home,undef,not commuting,529796,1052.21,5566.58
+744,M,37.5,working,tradeandmoto,not commuting,529796,1052.21,5566.58
+745,M,19,working,health,45 to 60 mins,529796,1052.21,5566.58
+746,F,32.5,working,industry,not commuting,529796,1052.21,5566.58
+747,M,32.5,working,eatinghousing,not commuting,529796,1052.21,5566.58
+748,M,8,student,undef,not commuting,529796,1051.49,5566.44
+749,F,62.5,retired,undef,not commuting,529796,1051.49,5566.44
+750,F,52.5,working,publicsector,not commuting,529796,1051.49,5566.44
+751,F,12.5,student,undef,not commuting,529796,1051.49,5566.44
+752,F,12.5,student,undef,not commuting,529796,1051.49,5566.44
+753,F,72.5,retired,undef,not commuting,529796,1051.49,5566.44
+754,F,42.5,working,industry,less than 15min,529796,1051.49,5566.44
+755,F,42.5,working,adminetc,15 to 30 min,529796,1052.17,5566.24
+756,F,37.5,working,health,30 to 45 mins,529796,1052.17,5566.24
+757,F,88,retired,undef,not commuting,529796,1052.17,5566.24
+758,M,82.5,retired,undef,not commuting,529796,1052.17,5566.24
+759,F,42.5,working,industry,15 to 30 min,529796,1052.17,5566.24
+760,M,62.5,retired,undef,not commuting,529796,1052.17,5566.24
+761,F,8,student,undef,not commuting,529796,1052.17,5566.24
+762,M,22.5,at home,undef,not commuting,529796,1051.98,5566.4
+763,M,1.5,at home,undef,not commuting,529796,1051.98,5566.4
+764,F,27.5,working,eatinghousing,not commuting,529796,1051.98,5566.4
+765,M,72.5,retired,undef,not commuting,529796,1051.98,5566.4
+766,F,57.5,at home,undef,not commuting,529796,1051.98,5566.4
+767,F,32.5,working,industry,not commuting,529796,1051.98,5566.4
+768,F,32.5,at home,undef,not commuting,529796,1051.98,5566.4
+769,F,1.5,at home,undef,not commuting,529796,1051.44,5565.81
+770,M,12.5,student,undef,not commuting,529796,1051.44,5565.81
+771,M,22.5,at home,undef,not commuting,529796,1051.44,5565.81
+772,F,32.5,working,tradeandmoto,45 to 60 mins,529796,1051.44,5565.81
+773,F,22.5,at home,undef,not commuting,529796,1051.44,5565.81
+774,M,12.5,student,undef,not commuting,529796,1051.44,5565.81
+775,M,47.5,working,banks,30 to 45 mins,529796,1051.44,5565.81
+776,M,62.5,retired,undef,not commuting,529796,1052.18,5565.84
+777,M,52.5,working,agriculture,30 to 45 mins,529796,1052.18,5565.84
+778,F,32.5,at home,undef,not commuting,529796,1052.18,5565.84
+779,F,67.5,retired,undef,not commuting,529796,1052.18,5565.84
+780,M,47.5,working,it,15 to 30 min,529796,1052.18,5565.84
+781,F,72.5,retired,undef,not commuting,529796,1052.18,5565.84
+782,F,57.5,at home,undef,not commuting,529796,1052.18,5565.84
+783,F,16.5,working,banks,more than 90 mins,529796,1051.83,5566.18
+784,F,88,retired,undef,not commuting,529796,1051.83,5566.18
+785,M,1.5,at home,undef,not commuting,529796,1051.83,5566.18
+786,F,72.5,retired,undef,not commuting,529796,1051.83,5566.18
+787,F,57.5,at home,undef,not commuting,529796,1051.83,5566.18
+788,F,77.5,retired,undef,not commuting,529796,1051.83,5566.18
+789,F,22.5,working,tradeandmoto,not commuting,529796,1051.83,5566.18
+790,M,37.5,working,health,not commuting,529796,1051.57,5566.32
+791,M,27.5,working,publicsector,less than 15min,529796,1051.57,5566.32
+792,F,47.5,working,transportation,not commuting,529796,1051.57,5566.32
+793,F,32.5,at home,undef,not commuting,529796,1051.57,5566.32
+794,M,62.5,working,transportation,not commuting,529796,1051.57,5566.32
+795,F,22.5,working,construction,not commuting,529796,1051.57,5566.32
+796,M,62.5,retired,undef,not commuting,529796,1051.57,5566.32
+797,M,62.5,retired,undef,not commuting,529796,1052.11,5566.56
+798,F,72.5,retired,undef,not commuting,529796,1052.11,5566.56
+799,F,8,student,undef,not commuting,529796,1052.11,5566.56
+800,F,3.5,at home,undef,not commuting,529796,1052.11,5566.56
+801,M,72.5,working,publicsector,not commuting,529796,1052.11,5566.56
+802,F,77.5,working,industry,not commuting,529796,1052.11,5566.56
+803,M,32.5,working,tradeandmoto,15 to 30 min,529796,1052.11,5566.56
+804,F,16.5,working,industry,not commuting,529796,1051.15,5566.26
+805,F,42.5,at home,undef,not commuting,529796,1051.15,5566.26
+806,F,62.5,retired,undef,not commuting,529796,1051.15,5566.26
+807,F,32.5,working,construction,not commuting,529796,1051.15,5566.26
+808,F,62.5,retired,undef,not commuting,529796,1051.15,5566.26
+809,M,3.5,at home,undef,not commuting,529796,1051.15,5566.26
+810,F,12.5,student,undef,not commuting,529796,1051.15,5566.26
+811,M,67.5,retired,undef,not commuting,529796,1051.53,5565.92
+812,M,32.5,working,eatinghousing,not commuting,529796,1051.53,5565.92
+813,M,12.5,student,undef,not commuting,529796,1051.53,5565.92
+814,M,67.5,retired,undef,not commuting,529796,1051.53,5565.92
+815,M,72.5,retired,undef,not commuting,529796,1051.53,5565.92
+816,M,1.5,at home,undef,not commuting,529796,1051.53,5565.92
+817,F,32.5,working,publicsector,15 to 30 min,529796,1051.53,5565.92
+818,M,72.5,retired,undef,not commuting,529796,1051.61,5566.71
+819,F,72.5,retired,undef,not commuting,529796,1051.61,5566.71
+820,F,12.5,student,undef,not commuting,529796,1051.61,5566.71
+821,M,22.5,working,health,15 to 30 min,529796,1051.61,5566.71
+822,M,77.5,retired,undef,not commuting,529796,1051.61,5566.71
+823,M,52.5,working,transportation,not commuting,529796,1051.61,5566.71
+824,M,57.5,working,banks,not commuting,529796,1051.61,5566.71
+825,F,8,student,undef,not commuting,529796,1052.15,5565.75
+826,M,62.5,retired,undef,not commuting,529796,1052.15,5565.75
+827,F,57.5,working,tradeandmoto,not commuting,529796,1052.15,5565.75
+828,M,62.5,retired,undef,not commuting,529796,1052.15,5565.75
+829,F,67.5,retired,undef,not commuting,529796,1052.15,5565.75
+830,F,37.5,working,transportation,not commuting,529796,1052.15,5565.75
+831,F,27.5,working,it,not commuting,529796,1052.15,5565.75
+832,M,37.5,working,construction,not commuting,529796,1052.09,5566.75
+833,M,52.5,working,adminetc,30 to 45 mins,529796,1052.09,5566.75
+834,F,72.5,retired,undef,not commuting,529796,1052.09,5566.75
+835,F,72.5,retired,undef,not commuting,529796,1052.09,5566.75
+836,F,1.5,at home,undef,not commuting,529796,1052.09,5566.75
+837,F,37.5,at home,undef,not commuting,529796,1052.09,5566.75
+838,M,1.5,at home,undef,not commuting,529796,1052.09,5566.75
+839,M,19,student,undef,more than 90 mins,529796,1051.73,5566.76
+840,M,1.5,at home,undef,not commuting,529796,1051.73,5566.76
+841,F,72.5,retired,undef,not commuting,529796,1051.73,5566.76
+842,F,22.5,at home,undef,not commuting,529796,1051.73,5566.76
+843,M,37.5,working,publicsector,not commuting,529796,1051.73,5566.76
+844,F,72.5,retired,undef,not commuting,529796,1051.73,5566.76
+845,F,27.5,working,construction,15 to 30 min,529796,1051.73,5566.76
+846,F,67.5,retired,undef,not commuting,529796,1052.16,5566.21
+847,F,19,student,undef,30 to 45 mins,529796,1052.16,5566.21
+848,F,42.5,working,health,not commuting,529796,1052.16,5566.21
+849,F,57.5,working,it,not commuting,529796,1052.16,5566.21
+850,F,22.5,at home,undef,not commuting,529796,1052.16,5566.21
+851,M,67.5,retired,undef,not commuting,529796,1052.16,5566.21
+852,M,62.5,working,health,more than 90 mins,529796,1052.16,5566.21
+853,F,62.5,working,adminetc,15 to 30 min,529796,1052.3,5566.23
+854,F,52.5,working,tradeandmoto,45 to 60 mins,529796,1052.3,5566.23
+855,M,22.5,at home,undef,not commuting,529796,1052.3,5566.23
+856,M,32.5,working,industry,not commuting,529796,1052.3,5566.23
+857,F,47.5,working,construction,not commuting,529796,1052.3,5566.23
+858,M,27.5,working,transportation,not commuting,529796,1052.3,5566.23
+859,F,16.5,student,undef,30 to 45 mins,529796,1052.3,5566.23
+860,F,12.5,student,undef,not commuting,529796,1051.65,5565.88
+861,M,32.5,working,industry,not commuting,529796,1051.65,5565.88
+862,F,57.5,working,health,not commuting,529796,1051.65,5565.88
+863,M,47.5,working,education,not commuting,529796,1051.65,5565.88
+864,M,57.5,working,education,not commuting,529796,1051.65,5565.88
+865,F,22.5,at home,undef,not commuting,529796,1051.65,5565.88
+866,F,27.5,at home,undef,not commuting,529796,1051.65,5565.88
+867,M,22.5,at home,undef,not commuting,529796,1051.44,5565.58
+868,F,88,retired,undef,not commuting,529796,1051.19,5565.73
+869,F,62.5,retired,undef,not commuting,529796,1051.46,5565.5
+870,M,27.5,working,banks,not commuting,529796,1051.12,5565.46
+871,F,62.5,retired,undef,not commuting,529796,1051.25,5565.49
+872,M,37.5,working,transportation,30 to 45 mins,529796,1051.3,5565.51
+873,M,52.5,working,industry,not commuting,529796,1051.14,5565.42
+874,F,57.5,at home,undef,not commuting,529796,1051.32,5565.47
+875,M,77.5,retired,undef,not commuting,529796,1051.15,5565.72
+876,F,27.5,at home,undef,not commuting,529796,1051.21,5565.45
+877,F,27.5,at home,undef,not commuting,529796,1051.17,5565.54
+878,M,57.5,at home,undef,not commuting,529796,1051.17,5565.54
+879,M,37.5,working,tradeandmoto,45 to 60 mins,529796,1051.22,5565.64
+880,M,57.5,at home,undef,not commuting,529796,1051.22,5565.64
+881,M,52.5,working,adminetc,not commuting,529796,1051.29,5565.51
+882,M,37.5,working,construction,30 to 45 mins,529796,1051.29,5565.51
+883,F,67.5,retired,undef,not commuting,529796,1051.28,5565.73
+884,F,62.5,retired,undef,not commuting,529796,1051.28,5565.73
+885,M,67.5,retired,undef,not commuting,529796,1051.28,5565.67
+886,F,77.5,retired,undef,not commuting,529796,1051.28,5565.67
+887,M,57.5,at home,undef,not commuting,529796,1051.32,5565.72
+888,M,67.5,retired,undef,not commuting,529796,1051.32,5565.72
+889,F,52.5,working,tradeandmoto,not commuting,529796,1051.29,5565.6
+890,F,62.5,retired,undef,not commuting,529796,1051.29,5565.6
+891,F,47.5,working,tradeandmoto,not commuting,529796,1051.31,5565.4
+892,F,77.5,retired,undef,not commuting,529796,1051.31,5565.4
+893,M,62.5,working,construction,not commuting,529796,1051.11,5565.61
+894,M,8,student,undef,not commuting,529796,1051.11,5565.61
+895,M,37.5,working,eatinghousing,not commuting,529796,1051.21,5565.65
+896,F,52.5,working,publicsector,not commuting,529796,1051.21,5565.65
+897,F,57.5,working,it,not commuting,529796,1051.48,5565.41
+898,M,37.5,working,adminetc,not commuting,529796,1051.48,5565.41
+899,F,72.5,working,it,not commuting,529796,1051.48,5565.41
+900,M,32.5,working,it,not commuting,529796,1051.43,5565.6
+901,M,62.5,retired,undef,not commuting,529796,1051.43,5565.6
+902,M,72.5,retired,undef,not commuting,529796,1051.43,5565.6
+903,M,22.5,at home,undef,not commuting,529796,1051.12,5565.55
+904,M,57.5,working,publicsector,15 to 30 min,529796,1051.12,5565.55
+905,F,77.5,retired,undef,not commuting,529796,1051.12,5565.55
+906,M,77.5,retired,undef,not commuting,529796,1051.41,5565.55
+907,M,37.5,working,banks,30 to 45 mins,529796,1051.41,5565.55
+908,F,8,student,undef,not commuting,529796,1051.41,5565.55
+909,M,42.5,working,transportation,not commuting,529796,1051.46,5565.55
+910,M,52.5,working,publicsector,not commuting,529796,1051.46,5565.55
+911,F,52.5,working,transportation,45 to 60 mins,529796,1051.46,5565.55
+912,F,27.5,at home,undef,not commuting,529796,1051.33,5565.73
+913,M,57.5,working,transportation,not commuting,529796,1051.33,5565.73
+914,F,52.5,working,publicsector,not commuting,529796,1051.33,5565.73
+915,M,67.5,working,it,not commuting,529796,1051.38,5565.51
+916,M,42.5,working,transportation,30 to 45 mins,529796,1051.38,5565.51
+917,F,22.5,at home,undef,not commuting,529796,1051.38,5565.51
+918,M,52.5,working,industry,30 to 45 mins,529796,1051.38,5565.51
+919,F,57.5,working,construction,not commuting,529796,1051.45,5565.65
+920,F,67.5,retired,undef,not commuting,529796,1051.45,5565.65
+921,M,16.5,student,undef,60 to 90 mins,529796,1051.45,5565.65
+922,M,8,student,undef,not commuting,529796,1051.45,5565.65
+923,M,57.5,at home,undef,not commuting,529796,1051.42,5565.54
+924,M,1.5,at home,undef,not commuting,529796,1051.42,5565.54
+925,M,62.5,working,education,not commuting,529796,1051.42,5565.54
+926,F,37.5,working,adminetc,not commuting,529796,1051.42,5565.54
+927,F,32.5,at home,undef,not commuting,529796,1051.17,5565.72
+928,M,37.5,working,eatinghousing,not commuting,529796,1051.17,5565.72
+929,M,72.5,retired,undef,not commuting,529796,1051.17,5565.72
+930,F,67.5,retired,undef,not commuting,529796,1051.17,5565.72
+931,F,32.5,working,banks,not commuting,529796,1051.38,5565.57
+932,F,22.5,at home,undef,not commuting,529796,1051.38,5565.57
+933,F,27.5,working,tradeandmoto,not commuting,529796,1051.38,5565.57
+934,F,16.5,working,it,more than 90 mins,529796,1051.38,5565.57
+935,F,22.5,at home,undef,not commuting,529796,1051.2,5565.52
+936,M,52.5,working,publicsector,not commuting,529796,1051.2,5565.52
+937,M,72.5,retired,undef,not commuting,529796,1051.2,5565.52
+938,F,62.5,working,health,not commuting,529796,1051.2,5565.52
+939,M,27.5,working,publicsector,30 to 45 mins,529796,1051.42,5565.59
+940,M,1.5,at home,undef,not commuting,529796,1051.42,5565.59
+941,M,62.5,working,industry,not commuting,529796,1051.42,5565.59
+942,F,32.5,at home,undef,not commuting,529796,1051.42,5565.59
+943,M,57.5,working,adminetc,not commuting,529796,1051.42,5565.59
+944,M,37.5,working,industry,not commuting,529796,1051.38,5565.37
+945,M,42.5,working,industry,not commuting,529796,1051.38,5565.37
+946,M,52.5,at home,undef,not commuting,529796,1051.38,5565.37
+947,M,72.5,retired,undef,not commuting,529796,1051.38,5565.37
+948,F,27.5,at home,undef,not commuting,529796,1051.38,5565.37
+949,M,3.5,at home,undef,not commuting,529796,1051.2,5565.68
+950,F,57.5,at home,undef,not commuting,529796,1051.2,5565.68
+951,F,62.5,working,publicsector,not commuting,529796,1051.2,5565.68
+952,M,72.5,retired,undef,not commuting,529796,1051.2,5565.68
+953,M,22.5,working,tradeandmoto,not commuting,529796,1051.2,5565.68
+954,F,52.5,working,publicsector,not commuting,529796,1051.47,5565.38
+955,M,16.5,working,industry,not commuting,529796,1051.47,5565.38
+956,F,62.5,retired,undef,not commuting,529796,1051.47,5565.38
+957,F,57.5,working,publicsector,not commuting,529796,1051.47,5565.38
+958,M,16.5,student,undef,not commuting,529796,1051.47,5565.38
+959,F,32.5,working,industry,not commuting,529796,1051.47,5565.38
+960,M,37.5,working,eatinghousing,not commuting,529796,1051.47,5565.38
+961,F,16.5,student,undef,30 to 45 mins,529796,1051.24,5565.48
+962,F,32.5,at home,undef,not commuting,529796,1051.24,5565.48
+963,M,57.5,working,industry,not commuting,529796,1051.24,5565.48
+964,F,8,student,undef,not commuting,529796,1051.24,5565.48
+965,M,42.5,at home,undef,not commuting,529796,1051.24,5565.48
+966,M,37.5,working,adminetc,not commuting,529796,1051.24,5565.48
+967,M,22.5,working,tradeandmoto,not commuting,529796,1051.24,5565.48
+968,M,12.5,student,undef,not commuting,529796,1054.9,5567.07
+969,F,1.5,at home,undef,not commuting,529796,1054.72,5567.14
+970,F,62.5,working,adminetc,less than 15min,529796,1054.76,5566.99
+971,M,52.5,working,banks,not commuting,529796,1054.82,5567.18
+972,M,37.5,working,construction,30 to 45 mins,529796,1054.88,5567.04
+973,M,47.5,working,banks,not commuting,529796,1054.9,5567.14
+974,F,22.5,working,industry,not commuting,529796,1054.9,5567.1
+975,F,62.5,retired,undef,not commuting,529796,1054.91,5567.06
+976,M,3.5,at home,undef,not commuting,529796,1054.9,5567.19
+977,M,88,retired,undef,not commuting,529796,1054.91,5567.03
+978,M,67.5,retired,undef,not commuting,529796,1054.76,5567.07
+979,F,37.5,working,publicsector,not commuting,529796,1054.76,5567.16
+980,M,37.5,at home,undef,not commuting,529796,1054.86,5567.04
+981,F,47.5,working,industry,not commuting,529796,1054.86,5567.04
+982,M,22.5,at home,undef,not commuting,529796,1054.79,5567.05
+983,F,62.5,retired,undef,not commuting,529796,1054.79,5567.05
+984,F,77.5,retired,undef,not commuting,529796,1054.73,5567
+985,F,67.5,working,industry,not commuting,529796,1054.73,5567
+986,M,16.5,working,it,less than 15min,529796,1054.8,5566.99
+987,M,22.5,working,transportation,not commuting,529796,1054.8,5566.99
+988,M,37.5,working,tradeandmoto,not commuting,529796,1054.84,5566.99
+989,M,3.5,at home,undef,not commuting,529796,1054.84,5566.99
+990,F,57.5,at home,undef,not commuting,529796,1054.76,5567.08
+991,F,52.5,working,industry,not commuting,529796,1054.76,5567.08
+992,F,37.5,working,it,not commuting,529796,1054.77,5567.16
+993,F,72.5,retired,undef,not commuting,529796,1054.77,5567.16
+994,F,57.5,working,publicsector,not commuting,529796,1054.76,5567.09
+995,M,47.5,at home,undef,not commuting,529796,1054.76,5567.09
+996,M,32.5,working,transportation,not commuting,529796,1054.75,5567.09
+997,M,27.5,working,publicsector,15 to 30 min,529796,1054.75,5567.09
+998,M,67.5,retired,undef,not commuting,529796,1054.75,5567.08
+999,F,5.5,at home,undef,not commuting,529796,1054.75,5567.08
+1000,F,57.5,at home,undef,not commuting,529796,1054.83,5567.02
+1001,F,62.5,working,eatinghousing,not commuting,529796,1054.83,5567.02
+1002,M,57.5,working,education,not commuting,529796,1054.82,5567.1
+1003,F,82.5,retired,undef,not commuting,529796,1054.82,5567.1
+1004,F,67.5,retired,undef,not commuting,529796,1054.9,5567.16
+1005,F,37.5,working,industry,not commuting,529796,1054.9,5567.16
+1006,M,57.5,working,transportation,45 to 60 mins,529796,1054.9,5567.16
+1007,F,27.5,at home,undef,not commuting,529796,1054.78,5567.12
+1008,M,3.5,at home,undef,not commuting,529796,1054.78,5567.12
+1009,M,37.5,working,publicsector,not commuting,529796,1054.78,5567.12
+1010,M,27.5,working,health,not commuting,529796,1054.74,5567.1
+1011,F,72.5,retired,undef,not commuting,529796,1054.74,5567.1
+1012,F,16.5,student,undef,not commuting,529796,1054.74,5567.1
+1013,F,52.5,working,industry,45 to 60 mins,529796,1054.84,5567.09
+1014,F,47.5,working,adminetc,15 to 30 min,529796,1054.84,5567.09
+1015,F,32.5,working,education,more than 90 mins,529796,1054.84,5567.09
+1016,F,37.5,at home,undef,not commuting,529796,1054.84,5567.19
+1017,M,27.5,working,agriculture,45 to 60 mins,529796,1054.84,5567.19
+1018,F,47.5,working,eatinghousing,not commuting,529796,1054.84,5567.19
+1019,F,88,retired,undef,not commuting,529796,1054.8,5567.18
+1020,M,52.5,at home,undef,not commuting,529796,1054.8,5567.18
+1021,M,88,working,tradeandmoto,not commuting,529796,1054.8,5567.18
+1022,M,3.5,at home,undef,not commuting,529796,1054.77,5567.11
+1023,F,12.5,student,undef,not commuting,529796,1054.77,5567.11
+1024,M,52.5,working,industry,not commuting,529796,1054.77,5567.11
+1025,F,37.5,working,education,not commuting,529796,1054.84,5567.17
+1026,M,67.5,retired,undef,not commuting,529796,1054.84,5567.17
+1027,M,19,student,undef,more than 90 mins,529796,1054.84,5567.17
+1028,F,12.5,student,undef,not commuting,529796,1054.84,5567.17
+1029,F,1.5,at home,undef,not commuting,529796,1054.77,5567.05
+1030,F,32.5,working,industry,not commuting,529796,1054.77,5567.05
+1031,M,52.5,working,construction,not commuting,529796,1054.77,5567.05
+1032,M,1.5,at home,undef,not commuting,529796,1054.77,5567.05
+1033,F,57.5,at home,undef,not commuting,529796,1054.88,5567.12
+1034,F,47.5,working,banks,more than 90 mins,529796,1054.88,5567.12
+1035,F,62.5,working,tradeandmoto,not commuting,529796,1054.88,5567.12
+1036,F,16.5,working,industry,30 to 45 mins,529796,1054.88,5567.12
+1037,F,32.5,working,banks,not commuting,529796,1054.78,5567.02
+1038,F,82.5,retired,undef,not commuting,529796,1054.78,5567.02
+1039,F,88,retired,undef,not commuting,529796,1054.78,5567.02
+1040,M,5.5,at home,undef,not commuting,529796,1054.78,5567.02
+1041,F,1.5,at home,undef,not commuting,529796,1054.76,5567.15
+1042,F,62.5,retired,undef,not commuting,529796,1054.76,5567.15
+1043,M,62.5,working,publicsector,not commuting,529796,1054.76,5567.15
+1044,F,67.5,retired,undef,not commuting,529796,1054.76,5567.15
+1045,M,52.5,working,eatinghousing,not commuting,529796,1054.76,5567.19
+1046,F,27.5,working,health,not commuting,529796,1054.76,5567.19
+1047,M,67.5,retired,undef,not commuting,529796,1054.76,5567.19
+1048,F,3.5,at home,undef,not commuting,529796,1054.76,5567.19
+1049,F,27.5,at home,undef,not commuting,529796,1054.74,5567.13
+1050,F,67.5,retired,undef,not commuting,529796,1054.74,5567.13
+1051,F,57.5,working,adminetc,not commuting,529796,1054.74,5567.13
+1052,M,16.5,student,undef,more than 90 mins,529796,1054.74,5567.13
+1053,F,12.5,student,undef,not commuting,529796,1054.77,5567.13
+1054,M,82.5,retired,undef,not commuting,529796,1054.77,5567.13
+1055,F,52.5,working,industry,45 to 60 mins,529796,1054.77,5567.13
+1056,F,5.5,at home,undef,not commuting,529796,1054.77,5567.13
+1057,M,16.5,student,undef,60 to 90 mins,529796,1054.8,5567.14
+1058,F,22.5,at home,undef,not commuting,529796,1054.8,5567.14
+1059,F,82.5,retired,undef,not commuting,529796,1054.8,5567.14
+1060,M,42.5,working,it,45 to 60 mins,529796,1054.8,5567.14
+1061,F,22.5,at home,undef,not commuting,529796,1054.8,5567.14
+1062,F,57.5,at home,undef,not commuting,529796,1054.72,5567.02
+1063,F,1.5,at home,undef,not commuting,529796,1054.72,5567.02
+1064,F,32.5,at home,undef,not commuting,529796,1054.72,5567.02
+1065,F,42.5,working,transportation,not commuting,529796,1054.72,5567.02
+1066,F,62.5,retired,undef,not commuting,529796,1054.72,5567.02
+1067,F,32.5,working,agriculture,not commuting,529796,1054.88,5567.16
+1068,F,88,retired,undef,not commuting,529796,1054.88,5567.16
+1069,F,42.5,working,construction,not commuting,529796,1054.88,5567.16
+1070,M,47.5,at home,undef,not commuting,529796,1054.88,5567.16
+1071,F,3.5,at home,undef,not commuting,529796,1054.88,5567.16
+1072,M,32.5,at home,undef,not commuting,529796,1054.79,5567.05
+1073,F,12.5,student,undef,not commuting,529796,1054.79,5567.05
+1074,F,42.5,at home,undef,not commuting,529796,1054.79,5567.05
+1075,F,77.5,retired,undef,not commuting,529796,1054.79,5567.05
+1076,F,37.5,at home,undef,not commuting,529796,1054.79,5567.05
+1077,M,57.5,working,tradeandmoto,not commuting,529796,1054.79,5567.05
+1078,F,32.5,working,construction,not commuting,529796,1054.79,5567.05
+1079,M,32.5,working,transportation,not commuting,529796,1054.72,5567.07
+1080,M,8,student,undef,not commuting,529796,1054.72,5567.07
+1081,M,62.5,retired,undef,not commuting,529796,1054.72,5567.07
+1082,F,62.5,retired,undef,not commuting,529796,1054.72,5567.07
+1083,F,32.5,at home,undef,not commuting,529796,1054.72,5567.07
+1084,F,3.5,at home,undef,not commuting,529796,1054.72,5567.07
+1085,M,52.5,working,tradeandmoto,not commuting,529796,1054.72,5567.07
+1086,M,3.5,at home,undef,not commuting,529796,1054.77,5567.01
+1087,F,67.5,retired,undef,not commuting,529796,1054.77,5567.01
+1088,F,12.5,student,undef,not commuting,529796,1054.77,5567.01
+1089,M,32.5,working,transportation,not commuting,529796,1054.77,5567.01
+1090,M,57.5,working,construction,less than 15min,529796,1054.77,5567.01
+1091,M,1.5,at home,undef,not commuting,529796,1054.77,5567.01
+1092,F,12.5,student,undef,not commuting,529796,1054.77,5567.01
+1093,F,88,retired,undef,not commuting,529796,1053.19,5564.56
+1094,F,12.5,student,undef,not commuting,529796,1053.19,5564.49
+1095,F,77.5,working,health,not commuting,529796,1053.12,5564.5
+1096,F,67.5,retired,undef,not commuting,529796,1053.15,5564.85
+1097,M,62.5,retired,undef,not commuting,529796,1053.01,5564.56
+1098,M,67.5,retired,undef,not commuting,529796,1053.14,5564.7
+1099,M,37.5,working,industry,30 to 45 mins,529796,1053.11,5564.57
+1100,M,3.5,at home,undef,not commuting,529796,1053.11,5564.57
+1101,F,62.5,retired,undef,not commuting,529796,1053.11,5564.69
+1102,F,22.5,at home,undef,not commuting,529796,1053.11,5564.69
+1103,F,8,student,undef,not commuting,529796,1053.24,5564.7
+1104,M,57.5,working,eatinghousing,not commuting,529796,1053.24,5564.7
+1105,M,19,student,undef,not commuting,529796,1053.14,5564.78
+1106,M,1.5,at home,undef,not commuting,529796,1053.14,5564.78
+1107,F,62.5,retired,undef,not commuting,529796,1053.14,5564.74
+1108,M,1.5,at home,undef,not commuting,529796,1053.14,5564.74
+1109,F,27.5,working,tradeandmoto,45 to 60 mins,529796,1053.05,5564.7
+1110,F,52.5,working,industry,not commuting,529796,1053.05,5564.7
+1111,F,32.5,working,adminetc,45 to 60 mins,529796,1053.26,5564.56
+1112,F,22.5,working,tradeandmoto,not commuting,529796,1053.26,5564.56
+1113,F,32.5,working,industry,not commuting,529796,1053.26,5564.56
+1114,M,8,student,undef,not commuting,529796,1053.13,5564.54
+1115,F,16.5,working,transportation,not commuting,529796,1053.13,5564.54
+1116,F,42.5,working,adminetc,not commuting,529796,1053.13,5564.54
+1117,F,57.5,working,publicsector,45 to 60 mins,529796,1053.32,5564.85
+1118,F,19,student,undef,not commuting,529796,1053.32,5564.85
+1119,F,37.5,working,banks,not commuting,529796,1053.32,5564.85
+1120,M,1.5,at home,undef,not commuting,529796,1053.21,5564.76
+1121,M,32.5,at home,undef,not commuting,529796,1053.21,5564.76
+1122,M,52.5,working,adminetc,15 to 30 min,529796,1053.21,5564.76
+1123,F,67.5,retired,undef,not commuting,529796,1053.3,5564.83
+1124,M,22.5,at home,undef,not commuting,529796,1053.3,5564.83
+1125,F,62.5,retired,undef,not commuting,529796,1053.3,5564.83
+1126,M,52.5,working,it,30 to 45 mins,529796,1053.3,5564.83
+1127,F,8,student,undef,not commuting,529796,1053.21,5564.52
+1128,M,32.5,at home,undef,not commuting,529796,1053.21,5564.52
+1129,F,19,working,it,not commuting,529796,1053.21,5564.52
+1130,F,32.5,working,agriculture,not commuting,529796,1053.21,5564.52
+1131,M,67.5,retired,undef,not commuting,529796,1053.03,5564.63
+1132,F,8,student,undef,not commuting,529796,1053.03,5564.63
+1133,F,32.5,at home,undef,not commuting,529796,1053.03,5564.63
+1134,F,37.5,working,industry,more than 90 mins,529796,1053.03,5564.63
+1135,F,57.5,at home,undef,not commuting,529796,1053.17,5564.62
+1136,F,1.5,at home,undef,not commuting,529796,1053.17,5564.62
+1137,F,22.5,at home,undef,not commuting,529796,1053.17,5564.62
+1138,M,19,working,industry,not commuting,529796,1053.17,5564.62
+1139,F,1.5,at home,undef,not commuting,529796,1053.07,5564.66
+1140,F,67.5,retired,undef,not commuting,529796,1053.07,5564.66
+1141,F,22.5,working,publicsector,not commuting,529796,1053.07,5564.66
+1142,F,72.5,retired,undef,not commuting,529796,1053.07,5564.66
+1143,M,62.5,retired,undef,not commuting,529796,1053.07,5564.66
+1144,F,88,retired,undef,not commuting,529796,1053.31,5564.5
+1145,F,3.5,at home,undef,not commuting,529796,1053.31,5564.5
+1146,M,52.5,working,publicsector,not commuting,529796,1053.31,5564.5
+1147,M,32.5,working,construction,not commuting,529796,1053.31,5564.5
+1148,M,1.5,at home,undef,not commuting,529796,1053.31,5564.5
+1149,M,1.5,at home,undef,not commuting,529796,1053.03,5564.79
+1150,M,8,student,undef,not commuting,529796,1053.03,5564.79
+1151,F,32.5,working,it,not commuting,529796,1053.03,5564.79
+1152,M,47.5,at home,undef,not commuting,529796,1053.03,5564.79
+1153,M,32.5,working,health,not commuting,529796,1053.03,5564.79
+1154,M,67.5,retired,undef,not commuting,529796,1053.03,5564.79
+1155,F,12.5,student,undef,not commuting,529796,1053.03,5564.79
+1156,F,47.5,working,adminetc,15 to 30 min,529796,1053.07,5565.63
+1157,M,42.5,at home,undef,not commuting,529796,1053.12,5566.03
+1158,F,72.5,retired,undef,not commuting,529796,1052.81,5565.88
+1159,F,27.5,working,eatinghousing,not commuting,529796,1052.65,5565.83
+1160,M,16.5,student,undef,45 to 60 mins,529796,1052.73,5565.59
+1161,F,57.5,at home,undef,not commuting,529796,1052.9,5565.71
+1162,F,22.5,at home,undef,not commuting,529796,1052.96,5566.09
+1163,F,37.5,working,transportation,15 to 30 min,529796,1052.6,5565.94
+1164,M,47.5,working,eatinghousing,15 to 30 min,529796,1052.76,5565.83
+1165,M,57.5,working,adminetc,not commuting,529796,1053.04,5565.93
+1166,M,32.5,working,industry,not commuting,529796,1052.78,5565.88
+1167,M,52.5,at home,undef,not commuting,529796,1052.72,5565.72
+1168,F,32.5,at home,undef,not commuting,529796,1052.89,5566.05
+1169,M,42.5,working,transportation,not commuting,529796,1052.95,5565.84
+1170,M,37.5,working,publicsector,not commuting,529796,1053,5565.61
+1171,M,57.5,working,eatinghousing,15 to 30 min,529796,1053,5565.61
+1172,M,47.5,working,tradeandmoto,not commuting,529796,1052.63,5566.09
+1173,M,52.5,working,industry,not commuting,529796,1052.63,5566.09
+1174,M,3.5,at home,undef,not commuting,529796,1052.59,5566.09
+1175,M,57.5,working,publicsector,45 to 60 mins,529796,1052.59,5566.09
+1176,M,42.5,working,transportation,not commuting,529796,1052.65,5565.9
+1177,F,22.5,working,tradeandmoto,15 to 30 min,529796,1052.65,5565.9
+1178,M,37.5,working,construction,not commuting,529796,1053.12,5565.94
+1179,F,32.5,at home,undef,not commuting,529796,1053.12,5565.94
+1180,M,67.5,retired,undef,not commuting,529796,1052.9,5566.11
+1181,F,37.5,working,industry,not commuting,529796,1052.9,5566.11
+1182,F,62.5,working,industry,not commuting,529796,1052.99,5565.76
+1183,F,52.5,working,industry,less than 15min,529796,1052.99,5565.76
+1184,F,42.5,working,adminetc,not commuting,529796,1052.99,5566
+1185,M,62.5,working,industry,not commuting,529796,1052.99,5566
+1186,M,22.5,at home,undef,not commuting,529796,1052.89,5566.04
+1187,M,3.5,at home,undef,not commuting,529796,1052.89,5566.04
+1188,M,16.5,student,undef,not commuting,529796,1052.77,5565.88
+1189,F,12.5,student,undef,not commuting,529796,1052.77,5565.88
+1190,F,67.5,retired,undef,not commuting,529796,1052.85,5565.91
+1191,M,47.5,working,publicsector,30 to 45 mins,529796,1052.85,5565.91
+1192,M,32.5,working,publicsector,45 to 60 mins,529796,1053.13,5565.62
+1193,M,77.5,retired,undef,not commuting,529796,1053.13,5565.62
+1194,F,47.5,working,tradeandmoto,not commuting,529796,1052.91,5565.74
+1195,M,67.5,retired,undef,not commuting,529796,1052.91,5565.74
+1196,M,42.5,working,eatinghousing,30 to 45 mins,529796,1052.97,5565.94
+1197,F,37.5,working,adminetc,30 to 45 mins,529796,1052.97,5565.94
+1198,F,22.5,at home,undef,not commuting,529796,1052.87,5565.95
+1199,F,57.5,at home,undef,not commuting,529796,1052.87,5565.95
+1200,M,19,working,health,not commuting,529796,1052.87,5565.95
+1201,F,37.5,working,tradeandmoto,not commuting,529796,1052.63,5565.95
+1202,F,47.5,at home,undef,not commuting,529796,1052.63,5565.95
+1203,M,42.5,working,transportation,60 to 90 mins,529796,1052.63,5565.95
+1204,M,12.5,student,undef,not commuting,529796,1052.84,5565.93
+1205,F,57.5,at home,undef,not commuting,529796,1052.84,5565.93
+1206,F,37.5,working,construction,not commuting,529796,1052.84,5565.93
+1207,F,57.5,at home,undef,not commuting,529796,1052.83,5566.09
+1208,M,57.5,working,construction,not commuting,529796,1052.83,5566.09
+1209,F,77.5,retired,undef,not commuting,529796,1052.83,5566.09
+1210,M,62.5,retired,undef,not commuting,529796,1052.82,5565.97
+1211,M,32.5,working,adminetc,not commuting,529796,1052.82,5565.97
+1212,F,32.5,at home,undef,not commuting,529796,1052.82,5565.97
+1213,M,12.5,student,undef,not commuting,529796,1053.14,5565.62
+1214,M,37.5,working,banks,30 to 45 mins,529796,1053.14,5565.62
+1215,M,27.5,working,banks,30 to 45 mins,529796,1053.14,5565.62
+1216,F,77.5,retired,undef,not commuting,529796,1052.82,5565.71
+1217,M,16.5,student,undef,30 to 45 mins,529796,1052.82,5565.71
+1218,M,3.5,at home,undef,not commuting,529796,1052.82,5565.71
+1219,M,52.5,working,health,not commuting,529796,1053.14,5565.61
+1220,M,8,student,undef,not commuting,529796,1053.14,5565.61
+1221,F,72.5,working,industry,not commuting,529796,1053.14,5565.61
+1222,F,72.5,retired,undef,not commuting,529796,1052.93,5566.06
+1223,M,67.5,retired,undef,not commuting,529796,1052.93,5566.06
+1224,F,62.5,retired,undef,not commuting,529796,1052.93,5566.06
+1225,F,52.5,working,health,not commuting,529796,1052.93,5566.06
+1226,M,52.5,working,it,60 to 90 mins,529796,1052.6,5566.04
+1227,F,67.5,retired,undef,not commuting,529796,1052.6,5566.04
+1228,F,37.5,working,publicsector,not commuting,529796,1052.6,5566.04
+1229,M,27.5,working,adminetc,not commuting,529796,1052.6,5566.04
+1230,M,57.5,working,adminetc,not commuting,529796,1052.6,5565.76
+1231,M,32.5,at home,undef,not commuting,529796,1052.6,5565.76
+1232,F,62.5,retired,undef,not commuting,529796,1052.6,5565.76
+1233,F,12.5,student,undef,not commuting,529796,1052.6,5565.76
+1234,M,27.5,working,construction,30 to 45 mins,529796,1052.93,5565.99
+1235,M,72.5,retired,undef,not commuting,529796,1052.93,5565.99
+1236,F,22.5,working,eatinghousing,not commuting,529796,1052.93,5565.99
+1237,M,22.5,at home,undef,not commuting,529796,1052.93,5565.99
+1238,M,57.5,working,eatinghousing,not commuting,529796,1052.73,5565.61
+1239,F,62.5,retired,undef,not commuting,529796,1052.73,5565.61
+1240,F,67.5,working,transportation,not commuting,529796,1052.73,5565.61
+1241,M,22.5,at home,undef,not commuting,529796,1052.73,5565.61
+1242,M,62.5,retired,undef,not commuting,529796,1052.73,5565.88
+1243,F,57.5,at home,undef,not commuting,529796,1052.73,5565.88
+1244,F,37.5,working,industry,not commuting,529796,1052.73,5565.88
+1245,F,37.5,working,industry,45 to 60 mins,529796,1052.73,5565.88
+1246,M,62.5,working,banks,not commuting,529796,1052.88,5566.07
+1247,F,47.5,working,tradeandmoto,not commuting,529796,1052.88,5566.07
+1248,F,3.5,at home,undef,not commuting,529796,1052.88,5566.07
+1249,M,16.5,student,undef,60 to 90 mins,529796,1052.88,5566.07
+1250,M,1.5,at home,undef,not commuting,529796,1053.13,5566.03
+1251,M,22.5,at home,undef,not commuting,529796,1053.13,5566.03
+1252,M,32.5,at home,undef,not commuting,529796,1053.13,5566.03
+1253,F,37.5,working,transportation,not commuting,529796,1053.13,5566.03
+1254,F,32.5,at home,undef,not commuting,529796,1052.64,5565.63
+1255,F,37.5,working,health,not commuting,529796,1052.64,5565.63
+1256,M,12.5,student,undef,not commuting,529796,1052.64,5565.63
+1257,M,32.5,working,tradeandmoto,not commuting,529796,1052.64,5565.63
+1258,M,42.5,working,industry,not commuting,529796,1052.68,5565.61
+1259,M,3.5,at home,undef,not commuting,529796,1052.68,5565.61
+1260,F,32.5,at home,undef,not commuting,529796,1052.68,5565.61
+1261,M,3.5,at home,undef,not commuting,529796,1052.68,5565.61
+1262,F,62.5,retired,undef,not commuting,529796,1052.68,5565.61
+1263,M,32.5,working,industry,30 to 45 mins,529796,1052.75,5565.96
+1264,F,22.5,at home,undef,not commuting,529796,1052.75,5565.96
+1265,F,88,retired,undef,not commuting,529796,1052.75,5565.96
+1266,F,57.5,working,adminetc,not commuting,529796,1052.75,5565.96
+1267,F,82.5,working,publicsector,30 to 45 mins,529796,1052.75,5565.96
+1268,F,62.5,retired,undef,not commuting,529796,1052.77,5566.01
+1269,F,16.5,student,undef,30 to 45 mins,529796,1052.77,5566.01
+1270,F,27.5,working,industry,not commuting,529796,1052.77,5566.01
+1271,F,32.5,at home,undef,not commuting,529796,1052.77,5566.01
+1272,F,47.5,working,it,not commuting,529796,1052.77,5566.01
+1273,F,8,student,undef,not commuting,529796,1052.85,5566.06
+1274,F,32.5,working,education,not commuting,529796,1052.85,5566.06
+1275,F,82.5,retired,undef,not commuting,529796,1052.85,5566.06
+1276,F,16.5,working,tradeandmoto,not commuting,529796,1052.85,5566.06
+1277,F,8,student,undef,not commuting,529796,1052.85,5566.06
+1278,F,32.5,at home,undef,not commuting,529796,1052.98,5565.6
+1279,M,32.5,at home,undef,not commuting,529796,1052.98,5565.6
+1280,F,67.5,retired,undef,not commuting,529796,1052.98,5565.6
+1281,M,62.5,working,adminetc,15 to 30 min,529796,1052.98,5565.6
+1282,F,16.5,student,undef,not commuting,529796,1052.98,5565.6
+1283,M,1.5,at home,undef,not commuting,529796,1052.98,5565.6
+1284,F,8,student,undef,not commuting,529796,1052.98,5565.6
+1285,F,5.5,at home,undef,not commuting,529796,1052.61,5566.04
+1286,F,72.5,retired,undef,not commuting,529796,1052.61,5566.04
+1287,F,37.5,working,industry,15 to 30 min,529796,1052.61,5566.04
+1288,M,8,student,undef,not commuting,529796,1052.61,5566.04
+1289,M,42.5,working,industry,30 to 45 mins,529796,1052.61,5566.04
+1290,M,3.5,at home,undef,not commuting,529796,1052.61,5566.04
+1291,F,47.5,working,adminetc,not commuting,529796,1052.61,5566.04
+1292,F,77.5,retired,undef,not commuting,529796,1052.89,5566.02
+1293,F,22.5,at home,undef,not commuting,529796,1052.89,5566.02
+1294,F,77.5,retired,undef,not commuting,529796,1052.89,5566.02
+1295,F,27.5,working,industry,not commuting,529796,1052.89,5566.02
+1296,F,37.5,working,industry,15 to 30 min,529796,1052.89,5566.02
+1297,M,62.5,retired,undef,not commuting,529796,1052.89,5566.02
+1298,F,22.5,at home,undef,not commuting,529796,1052.89,5566.02
+1299,F,5.5,at home,undef,not commuting,777777,1051.83,5567.86
+1300,M,37.5,working,tradeandmoto,not commuting,777777,1051.62,5567.64
+1301,F,62.5,working,health,not commuting,777777,1051.62,5567.64
+1302,M,12.5,student,undef,not commuting,777777,1051.6,5567.85
+1303,M,57.5,working,industry,45 to 60 mins,777777,1051.6,5567.85
+1304,M,37.5,working,publicsector,15 to 30 min,777777,1051.6,5567.85
+1305,M,37.5,working,health,not commuting,777777,1051.83,5567.85
+1306,M,16.5,student,undef,60 to 90 mins,777777,1051.83,5567.85
+1307,F,57.5,working,industry,not commuting,777777,1051.83,5567.85
+1308,F,47.5,at home,undef,not commuting,777777,1051.83,5567.85
+1309,M,27.5,working,banks,not commuting,777777,1051.82,5567.84
+1310,M,37.5,working,construction,30 to 45 mins,777777,1051.82,5567.84
+1311,M,52.5,working,eatinghousing,15 to 30 min,777777,1051.82,5567.84
+1312,F,27.5,working,it,30 to 45 mins,777777,1051.82,5567.84
+1313,F,77.5,retired,undef,not commuting,777777,1051.82,5567.84
+1314,M,77.5,retired,undef,not commuting,777777,1051.69,5567.87
+1315,M,72.5,retired,undef,not commuting,777777,1051.69,5567.87
+1316,M,32.5,working,it,not commuting,777777,1051.69,5567.87
+1317,M,22.5,at home,undef,not commuting,777777,1051.69,5567.87
+1318,M,37.5,at home,undef,not commuting,777777,1051.69,5567.87
+1319,F,1.5,at home,undef,not commuting,777777,1051.69,5567.87
+1320,M,22.5,working,banks,45 to 60 mins,777777,1051.69,5567.87
