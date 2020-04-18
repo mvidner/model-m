@@ -39,16 +39,19 @@ class SeirsPlusLikeEngine(BaseEngine):
 
         self.history = TransitionHistory(tseries_len)
 
+        self.states_history = TransitionHistory(
+            tseries_len, width=self.num_nodes)
+
         # state_counts ... numbers of inidividuals in given states
         self.state_counts = {
             state: TimeSeries(tseries_len, dtype=int)
             for state in self.states
         }
 
-        self.propensities_repo = {
-            transition: TimeSeries(tseries_len, dtype=float)
-            for transition in self.transitions
-        }
+        # self.propensities_repo = {
+        #     transition: TimeSeries(tseries_len, dtype=float)
+        #     for transition in self.transitions
+        # }
 
         # N ... actual number of individuals in population
         self.N = TimeSeries(tseries_len, dtype=float)
@@ -76,24 +79,20 @@ class SeirsPlusLikeEngine(BaseEngine):
             [self.state_counts[s][0] for s in self.invisible_states]
         )
 
-        # X ... array of states
-        # tempX = []
-        # for state, count in self.state_counts.items():
-        #     tempX.extend([state]*count[0])
-        # self.X = np.array(tempX).reshape((self.num_nodes, 1))
-        # # distribute the states randomly
-        # np.random.shuffle(self.X)
-
-        tempX = []
-        for state_idx, state in enumerate(self.states):
-            count = self.state_counts[state][0]
-            x = np.pad(np.ones(count), [(0, self.num_nodes - count)],
-                       mode='constant', constant_values=0)
-            np.random.shuffle(x)  # in place
-            tempX.append(x.reshape((self.num_nodes, 1)))
+        # self.states_history[0] ... initial array of states
+        start = 0
+        for state, count in self.state_counts.items():
+            self.states_history[0][start:start+count[0]].fill(state)
+            start += count[0]
+        # distribute the states randomly
+        np.random.shuffle(self.states_history[0])
 
         # 0/1 num_states x num_nodes
-        self.memberships = np.stack(tempX)
+        self.memberships = np.vstack(
+            [self.states_history[0] == s
+             for s in self.states]
+        )
+        self.memberships = np.expand_dims(self.memberships, axis=2).astype(int)
 
     def node_degrees(self, Amat):
         """ return number of degrees of  nodes,
@@ -142,16 +141,14 @@ class SeirsPlusLikeEngine(BaseEngine):
                 scipy.sparse.csr_matrix.dot(self.A, self.memberships[state]))
 
         elif type(state) == list:
-            state_flags = np.hstack(
-                [self.memberships[s] for s in state]
-            )
+            state_flags = self.memberships[state, :, :].squeeze()
             # if TF_ENABLED:
             #     with tf.device('/GPU:' + "0"):
             #         x = tf.Variable(state_flags, dtype="float32")
             #         nums = tf.sparse.sparse_dense_matmul(self.A, x)
             # else:
-            nums = scipy.sparse.csr_matrix.dot(self.A, state_flags)
-            return np.sum(nums, axis=1).reshape((self.num_nodes, 1))
+            nums = scipy.sparse.csr_matrix.dot(state_flags, self.A)
+            return np.sum(nums, axis=0).reshape(-1, 1)
         else:
             raise TypeException(
                 "num_contacts(state) accepts str or list of strings")
@@ -173,6 +170,9 @@ class SeirsPlusLikeEngine(BaseEngine):
         for tran in self.transitions:
             self.propensities_repo[tran].bloat(tseries_len)
         self.N.bloat(tseries_len)
+
+        expected_num_dates = 300
+        self.states_history.bloat(expected_num_dates)
 
     def finalize_data_series(self):
 

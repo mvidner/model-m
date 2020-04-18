@@ -26,6 +26,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         for state in self.states:
             self.state_counts[state][self.t] = self.state_counts[state][self.t-1]
         self.N[self.t] = self.N[self.t-1]
+        self.states_history[self.t] = self.states_history[self.t-1]
 
         propensities = np.column_stack(self.calc_propensities())
         # add column with pst P[X->X]
@@ -61,6 +62,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.delta[e, node, :] = 1
             self.state_counts[s][self.t] -= 1
             self.state_counts[e][self.t] += 1
+            self.states_history[self.t][node] = e
             self.tidx += 1
             if self.tidx >= len(self.history):
                 self.increase_history_len()
@@ -71,6 +73,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             if e in (self.invisible_states):
                 self.N[self.t] -= 1
 
+        # the real states update
         self.memberships += self.delta
         return True
 
@@ -86,7 +89,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         self.X = None  # just to be sure I am not using it
 
         # keep it, saves time
-        self.delta = np.empty((self.num_states, self.num_nodes, 1))
+        self.delta = np.empty((self.num_states, self.num_nodes, 1), dtype=int)
         self.node_ids = np.arange(self.num_nodes)
 
         running = True
@@ -95,6 +98,10 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
         for self.t in range(1, T+1):
             #            print(f"day {self.t}")
+
+            print(self.t)
+            print(len(self.state_counts[0]))
+            print(len(self.states_history))
             if (self.t >= len(self.state_counts[0])):
                 # room has run out in the timeseries storage arrays; double the size of these arrays
                 self.increase_data_series_length()
@@ -129,6 +136,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         for state in self.states:
             self.state_counts[state].bloat(1000)
         self.N.bloat()
+        self.states_history(300)
 
     def increase_history_len(self):
         self.tseries.bloat(100*self.num_nodes)
@@ -140,14 +148,19 @@ class SequentialEngine(SeirsPlusLikeEngine):
         for state in self.states:
             self.state_counts[state].finalize(self.t)
         self.N.finalize(self.t)
+        self.states_history.finalize(self.t)
 
     def current_state_count(self, state):
+        """ here current = self.t (not self.tidx as in seirsplus-derived models) """
         return self.state_counts[state][self.t]
 
     def current_N(self):
+        """ here current = self.t (not self.tidx as in seirsplus-derived models) """
         return self.N[self.t]
 
     def save(self, file_or_filename):
+        """ Save timeseries. They have different format than in BaseEngine,
+        so I redefined save method here """
         index = range(0, self.t+1)
         columns = self.state_counts
         columns["day"] = index
@@ -155,4 +168,12 @@ class SequentialEngine(SeirsPlusLikeEngine):
         df.index.rename('T', inplace=True)
         df.columns = [self.state_str_dict[x] for x in self.states] + ["day"]
         df.to_csv(file_or_filename)
+        print(df)
+
+    def save_node_states(self, filename):
+        index = range(0, self.t+1)
+        columns = self.states_history.values
+        df = pd.DataFrame(columns, index=index)
+        df = df.replace(self.state_str_dict)
+        df.to_csv(filename)
         print(df)

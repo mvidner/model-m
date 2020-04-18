@@ -226,6 +226,9 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
         f.write("#"+config_string)
         model.save(f)
 
+    if True:
+        model.save_node_states(f"node_states{test_id}.csv")
+
 
 @click.command()
 @click.option('--set-random-seed/--no-random-seed', ' /-r', default=True)
