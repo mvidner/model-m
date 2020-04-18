@@ -161,16 +161,16 @@ class DailyEngine(SeirsPlusLikeEngine):
         self.finalize_data_series()
         return True
 
-    def increase_data_series_length(self):
-        self.tseries.bloat()
-        self.history.bloat()
-        for state in self.states:
-            self.state_counts[state].bloat()
-        self.N.bloat()
+    # def increase_data_series_length(self):
+    #     self.tseries.bloat()
+    #     self.history.bloat()
+    #     for state in self.states:
+    #         self.state_counts[state].bloat()
+    #     self.N.bloat()
 
-    def finalize_data_series(self):
-        self.tseries.finalize(self.tidx)
-        self.history.finalize(self.tidx)
-        for state in self.states:
-            self.state_counts[state].finalize(self.tidx)
-        self.N.finalize(self.tidx)
+    # def finalize_data_series(self):
+    #     self.tseries.finalize(self.tidx)
+    #     self.history.finalize(self.tidx)
+    #     for state in self.states:
+    #         self.state_counts[state].finalize(self.tidx)
+    #     self.N.finalize(self.tidx)
