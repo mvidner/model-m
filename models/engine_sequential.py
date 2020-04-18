@@ -28,8 +28,14 @@ class SequentialEngine(SeirsPlusLikeEngine):
         self.N[self.t] = self.N[self.t-1]
 
         propensities = np.column_stack(self.calc_propensities())
+        # add column with pst P[X->X]
+        # what is the fastest way to add a column?
+        propensities = np.append(
+            propensities, np.product(1.0-propensities, axis=1).reshape(-1, 1), axis=1)
+
         cumsum = np.cumsum(propensities, axis=1)
-        r = np.random.rand(self.num_nodes).reshape(self.num_nodes, 1)
+        total = np.sum(propensities, axis=1)
+        r = (np.random.rand(self.num_nodes)*total).reshape(-1, 1)
 
         # compute which event takes place - roulette wheel selection over rows
         transition_idx = _searchsorted2d(cumsum, r)
@@ -56,10 +62,10 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.state_counts[s][self.t] -= 1
             self.state_counts[e][self.t] += 1
             self.tidx += 1
-            # if self.tidx >= len(self.history):
-            #     self.increase_history_len()
-            # self.tseries[self.tidx] = self.t
-            # self.history[self.tidx] = (node, s, e)
+            if self.tidx >= len(self.history):
+                self.increase_history_len()
+            self.tseries[self.tidx] = self.t
+            self.history[self.tidx] = (node, s, e)
 
             # if node died
             if e in (self.invisible_states):
