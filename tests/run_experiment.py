@@ -27,7 +27,7 @@ except ModuleNotFoundError:
     verona_available = False
 
 
-def magic_formula(graph, list_of_closed_layers=None):
+def magic_formula(graph):
 
     # rozvrtany ... nutno opravit
 
@@ -36,12 +36,10 @@ def magic_formula(graph, list_of_closed_layers=None):
     #    print(graph.get_layers_info())
 
     prob_no_contact = csr_matrix((N, N))  # empty values = 1.0
-    if list_of_closed_layers is None:
-        list_of_closed_layers = []
 
     for name, prob in graph.get_layers_info().items():
         a = nx.adj_matrix(graph.get_graph_for_layer(name))
-        if len(a.data) == 0 or name in list_of_closed_layers:
+        if len(a.data) == 0:
             continue
         a = a.multiply(prob)  # contact on layer
         not_a = a  # empty values = 1.0
@@ -155,8 +153,9 @@ def matrix(graph, cf):
     if isinstance(graph, GraphGenerator):
         if scenario:
             list_of_closed_layers = scenario["closed"]
+            graph.close_layers(list_of_closed_layers)
         return magic_formula(
-            graph, list_of_closed_layers
+            graph
         )
     else:
         return None
