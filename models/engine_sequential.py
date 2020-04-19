@@ -134,7 +134,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
     def increase_data_series_length(self):
         for state in self.states:
-            self.state_counts[state].bloat(1000)
+            self.state_counts[state].bloat(300)
         self.N.bloat()
         self.states_history(300)
 
@@ -174,6 +174,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         index = range(0, self.t+1)
         columns = self.states_history.values
         df = pd.DataFrame(columns, index=index)
+        df.to_csv("ints_"+filename)
         df = df.replace(self.state_str_dict)
         df.to_csv(filename)
         print(df)

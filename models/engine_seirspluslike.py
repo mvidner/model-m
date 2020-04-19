@@ -171,9 +171,6 @@ class SeirsPlusLikeEngine(BaseEngine):
         #     self.propensities_repo[tran].bloat(tseries_len)
         self.N.bloat(tseries_len)
 
-        expected_num_dates = 300
-        self.states_history.bloat(expected_num_dates)
-
     def finalize_data_series(self):
 
         self.tseries.finalize(self.tidx)
