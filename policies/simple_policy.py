@@ -43,7 +43,7 @@ def simple_policy(policy_func):
             quarantine = policy_func(graph, history)
 
             for node in detected_nodes:
-                print(f"Node {node} goes to quarntine")
+                # print(f"Node {node} goes to quarntine")
                 graph.modify_layers_for_node(node, quarantine)
 
             #                if isinstance(graph, GraphGenerator):

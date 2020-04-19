@@ -106,8 +106,6 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
             start = time.time()
             running = self.run_iteration()
-            end = time.time()
-            print("Last day took: ", end - start, "seconds")
 
             # run periodical update
             if self.periodic_update_callback:
@@ -117,6 +115,9 @@ class SequentialEngine(SeirsPlusLikeEngine):
                 if "graph" in changes:
                     print("CHANGING GRAPH")
                     self.update_graph(changes["graph"])
+            end = time.time()
+            print("Last day took: ", end - start, "seconds")
+
 
             if print_interval and (self.t % print_interval == 0):
                 self.print(verbose)
