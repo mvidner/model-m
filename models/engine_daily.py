@@ -88,7 +88,7 @@ class DailyEngine(SeirsPlusLikeEngine):
         # run periodical update
         if self.periodic_update_callback:
             changes = self.periodic_update_callback(
-                self.X, self.history, self.tseries[:self.tidx+1], self.t)
+                self.history, self.tseries[:self.tidx+1], self.t)
 
             if "graph" in changes:
                 print("CHANGING GRAPH")

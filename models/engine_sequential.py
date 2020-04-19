@@ -86,8 +86,6 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
     def run(self, T, print_interval=10, verbose=False):
 
-        self.X = None  # just to be sure I am not using it
-
         # keep it, saves time
         self.delta = np.empty((self.num_states, self.num_nodes, 1), dtype=int)
         self.node_ids = np.arange(self.num_nodes)
@@ -114,7 +112,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             # run periodical update
             if self.periodic_update_callback:
                 changes = self.periodic_update_callback(
-                    self.X, self.history, self.tseries[:self.tidx+1], self.t)
+                    self.history, self.tseries[:self.tidx+1], self.t)
 
                 if "graph" in changes:
                     print("CHANGING GRAPH")

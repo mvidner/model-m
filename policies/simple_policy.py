@@ -2,13 +2,14 @@ import numpy as np
 from run_experiment import matrix  # TODO what to DO?
 from graph_gen import GraphGenerator
 from light_graph import LightGraph
-from extended_network_model import STATES as s 
+from extended_network_model import STATES as s
+
 
 def simple_policy(policy_func):
     """ decorarotor for creation of simple policies 
     that only change weights of contacts of detected people """
 
-    def wrapper(graph, states, history, tseries, time):
+    def wrapper(graph, history, tseries, time):
         print("Hello world! This is the policy function speaking.")
 
         # print("Current time:", time)
@@ -39,7 +40,7 @@ def simple_policy(policy_func):
         print(f"Qurantined nodes: {detected_nodes}")
         if detected_nodes:
 
-            quarantine = policy_func(graph, states, history)
+            quarantine = policy_func(graph, history)
 
             for node in detected_nodes:
                 print(f"Node {node} goes to quarntine")

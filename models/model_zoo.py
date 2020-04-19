@@ -17,6 +17,9 @@ __all__ = [
     OldExtendedNetworkModel        # abandonded implementation
 ]
 
+# preferable is ExtendedSequentialNetworkModel
+# older implementations ExtendedDailyNetworkModel and ExtendedNetworkModel are abandonded
+
 model_zoo = {
     "ExtendedNetworkModel": ExtendedNetworkModel,
     "ExtendedDailyNetworkModel": ExtendedDailyNetworkModel,
