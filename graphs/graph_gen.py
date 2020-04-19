@@ -164,9 +164,8 @@ class GraphGenerator:
 
     def close_layers(self, list_of_layers):
         for name in list_of_layers:
-            print(name, self.G.graph["layer_names"])
             i = self.G.graph["layer_names"].index(name)
-            self.G.graph["layers_probs"][i] = 0 
+            self.G.graph["layer_probs"][i] = 0 
 
 
 def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n=None):
@@ -281,7 +280,7 @@ class CSVGraphGenerator(GraphGenerator):
         # fill the layers
 #        layer_names = tuple(zip(layers.loc('id'), layers.loc('id2')))
         layers_to_add = layers.to_dict('list')
-        self.layer_names = layers_to_add['id']
+        self.layer_names = layers_to_add['name']
 #        print(layers_names)
         self.layer_probs = layers_to_add['weight']
 
