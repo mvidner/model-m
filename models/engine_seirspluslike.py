@@ -32,7 +32,7 @@ class SeirsPlusLikeEngine(BaseEngine):
 
     def setup_series_and_time_keeping(self):
 
-        self.expected_num_transitions = 100  # TO: change to our situation
+        self.expected_num_transitions = 10  # TO: change to our situation
         tseries_len = (self.num_transitions + 1) * self.num_nodes
 
         self.tseries = TimeSeries(tseries_len, dtype=float)
@@ -40,7 +40,7 @@ class SeirsPlusLikeEngine(BaseEngine):
         self.history = TransitionHistory(tseries_len)
 
         self.states_history = TransitionHistory(
-            tseries_len, width=self.num_nodes)
+            400, width=self.num_nodes)
 
         # state_counts ... numbers of inidividuals in given states
         self.state_counts = {
@@ -160,15 +160,15 @@ class SeirsPlusLikeEngine(BaseEngine):
         return self.N[self.tidx]
 
     def increase_data_series_length(self):
-        self.expected_num_transitions = 100  # TO: change to our situation
+        self.expected_num_transitions = 10  # TO: change to our situation
         tseries_len = (self.expected_num_transitions + 1) * self.num_nodes
 
         self.tseries.bloat(tseries_len)
         self.history.bloat(tseries_len)
         for state in self.states:
             self.state_counts[state].bloat(tseries_len)
-        for tran in self.transitions:
-            self.propensities_repo[tran].bloat(tseries_len)
+        # for tran in self.transitions:
+        #     self.propensities_repo[tran].bloat(tseries_len)
         self.N.bloat(tseries_len)
 
         expected_num_dates = 300
