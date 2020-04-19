@@ -64,7 +64,7 @@ class TransitionHistory(BaseSeries):
     def __init__(self, len, dtype=int, width=3):
         super().__init__()
         self.values = np.zeros((len, width), dtype=dtype)
-        self.width = 3
+        self.width = width
         self.dtype = dtype
 
     def bloat(self, len):
