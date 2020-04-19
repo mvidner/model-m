@@ -1,14 +1,20 @@
 import configparser
 
 
-def string_to_number(s):
+def string_to_value(s):
     try:
         return int(s)
     except ValueError:
         try:
             return float(s)
         except ValueError:
-            return s
+            pass
+
+    if "," in s:
+        list_of_values = s.split(",")
+        return [val.strip() for val in list_of_values]
+    else:
+        return s
 
 
 class ConfigFile():
@@ -33,7 +39,7 @@ class ConfigFile():
 
     def section_as_dict(self, section_name):
         sdict = self.config._sections.get(section_name, {})
-        return {name: string_to_number(value) for name, value in sdict.items()}
+        return {name: string_to_value(value) for name, value in sdict.items()}
 
 
 if __name__ == "__main__":

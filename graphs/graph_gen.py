@@ -162,6 +162,12 @@ class GraphGenerator:
         A.layout('dot')
         A.draw(filename)
 
+    def close_layers(self, list_of_layers):
+        for name in list_of_layers:
+            print(name, self.G.graph["layer_names"])
+            i = self.G.graph["layer_names"].index(name)
+            self.G.graph["layers_probs"][i] = 0 
+
 
 def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n=None):
     """ Generate a random preferential attachment power law graph as a starting point.
