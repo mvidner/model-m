@@ -118,7 +118,6 @@ class SequentialEngine(SeirsPlusLikeEngine):
             end = time.time()
             print("Last day took: ", end - start, "seconds")
 
-
             if print_interval and (self.t % print_interval == 0):
                 self.print(verbose)
 
@@ -126,6 +125,8 @@ class SequentialEngine(SeirsPlusLikeEngine):
             numI = sum([self.current_state_count(s)
                         for s in self.unstable_states
                         ])
+            if not numI > 0:
+                break
 
         self.print(verbose)
         self.finalize_data_series()
