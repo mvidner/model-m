@@ -27,19 +27,21 @@ except ModuleNotFoundError:
     verona_available = False
 
 
-def magic_formula(graph):
+def magic_formula(graph, list_of_closed_layers=None):
 
     # rozvrtany ... nutno opravit
 
     N = graph.number_of_nodes()
 
-    print(graph.get_layers_info())
+    #    print(graph.get_layers_info())
 
     prob_no_contact = csr_matrix((N, N))  # empty values = 1.0
+    if list_of_closed_layers is None:
+        list_of_closed_layers = []
 
     for name, prob in graph.get_layers_info().items():
         a = nx.adj_matrix(graph.get_graph_for_layer(name))
-        if len(a.data) == 0:
+        if len(a.data) == 0 or name in list_of_closed_layers:
             continue
         a = a.multiply(prob)  # contact on layer
         not_a = a  # empty values = 1.0
@@ -128,19 +130,33 @@ def tell_the_story(history, graph):
     return "\n".join(story)
 
 
-def matrix(graph):
+def matrix(graph, cf):
+
+    scenario = cf.section_as_dict("SCENARIO")
+
     if isinstance(graph, CSVGraph):
+        if scenario:
+            raise NotImplementedError(
+                "CSVGraph does not support closing layers yet.")
         return graph.G
 
     if isinstance(graph, LightGraph):
+        if scenario:
+            raise NotImplementedError(
+                "LightGraph does not support closing layers yet.")
         return graph.A
 
     if isinstance(graph, RandomSingleGraphGenerator):
+        if scenario:
+            raise NotImplementedError(
+                "RandomGraphGenerator does not support closing layers.")
         return graph.G
 
     if isinstance(graph, GraphGenerator):
+        if scenario:
+            list_of_closed_layers = scenario["closed"]
         return magic_formula(
-            graph
+            graph, list_of_closed_layers
         )
     else:
         return None
@@ -163,7 +179,7 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
     graph = create_graph(graph_name, nodes=nodes, edges=edges,
                          layers=layers, num_nodes=num_nodes)
 
-    A = matrix(graph)
+    A = matrix(graph, cf)
     end = time.time()
     print("Graph loading: ", end-start, "seconds")
 
