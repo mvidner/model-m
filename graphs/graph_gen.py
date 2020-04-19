@@ -34,26 +34,24 @@ class GraphGenerator:
         return nx.Graph(self.G)
 
     def as_aggregated_graph(self):
-        ag = nx.Graph();
+        ag = nx.Graph()
         ag.add_nodes_from(self.G)
 # iterate through nodes n
-#   for neighbours of n denoted m, m > n 
-#       for all layers types 
+#   for neighbours of n denoted m, m > n
+#       for all layers types
 #           for all layer sub-types
 #               sum weights in sub-layers
-#       1 - product (leyer weight * (1-sum of sub-layers))         
-        
-
+#       1 - product (leyer weight * (1-sum of sub-layers))
 
         lp = []
         selected_edges = []
-    
+
         for i, l in enumerate(self.layer_names):
             lp[i] = self.G.graph['layer_probs'][i]
             selected_edges[i] = [(u, v, e) for u, v, e in self.G.edges(
                 data=True) if e['type'] == l]
 
-        return ag       
+        return ag
 
     def get_graph_for_layer(self, layer_name):
         ret_g = nx.Graph()
@@ -64,7 +62,7 @@ class GraphGenerator:
         ret_g.add_nodes_from(self.G)
         selected_edges = [(u, v, e)
                           for u, v, e in self.G.edges(data=True)
-                          if e['type'] == layer_name]
+                          if e['type'] == self.layer_names.index(layer_name)]
         ret_g.add_edges_from(selected_edges)
 
         return ret_g
@@ -165,7 +163,7 @@ class GraphGenerator:
     def close_layers(self, list_of_layers):
         for name in list_of_layers:
             i = self.G.graph["layer_names"].index(name)
-            self.G.graph["layer_probs"][i] = 0 
+            self.G.graph["layer_probs"][i] = 0
 
 
 def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n=None):
@@ -193,8 +191,9 @@ def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n
                 graph.remove_edge(node, neighbor)
     return graph
 
+
 class RandomSingleGraphGenerator(GraphGenerator):
-    
+
     def __init__(self, num_nodes=10000, **kwargs):
         super().__init__(**kwargs)
         self.num_nodes = num_nodes
@@ -202,7 +201,7 @@ class RandomSingleGraphGenerator(GraphGenerator):
         # generate random connections
         baseGraph = nx.barabasi_albert_graph(n=num_nodes, m=9)
         FG = custom_exponential_graph(baseGraph, scale=100)
-        
+
 #       list_of_zeroes = [ n for n, d in FG.degree() if d == 0 ]
 #       if list_of_zeroes != []:
 #           print('OMG: ', list_of_zeroes)
@@ -210,14 +209,14 @@ class RandomSingleGraphGenerator(GraphGenerator):
         # generate random weights from trunc norm
         lower, upper = 0, 1
         mu, sigma = 0.7, 0.3
-        iii=0
+        iii = 0
         for (u, v, d) in FG.edges(data=True):
             iii += 1
             FG[u][v]['weight'] = stats.truncnorm.rvs(
                 (lower - mu) / sigma, (upper - mu) / sigma, loc=mu, scale=sigma)
         print(iii, 'Edges')
         self.G = FG
-    
+
 
 class RandomGraphGenerator(GraphGenerator):
     """ generating random graph with mean degree 13 and num_nodes nodes

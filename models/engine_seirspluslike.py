@@ -141,7 +141,8 @@ class SeirsPlusLikeEngine(BaseEngine):
                 scipy.sparse.csr_matrix.dot(self.A, self.memberships[state]))
 
         elif type(state) == list:
-            state_flags = self.memberships[state, :, :].squeeze()
+            state_flags = self.memberships[state, :, :].reshape(
+                len(state), self.num_nodes)
             # if TF_ENABLED:
             #     with tf.device('/GPU:' + "0"):
             #         x = tf.Variable(state_flags, dtype="float32")
