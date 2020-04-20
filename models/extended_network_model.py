@@ -276,7 +276,7 @@ ExtendedDailyNetworkModel = create_custom_model("ExtendedDailyNetworkModel",
                                                 calc_propensities=calc_propensities,
                                                 engine=DailyEngine)
 
-ExtendedSequentialNetworkModel = create_custom_model("ExtendedDailyNetworkModel",
+ExtendedSequentialNetworkModel = create_custom_model("ExtendedSequentialNetworkModel",
                                                      **model_definition,
                                                      calc_propensities=calc_propensities,
                                                      engine=SequentialEngine)

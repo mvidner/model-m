@@ -130,7 +130,10 @@ def tell_the_story(history, graph):
 
 def matrix(graph, cf):
 
-    scenario = cf.section_as_dict("SCENARIO")
+    if cf:
+        scenario = cf.section_as_dict("SCENARIO")
+    else:
+        scenario = False 
 
     if isinstance(graph, CSVGraph):
         if scenario:

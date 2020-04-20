@@ -49,7 +49,7 @@ def simple_policy(policy_func):
             #                if isinstance(graph, GraphGenerator):
             #                    A = graph.G
             #                else:
-            A = matrix(graph)
+            A = matrix(graph, None)
 
             to_change = {"graph": A}
             return to_change
