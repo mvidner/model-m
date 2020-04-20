@@ -15,20 +15,20 @@ def sum_sparse(m):
 
 def magic_formula(m, probs):
     assert len(m) == len(probs)
-    N = m[0].shape[0] # m must have at least one member  
+    N = m[0].shape[0]  # m must have at least one member
 
     prob_no_contact = sparse_matrix((N, N))
     for a, p in zip(m, probs):
-        if len(a.data) == 0:
+        if len(a.data) == 0 or p == 0:
             continue
         pa = a.multiply(p)
-        not_a = pa 
-        not_a.data = 1.0 - not_a.data 
-        prob_no_contact = multiply_zeros_as_ones(prob_no_contact, not_a) 
+        not_a = pa
+        not_a.data = 1.0 - not_a.data
+        prob_no_contact = multiply_zeros_as_ones(prob_no_contact, not_a)
         del pa
-    prob_of_contact = prob_no_contact 
-    prob_of_contact.data = 1.0 - prob_of_contact.data
-    return  prob_of_contact
+    prob_of_contact = prob_no_contact
+    prob_of_contact.data = 1.0 - prob_no_contact.data
+    return prob_of_contact
 
 
 class LightGraph():
