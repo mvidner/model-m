@@ -226,7 +226,7 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
         f.write("#"+config_string)
         model.save(f)
 
-    save_nodes = cf.section_as_dict("TASK").get("save_node_states", "Yes") == "Yes"
+    save_nodes = cf.section_as_dict("TASK").get("save_node_states", "No") == "Yes"
     if save_nodes:
         model.save_node_states(f"node_states{test_id}.csv")
 
