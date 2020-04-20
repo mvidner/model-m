@@ -174,7 +174,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         index = range(0, self.t+1)
         columns = self.states_history.values
         df = pd.DataFrame(columns, index=index)
-        df.to_csv("ints_"+filename)
-        df = df.replace(self.state_str_dict)
         df.to_csv(filename)
+        # df = df.replace(self.state_str_dict)
+        # df.to_csv(filename)
         print(df)
