@@ -144,10 +144,11 @@ model_definition = {
     "model_parameters": {
         "beta": (0,  "rate of transmission (exposure)"),
         "sigma": (0, "rate of infection (upon exposure)"),
-        "gamma": (0, "rate of recovery (upon infection)"),
+        "gamma_In": (0, "rate of recovery (upon infection)"),
+        "gamma_Is": (0, "rate of recovery (upon infection)"),
+        "gamma_Id": (0, "rate of recovery (upon infection)"),
         "mu_I": (0, "rate of infection-related death"),
         "beta_D": (0, "rate of transmission (exposure) for detected inds"),
-        "gamma_D": (0, "rate of recovery (upon infection) for detected inds"),
         "mu_D": (0, "rate of infection-related death for detected inds"),
         "theta_E": (0, "rate of baseline testing for exposed individuals"),
         "theta_Ia": (0, "rate of baseline testing for Ia individuals"),
@@ -223,18 +224,18 @@ def calc_propensities(model, use_dict=True):
     propensity_E_to_I_a = (
         1-model.asymptomatic_rate) * model.sigma * exposed
 
-    propensity_I_n_to_R_u = model.gamma * \
+    propensity_I_n_to_R_u = model.gamma_In * \
         (model.memberships[STATES.I_n])
 
     asymptomatic = model.memberships[STATES.I_a]
     propensity_I_a_to_I_s = model.symptoms_manifest_rate * asymptomatic
 
     symptomatic = model.memberships[STATES.I_s]
-    propensity_I_s_to_R_u = model.gamma * symptomatic
+    propensity_I_s_to_R_u = model.gamma_Is * symptomatic
     propensity_I_s_to_D_u = model.mu_I * symptomatic
 
     detected = model.memberships[STATES.I_d]
-    propensity_I_d_to_R_d = model.gamma_D * detected
+    propensity_I_d_to_R_d = model.gamma_Is * detected
     propensity_I_d_to_D_d = model.mu_D * detected
 
     # testing  TODO
