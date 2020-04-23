@@ -28,32 +28,48 @@ class SequentialEngine(SeirsPlusLikeEngine):
         self.N[self.t] = self.N[self.t-1]
         self.states_history[self.t] = self.states_history[self.t-1]
 
-        propensities = np.column_stack(self.calc_propensities())
+        # print(self.memberships.shape)
+        # print(np.all(self.memberships.sum(axis=0) == 1))
+        # print(self.memberships.sum(axis=1))
+
+        plist = self.calc_propensities()
+        propensities = np.column_stack(plist)
+        # check
+        # print(propensities.shape)
+        # print(self.memberships.shape)
+        # print("node 0", self.memberships[:, 0].flatten())
+        # print(propensities[0])
+        # print(propensities.sum(axis=1))
+        assert np.all(propensities.sum(axis=1) == 1)
+
         # add column with pst P[X->X]
         # what is the fastest way to add a column?
-        propensities = np.append(
-            propensities, np.product(1.0-propensities, axis=1).reshape(-1, 1), axis=1)
+        # propensities = np.append(
+        #     propensities, np.product(1.0-propensities, axis=1).reshape(-1, 1), axis=1)
 
         cumsum = np.cumsum(propensities, axis=1)
-        total = np.sum(propensities, axis=1)
-        r = (np.random.rand(self.num_nodes)*total).reshape(-1, 1)
+        #        total = np.sum(propensities, axis=1)
+        r = np.random.rand(self.num_nodes).reshape(-1, 1)
 
         # compute which event takes place - roulette wheel selection over rows
         transition_idx = _searchsorted2d(cumsum, r)
 
         # udpate states
         self.delta.fill(0)
-        # filter out last transition (that means stay where you are)
-        indices = transition_idx != self.num_transitions
-        nodes = self.node_ids[indices]
-        tran_idxes = transition_idx[indices]
+        # # filter out last transition (that means stay where you are)
+        # indices = transition_idx != self.num_transitions
+        # nodes = self.node_ids
+        # tran_idxes = transition_idx
 
         # looks like list(zip()) is faster than zip(), but not sure what is the best
         # to walk through two numpy arrays
-        for node, idx in list(zip(nodes, tran_idxes)):
+        #        for node, idx in list(zip(nodes, tran_idxes)):
+        for node, idx in enumerate(transition_idx):
             # if idx == self.num_transitions:  # state in current state
             #     continue
             s, e = self.transitions[idx]
+            if s == e:
+                continue
             # print(f"{node} goes from {self.state_str_dict[s]} to {self.state_str_dict[e]}")
             # if self.memberships[s, node, 0] != 1:
             #     print(f"node not in state {self.state_str_dict[s]}")

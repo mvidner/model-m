@@ -6,6 +6,7 @@ import networkx as nx
 import time
 
 from history_utils import TimeSeries, TransitionHistory
+from sparse_utils import prop_of_column
 from engine import BaseEngine
 
 
@@ -93,6 +94,10 @@ class SeirsPlusLikeEngine(BaseEngine):
              for s in self.states]
         )
         self.memberships = np.expand_dims(self.memberships, axis=2).astype(int)
+        # print(self.memberships.shape)
+        # print(np.all(self.memberships.sum(axis=0) == 1))
+        # print(self.memberships.sum(axis=1))
+        # exit()
 
     def node_degrees(self, Amat):
         """ return number of degrees of  nodes,
@@ -153,6 +158,23 @@ class SeirsPlusLikeEngine(BaseEngine):
         else:
             raise TypeException(
                 "num_contacts(state) accepts str or list of strings")
+
+    def prob_of_no_contact(self, states):
+        assert type(states) == list
+        state_flags = self.memberships[states, :, :].reshape(
+            len(states), self.num_nodes).sum(axis=0)
+        print("state flags", state_flags.shape)
+
+        vysek = self.A[state_flags == 1, :]
+        #        print(vysek.shape)
+        vysek.eliminate_zeros()
+        not_prob_contact = scipy.sparse.csr_matrix(vysek.shape)
+        not_prob_contact.data = 1.0 - vysek.data
+        return 1 - prop_of_column(not_prob_contact).reshape(-1, 1)
+
+        # not_prob_contact = prob_contact
+        # not_prob_contact.data = 1.0 - not_prob_contact.data
+        #  product over columns
 
     def current_state_count(self, state):
         return self.state_counts[state][self.tidx]

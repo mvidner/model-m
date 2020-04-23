@@ -27,6 +27,17 @@ def multiply_col(A, col_idx, alpha, trunc=False):
         A.data[col_indices] = np.clip(A.data[col_indices], 0.0, 1.0)
 
 
+def prop_of_column(A):
+
+    result = np.ones(A.shape[1])
+    col_indices = A.indices
+
+    for col_idx in np.unique(col_indices):
+        current_indices = A.indices == col_idx
+        result[col_idx] = np.prod(1 - A.data[current_indices])
+    return result
+
+
 def multiply_zeros_as_ones(a, b):
     c = a.minimum(b)
     r, c = c.nonzero()
