@@ -34,13 +34,18 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
         plist = self.calc_propensities()
         propensities = np.column_stack(plist)
+
+        assert np.all(propensities >= 0) and np.all(propensities <= 1), \
+            f">=0 & <= 0 failed for {propensities[propensities >= 0]} a \
+            {propensities[propensities<=1]} " 
         # check
         # print(propensities.shape)
         # print(self.memberships.shape)
         # print("node 0", self.memberships[:, 0].flatten())
         # print(propensities[0])
-        # print(propensities.sum(axis=1))
-        assert np.all(propensities.sum(axis=1) == 1)
+        # print(propensities.sum(axis=1q))
+        
+        assert np.allclose(propensities.sum(axis=1), 1.0)
 
         # add column with pst P[X->X]
         # what is the fastest way to add a column?
@@ -111,6 +116,8 @@ class SequentialEngine(SeirsPlusLikeEngine):
         self.print(True)
 
         for self.t in range(1, T+1):
+            if __debug__:
+                print(flush=True)
             #            print(f"day {self.t}")
 
             print(self.t)
@@ -143,6 +150,15 @@ class SequentialEngine(SeirsPlusLikeEngine):
                         ])
             if not numI > 0:
                 break
+
+        if self.t < T:
+            for t in range(self.t+1, T+1):
+                if (t >= len(self.state_counts[0])):
+                    self.increase_data_series_length()
+                for state in self.states:
+                    self.state_counts[state][t] = self.state_counts[state][t-1]
+        self.t = T
+
 
         self.print(verbose)
         self.finalize_data_series()

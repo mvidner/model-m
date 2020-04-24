@@ -6,6 +6,7 @@ def multiply_row(A, row_idx, alpha, trunc=False):
     '''
     multiply values in row_idx in place
     '''
+
     idx_start_row = A.indptr[row_idx]
     idx_end_row = A.indptr[row_idx + 1]
 
@@ -27,14 +28,34 @@ def multiply_col(A, col_idx, alpha, trunc=False):
         A.data[col_indices] = np.clip(A.data[col_indices], 0.0, 1.0)
 
 
+def prop_of_row(A):
+
+    result = np.ones(A.shape[0])
+
+    i = 0 
+    n = len(A.indptr)
+    while i < n-1: 
+        s, e = A.indptr[i], A.indptr[i+1]
+        result[i] = np.prod(A.data[s:e])
+        i += 1 
+    if A.indptr[i] < len(A.data):
+        s = A.indptr[i] 
+        result[i] = np.prod(A.data[s:])
+    return result 
+
+
 def prop_of_column(A):
 
     result = np.ones(A.shape[1])
     col_indices = A.indices
+    #    print("columns", np.unique(col_indices))
+
+    # print(".... prop_of_column fce ", A.indices, np.unique(col_indices), A.data)
 
     for col_idx in np.unique(col_indices):
         current_indices = A.indices == col_idx
-        result[col_idx] = np.prod(1 - A.data[current_indices])
+        #        print(" .... ", A.data[current_indices], np.prod(1 - A.data[current_indices]))
+        result[col_idx] = np.prod(A.data[current_indices])
     return result
 
 
