@@ -3,8 +3,8 @@
 #  to be run with qsub -v FILE=name_of_ini_file, ID=whatever_label
 source .bashrc
 conda activate covid
-cd /home/vidnerova/covid/model-m/tests/
-export PYTHONPATH=$PYTHONPATH:/home/vidnerova/covid/model-m/models:/home/vidnerova/covid/model-m/graphs:/home/vidnerova/covid/model-m/utils:/home/vidnerova/covid/model-m/policies
+cd /storage/home/vidnerova/covid/model-m/tests/
+export PYTHONPATH=$PYTHONPATH:/storage/home/vidnerova/covid/model-m/models:/storage/home/vidnerova/covid/model-m/graphs:/storage/home/vidnerova/covid/model-m/utils:/storage/home/vidnerova/covid/model-m/policies
 
 #for J in "0 7" "8 15" "16 23" "24 31" "32 39" "40 47" "48 55" "56 63" "64 71" "72 79" "80 87" "88 95" "96 99"; do
 
@@ -12,7 +12,7 @@ export PYTHONPATH=$PYTHONPATH:/home/vidnerova/covid/model-m/models:/home/vidnero
 
 # run processes and store pids in array
 for I in `seq $INTERVAL`; do
-	python run_experiment.py -r $P ${FILE}  ${ID}_${I} > ${ID}_${I}.log  &
+	python run_experiment.py -r $P ${FILE}  ${TID}_${I} > ${TID}_${I}.log  &
 	pids[${I}]=$!
 done
 
