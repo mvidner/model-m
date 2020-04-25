@@ -44,7 +44,7 @@ def _run_model_with_hyperparams(model_func, hyperparams, return_func=None):
     print(f"Running with hyperparams: {hyperparams}")
 
     model, run_params = model_func(hyperparams=hyperparams)
-    return run_single_model(model, **run_params, return_func=return_func)
+    return run_single_model(model, **run_params, return_func=partial(return_func, hyperparams=hyperparams))
 
 
 def perform_gridsearch(model_func, hyperparam_config, n_jobs=1, return_func=None):
