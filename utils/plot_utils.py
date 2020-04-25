@@ -91,6 +91,7 @@ def _history_with_fname(filename, group_days: int = None, group_func: str = "max
 
 
 def _load_history(filename: str) -> pd.DataFrame:
+    print(filename)
     history = pd.read_csv(filename, comment="#")
     history["all_infectious"] = history[[
         "I_n", "I_a", "I_s", "I_d", "E"]].sum(axis=1)
