@@ -12,8 +12,8 @@ from model_zoo import model_zoo
 from policy import bound_policy
 
 
-def run_single_model(model, ndays, print_interval=10, verbose=False, return_func=None):
-    model.run(T=ndays, verbose=verbose, print_interval=print_interval)
+def run_single_model(model, T, print_interval=10, verbose=False, return_func=None):
+    model.run(T=T, verbose=verbose, print_interval=print_interval)
 
     # extract information to return or do some postprocessing
     if return_func is not None:
@@ -26,6 +26,7 @@ def run_hyperparam_search(model_config: str, hyperparam_config: str, model_rando
     cf = ConfigFile()
     cf.load(model_config)
 
+    # TODO preload graph only once
     model_func = partial(load_model_from_config, cf, model_random_seed=model_random_seed, use_policy=use_policy)
     hyperparam_search_func = _init_hyperparam_search(hyperparam_config)
 
@@ -39,43 +40,23 @@ def _init_hyperparam_search(hyperparam_file: str):
     return partial(hyperparam_search_zoo[config["method"]], hyperparam_config=config)
 
 
-def _run_model_with_hyperparams(model_func, hyperparams):
+def _run_model_with_hyperparams(model_func, hyperparams, return_func=None):
+    print(f"Running with hyperparams: {hyperparams}")
+
     model, run_params = model_func(hyperparams=hyperparams)
-    return model.run(**run_params)
+    return run_single_model(model, **run_params, return_func=return_func)
 
 
-def perform_gridsearch(model_func, hyperparam_config, n_jobs=1):
+def perform_gridsearch(model_func, hyperparam_config, n_jobs=1, return_func=None):
     grid = hyperparam_config["MODEL"]
     res = Parallel(n_jobs=n_jobs)(
-        delayed(_run_model_with_hyperparams)(model_func, hp)
+        delayed(_run_model_with_hyperparams)(model_func, hp, return_func=return_func)
         for hp in ParameterGrid(grid)
     )
 
     return res
 
 
-
 hyperparam_search_zoo = {
     'GridSearch': perform_gridsearch
 }
-
-# TODO json with hyperparam list, method specification (search strategy)
-
-# TODO parse configs func
-# TODO create model func - sth that initializes a graph and takes some hyperparams
-# TODO aka this etc; it should take a graph-creating-func and call it I guess, same with policy and other things
-"""
-
-graph_name = cf.section_as_dict("GRAPH")["name"]
-    nodes = cf.section_as_dict("GRAPH").get("nodes", "nodes.csv")
-    edges = cf.section_as_dict("GRAPH").get("edges", "edges.csv")
-    layers = cf.section_as_dict("GRAPH").get("layers", "etypes.csv")
-
-    start = time.time()
-    graph = create_graph(graph_name, nodes=nodes, edges=edges,
-                         layers=layers, num_nodes=num_nodes)
-"""
-
-# TODO also better history grouping for results
-# TODO multiple models - again a generator; init is pairs of config files - orig and hyperparam one
-# TODO and different search strategies

@@ -67,7 +67,7 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
     model, run_params = load_model_from_config(cf, model_random_seed=model_random_seed, use_policy=use_policy)
 
     model.run(**run_params)
-    print("Avg. number of events per day: ", model.tidx/ndays)
+    print("Avg. number of events per day: ", model.tidx/run_params["T"])
 
     storyfile = cf.section_as_dict("OUTPUT").get("story", None)
     if storyfile:
