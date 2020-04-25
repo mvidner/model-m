@@ -22,7 +22,7 @@ def plot_histories(*args, group_days: int = None, group_func: str = "max", **kwa
 
 
 def plot_mutliple_policies(policy_dict: Dict[str, List[str]],
-                           group_days: int = None, group_func: str = "max", **kwargs):
+                           group_days: int = None, group_func: str = "max", value="all_infectious", **kwargs):
     histories = []
     for policy_key, history_list in policy_dict.items():
         histories.extend([_history_with_fname(filename,
@@ -32,7 +32,7 @@ def plot_mutliple_policies(policy_dict: Dict[str, List[str]],
                           for filename in history_list])
 
     history_one_df = pd.concat(histories)
-    _plot_lineplot(history_one_df, "day", "all_infectious",
+    _plot_lineplot(history_one_df, "day", value,
                    hue="policy_name", **kwargs)
 
 
