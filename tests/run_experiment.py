@@ -235,13 +235,15 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
         plt.savefig(f"num_of_ill{test_id}.png")
 
     # save history
-    cf.save("tmpxxxx.tmp")
-    with open("tmpxxxx.tmp") as f:
-        config_string = "#".join(f.readlines())
     test_id = "_" + test_id if test_id else ""
-    with open(f"history{test_id}.csv", "w") as f:
+    file_name = f"history{test_id}.csv"
+    cf.save(file_name) 
+    cfg_string = ""
+    with open(file_name, "r") as f:
+        cfg_string = "#" + "#".join(f.readlines()) 
+    with open(file_name, "w") as f:
+        f.write(cfg_string)
         f.write(f"# RANDOM_SEED = {model_random_seed}\n")
-        f.write("#"+config_string)
         model.save(f)
 
     save_nodes = cf.section_as_dict("TASK").get("save_node_states", "No") == "Yes"

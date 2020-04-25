@@ -6,17 +6,21 @@ conda activate covid
 cd /home/vidnerova/covid/model-m/tests/
 export PYTHONPATH=$PYTHONPATH:/home/vidnerova/covid/model-m/models:/home/vidnerova/covid/model-m/graphs:/home/vidnerova/covid/model-m/utils:/home/vidnerova/covid/model-m/policies
 
+#for J in "0 7" "8 15" "16 23" "24 31" "32 39" "40 47" "48 55" "56 63" "64 71" "72 79" "80 87" "88 95" "96 99"; do
+
+
+
 # run processes and store pids in array
-for I in `seq 0 9`; do
-    echo $FILE ${ID}
-    python run_experiment.py -r $P ${FILE}  ${ID}_$I > demo_${ID}_$I.log  &
-    sleep 10s
-    pids[${I}]=$!
+for I in `seq $INTERVAL`; do
+	python run_experiment.py -r $P ${FILE}  ${ID}_${I} > ${ID}_${I}.log  &
+	pids[${I}]=$!
 done
 
 echo ${pids[*]} > pids.log
 
 # wait for all pids
 for pid in ${pids[*]}; do
-    wait $pid
+ 	wait $pid
 done
+unset pids
+#done 

@@ -6,6 +6,7 @@ import networkx as nx
 import time
 
 from history_utils import TimeSeries, TransitionHistory
+from sparse_utils import prop_of_row
 from engine import BaseEngine
 
 
@@ -29,6 +30,9 @@ class SeirsPlusLikeEngine(BaseEngine):
             else:
                 setattr(self, param_name,
                         np.full(fill_value=param, shape=(self.num_nodes, 1)))
+            #print(param_name, getattr(self, param_name))
+#        exit()
+
 
     def setup_series_and_time_keeping(self):
 
@@ -93,6 +97,10 @@ class SeirsPlusLikeEngine(BaseEngine):
              for s in self.states]
         )
         self.memberships = np.expand_dims(self.memberships, axis=2).astype(int)
+        # print(self.memberships.shape)
+        # print(np.all(self.memberships.sum(axis=0) == 1))
+        # print(self.memberships.sum(axis=1))
+        # exit()
 
     def node_degrees(self, Amat):
         """ return number of degrees of  nodes,
@@ -153,6 +161,43 @@ class SeirsPlusLikeEngine(BaseEngine):
         else:
             raise TypeException(
                 "num_contacts(state) accepts str or list of strings")
+
+    def prob_of_no_contact(self, source_states, dest_states, beta):
+        #        print(states)
+        #for i in states:
+        #    print(self.current_state_count(i))
+        assert type(dest_states) == list and type(source_states) == list 
+        dest_flags = self.memberships[dest_states, :, :].reshape(
+            len(dest_states), self.num_nodes).sum(axis=0)
+        source_flags = self.memberships[source_states, :, :].reshape(
+            len(source_states), self.num_nodes).sum(axis=0)
+        #        print("state flags", state_flags.shape)
+        #        print(self.node_ids[state_flags == 1])
+
+        vysek = self.A[source_flags == 1, :][:, dest_flags == 1] 
+        vysek.eliminate_zeros()
+        #        print(vysek.shape)
+        if vysek.shape[0] == 0: 
+            return np.zeros((self.num_nodes, 1))
+        not_prob_contact = scipy.sparse.csr_matrix(vysek)
+        assert np.all(not_prob_contact.data >= 0) and np.all(not_prob_contact.data <= 1)
+        #        print(not_prob_contact)
+        beta = np.tile(beta[dest_flags==1].ravel(), (not_prob_contact.shape[0], 1))
+        #print(not_prob_contact.shape, beta.shape)
+        not_prob_contact = scipy.sparse.csr_matrix(not_prob_contact.multiply(beta))
+        not_prob_contact.data = 1.0 - not_prob_contact.data
+        # print("**** == 1", np.all(not_prob_contact.data == 1))
+        # print("**** prop columns", prop_of_column(not_prob_contact), np.all(prop_of_column(not_prob_contact)==1))
+        # print("*** contact ",  1 - prop_of_column(not_prob_contact))
+        result = np.zeros(self.num_nodes)
+        #print((1 - prop_of_row(not_prob_contact)).shape, result.shape, 
+        #      result[source_flags == 1].shape)
+        result[source_flags == 1] = 1 - prop_of_row(not_prob_contact)
+        return result.reshape(self.num_nodes, 1) 
+
+        # not_prob_contact = prob_contact
+        # not_prob_contact.data = 1.0 - not_prob_contact.data
+        #  product over columns
 
     def current_state_count(self, state):
         return self.state_counts[state][self.tidx]
