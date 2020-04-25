@@ -190,15 +190,19 @@ class SequentialEngine(SeirsPlusLikeEngine):
         """ here current = self.t (not self.tidx as in seirsplus-derived models) """
         return self.N[self.t]
 
-    def save(self, file_or_filename):
-        """ Save timeseries. They have different format than in BaseEngine,
-        so I redefined save method here """
+    def to_df(self):
         index = range(0, self.t+1)
         columns = self.state_counts
         columns["day"] = index
         df = pd.DataFrame(self.state_counts, index=index)
         df.index.rename('T', inplace=True)
         df.columns = [self.state_str_dict[x] for x in self.states] + ["day"]
+        return df
+
+    def save(self, file_or_filename):
+        """ Save timeseries. They have different format than in BaseEngine,
+        so I redefined save method here """
+        df = self.to_df()
         df.to_csv(file_or_filename)
         print(df)
 
