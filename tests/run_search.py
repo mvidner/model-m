@@ -32,10 +32,11 @@ def test(set_random_seed, policy, n_jobs, out_dir, filename, hyperparam_filename
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
 
-    def save_history(model):
-        stamp = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
-        file_name = os.path.join(out_dir, f'model_{stamp}.csv')
+    def save_history(model, hyperparams):
+        hyperparam_str = ','.join(f'{k}={v}' for k, v in hyperparams.items())
+        file_name = os.path.join(out_dir, f'model_{hyperparam_str}.csv')
 
+        # TODO parameters printed incorrectly in file - not overwritten by hyperparams
         cf.save(file_name)
         with open(file_name, "r") as f:
             cfg_string = "#" + "#".join(f.readlines())
@@ -46,7 +47,7 @@ def test(set_random_seed, policy, n_jobs, out_dir, filename, hyperparam_filename
 
         save_nodes = cf.section_as_dict("TASK").get("save_node_states", "No") == "Yes"
         if save_nodes:
-            model.save_node_states(f"node_states_{stamp}.csv")
+            model.save_node_states(f"node_states_{hyperparam_str}.csv")
 
     def search_func():
         return run_hyperparam_search(filename, hyperparam_filename, model_random_seed=random_seed, use_policy=policy,
