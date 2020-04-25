@@ -40,7 +40,9 @@ class SeirsPlusLikeEngine(BaseEngine):
         tseries_len = (self.num_transitions + 1) * self.num_nodes
 
         self.tseries = TimeSeries(tseries_len, dtype=float)
-
+        self.meaneprobs = TimeSeries(tseries_len, dtype=float)
+        self.medianeprobs = TimeSeries(tseries_len, dtype=float)
+        
         self.history = TransitionHistory(tseries_len)
 
         self.states_history = TransitionHistory(

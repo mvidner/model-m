@@ -7,7 +7,7 @@ import time
 
 from history_utils import TimeSeries, TransitionHistory
 from engine_seirspluslike import SeirsPlusLikeEngine
-
+#from extended_network_model import STATES as s
 
 def _searchsorted2d(a, b):
     m, n = a.shape
@@ -27,12 +27,23 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.state_counts[state][self.t] = self.state_counts[state][self.t-1]
         self.N[self.t] = self.N[self.t-1]
         self.states_history[self.t] = self.states_history[self.t-1]
-
+        # self.meaneprobs[self.t] = self.meaneprobs[self.t-1]
+        # self.medianprobs[self.t] = self.meaneprobs[self.t-1]
+        
+        
         # print(self.memberships.shape)
         # print(np.all(self.memberships.sum(axis=0) == 1))
         # print(self.memberships.sum(axis=1))
 
         plist = self.calc_propensities()
+
+        s_and_ss = self.memberships[0] + self.memberships[1]  
+        p_infect = (plist[0] + plist[3])[s_and_ss == 1]
+        # print(p_infect.mean()>0, np.median(p_infect)>0)
+        # exit()
+        self.meaneprobs[self.t] = p_infect.mean()
+        self.medianeprobs[self.t] = np.median(p_infect)
+        
         propensities = np.column_stack(plist)
 
         assert np.all(propensities >= 0) and np.all(propensities <= 1), \
@@ -167,8 +178,11 @@ class SequentialEngine(SeirsPlusLikeEngine):
     def increase_data_series_length(self):
         for state in self.states:
             self.state_counts[state].bloat(300)
-        self.N.bloat()
+        self.N.bloat(300)
         self.states_history(300)
+        self.meaneprobs.bloat(300)
+        self.medianeprobs.bloat(300)
+
 
     def increase_history_len(self):
         self.tseries.bloat(100*self.num_nodes)
@@ -181,7 +195,10 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.state_counts[state].finalize(self.t)
         self.N.finalize(self.t)
         self.states_history.finalize(self.t)
+        self.meaneprobs.finalize(self.t)
+        self.medianeprobs.finalize(self.t)
 
+        
     def current_state_count(self, state):
         """ here current = self.t (not self.tidx as in seirsplus-derived models) """
         return self.state_counts[state][self.t]
@@ -195,10 +212,12 @@ class SequentialEngine(SeirsPlusLikeEngine):
         so I redefined save method here """
         index = range(0, self.t+1)
         columns = self.state_counts
+        columns["mean_p_infection"] = self.meaneprobs
+        columns["median_p_infection"] = self.medianeprobs
         columns["day"] = index
-        df = pd.DataFrame(self.state_counts, index=index)
+        df = pd.DataFrame(columns, index=index)
         df.index.rename('T', inplace=True)
-        df.columns = [self.state_str_dict[x] for x in self.states] + ["day"]
+        df.columns = [self.state_str_dict[x] for x in self.states] + ["mean_p_infection", "median_p_infection", "day"]
         df.to_csv(file_or_filename)
         print(df)
 
