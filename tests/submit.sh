@@ -15,19 +15,23 @@
 
 function run {
 #    qsub -N town0 -q qgpulong -l "select=1:ncpus=$1" -v INTERVAL="$2",FILE="town0_closed_schools.ini",ID="closed_schools",P="" run_task.pbs
-    qsub -N town0 -q qgpulong -l "select=1:ncpus=$1" -v INTERVAL="$2",FILE="town0.ini",ID="time_test",P="" run_task.pbs
+#    name=`echo -n $3 | sed 's/ /\_/g'`
+    L=`echo $2 | sed 's/ /_/g'`
+#    qsub -N "town0_${1}_$L" -q qprod -l "select=1:ncpus=$1" -v INTERVAL="$2",FILE="town0_closed_schools.ini",TID="closed_schools",P="" run_task.pbs
+    qsub -N "town0_${1}_$L" -q qprod5 -l "select=1:ncpus=$1" -v INTERVAL="$2",FILE="town0.ini",TID="normal_life",P="" run_task.pbs
 }
 
-run 1 "1 1" 
-
-# N=10
-# MAX=100
-# START=0
-# while test $((START + N)) -le $MAX; do
-#     run $N "$START `expr $START + $N - 1`"
-#     let "START+=N"
-# done
-# if test $START -le $MAX; then 
-#     run $N "$START $MAX"
-# fi
+#for B in 9;
+#do
+N=8
+MAX=100
+START=0
+while test $((START + N)) -le $MAX; do
+    run $N "$START `expr $START + $N - 1`" 
+    let "START+=N"
+done
+if test $START -le $MAX; then 
+    run $N "$START $MAX" 
+fi
+#done
 qstat
