@@ -162,8 +162,10 @@ class GraphGenerator:
 
     def close_layers(self, list_of_layers):
         for name in list_of_layers:
+            print(f"Closing {name}")
             i = self.G.graph["layer_names"].index(name)
             self.G.graph["layer_probs"][i] = 0
+        print(list(zip(self.G.graph["layer_names"], self.G.graph["layer_probs"])))
 
 
 def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n=None):
