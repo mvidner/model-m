@@ -14,18 +14,20 @@
 #qsub -N closed_schools -q qgpulong -l "select=1:ncpus=8" -v FILE="village0_closed_schools.ini",ID="village_closed_schools",P="" run_task.pbs
 
 function run {
-    qsub -N town0 -q qgpulong -l "select=1:ncpus=$1" -v INTERVAL="$2",FILE="town0_closed_schools.ini",ID="closed_schools",P="" run_task.pbs
-    qsub -N town0 -q qgpulong -l "select=1:ncpus=$1" -v INTERVAL="$2",FILE="town0.ini",ID="normal_life",P="" run_task.pbs
+#    qsub -N town0 -q qgpulong -l "select=1:ncpus=$1" -v INTERVAL="$2",FILE="town0_closed_schools.ini",ID="closed_schools",P="" run_task.pbs
+    qsub -N town0 -q qgpulong -l "select=1:ncpus=$1" -v INTERVAL="$2",FILE="town0.ini",ID="time_test",P="" run_task.pbs
 }
 
-N=8
-MAX=100
-START=0
-while test $((START + N)) -le $MAX; do
-    run $N "$START `expr $START + $N - 1`"
-    let "START+=N"
-done
-if test $START -le $MAX; then 
-    run $N "$START $MAX"
-fi
+run 1 "1 1" 
+
+# N=10
+# MAX=100
+# START=0
+# while test $((START + N)) -le $MAX; do
+#     run $N "$START `expr $START + $N - 1`"
+#     let "START+=N"
+# done
+# if test $START -le $MAX; then 
+#     run $N "$START $MAX"
+# fi
 qstat
