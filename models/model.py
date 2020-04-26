@@ -81,7 +81,7 @@ def create_custom_model(clsname, states, state_str_dict, transitions,
             s: kwargs.get(f"init_{self.state_str_dict[s]}", 0)
             for s in self.states
         }
-        print(init_state_counts)
+        # print(init_state_counts)
         self.states_and_counts_init(init_state_counts)
 
         # 5. set callback to None

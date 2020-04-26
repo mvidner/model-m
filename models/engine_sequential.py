@@ -113,16 +113,17 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
         running = True
         self.tidx = 0
-        self.print(True)
+        if print_interval >= 0:
+            self.print(verbose)
 
         for self.t in range(1, T+1):
             if __debug__ and print_interval:
                 print(flush=True)
             #            print(f"day {self.t}")
 
-            print(self.t)
-            print(len(self.state_counts[0]))
-            print(len(self.states_history))
+            #print(self.t)
+            #print(len(self.state_counts[0]))
+            #print(len(self.states_history))
             if (self.t >= len(self.state_counts[0])):
                 # room has run out in the timeseries storage arrays; double the size of these arrays
                 self.increase_data_series_length()
@@ -142,7 +143,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             if print_interval > 0:
                 print("Last day took: ", end - start, "seconds")
 
-            if print_interval and (self.t % print_interval == 0):
+            if print_interval > 0 and (self.t % print_interval == 0):
                 self.print(verbose)
 
             # Terminate if tmax reached or num infectious and num exposed is 0:
@@ -161,7 +162,8 @@ class SequentialEngine(SeirsPlusLikeEngine):
         self.t = T
 
 
-        self.print(verbose)
+        if print_interval >= 0:
+            self.print(verbose)
         self.finalize_data_series()
         return True
 
