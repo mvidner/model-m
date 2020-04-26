@@ -117,7 +117,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.print(verbose)
 
         for self.t in range(1, T+1):
-            if __debug__ and print_interval:
+            if __debug__ and print_interval >= 0:
                 print(flush=True)
             #            print(f"day {self.t}")
 
