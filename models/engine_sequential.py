@@ -193,6 +193,11 @@ class SequentialEngine(SeirsPlusLikeEngine):
         """ here current = self.t (not self.tidx as in seirsplus-derived models) """
         return self.N[self.t]
 
+    def get_state_count(self, state=None):
+        if state is None:
+            return self.state_counts
+        return self.state_counts[state]
+
     def to_df(self):
         index = range(0, self.t+1)
         columns = self.state_counts
