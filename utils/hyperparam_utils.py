@@ -47,7 +47,6 @@ def _run_model_with_hyperparams(model_func, hyperparams, return_func=None):
     print(f"Running with hyperparams: {hyperparams}")
 
     model, run_params = model_func(hyperparams=hyperparams)
-    random_seeds = 
     return return_func(model, hyperparams, [ run_single_model(model, **run_params, return_func=None).to_df()
                                              for i in range(10) 
                                          ])
