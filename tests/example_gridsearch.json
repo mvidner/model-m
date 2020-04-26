@@ -2,6 +2,8 @@
   "method": "GridSearch",
   "MODEL": {
     "beta": [0.01, 0.1, 0.4, 0.5, 0.8],
-    "sigma": [0.1, 0.2]
+    "sigma": [0.1, 0.2],
+    "asymptomatic_rate": [0.5, 0.6],
+    "symptoms_manifest_rate": [0.5, 0.33333]
   }
 }

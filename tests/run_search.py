@@ -5,6 +5,8 @@ import timeit
 
 import click
 
+import pandas as pd
+
 from config_utils import ConfigFile
 from hyperparam_utils import run_hyperparam_search
 
@@ -61,9 +63,30 @@ def test(set_random_seed, preload_graph, policy, n_jobs, run_n_times, out_dir, f
             if save_nodes:
                 model.save_node_states(f"node_states_{hyperparam_str}.csv")
 
+    def save_mean_history(model_res, hyperparams, model_random_seed, **kwargs):
+        hyperparam_str = ','.join(f'{k}={v}' for k, v in hyperparams.items())
+        file_name = os.path.join(out_dir, f'model_{hyperparam_str}.csv')
+
+        # TODO parameters printed incorrectly in file - not overwritten by hyperparams
+        cf.save(file_name)
+        with open(file_name, "r") as f:
+            cfg_string = "#" + "#".join(f.readlines())
+        with open(file_name, "w") as f:
+            f.write(cfg_string)
+            f.write(f"# RANDOM_SEED = {random_seed}\n")
+            if run_n_times > 1:
+                df_concat = pd.concat([m.to_df() for m in model_res])
+                df_means = df_concat.groupby(df_concat.index).mean()
+                df_means.to_csv(f)
+            else:
+                df = model_res.to_df()
+                df.to_csv(f)
+
+
+
     def search_func():
         return run_hyperparam_search(filename, hyperparam_filename, model_random_seed=random_seed, use_policy=policy,
-                                     n_jobs=n_jobs, return_func=save_history, run_n_times=run_n_times,
+                                     n_jobs=n_jobs, return_func=save_mean_history, run_n_times=run_n_times,
                                      preload_graph=preload_graph)
 
     print(timeit.timeit(search_func, number=1))
