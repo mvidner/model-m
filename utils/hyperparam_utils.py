@@ -16,7 +16,7 @@ from engine_sequential import SequentialEngine
 
 def run_single_model(model, T, print_interval=10, verbose=False, return_func=None):
 
-    model.run(T=T, verbose=verbose, print_interval=print_interval)
+    model.run(T=T, verbose=verbose, print_interval=-1)
 
     # extract information to return or do some postprocessing
     if return_func is not None:
