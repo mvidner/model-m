@@ -12,8 +12,7 @@ from policy import bound_policy
 from scipy.sparse import csr_matrix
 from sparse_utils import multiply_zeros_as_ones
 
-from typing import Dict
-
+from typing import Dict, Tuple
 
 verona_available = True
 try:
@@ -23,14 +22,39 @@ except ModuleNotFoundError:
 
 
 def load_model_from_config(cf: ConfigFile,
+                           preloaded_graph: Tuple = None,
                            hyperparams: Dict = None,
                            model_random_seed: int = 42,
                            use_policy: str = None):
 
+    # load model hyperparameters; default params from config file are overwritten by hyperparams dict (if provided)
     model_params = cf.section_as_dict("MODEL")
     if hyperparams is not None:
         model_params = {**model_params, **hyperparams}
 
+    # load graph as described in config file; optionally use a different graph if provided in `preloaded graph`
+    graph, A = load_graph(cf) if preloaded_graph is None else preloaded_graph
+
+    # create model
+    class_name = cf.section_as_dict("TASK").get(
+        "model", "ExtendedNetworkModel")
+    Model = model_zoo[class_name]
+    model = Model(G=graph if A is None else A,
+                  **model_params,
+                  random_seed=model_random_seed)
+
+    # apply policy on model
+    if use_policy:  # TODO: cfg versus --policy option
+        load_policy(cf, model, use_policy)
+
+    ndays = cf.section_as_dict("TASK").get("duration_in_days", 60)
+    print_interval = cf.section_as_dict("TASK").get("print_interval", 1)
+    verbose = cf.section_as_dict("TASK").get("verbose", "Yes") == "Yes"
+
+    return model, {'T': ndays, 'print_interval': print_interval, 'verbose': verbose}
+
+
+def load_graph(cf: ConfigFile):
     num_nodes = cf.section_as_dict("TASK").get("num_nodes", None)
 
     graph_name = cf.section_as_dict("GRAPH")["name"]
@@ -45,24 +69,9 @@ def load_model_from_config(cf: ConfigFile,
     A = matrix(graph, cf)
     end = time.time()
     print("Graph loading: ", end - start, "seconds")
+    # print(graph)
 
-    #    print(graph)
-
-    class_name = cf.section_as_dict("TASK").get(
-        "model", "ExtendedNetworkModel")
-    Model = model_zoo[class_name]
-    model = Model(G=graph if A is None else A,
-                  **model_params,
-                  random_seed=model_random_seed)
-
-    if use_policy:  # TODO: cfg versus --policy option
-        load_policy(cf, model, use_policy)
-
-    ndays = cf.section_as_dict("TASK").get("duration_in_days", 60)
-    print_interval = cf.section_as_dict("TASK").get("print_interval", 1)
-    verbose = cf.section_as_dict("TASK").get("verbose", "Yes") == "Yes"
-
-    return model, {'T': ndays, 'print_interval': print_interval, 'verbose': verbose}
+    return graph, A
 
 
 def load_policy(cf: ConfigFile, model, policy: str):
