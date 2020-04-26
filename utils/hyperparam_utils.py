@@ -11,8 +11,11 @@ from load_model import load_model_from_config
 from model_zoo import model_zoo
 from policy import bound_policy
 
+from engine_sequential import SequentialEngine
+
 
 def run_single_model(model, T, print_interval=10, verbose=False, return_func=None):
+
     model.run(T=T, verbose=verbose, print_interval=print_interval)
 
     # extract information to return or do some postprocessing
@@ -44,8 +47,11 @@ def _run_model_with_hyperparams(model_func, hyperparams, return_func=None):
     print(f"Running with hyperparams: {hyperparams}")
 
     model, run_params = model_func(hyperparams=hyperparams)
-    return run_single_model(model, **run_params, return_func=partial(return_func, hyperparams=hyperparams))
-
+    random_seeds = 
+    return return_func(model, hyperparams, [ run_single_model(model, **run_params, return_func=None).to_df()
+                                             for i in range(10) 
+                                         ])
+    
 
 def perform_gridsearch(model_func, hyperparam_config, n_jobs=1, return_func=None):
     grid = hyperparam_config["MODEL"]

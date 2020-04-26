@@ -105,7 +105,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
                 print(f"\t {self.state_str_dict[state]} = {self.current_state_count(state)}")
 #                print(flush=True)
 
-    def run(self, T, print_interval=10, verbose=False):
+    def run(self, T, print_interval=0, verbose=False):
 
         # keep it, saves time
         self.delta = np.empty((self.num_states, self.num_nodes, 1), dtype=int)
@@ -116,7 +116,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         self.print(True)
 
         for self.t in range(1, T+1):
-            if __debug__:
+            if __debug__ and print_interval:
                 print(flush=True)
             #            print(f"day {self.t}")
 
@@ -139,7 +139,8 @@ class SequentialEngine(SeirsPlusLikeEngine):
                     print("CHANGING GRAPH")
                     self.update_graph(changes["graph"])
             end = time.time()
-            print("Last day took: ", end - start, "seconds")
+            if print_interval > 0:
+                print("Last day took: ", end - start, "seconds")
 
             if print_interval and (self.t % print_interval == 0):
                 self.print(verbose)
