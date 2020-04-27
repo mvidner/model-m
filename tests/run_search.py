@@ -17,7 +17,7 @@ def save_model_results(model):
 
 @click.command()
 @click.option('--set-random-seed/--no-random-seed', ' /-r', default=True)
-@click.option('--preload_graph', default=False)
+@click.option('--preload_graph', default=True)
 @click.option('--policy', '-p', default=None)
 @click.option('--n_jobs', default=1)
 @click.option('--run_n_times', default=1)
@@ -81,7 +81,7 @@ def test(set_random_seed, preload_graph, policy, n_jobs, run_n_times, out_dir, f
             else:
                 df = model_res.to_df()
                 df.to_csv(f)
-
+                
 
 
     def search_func():
