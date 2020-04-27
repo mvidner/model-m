@@ -93,7 +93,9 @@ def _run_models_from_config(cf: ConfigFile,
                                                    preloaded_graph=preloaded_graph,
                                                    model_random_seed=seed,
                                                    use_policy=use_policy)
-        return run_single_model(model, **run_params)
+        ret = run_single_model(model, **run_params)
+        del model
+        return ret
 
     if run_n_times > 1:
         # add 1 to seed each run
