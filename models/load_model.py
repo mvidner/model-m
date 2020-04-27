@@ -45,7 +45,7 @@ def load_model_from_config(cf: ConfigFile,
 
     # apply policy on model
     if use_policy:  # TODO: cfg versus --policy option
-        load_policy(cf, model, use_policy)
+        load_policy(cf, graph, use_policy)
 
     ndays = cf.section_as_dict("TASK").get("duration_in_days", 60)
     print_interval = cf.section_as_dict("TASK").get("print_interval", 1)
@@ -74,7 +74,7 @@ def load_graph(cf: ConfigFile):
     return graph, A
 
 
-def load_policy(cf: ConfigFile, model, policy: str):
+def load_policy(cf: ConfigFile, graph, policy: str):
     policy_cfg = cf.section_as_dict("POLICY")
     if policy not in policy_cfg["name"]:
         raise ValueError("Unknown policy name.")
@@ -82,7 +82,7 @@ def load_policy(cf: ConfigFile, model, policy: str):
     if policy_cfg and "filename" in policy_cfg:
         policy = getattr(__import__(
             policy_cfg["filename"]), policy)
-        policy = bound_policy(policy, model.G)
+        policy = bound_policy(policy, graph)
         model.set_periodic_update(policy)
     else:
         print("Warning: NO POLICY IN CFG")
