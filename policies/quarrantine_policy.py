@@ -1,7 +1,7 @@
 import numpy as np
 from functools import partial
 from graph_gen import GraphGenerator
-from extended_network_model import STATES as s
+from extended_network_model import STATES as states
 
 
 class QuarrantineDepo:
@@ -41,18 +41,18 @@ def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time):
             "This policy works with GraphGenerator derived graphs only.")
 
     current_day = int(time)
-    start = np.searchsorted(tseries, current_day-1, side="left")
+    start = np.searchsorted(tseries, current_day, side="left")
 
     if start == 0:
         start = 1
-    end = len(tseries)
+    end = np.searchsorted(tseries, current_day+1, side="left")
     last_day = history[start:end]
 
     # those who became infected today
     detected_nodes = [
         node
         for node, _, e in last_day
-        if e == s.I_d
+        if e == states.I_d
     ]
 
     print(f"Qurantined nodes: {detected_nodes}")
@@ -85,27 +85,3 @@ def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time):
     return to_change
 
 
-if __name__ == "__main__":
-
-    q = QuarrantineDepo(10)
-
-    print(q.quarrantine)
-    q.lock_up([0, 1, 2], 3)
-    q.lock_up([5], 4)
-
-    print(q.quarrantine)
-    r = q.tick_and_get_released()
-    print(r)
-    assert len(r[0]) == 0
-
-    r = q.tick_and_get_released()
-    assert len(r[0]) == 0
-
-    r = q.tick_and_get_released()
-    print(r)
-
-    print(q.quarrantine)
-    r = q.tick_and_get_released()
-    print(r)
-
-    print(q.quarrantine)
