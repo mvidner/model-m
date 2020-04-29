@@ -68,21 +68,6 @@ def load_graph(cf: ConfigFile):
     return graph, A
 
 
-def load_policy_function(cf: ConfigFile, policy_name: str):
-    policy_cfg = cf.section_as_dict("POLICY")
-    if policy_name not in policy_cfg["name"]:
-        raise ValueError("Unknown policy name.")
-
-    if policy_cfg and "filename" in policy_cfg:
-        policy = getattr(__import__(
-            policy_cfg["filename"]), policy_name)
-        return policy
-    else:
-        print("Warning: NO POLICY IN CFG")
-        print(policy_cfg)
-        raise ValueError("Unknown policy.")
-
-
 def load_policy(cf: ConfigFile, graph, policy: str):
     policy_cfg = cf.section_as_dict("POLICY")
     if policy not in policy_cfg["name"]:

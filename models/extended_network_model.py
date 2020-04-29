@@ -41,7 +41,6 @@ state_codes = {
 }
 
 
-
 # MODEL DEFINITION
 
 # 1. states, transtion types, parameters
@@ -203,27 +202,25 @@ def calc_propensities(model, use_dict=True):
         # ) / model.current_N()
         # + (1 - model.p)
 
-   
     P1 = model.prob_of_no_contact(
         [STATES.S_s, STATES.S],
-        [STATES.I_n, STATES.I_a, STATES.I_s],
+        [STATES.I_n, STATES.I_a, STATES.I_s, STATES.I_d],
         model.beta
     )
 
     #    P2 = model.prob_of_no_contact([STATES.I_d], model.beta_D)
     assert(np.all(model.beta_D == 0))
-    
 
     #print("-->", P1.shape, np.any(P1.flatten() > 0), np.all(P1.flatten() <= 1))
-    #print(P2.flatten())
+    # print(P2.flatten())
     #assert np.all(P2.flatten() == 0)
 
     #    P_infection = model.prob_of_no_contact(
     #        ([STATES.I_n, STATES.I_a, STATES.I_s], [STATES.I_d])
     #        (model.beta, model.beta_D)
     #    )
-    #    print("-->", P_infection.shape, np.any(P_infection.flatten() > 0), np.all(P_infection.flatten() <= 1)) 
-    
+    #    print("-->", P_infection.shape, np.any(P_infection.flatten() > 0), np.all(P_infection.flatten() <= 1))
+
     P_infection = P1
 
     #    print(P_infection.shape)
@@ -310,13 +307,11 @@ def calc_propensities(model, use_dict=True):
     propensity_I_d_to_I_d = model.memberships[STATES.I_d] * (
         1.0 - propensity_I_d_to_R_d - propensity_I_d_to_D_d)
 
-    # state R_d, R_u, D_d, D_u        
+    # state R_d, R_u, D_d, D_u
     propensity_R_d_to_R_d = model.memberships[STATES.R_d]
     propensity_R_u_to_R_u = model.memberships[STATES.R_u]
     propensity_D_d_to_D_d = model.memberships[STATES.D_d]
     propensity_D_u_to_D_u = model.memberships[STATES.D_u]
-
-    
 
     return [
         propensity_S_s_to_E,

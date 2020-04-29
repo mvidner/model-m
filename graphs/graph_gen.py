@@ -12,6 +12,7 @@ class GraphGenerator:
     layer_names = ['F', 'D', 'P', 'E', 'H', 'K',
                    'C', 'S', 'O', 'L', 'R', 'T', 'X', 'Z']
     layer_probs = [1.0] * len(layer_names)
+    layer_types = list(range(len(layer_names)))
 
     def __init__(self, random_seed=None):
         self.G = nx.MultiGraph()
@@ -59,6 +60,7 @@ class GraphGenerator:
         return ag
 
     def final_adjacency_matrix(self):
+        """ recalculates final adjacency matrix and returns it as csr_matrix """
 
         if self.A_valid:
             return self.A
@@ -140,7 +142,7 @@ class GraphGenerator:
 #            print(*e)
         return self.G.edges([node_id], data=True, keys=True)
 
-    def modify_layers_for_node(self, node_id, what_by_what):
+    def modify_layers_for_node(self, node_id, what_by_what, is_quarrantined=None):
         """ changes edges' weights """
 
         if not what_by_what:
@@ -150,22 +152,10 @@ class GraphGenerator:
             print(f"Warning: modify_layer_for_node called for nonexisting node_id {node_id}")
             return
 
-        # for key in what_by_what:
-        #     edges_to_modify = [
-        #         (u, v, k) for u, v, k, d in self.G.edges(node, data=True, keys=True)
-        #         if d['label'] == key
-        #     ]
-        #     print(edges_to_modify)
-        #     for e in edges_to_modify:
-        #         self.G.edges[e]['weight'] *= what_by_what[key]
-
-        # for e in self.G.edges(node, data=True, keys=True):
-        #     print(*e)
-
-        # for e in self.G.edges([node_id], data=True, keys=True):
-        #     print(*e)
-
         for u, v, k, d in self.G.edges([node_id], data=True, keys=True):
+            if is_quarrantined is not None and (is_quarrantined[u] > 0 or is_quarrantined[v] > 0):
+                # edge is already quarrantined
+                continue
             layer_label = d["type"]
             if layer_label in what_by_what:
                 self.G.edges[(u, v, k)
@@ -173,14 +163,26 @@ class GraphGenerator:
 
         self.A_valid = False
 
-#        for e in self.G.edges([node_id], data=True, keys=True):
-#            print(*e)
+    def recover_edges_for_nodes(self, release, normal_life, is_quarrantined):
 
-
-# returns dictionary of layer names and probabilities
-
+        for u, v, k, d in self.G.edges(release, data=True, keys=True):
+            if is_quarrantined[u] or is_quarrantined[v]:
+                # still one of nodes is in quarrantine
+                continue
+            e_type = d["type"]
+            e_subtype = d["subtype"]
+            new_weight = None
+            for edata in normal_life.G.get_edge_data(u, v).values():
+                if edata["type"] == e_type and edata["subtype"] == e_subtype:
+                    new_weight = edata["weight"]
+                    break
+            if new_weight is None:
+                raise ValueError("Edge not found in normal life.")
+            self.G.edges[(u, v, k)]['weight'] = new_weight
+        self.A_valid = False
 
     def get_layers_info(self):
+        """ returns dictionary of layer names and probabilities """
         return dict(zip(self.G.graph["layer_names"], self.G.graph["layer_probs"]))
 
     def print_multi(self):
@@ -316,6 +318,7 @@ class CSVGraphGenerator(GraphGenerator):
         self.layer_names = layers_to_add['name']
 #        print(layers_names)
         self.layer_probs = layers_to_add['weight']
+        self.layer_ids = layers_to_add['id']
 
         self.G.graph['layer_names'] = self.layer_names
         self.G.graph['layer_probs'] = self.layer_probs

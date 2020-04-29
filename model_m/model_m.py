@@ -6,7 +6,6 @@ from model_zoo import model_zoo
 from graph_gen import GraphGenerator, CSVGraphGenerator, RandomSingleGraphGenerator
 from light_graph import LightGraph
 from policy import bound_policy
-from load_model import load_policy_function
 from config_utils import ConfigFile
 
 
@@ -19,7 +18,8 @@ def load_model_from_config(cf, use_policy, model_random_seed):
     graph = _load_graph(cf)
 
     # apply policy on model
-    policy = load_policy_function(cf, use_policy) if use_policy else None
+    policy, policy_setup = _load_policy_function(
+        cf, use_policy) if use_policy else (None, None)
 
     # sceanario
     scenario = cf.section_as_dict("SCENARIO")
@@ -30,7 +30,7 @@ def load_model_from_config(cf, use_policy, model_random_seed):
         "model", "ExtendedNetworkModel")
 
     model = ModelM(graph,
-                   policy,
+                   policy, policy_setup,
                    model_params,
                    scenario,
                    random_seed=model_random_seed,
@@ -43,7 +43,7 @@ class ModelM():
 
     def __init__(self,
                  graph,
-                 policy,
+                 policy, policy_setup,
                  model_params: dict = None,
                  scenario: list = None,
                  model_type: str = "ExtendedSequentialNetworkModel",
@@ -66,8 +66,12 @@ class ModelM():
         self.model = Model(self.A,
                            **model_params,
                            random_seed=random_seed)
+
+        if policy_setup:
+            policy_coefs = policy_setup(self.graph, self.start_graph)
         if policy:
-            policy_function = bound_policy(policy, self.graph)
+            policy_function = bound_policy(
+                policy, self.graph, coefs=policy_coefs)
             self.model.set_periodic_update(policy_function)
 
     def set_model_params(self, model_params: dict):
@@ -134,3 +138,21 @@ def _load_graph(cf: ConfigFile):
         return RandomGraphGenerator()
 
     raise ValueError(f"Graph {graph_name} not available.")
+
+
+def _load_policy_function(cf: ConfigFile, policy_name: str):
+    policy_cfg = cf.section_as_dict("POLICY")
+    if policy_name not in policy_cfg["name"]:
+        raise ValueError("Unknown policy name.")
+
+    if policy_cfg and "filename" in policy_cfg:
+        policy = getattr(__import__(
+            policy_cfg["filename"]), policy_name)
+        setup = policy_cfg.get("setup", None)
+        policy_setup = getattr(__import__(
+            policy_cfg["filename"]), setup) if setup else None
+        return policy, policy_setup
+    else:
+        print("Warning: NO POLICY IN CFG")
+        print(policy_cfg)
+        raise ValueError("Unknown policy.")

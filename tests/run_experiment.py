@@ -10,7 +10,7 @@ from scipy.sparse import csr_matrix
 
 from config_utils import ConfigFile
 from graph_gen import GraphGenerator
-from load_model import create_graph, matrix,  load_graph, load_policy_function
+from load_model import create_graph, matrix,  load_graph
 from policy import bound_policy
 
 # from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
