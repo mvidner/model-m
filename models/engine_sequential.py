@@ -131,9 +131,6 @@ class SequentialEngine(SeirsPlusLikeEngine):
                 print(flush=True)
             #            print(f"day {self.t}")
 
-            print(self.t)
-            print(len(self.state_counts[0]))
-            print(len(self.states_history))
             if (self.t >= len(self.state_counts[0])):
                 # room has run out in the timeseries storage arrays; double the size of these arrays
                 self.increase_data_series_length()
