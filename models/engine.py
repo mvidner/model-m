@@ -8,6 +8,16 @@ from history_utils import TimeSeries, TransitionHistory
 
 class BaseEngine():
 
+    def setup_model_params(self, model_params_dict):
+        # create arrays for model params
+        for param_name, param in model_params_dict:
+            if isinstance(param, (list, np.ndarray)):
+                setattr(self, param_name,
+                        np.array(param).reshape((self.num_nodes, 1)))
+            else:
+                setattr(self, param_name,
+                        np.full(fill_value=param, shape=(self.num_nodes, 1)))
+
     def inicialization(self):
         """ model inicialization """
         if self.random_seed:
@@ -16,15 +26,11 @@ class BaseEngine():
         # setup adjacency matrix
         self.update_graph(self.G)
 
-        # create arrays for model params
-        for param_name in self.model_parameters:
-            param = self.__getattribute__(param_name)
-            if isinstance(param, (list, np.ndarray)):
-                setattr(self, param_name,
-                        np.array(param).reshape((self.num_nodes, 1)))
-            else:
-                setattr(self, param_name,
-                        np.full(fill_value=param, shape=(self.num_nodes, 1)))
+        model_params_dict = {
+            param_name: self.__getattribute__(param_name)
+            for param_name in self.model_parameters
+        }
+        self.setup_model_params(model_params_dict)
 
     def setup_series_and_time_keeping(self):
         pass

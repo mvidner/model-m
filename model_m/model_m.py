@@ -70,6 +70,9 @@ class ModelM():
             policy_function = bound_policy(policy, self.graph)
             self.model.set_periodic_update(policy_function)
 
+    def set_model_params(self, model_params: dict):
+        self.model.setup_model_params(model_params)
+
     def run(self, *args, **kwargs):
         self.model.run(*args, **kwargs)
 
@@ -78,6 +81,7 @@ class ModelM():
         self.graph = copy.deepcopy(self.start_graph)
         del self.A
         self.A = self.init_matrix()
+        # self.set_model_params() TODO
 
     def get_results(self,
                     states):
