@@ -7,10 +7,12 @@ import numpy as np
 
 from config_utils import ConfigFile
 from graph_gen import GraphGenerator
-from load_model import create_graph, matrix, load_model_from_config
+from load_model import create_graph, matrix,  load_graph, load_policy_function
 from policy import bound_policy
 
 from model_zoo import model_zoo
+
+from model_m import ModelM, load_model_from_config
 
 
 def tell_the_story(history, graph):
@@ -64,40 +66,35 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
     cf = ConfigFile()
     cf.load(filename)
 
-    model, run_params = load_model_from_config(cf, model_random_seed=model_random_seed, use_policy=use_policy)
+    model = load_model_from_config(cf, use_policy, model_random_seed)
 
-    model.run(**run_params)
-    print("Avg. number of events per day: ", model.tidx/run_params["T"])
+    # create model
+    ndays = cf.section_as_dict("TASK").get("duration_in_days", 60)
+    print_interval = cf.section_as_dict("TASK").get("print_interval", 1)
+    verbose = cf.section_as_dict("TASK").get("verbose", "Yes") == "Yes"
 
-    storyfile = cf.section_as_dict("OUTPUT").get("story", None)
-    if storyfile:
-        story = tell_the_story(model.history, model.G)
-        with open(storyfile, "w") as f:
-            f.write(story)
+    model.run(ndays, print_interval=print_interval, verbose=verbose)
 
-    plot = False
-    if plot:
-        counts = [model.state_counts[s].asarray()
-                  for s in ("I_n", "I_a", "I_s", "I_d", "E")]
-        y = np.sum(counts, axis=0)
-        x = model.tseries.asarray()
-        plt.plot(x, y)
-        test_id = "_" + test_id if test_id else ""
-        plt.savefig(f"num_of_ill{test_id}.png")
+    # storyfile = cf.section_as_dict("OUTPUT").get("story", None)
+    # if storyfile:
+    #     story = tell_the_story(model.history, model.G)
+    #     with open(storyfile, "w") as f:
+    #         f.write(story)
 
     # save history
     test_id = "_" + test_id if test_id else ""
     file_name = f"history{test_id}.csv"
-    cf.save(file_name) 
+    cf.save(file_name)
     cfg_string = ""
     with open(file_name, "r") as f:
-        cfg_string = "#" + "#".join(f.readlines()) 
+        cfg_string = "#" + "#".join(f.readlines())
     with open(file_name, "w") as f:
         f.write(cfg_string)
         f.write(f"# RANDOM_SEED = {model_random_seed}\n")
-        model.save(f)
+        model.save_history(f)
 
-    save_nodes = cf.section_as_dict("TASK").get("save_node_states", "No") == "Yes"
+    save_nodes = cf.section_as_dict("TASK").get(
+        "save_node_states", "No") == "Yes"
     if save_nodes:
         model.save_node_states(f"node_states{test_id}.csv")
 
