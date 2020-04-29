@@ -28,9 +28,11 @@ def simple_policy(policy_func):
                 "This policy works with GraphGenerator derived graphs only.")
 
         # overkill,  budou se brat jen ty, co se presli do Id dnes
-        nodes = list(graph.nodes)
+        #nodes = list(graph.nodes)
         history = history[start:end]
         #        print(start, end)
+        print("Historie", history)
+
         detected_nodes = [
             node
             for node, _, e in history
