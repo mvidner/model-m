@@ -7,6 +7,7 @@ import json
 import click
 
 import pandas as pd
+import numpy as np
 
 from config_utils import ConfigFile
 from hyperparam_utils import run_hyperparam_search
