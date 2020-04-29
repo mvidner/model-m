@@ -3,7 +3,8 @@ import time
 from functools import partial
 from sklearn.model_selection import ParameterGrid
 
-from joblib import delayed, Parallel
+#from joblib import delayed, Parallel
+from multiprocessing import Pool
 from typing import Iterable, Dict, Callable
 
 from config_utils import ConfigFile
@@ -12,6 +13,7 @@ from model_zoo import model_zoo
 from policy import bound_policy
 
 from engine_sequential import SequentialEngine
+
 
 
 def run_hyperparam_search(model_config: str,
@@ -131,14 +133,25 @@ def _run_model_with_hyperparams(model_func, hyperparams):
     print(f"Finished run with hyperparams: {hyperparams}")
     return res
 
+model_function = None
+
+def run_me(hp):
+    return _run_model_with_hyperparams(model_function, hp) 
 
 def perform_gridsearch(model_func, hyperparam_config, n_jobs=1):
     grid = hyperparam_config["MODEL"]
 
-    res = Parallel(n_jobs=n_jobs)(
-        delayed(_run_model_with_hyperparams)(model_func, hp)
-        for hp in ParameterGrid(grid)
-    )
+    #    res = Parallel(n_jobs=n_jobs)(
+    #        delayed(_run_model_with_hyperparams)(model_func, hp)
+    #        for hp in list(ParameterGrid(grid))
+    #    )
+    param_sets = list(ParameterGrid(grid)) 
+    global model_function
+    model_function = model_func 
+
+    with Pool(n_jobs) as pool:
+        res = pool.map(run_me, param_sets)
+
 
     return res
 
