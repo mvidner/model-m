@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-
 import networkx as nx
 import numpy as np
 import scipy.stats as stats
+from scipy.sparse import csr_matrix
 import pandas as pd
+
+from sparse_utils import multiply_zeros_as_ones
 
 
 class GraphGenerator:
@@ -19,6 +21,9 @@ class GraphGenerator:
 
         if random_seed:
             np.random.seed(random_seed)
+
+        self.A = None
+        self.A_valid = False
 
     @property
     def nodes(self):
@@ -52,6 +57,31 @@ class GraphGenerator:
                 data=True) if e['type'] == l]
 
         return ag
+
+    def final_adjacency_matrix(self):
+
+        if self.A_valid:
+            return self.A
+
+        N = self.G.number_of_nodes()
+        prob_no_contact = csr_matrix((N, N))  # empty values = 1.0
+
+        for name, prob in self.get_layers_info().items():
+            a = nx.adj_matrix(self.get_graph_for_layer(name))
+            if len(a.data) == 0:  # no edges, prob of no-contact = 1
+                continue
+            a = a.multiply(prob)  # contact on layer
+            not_a = a  # empty values = 1.0
+            not_a.data = 1.0 - not_a.data  # prob of no-contace
+            prob_no_contact = multiply_zeros_as_ones(prob_no_contact, not_a)
+            del a
+
+        # prob_of_contact = 1.0 - prob_no_contact
+        prob_of_contact = prob_no_contact
+        prob_of_contact.data = 1.0 - prob_no_contact.data
+        self.A = prob_of_contact
+        self.A_valid = True
+        return self.A
 
     def get_graph_for_layer(self, layer_name):
         ret_g = nx.Graph()
@@ -141,6 +171,8 @@ class GraphGenerator:
                 self.G.edges[(u, v, k)
                              ]['weight'] = min(self.G.edges[(u, v, k)]['weight'] * what_by_what[layer_label], 1.0)
 
+        self.A_valid = False
+
 #        for e in self.G.edges([node_id], data=True, keys=True):
 #            print(*e)
 
@@ -165,7 +197,7 @@ class GraphGenerator:
             print(f"Closing {name}")
             i = self.G.graph["layer_names"].index(name)
             self.G.graph["layer_probs"][i] = 0
-        print(list(zip(self.G.graph["layer_names"], self.G.graph["layer_probs"])))
+        self.A_valid = False
 
 
 def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n=None):
