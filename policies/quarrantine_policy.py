@@ -25,20 +25,20 @@ def quarrantine_policy_setup(graph, normal_life):
         "quarrantine_depo": QuarrantineDepo(graph.number_of_nodes()),
         "normal_life": normal_life,
         "quarrantine_coefs": {
-            1: 100, # family
-            2: 0, 
-            3: 0, 
-            4: 0, # lower elementary children 
-            5: 0, # lower elementary teachers to children
-            6: 0, # higher elementary children 
-            7: 0, # higher elementary teachers to children
-            8: 0, # highschool children
-            9: 0, # highschool teachers to children 
-            10: 0.1, # friend and relative encounetr
-            11: 0, # work contacts
-            12: 0, # workers to clients
-            13: 0, # public transport contacts
-            14: 0 # contacts of customers at shops
+            1: 100,  # family
+            2: 0,
+            3: 0,
+            4: 0,  # lower elementary children
+            5: 0,  # lower elementary teachers to children
+            6: 0,  # higher elementary children
+            7: 0,  # higher elementary teachers to children
+            8: 0,  # highschool children
+            9: 0,  # highschool teachers to children
+            10: 0.1,  # friend and relative encounetr
+            11: 0,  # work contacts
+            12: 0,  # workers to clients
+            13: 0,  # public transport contacts
+            14: 0  # contacts of customers at shops
         },
         "duration": 14
     }
@@ -53,14 +53,7 @@ def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time):
         raise TypeError(
             "This policy works with GraphGenerator derived graphs only.")
 
-    current_day = int(time)
-    start = np.searchsorted(tseries, current_day, side="left")
-
-    if start == 0:
-        start = 1
-    end = np.searchsorted(tseries, current_day+1, side="left")
-    last_day = history[start:end]
-    print([(n,s,e) for (n,s,e) in last_day if e == states.I_d])
+    last_day = _get_last_day(history, tseries, time)
 
     # those who became infected today
     detected_nodes = [
@@ -71,6 +64,50 @@ def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time):
 
     print(f"Qurantined nodes: {detected_nodes}")
 
+    _quarrantine_nodes(detected_nodes, policy_coefs, graph)
+
+    to_change = {"graph": graph.final_adjacency_matrix()}
+    return to_change
+
+
+def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tseries, time):
+
+    print("Hello world! This is the policy function speaking.")
+    print("Contact tracing is ON.")
+
+    # and not isinstance(graph, LightGraph):
+    if not isinstance(graph, GraphGenerator):
+        raise TypeError(
+            "This policy works with GraphGenerator derived graphs only.")
+
+    last_day = _get_last_day(history, tseries, time)
+
+    # those who became infected today
+    detected_nodes = [
+        node
+        for node, _, e in last_day
+        if e == states.I_d
+    ]
+
+    print(f"Qurantined nodes: {detected_nodes}")
+
+    _quarrantine_nodes(detected_nodes, policy_coefs, graph)
+
+    to_change = {"graph": graph.final_adjacency_matrix()}
+    return to_change
+
+
+def _get_last_day(history, tseries, time):
+    current_day = int(time)
+    start = np.searchsorted(tseries, current_day, side="left")
+
+    if start == 0:
+        start = 1
+    end = np.searchsorted(tseries, current_day+1, side="left")
+    return history[start:end]
+
+
+def _quarrantine_nodes(detected_nodes, policy_coefs, graph):
     if not detected_nodes:
         # nothing to do
         return {}
@@ -94,8 +131,3 @@ def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time):
         graph.recover_edges_for_nodes(released,
                                       normal_life,
                                       depo.quarrantine)
-
-    to_change = {"graph": graph.final_adjacency_matrix()}
-    return to_change
-
-
