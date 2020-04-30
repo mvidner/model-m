@@ -6,9 +6,7 @@ import timeit
 import json
 
 from config_utils import ConfigFile
-from hyperparam_utils import run_hyperparam_search
-
-from extended_network_model import STATES as s
+from hyperparam_search.hyperparam_utils import run_hyperparam_search
 
 
 @click.command()

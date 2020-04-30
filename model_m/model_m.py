@@ -16,7 +16,7 @@ def load_model_from_config(cf, use_policy, model_random_seed):
     model_params = cf.section_as_dict("MODEL")
 
     # load graph as described in config file
-    graph = load_graph(cf)
+    graph = _load_graph(cf)
 
     # apply policy on model
     policy = load_policy_function(cf, use_policy) if use_policy else None
@@ -62,10 +62,15 @@ class ModelM:
         self.A = self.init_matrix()
 
         # model
+        self.model_params = model_params
+        self.model_type = model_type
+
         Model = model_zoo[model_type]
         self.model = Model(self.A,
                            **model_params,
                            random_seed=random_seed)
+
+        self.policy = policy
         if policy:
             policy_function = bound_policy(policy, self.graph)
             self.model.set_periodic_update(policy_function)
@@ -82,7 +87,7 @@ class ModelM:
         del self.A
         self.A = self.init_matrix()
 
-        if random_seed:
+        if random_seed is not None:
             self.model.set_seed(random_seed)
 
         self.model.setup_series_and_time_keeping()
@@ -123,7 +128,7 @@ class ModelM:
         raise TypeError("Unknown type of graph")
 
 
-def load_graph(cf: ConfigFile):
+def _load_graph(cf: ConfigFile):
     graph_name = cf.section_as_dict("GRAPH")["name"]
     nodes = cf.section_as_dict("GRAPH").get("nodes", "nodes.csv")
     edges = cf.section_as_dict("GRAPH").get("edges", "edges.csv")
