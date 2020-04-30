@@ -25,7 +25,20 @@ def quarrantine_policy_setup(graph, normal_life):
         "quarrantine_depo": QuarrantineDepo(graph.number_of_nodes()),
         "normal_life": normal_life,
         "quarrantine_coefs": {
-            layer: 0 for layer in range(len(graph.layer_names))
+            1: 100, # family
+            2: 0, 
+            3: 0, 
+            4: 0, # lower elementary children 
+            5: 0, # lower elementary teachers to children
+            6: 0, # higher elementary children 
+            7: 0, # higher elementary teachers to children
+            8: 0, # highschool children
+            9: 0, # highschool teachers to children 
+            10: 0.1, # friend and relative encounetr
+            11: 0, # work contacts
+            12: 0, # workers to clients
+            13: 0, # public transport contacts
+            14: 0 # contacts of customers at shops
         },
         "duration": 14
     }
@@ -47,6 +60,7 @@ def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time):
         start = 1
     end = np.searchsorted(tseries, current_day+1, side="left")
     last_day = history[start:end]
+    print([(n,s,e) for (n,s,e) in last_day if e == states.I_d])
 
     # those who became infected today
     detected_nodes = [
