@@ -18,6 +18,10 @@ class BaseEngine():
                 setattr(self, param_name,
                         np.full(fill_value=param, shape=(self.num_nodes, 1)))
 
+    def set_seed(self, random_seed):
+        np.random.seed(random_seed)
+        self.random_seed = random_seed
+
     def inicialization(self):
         """ model inicialization """
         if self.random_seed:

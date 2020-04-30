@@ -80,11 +80,14 @@ class ModelM():
     def run(self, *args, **kwargs):
         self.model.run(*args, **kwargs)
 
-    def reset(self):
+    def reset(self, random_seed=None):
         del self.graph
         self.graph = copy.deepcopy(self.start_graph)
         del self.A
         self.A = self.init_matrix()
+
+        if random_seed:
+            self.model.set_seed(random_seed)
 
         self.model.setup_series_and_time_keeping()
         self.model.states_and_counts_init(self.model.init_state_counts)
