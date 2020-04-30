@@ -77,12 +77,12 @@ def create_custom_model(clsname, states, state_str_dict, transitions,
         self.setup_series_and_time_keeping()
 
         # 4. init states and their counts
-        init_state_counts = {
+        self.init_state_counts = {
             s: kwargs.get(f"init_{self.state_str_dict[s]}", 0)
             for s in self.states
         }
-        # print(init_state_counts)
-        self.states_and_counts_init(init_state_counts)
+        # print(self.init_state_counts)
+        self.states_and_counts_init(self.init_state_counts)
 
         # 5. set callback to None
         self.periodic_update_callback = None

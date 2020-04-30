@@ -68,35 +68,43 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
 
     model = load_model_from_config(cf, use_policy, model_random_seed)
 
-    # create model
+    # run parameters
     ndays = cf.section_as_dict("TASK").get("duration_in_days", 60)
     print_interval = cf.section_as_dict("TASK").get("print_interval", 1)
     verbose = cf.section_as_dict("TASK").get("verbose", "Yes") == "Yes"
 
-    model.run(ndays, print_interval=print_interval, verbose=verbose)
+    if test_id is None:
+        test_id = ""
 
-    # storyfile = cf.section_as_dict("OUTPUT").get("story", None)
-    # if storyfile:
-    #     story = tell_the_story(model.history, model.G)
-    #     with open(storyfile, "w") as f:
-    #         f.write(story)
+    for i in range(n_repeat):
 
-    # save history
-    test_id = "_" + test_id if test_id else ""
-    file_name = f"history{test_id}.csv"
-    cf.save(file_name)
-    cfg_string = ""
-    with open(file_name, "r") as f:
-        cfg_string = "#" + "#".join(f.readlines())
-    with open(file_name, "w") as f:
-        f.write(cfg_string)
-        f.write(f"# RANDOM_SEED = {model_random_seed}\n")
-        model.save_history(f)
+        test_id_i = f"{test_id}_{i}" if n_repeat > 1 else test_id
+        if i > 0:
+            model.reset()
+        model.run(ndays, print_interval=print_interval, verbose=verbose)
 
-    save_nodes = cf.section_as_dict("TASK").get(
-        "save_node_states", "No") == "Yes"
-    if save_nodes:
-        model.save_node_states(f"node_states{test_id}.csv")
+        # storyfile = cf.section_as_dict("OUTPUT").get("story", None)
+        # if storyfile:
+        #     story = tell_the_story(model.history, model.G)
+        #     with open(storyfile, "w") as f:
+        #         f.write(story)
+
+        # save history
+        suffix = "" if not test_id_i else "_" + test_id_i
+        file_name = f"history{suffix}.csv"
+        cf.save(file_name)
+        cfg_string = ""
+        with open(file_name, "r") as f:
+            cfg_string = "#" + "#".join(f.readlines())
+        with open(file_name, "w") as f:
+            f.write(cfg_string)
+            f.write(f"# RANDOM_SEED = {model_random_seed}\n")
+            model.save_history(f)
+
+        save_nodes = cf.section_as_dict("TASK").get(
+            "save_node_states", "No") == "Yes"
+        if save_nodes:
+            model.save_node_states(f"node_states{suffix}.csv")
 
 
 @click.command()
