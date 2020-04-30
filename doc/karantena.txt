@@ -1,0 +1,8 @@
+ člověk je testován, test dá cca do druhýho dne výsledek,
+když je pozitivní, má nařízenou karanténu na 14 dní. Je vyslýchán na kontakty
+(víc než 15min, míň než 2m) do minulosti - buď 2 dny před příznaky nebo 7 dnů
+před odběrem (nemá-li příznaky). Kontakty se rozdělí na casual a rizikový,
+rodina jde dycky do rizikových, zbytek nevíme (asi dle intenzity kontaktu). Těm
+rizikovejm se nařídí karanténa a nejdříve 5 dnů po kontaktu by měli být
+testováni. I při negativním testu prý zůstává v karanténě. Z karantény se
+člověk dostane po dvojím negativním testu v intervalu 2 dny.
