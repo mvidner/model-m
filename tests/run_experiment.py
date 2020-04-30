@@ -67,56 +67,63 @@ from model_m import ModelM, load_model_from_config
 #     return "\n".join(story)
 
 
-def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_interval=1):
+def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_interval=1, n_repeat=1):
 
     cf = ConfigFile()
     cf.load(filename)
 
+    # create model
     model = load_model_from_config(cf, use_policy, model_random_seed)
 
-    # create model
+    # run parameters 
     ndays = cf.section_as_dict("TASK").get("duration_in_days", 60)
     print_interval = cf.section_as_dict("TASK").get("print_interval", 1)
     verbose = cf.section_as_dict("TASK").get("verbose", "Yes") == "Yes"
 
-    model.run(ndays, print_interval=print_interval, verbose=verbose)
+    for i in range(n_repeat):
 
-    # storyfile = cf.section_as_dict("OUTPUT").get("story", None)
-    # if storyfile:
-    #     story = tell_the_story(model.history, model.G)
-    #     with open(storyfile, "w") as f:
-    #         f.write(story)
-
-    # save history
-    test_id = "_" + test_id if test_id else ""
-    file_name = f"history{test_id}.csv"
-    cf.save(file_name)
-    cfg_string = ""
-    with open(file_name, "r") as f:
-        cfg_string = "#" + "#".join(f.readlines())
-    with open(file_name, "w") as f:
-        f.write(cfg_string)
-        f.write(f"# RANDOM_SEED = {model_random_seed}\n")
-        model.save_history(f)
-
-    save_nodes = cf.section_as_dict("TASK").get(
-        "save_node_states", "No") == "Yes"
-    if save_nodes:
-        model.save_node_states(f"node_states{test_id}.csv")
+        test_id_i = f"{test_id}_{i}"  if n_repeat > 1 else test_id 
+        if i > 0:
+            model.reset()
+        model.run(ndays, print_interval=print_interval, verbose=verbose)
+        
+        # storyfile = cf.section_as_dict("OUTPUT").get("story", None)
+        # if storyfile:
+        #     story = tell_the_story(model.history, model.G)
+        #     with open(storyfile, "w") as f:
+        #         f.write(story)
+        
+        # save history
+        test_id = "_" + test_id if test_id else ""
+        file_name = f"history{test_id}.csv"
+        cf.save(file_name)
+        cfg_string = ""
+        with open(file_name, "r") as f:
+            cfg_string = "#" + "#".join(f.readlines())
+        with open(file_name, "w") as f:
+            f.write(cfg_string)
+            f.write(f"# RANDOM_SEED = {model_random_seed}\n")
+            model.save_history(f)
+        
+        save_nodes = cf.section_as_dict("TASK").get(
+            "save_node_states", "No") == "Yes"
+        if save_nodes:
+            model.save_node_states(f"node_states{test_id}.csv")
 
 
 @click.command()
 @click.option('--set-random-seed/--no-random-seed', ' /-r', default=True)
 @click.option('--policy', '-p', default=None)
 @click.option('--print_interval',  default=1)
+@click.option('--n_repeat',  default=1)
 @click.argument('filename', default="example.ini")
 @click.argument('test_id', default="")
-def test(set_random_seed, policy, print_interval, filename, test_id):
+def test(set_random_seed, policy, print_interval, n_repeat, filename, test_id):
     """ Run the demo test inside the timeit """
 
     random_seed = 42 if set_random_seed else random.randint(0, 10000)
     def demo_fce(): return demo(filename, test_id,
-                                model_random_seed=random_seed, use_policy=policy, print_interval=print_interval)
+                                model_random_seed=random_seed, use_policy=policy, print_interval=print_interval, n_repeat=n_repeat)
     print(timeit.timeit(demo_fce, number=1))
 
 
