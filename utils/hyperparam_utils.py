@@ -1,28 +1,20 @@
 import json
-import time
 from functools import partial
 from sklearn.model_selection import ParameterGrid
 
-#from joblib import delayed, Parallel
 from multiprocessing import Pool
-from typing import Iterable, Dict, Callable
+from typing import Dict
 
 from config_utils import ConfigFile
-from load_model import load_model_from_config, load_graph
-from model_zoo import model_zoo
-from policy import bound_policy
-
-from engine_sequential import SequentialEngine
-
+from model_m.model_m import load_model_from_config, load_graph
 
 
 def run_hyperparam_search(model_config: str,
                           hyperparam_config: str,
                           model_random_seed: int = 42,
                           use_policy: str = None,
-                          preload_graph: bool = False,
                           run_n_times: int = 1,
-                          return_func: callable = None,
+                          return_func: str = None,
                           **kwargs):
     """
     Run hyperparameter search on a model loaded from config. Hyperparameters specified in `hyperparam_config`
@@ -30,24 +22,22 @@ def run_hyperparam_search(model_config: str,
 
     A single model run returns the model as a whole. If only a part of info is to be extracted, pass
     the callable `return_func(model, **kwargs)` to this function. In **kwargs, additional run info is passed
-    like model seed or chosen hyperparameters.
+    like model seed or chosen hyperparameters.  # TODO doc change
 
     It is possible to run a single model multiple times with same hyperparameters, if `run_n_times` > 1.
     In such case, the result of the run is a list of models and the signature of `return_func` (if provided)
-    should be `return_func(models: List[Model], **kwargs)`.
+    should be `return_func(models: List[Model], **kwargs)`.  # TODO doc change
 
     Params:
         model_config: Model config filename (ini)
         hyperparam_config: Hyperparam search filename (json)
         model_random_seed: Initial random seed for every model.
         use_policy: Name of the policy to use.
-        preload_graph: If True, only one graph is used for all models. CAUTION - in current implementation,
-            it is the same graph instance, so modifications in a single model are carried over to all other
-            models.
 
         run_n_times: For a single model (with specific hyperparams), repeat run multiple times. Random seed
             for i-th run is set to `model_random_seed` + i.
 
+        # TODO doc change
         return_func: Callable of signature `return_func(model, **kwargs)`. Used to modify results of runs,
             e.g. extract and save only the history.
 
@@ -60,8 +50,7 @@ def run_hyperparam_search(model_config: str,
     cf = ConfigFile()
     cf.load(model_config)
 
-    # TODO handle preloading in case the graph is modified during simulation (e.g. [deep]copy)
-    graph = load_graph(cf) if preload_graph else None
+    graph = load_graph(cf)
 
     # wrapper for running one model same time with different seed
     model_load_func = partial(_run_models_from_config,

@@ -3,7 +3,7 @@ import copy
 
 from model_zoo import model_zoo
 
-from graph_gen import GraphGenerator, CSVGraphGenerator, RandomSingleGraphGenerator
+from graph_gen import GraphGenerator, CSVGraphGenerator, RandomSingleGraphGenerator, RandomGraphGenerator
 from light_graph import LightGraph
 from policy import bound_policy
 from load_model import load_policy_function
@@ -16,7 +16,7 @@ def load_model_from_config(cf, use_policy, model_random_seed):
     model_params = cf.section_as_dict("MODEL")
 
     # load graph as described in config file
-    graph = _load_graph(cf)
+    graph = load_graph(cf)
 
     # apply policy on model
     policy = load_policy_function(cf, use_policy) if use_policy else None
@@ -39,7 +39,7 @@ def load_model_from_config(cf, use_policy, model_random_seed):
     return model
 
 
-class ModelM():
+class ModelM:
 
     def __init__(self,
                  graph,
@@ -49,7 +49,7 @@ class ModelM():
                  model_type: str = "ExtendedSequentialNetworkModel",
                  random_seed: int = 42):
 
-        self.random_seed = 42
+        self.random_seed = random_seed
 
         # original state
         self.start_graph = graph
@@ -109,7 +109,7 @@ class ModelM():
             if self.scenario:
                 raise NotImplementedError(
                     "RandomGraphGenerator does not support layers.")
-            return grahp.G
+            return self.graph.G
 
         # this is what we currently used
         if isinstance(self.graph, GraphGenerator):
@@ -120,9 +120,7 @@ class ModelM():
         raise TypeError("Unknown type of graph")
 
 
-def _load_graph(cf: ConfigFile):
-    num_nodes = cf.section_as_dict("TASK").get("num_nodes", None)
-
+def load_graph(cf: ConfigFile):
     graph_name = cf.section_as_dict("GRAPH")["name"]
     nodes = cf.section_as_dict("GRAPH").get("nodes", "nodes.csv")
     edges = cf.section_as_dict("GRAPH").get("edges", "edges.csv")
