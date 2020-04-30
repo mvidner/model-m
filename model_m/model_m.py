@@ -85,6 +85,10 @@ class ModelM():
         self.graph = copy.deepcopy(self.start_graph)
         del self.A
         self.A = self.init_matrix()
+
+        self.model.setup_series_and_time_keeping()
+        self.model.states_and_counts_init(self.model.init_state_counts)
+
         # self.set_model_params() TODO
 
     def get_results(self,
