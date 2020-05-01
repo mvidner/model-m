@@ -67,37 +67,47 @@ class GraphGenerator:
         if self.A_valid:
             return self.A
 
-        if self.A_invalids:
-            indices_to_recalc = list(self.A_invalids)
-            N = len(self.A_invalids)
-        else:
-            N = self.G.number_of_nodes()
-            indices_to_recalc = list(range(N))
+        if self.A is None or not self.A_invalids:
+            N = self.number_of_nodes()
+            prob_no_contact = csr_matrix((N, N))  # empty values = 1.0
 
-        prob_no_contact = csr_matrix((N, N))  # empty values = 1.0
+            for name, prob in self.get_layers_info().items():
+                a = nx.adj_matrix(self.get_graph_for_layer(name))
+                if len(a.data) == 0:  # no edges, prob of no-contact = 1
+                    continue
+                a = a.multiply(prob)  # contact on layer
+                not_a = a  # empty values = 1.0
+                not_a.data = 1.0 - not_a.data  # prob of no-contace
+                prob_no_contact = multiply_zeros_as_ones(
+                    prob_no_contact, not_a)
+                del a
 
-        for name, prob in self.get_layers_info().items():
-            a = nx.adj_matrix(self.get_graph_for_layer(name))[
-                indices_to_recalc, :][:, indices_to_recalc]
-            if len(a.data) == 0:  # no edges, prob of no-contact = 1
-                continue
-            a = a.multiply(prob)  # contact on layer
-            not_a = a  # empty values = 1.0
-            not_a.data = 1.0 - not_a.data  # prob of no-contace
-            prob_no_contact = multiply_zeros_as_ones(prob_no_contact, not_a)
-            del a
-
-        # prob_of_contact = 1.0 - prob_no_contact
-        prob_of_contact = prob_no_contact
-        prob_of_contact.data = 1.0 - prob_no_contact.data
-        if self.A is not None:
-            for i, idx in enumerate(indices_to_recalc):
-                self.A[idx, indices_to_recalc] = prob_of_contact[i, :]
-        else:
+            # prob_of_contact = 1.0 - prob_no_contact
+            prob_of_contact = prob_no_contact
+            prob_of_contact.data = 1.0 - prob_no_contact.data
             self.A = prob_of_contact
-        self.A_valid = True
-        self.A_invalids = set()
-        return self.A
+            self.A_valid = True
+            self.A_invalids = set()
+            return self.A
+
+        else:
+            # recalculate only invalids
+            for u, v in list(self.A_invalids):
+                edges_to_aggregate = self.G[u][v]
+                sublayers = dict()
+                for e in edges_to_aggregate.values():
+                    sublayers[e["type"]] = sublayers.get(
+                        e["type"], 0) + e["weight"]
+
+                no_contact_prob = 1.0
+                for layer_type, weight in sublayers.items():
+                    w = 1.0 - weight * self.G.graph["layer_probs"][layer_type]
+                    no_contact_prob *= w
+                self.A[u, v] = 1.0 - no_contact_prob
+                self.A[v, u] = 1.0 - no_contact_prob
+            self.A_valid = True
+            self.A_invalids = set()
+            return self.A
 
     def get_graph_for_layer(self, layer_name):
         ret_g = nx.Graph()
@@ -181,7 +191,7 @@ class GraphGenerator:
                     s, e, k, d["type"], d["subtype"])] = d['weight']
                 self.G.edges[(u, v, k)
                              ]['weight'] = min(self.G.edges[(u, v, k)]['weight'] * what_by_what[layer_label], 1.0)
-                changed.update([u, v])
+                changed.add((u, v))
 
         if changed:
             self.A_invalids.update(changed)
@@ -208,7 +218,7 @@ class GraphGenerator:
                 s, e, k, e_type, e_subtype)]
             del self.quarantined_edges[(
                 s, e, k, e_type, e_subtype)]
-            changed.update([s, e])
+            changed.add((s, e))
         if changed:
             self.A_invalids.update(changed)
             self.A_valid = False
@@ -361,6 +371,21 @@ class CSVGraphGenerator(GraphGenerator):
         self.G.add_nodes_from(zip(idx_s, nodes_to_add))
 
         # fill the edges
+        # get rid of duplicate edges (TODO delete)
+        if __debug__:
+                    # fill the edges
+            edges["e"] = edges.apply(
+                lambda row: (
+                    (int(row.vertex1), int(row.vertex2))
+                    if int(row.vertex1) < int(row.vertex2)
+                    else (int(row.vertex2), int(row.vertex1))
+                ),
+                axis=1
+            )
+            edges.drop_duplicates(inplace=True, subset=[
+                                  "type", "subtype", "e", "weight"])
+            edges.drop(columns=["e"], inplace=True)
+
         edges_to_add = edges.to_dict('list')
         froms = edges_to_add['vertex1']
         tos = edges_to_add['vertex2']
