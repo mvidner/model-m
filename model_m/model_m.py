@@ -49,7 +49,7 @@ class ModelM():
                  model_type: str = "ExtendedSequentialNetworkModel",
                  random_seed: int = 42):
 
-        self.random_seed = 42
+        # self.random_seed = 42
 
         # original state
         self.start_graph = graph
@@ -57,34 +57,51 @@ class ModelM():
         # scenario (list of closed layers)
         self.scenario = scenario
 
+        self.model_type = model_type
+        self.model_params = model_params
+        self.random_seed = random_seed
+        self.policy = policy
+        self.policy_setup = policy_setup
+
+        self.ready = False
+
+    def setup(self):
+
         # working copy of graph and matrix
         self.graph = copy.deepcopy(self.start_graph)
         self.A = self.init_matrix()
 
         # model
-        Model = model_zoo[model_type]
+        Model = model_zoo[self.model_type]
         self.model = Model(self.A,
-                           **model_params,
-                           random_seed=random_seed)
+                           **self.model_params,
+                           random_seed=self.random_seed)
 
-        if policy_setup:
-            policy_coefs = policy_setup(self.graph, self.start_graph)
-        if policy:
+        if self.policy_setup:
+            policy_coefs = self.policy_setup(self.graph, self.start_graph)
+        if self.policy:
             policy_function = bound_policy(
-                policy, self.graph, coefs=policy_coefs)
+                self.policy, self.graph, coefs=policy_coefs)
             self.model.set_periodic_update(policy_function)
+
+        self.ready = True
 
     def set_model_params(self, model_params: dict):
         self.model.setup_model_params(model_params)
 
     def run(self, *args, **kwargs):
+        if not self.ready:
+            self.setup()
         self.model.run(*args, **kwargs)
 
     def reset(self, random_seed=None):
-        del self.graph
-        self.graph = copy.deepcopy(self.start_graph)
-        del self.A
-        self.A = self.init_matrix()
+        if not self.ready:
+            self.setup()
+        else:
+            del self.graph
+            self.graph = copy.deepcopy(self.start_graph)
+            del self.A
+            self.A = self.init_matrix()
 
         if random_seed:
             self.model.set_seed(random_seed)
