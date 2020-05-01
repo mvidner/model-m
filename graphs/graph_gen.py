@@ -25,6 +25,7 @@ class GraphGenerator:
 
         self.A = None
         self.A_valid = False
+        self.quarantined_edges = {}
 
     @property
     def nodes(self):
@@ -142,22 +143,28 @@ class GraphGenerator:
 #            print(*e)
         return self.G.edges([node_id], data=True, keys=True)
 
-    def modify_layers_for_node(self, node_id, what_by_what, is_quarrantined=None):
+    def modify_layers_for_nodes(self, node_id_list, what_by_what, is_quarrantined=None):
         """ changes edges' weights """
 
         if not what_by_what:
             return
 
-        if not self.G.has_node(node_id):
-            print(f"Warning: modify_layer_for_node called for nonexisting node_id {node_id}")
-            return
+        # if not self.G.has_node(node_id):
+        #     print(f"Warning: modify_layer_for_node called for nonexisting node_id {node_id}")
+        #     return
 
-        for u, v, k, d in self.G.edges([node_id], data=True, keys=True):
+        # keep the original list (it is modified in the cycle)
+        for u, v, k, d in self.G.edges(set(node_id_list), data=True, keys=True):
             if is_quarrantined is not None and (is_quarrantined[u] > 0 or is_quarrantined[v] > 0):
                 # edge is already quarrantined
                 continue
             layer_label = d["type"]
             if layer_label in what_by_what:
+                assert (u, v, k, d["type"], d["subtype"]) not in self.quarantined_edges, \
+                    f"edge {(u, v, k, d['type'], d['subtype'])} is already quaratined, {is_quarrantined[u]}{is_quarrantined[v]}"
+                s, e = (u, v) if u < v else (v, u)
+                self.quarantined_edges[(
+                    s, e, k, d["type"], d["subtype"])] = d['weight']
                 self.G.edges[(u, v, k)
                              ]['weight'] = min(self.G.edges[(u, v, k)]['weight'] * what_by_what[layer_label], 1.0)
 
@@ -171,14 +178,18 @@ class GraphGenerator:
                 continue
             e_type = d["type"]
             e_subtype = d["subtype"]
-            new_weight = None
-            for edata in normal_life.G.get_edge_data(u, v).values():
-                if edata["type"] == e_type and edata["subtype"] == e_subtype:
-                    new_weight = edata["weight"]
-                    break
-            if new_weight is None:
-                raise ValueError("Edge not found in normal life.")
-            self.G.edges[(u, v, k)]['weight'] = new_weight
+            # new_weight = None
+            # for edata in normal_life.G.get_edge_data(u, v).values():
+            #     if edata["type"] == e_type and edata["subtype"] == e_subtype:
+            #         new_weight = edata["weight"]
+            #         break
+            # if new_weight is None:
+            #     raise ValueError("Edge not found in normal life.")
+            s, e = (u, v) if u < v else (v, u)
+            self.G.edges[(u, v, k)]['weight'] = self.quarantined_edges[(
+                s, e, k, e_type, e_subtype)]
+            del self.quarantined_edges[(
+                s, e, k, e_type, e_subtype)]
         self.A_valid = False
 
     def get_layers_info(self):
