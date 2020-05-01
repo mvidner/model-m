@@ -1,4 +1,5 @@
-from multiprocessing import Pool
+from functools import partial
+from pathos.multiprocessing import ProcessPool as Pool
 
 from sklearn.model_selection import ParameterGrid
 
@@ -15,8 +16,9 @@ def perform_gridsearch(model_func, hyperparam_config, n_jobs=1):
     grid = hyperparam_config["MODEL"]
     param_grid = ParameterGrid(grid)
 
-    with Pool(n_jobs) as pool:
-        res = pool.map(lambda hp: _run_model_with_hyperparams(model_func, hp), param_grid)
+    run_model = partial(_run_model_with_hyperparams, model_func)
+    with Pool(processes=n_jobs) as pool:
+        res = pool.map(run_model, param_grid)
 
     return res
 
