@@ -26,21 +26,21 @@ def quarrantine_policy_setup(graph, normal_life):
         "quarrantine_depo": QuarrantineDepo(graph.number_of_nodes()),
         "normal_life": normal_life,
         "quarrantine_coefs": {
-             1: 100,  # family
-             2: 0,
-             3: 0,
-             4: 0,  # lower elementary children
-             5: 0,  # lower elementary teachers to children
-             6: 0,  # higher elementary children
-             7: 0,  # higher elementary teachers to children
-             8: 0,  # highschool children
-             9: 0,  # highschool teachers to children
-             10: 0.1,  # friend and relative encounetr
-             11: 0,  # work contacts
-             12: 0,  # workers to clients
-             13: 0,  # public transport contacts
-             14: 0  # contacts of customers at shops
-         },
+            1: 100,  # family
+            2: 0,
+            3: 0,
+            4: 0,  # lower elementary children
+            5: 0,  # lower elementary teachers to children
+            6: 0,  # higher elementary children
+            7: 0,  # higher elementary teachers to children
+            8: 0,  # highschool children
+            9: 0,  # highschool teachers to children
+            10: 0.1,  # friend and relative encounetr
+            11: 0,  # work contacts
+            12: 0,  # workers to clients
+            13: 0,  # public transport contacts
+            14: 0  # contacts of customers at shops
+        },
         "duration": 14,
         "threashold": 0.04
     }
@@ -98,9 +98,8 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
     print(f"Qurantined contacts: {contacts}")
 
     # friends of detected
-    _quarrantine_nodes(detected_nodes+list(contacts), policy_coefs, graph)
-
-    to_change = {"graph": graph.final_adjacency_matrix()}
+    to_change = _quarrantine_nodes(
+        detected_nodes+list(contacts), policy_coefs, graph)
     return to_change
 
 
@@ -124,11 +123,11 @@ def _quarrantine_nodes(detected_nodes, policy_coefs, graph):
     normal_life = policy_coefs["normal_life"]
     duration = policy_coefs["duration"]
 
-    for node in detected_nodes:
-        # print(f"Node {node} goes to quarantine")
-        graph.modify_layers_for_node(node,
-                                     quarantine_coefs,
-                                     depo.quarrantine)
+    #    for node in detected_nodes:
+    # print(f"Node {node} goes to quarantine")
+    graph.modify_layers_for_nodes(detected_nodes,
+                                  quarantine_coefs,
+                                  depo.quarrantine)
     depo.lock_up(detected_nodes, duration)
 #    print(">>>", depo.quarrantine)
     released = depo.tick_and_get_released()
@@ -138,6 +137,8 @@ def _quarrantine_nodes(detected_nodes, policy_coefs, graph):
         graph.recover_edges_for_nodes(released,
                                       normal_life,
                                       depo.quarrantine)
+
+    return {"graph": graph.final_adjacency_matrix()}
 
 
 def _select_contacts(detected_nodes, graph, threashold):
