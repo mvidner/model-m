@@ -25,6 +25,7 @@ class GraphGenerator:
 
         self.A = None
         self.A_valid = False
+        self.A_invalids = set()
         self.quarantined_edges = {}
 
     @property
@@ -66,11 +67,18 @@ class GraphGenerator:
         if self.A_valid:
             return self.A
 
-        N = self.G.number_of_nodes()
+        if self.A_invalids:
+            indices_to_recalc = list(self.A_invalids)
+            N = len(self.A_invalids)
+        else:
+            N = self.G.number_of_nodes()
+            indices_to_recalc = list(range(N))
+
         prob_no_contact = csr_matrix((N, N))  # empty values = 1.0
 
         for name, prob in self.get_layers_info().items():
-            a = nx.adj_matrix(self.get_graph_for_layer(name))
+            a = nx.adj_matrix(self.get_graph_for_layer(name))[
+                indices_to_recalc, :][:, indices_to_recalc]
             if len(a.data) == 0:  # no edges, prob of no-contact = 1
                 continue
             a = a.multiply(prob)  # contact on layer
@@ -82,8 +90,13 @@ class GraphGenerator:
         # prob_of_contact = 1.0 - prob_no_contact
         prob_of_contact = prob_no_contact
         prob_of_contact.data = 1.0 - prob_no_contact.data
-        self.A = prob_of_contact
+        if self.A is not None:
+            for i, idx in enumerate(indices_to_recalc):
+                self.A[idx, indices_to_recalc] = prob_of_contact[i, :]
+        else:
+            self.A = prob_of_contact
         self.A_valid = True
+        self.A_invalids = set()
         return self.A
 
     def get_graph_for_layer(self, layer_name):
@@ -153,6 +166,7 @@ class GraphGenerator:
         #     print(f"Warning: modify_layer_for_node called for nonexisting node_id {node_id}")
         #     return
 
+        changed = set()
         # keep the original list (it is modified in the cycle)
         for u, v, k, d in self.G.edges(set(node_id_list), data=True, keys=True):
             if is_quarrantined is not None and (is_quarrantined[u] > 0 or is_quarrantined[v] > 0):
@@ -167,11 +181,15 @@ class GraphGenerator:
                     s, e, k, d["type"], d["subtype"])] = d['weight']
                 self.G.edges[(u, v, k)
                              ]['weight'] = min(self.G.edges[(u, v, k)]['weight'] * what_by_what[layer_label], 1.0)
+                changed.update([u, v])
 
-        self.A_valid = False
+        if changed:
+            self.A_invalids.update(changed)
+            self.A_valid = False
 
     def recover_edges_for_nodes(self, release, normal_life, is_quarrantined):
 
+        changed = set()
         for u, v, k, d in self.G.edges(release, data=True, keys=True):
             if is_quarrantined[u] or is_quarrantined[v]:
                 # still one of nodes is in quarrantine
@@ -190,7 +208,10 @@ class GraphGenerator:
                 s, e, k, e_type, e_subtype)]
             del self.quarantined_edges[(
                 s, e, k, e_type, e_subtype)]
-        self.A_valid = False
+            changed.update([s, e])
+        if changed:
+            self.A_invalids.update(changed)
+            self.A_valid = False
 
     def get_layers_info(self):
         """ returns dictionary of layer names and probabilities """
