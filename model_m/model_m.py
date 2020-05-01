@@ -1,6 +1,6 @@
 import random
 import copy
-
+import pickle
 from model_zoo import model_zoo
 
 from graph_gen import GraphGenerator, CSVGraphGenerator, RandomSingleGraphGenerator
@@ -131,6 +131,7 @@ def _load_graph(cf: ConfigFile):
     num_nodes = cf.section_as_dict("TASK").get("num_nodes", None)
 
     graph_name = cf.section_as_dict("GRAPH")["name"]
+    filename = cf.section_as_dict("GRAPH").get("file", None)
     nodes = cf.section_as_dict("GRAPH").get("nodes", "nodes.csv")
     edges = cf.section_as_dict("GRAPH").get("edges", "edges.csv")
     layers = cf.section_as_dict("GRAPH").get("layers", "etypes.csv")
@@ -143,6 +144,10 @@ def _load_graph(cf: ConfigFile):
 
     if graph_name == "random":
         return RandomGraphGenerator()
+
+    if graph_name == "pickle":
+        with open(filename, "rb") as f:
+            return pickle.load(f)
 
     raise ValueError(f"Graph {graph_name} not available.")
 
