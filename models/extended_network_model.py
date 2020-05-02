@@ -140,6 +140,7 @@ model_definition = {
         "false_symptoms_recovery_rate": (1., ""),
         "asymptomatic_rate": (0, ""),
         "symptoms_manifest_rate": (1., ""),
+        "save_nodes": (False, "")
     },
 
     "model_parameters": {
@@ -211,15 +212,16 @@ def calc_propensities(model, use_dict=True):
          STATES.I_a,
          STATES.I_s],
         [STATES.I_n, STATES.I_a, STATES.I_s, STATES.I_d],
+        [STATES.I_n, STATES.I_a, STATES.I_s, STATES.I_d, STATES.E],
         model.beta
     )
 
     #    P2 = model.prob_of_no_contact([STATES.I_d], model.beta_D)
     assert(np.all(model.beta_D == 0))
 
-    #print("-->", P1.shape, np.any(P1.flatten() > 0), np.all(P1.flatten() <= 1))
+    # print("-->", P1.shape, np.any(P1.flatten() > 0), np.all(P1.flatten() <= 1))
     # print(P2.flatten())
-    #assert np.all(P2.flatten() == 0)
+    # assert np.all(P2.flatten() == 0)
 
     #    P_infection = model.prob_of_no_contact(
     #        ([STATES.I_n, STATES.I_a, STATES.I_s], [STATES.I_d])
