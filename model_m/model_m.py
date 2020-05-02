@@ -164,7 +164,10 @@ def _load_graph(cf: ConfigFile):
 
     if graph_name == "pickle":
         with open(filename, "rb") as f:
-            return pickle.load(f)
+            g = pickle.load(f)
+            if g.A_valid:
+                print("Wow, matrix A is ready.")
+            return g
 
     raise ValueError(f"Graph {graph_name} not available.")
 
