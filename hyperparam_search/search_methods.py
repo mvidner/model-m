@@ -1,5 +1,5 @@
 from functools import partial
-from pathos.multiprocessing import ProcessPool as Pool
+from multiprocessing import Pool
 
 from sklearn.model_selection import ParameterGrid
 

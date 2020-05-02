@@ -10,10 +10,12 @@ from load_model import load_policy_function
 from config_utils import ConfigFile
 
 
-def load_model_from_config(cf, use_policy, model_random_seed):
+def load_model_from_config(cf, use_policy, model_random_seed, hyperparams=None):
 
     # load model hyperparameters
     model_params = cf.section_as_dict("MODEL")
+    if hyperparams is not None:
+        model_params = {**model_params, **hyperparams}
 
     # load graph as described in config file
     graph = _load_graph(cf)

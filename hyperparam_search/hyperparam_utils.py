@@ -46,13 +46,12 @@ def run_hyperparam_search(model_config: str,
     cf = ConfigFile()
     cf.load(model_config)
 
-    model = load_model_from_config(cf, use_policy, model_random_seed)
     # wrapper for running one model same time with different seed
     model_load_func = partial(_run_models_from_config,
                               cf,
-                              model,
                               model_random_seed=model_random_seed,
                               run_n_times=run_n_times,
+                              use_policy=use_policy,
                               return_func=return_func,
                               return_func_kwargs=return_func_kwargs)
 
@@ -66,10 +65,10 @@ def run_single_model(model, T, print_interval=10, verbose=False):
 
 
 def _run_models_from_config(cf: ConfigFile,
-                            template_model: ModelM,
                             hyperparams: Dict = None,
                             model_random_seed: int = 42,
                             run_n_times: int = 1,
+                            use_policy: str = None,
                             return_func: str = None,
                             return_func_kwargs: Dict = None):
     # copy model
@@ -77,15 +76,7 @@ def _run_models_from_config(cf: ConfigFile,
     print_interval = cf.section_as_dict("TASK").get("print_interval", 1)
     verbose = cf.section_as_dict("TASK").get("verbose", "Yes") == "Yes"
 
-    model_params = {**template_model.model_params, **hyperparams}
-    model = ModelM(
-        template_model.start_graph,
-        template_model.policy,
-        model_params=model_params,
-        scenario=template_model.scenario,
-        model_type=template_model.model_type,
-        random_seed=model_random_seed
-    )
+    model = load_model_from_config(cf, use_policy, model_random_seed, hyperparams=hyperparams)
 
     # for different seeds
     def _run_one_model(seed):
@@ -98,7 +89,8 @@ def _run_models_from_config(cf: ConfigFile,
 
     if run_n_times > 1:
         # add 1 to seed each run
-        res = [func(_run_one_model(seed), **return_func_kwargs) for seed in range(model_random_seed, model_random_seed + run_n_times)]
+        res = [func(_run_one_model(seed), **return_func_kwargs)
+               for seed in range(model_random_seed, model_random_seed + run_n_times)]
     else:
         res = func(_run_one_model(model_random_seed), **return_func_kwargs)
 
