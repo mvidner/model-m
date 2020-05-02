@@ -179,7 +179,7 @@ class SeirsPlusLikeEngine(BaseEngine):
 
         vysek = self.A[source_candidate_flags == 1, :][:, dest_flags == 1]
         vysek.eliminate_zeros()
-        print(vysek.shape)
+        #        print(vysek.shape)
         if vysek.shape[0] == 0 or vysek.shape[1] == 0:
             return np.zeros((self.num_nodes, 1))
         # for each active edge flip coin
