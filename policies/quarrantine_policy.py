@@ -42,7 +42,8 @@ def quarrantine_policy_setup(graph, normal_life):
             14: 0  # contacts of customers at shops
         },
         "duration": 14,
-        "threashold": 0.04
+        "threashold": 0.04,
+        "days_back": 7
     }
 
 
@@ -96,7 +97,8 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
 
     if contact_history is not None:
         contacts = _select_contacts(
-            detected_nodes, contact_history, graph, policy_coefs["threashold"])
+            detected_nodes, contact_history, graph,
+            policy_coefs["threashold"], policy_coefs["days_back"])
     else:
         contacts = []
 
@@ -147,7 +149,7 @@ def _quarrantine_nodes(detected_nodes, policy_coefs, graph):
     return {"graph": graph.final_adjacency_matrix()}
 
 
-def _select_contacts(detected_nodes, contact_history, graph, threashold):
+def _select_contacts(detected_nodes, contact_history, graph, threashold, days_back=7):
     # matrix = graph.final_adjacency_matrix()
     # active_edges = matrix[detected_nodes]
 
@@ -157,9 +159,11 @@ def _select_contacts(detected_nodes, contact_history, graph, threashold):
     if not contact_history:
         return []
 
+    my_contact_history = contact_history[-days_back:]
+
     relevant_contacts = [
         contact[1]
-        for contact_list in contact_history
+        for contact_list in my_contact_history
         for contact in contact_list
         if contact[0] in detected_nodes
     ]
