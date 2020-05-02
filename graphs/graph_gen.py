@@ -216,7 +216,7 @@ class GraphGenerator:
         nx.write_gpickle(self.G, path)
         
     def read_picke(self, path):
-        self.G = nx.read_pickle(path)
+        self.G = nx.read_gpickle(path)
         self.layer_names = self.G.graph['layer_names'] 
         self.layer_probs = self.G.graph['layer_probs'] 
                       
