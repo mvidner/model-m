@@ -17,7 +17,7 @@ def load_gold_data(csv_path, first_n_zeros=0):
     dates = dates.apply(lambda t: t.days + 1)
 
     result = pd.DataFrame({"day": range(1, dates.max() + 1), "infected": pd.NA})
-    result.loc[result["day"].isin(dates), "infected"] = df.iloc[:, 1].to_list()
+    result.loc[result["day"].isin(dates), "infected"] = df.iloc[:, 2].to_list()
 
     result.fillna(method='ffill', inplace=True)
 
