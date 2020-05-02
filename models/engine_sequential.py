@@ -127,6 +127,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         self.print(True)
 
         for self.t in range(1, T+1):
+            #            input()
             if __debug__:
                 print(flush=True)
             #            print(f"day {self.t}")
@@ -141,7 +142,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             # run periodical update
             if self.periodic_update_callback:
                 changes = self.periodic_update_callback(
-                    self.history, self.tseries[:self.tidx+1], self.t)
+                    self.history, self.tseries[:self.tidx+1], self.t, contact_history=self.contact_history)
 
                 if "graph" in changes:
                     print("CHANGING GRAPH")
