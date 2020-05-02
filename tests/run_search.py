@@ -62,7 +62,7 @@ def test(set_random_seed, policy, n_jobs, run_n_times, return_func, fit_data, ou
         for res in results:
             mean_val = np.mean(res['result'])
 
-            res_row = {**res["hyperparams"], return_func: mean_val}
+            res_row = {**res["hyperparams"], f"mean_{return_func}": mean_val}
             res_list.append(res_row)
 
         fit_name = os.path.split(fit_data)[1].split('.')[0]
