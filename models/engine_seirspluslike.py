@@ -36,20 +36,21 @@ class SeirsPlusLikeEngine(BaseEngine):
     def setup_series_and_time_keeping(self):
 
         self.expected_num_transitions = 10  # TO: change to our situation
+        self.expected_num_days = 101
         tseries_len = (self.num_transitions + 1) * self.num_nodes
 
         self.tseries = TimeSeries(tseries_len, dtype=float)
-        self.meaneprobs = TimeSeries(tseries_len, dtype=float)
-        self.medianeprobs = TimeSeries(tseries_len, dtype=float)
+        self.meaneprobs = TimeSeries(self.expected_num_days, dtype=float)
+        self.medianeprobs = TimeSeries(self.expected_num_days, dtype=float)
 
         self.history = TransitionHistory(tseries_len)
 
         self.states_history = TransitionHistory(
-            400, width=self.num_nodes)
+            self.expected_num_days, width=self.num_nodes)
 
         # state_counts ... numbers of inidividuals in given states
         self.state_counts = {
-            state: TimeSeries(tseries_len, dtype=int)
+            state: TimeSeries(self.expected_num_days, dtype=int)
             for state in self.states
         }
 
@@ -59,7 +60,7 @@ class SeirsPlusLikeEngine(BaseEngine):
         # }
 
         # N ... actual number of individuals in population
-        self.N = TimeSeries(tseries_len, dtype=float)
+        self.N = TimeSeries(self.expected_num_days, dtype=float)
 
         self.contact_history = ShortListSeries(7)
 
@@ -165,19 +166,21 @@ class SeirsPlusLikeEngine(BaseEngine):
             raise TypeException(
                 "num_contacts(state) accepts str or list of strings")
 
-    def prob_of_no_contact(self, source_states, source_candidate_states, dest_states, beta):
+    def prob_of_no_contact(self, source_states, source_candidate_states, dest_states, dest_candidate_states, beta):
         #        print(states)
         # for i in states:
         #    print(self.current_state_count(i))
         assert type(dest_states) == list and type(source_states) == list
-        dest_flags = self.memberships[dest_states, :, :].reshape(
-            len(dest_states), self.num_nodes).sum(axis=0)
         source_candidate_flags = self.memberships[source_candidate_states, :, :].reshape(
             len(source_candidate_states), self.num_nodes).sum(axis=0)
         source_candidate_indices = source_candidate_flags.nonzero()[0]
-        dest_indices = dest_flags.nonzero()[0]
 
-        vysek = self.A[source_candidate_flags == 1, :][:, dest_flags == 1]
+        dest_candidate_flags = self.memberships[dest_candidate_states, :, :].reshape(
+            len(dest_candidate_states), self.num_nodes).sum(axis=0)
+        dest_candidate_indices = dest_candidate_flags.nonzero()[0]
+
+        vysek = self.A[source_candidate_flags ==
+                       1, :][:, dest_candidate_flags == 1]
         vysek.eliminate_zeros()
         #        print(vysek.shape)
         if vysek.shape[0] == 0 or vysek.shape[1] == 0:
@@ -190,9 +193,13 @@ class SeirsPlusLikeEngine(BaseEngine):
         # print(source_candidate_indices, contact_indices[0])
         # print(source_candidate_indices[contact_indices[0]])
         # covert vysek indicies to node numbers
-        contact_indices = list(zip(dest_indices[contact_indices[1]],
+        contact_indices = list(zip(dest_candidate_indices[contact_indices[1]],
                                    source_candidate_indices[contact_indices[0]]))
 
+        vysek.eliminate_zeros()
+        # print(vysek)
+        # print(contact_indices)
+        # exit()
         #        print(contact_indices)
         # assert not [contact for contact in contact_indices if contact[0]
         #             == contact[1]], "self contatct detected!!!"
@@ -200,34 +207,39 @@ class SeirsPlusLikeEngine(BaseEngine):
         self.contact_history.append(contact_indices)
         #        print("-->", self.contact_history.values)
 
-        source_flags = self.memberships[source_states, :, :].reshape(
-            len(source_states), self.num_nodes).sum(axis=0)
-        #        print("state flags", state_flags.shape)
-        #        print(self.node_ids[state_flags == 1])
+        old = True
 
-        vysek = self.A[source_flags == 1, :][:, dest_flags == 1]
-        vysek.eliminate_zeros()
-        #        print(vysek.shape)
-        if vysek.shape[0] == 0:
-            return np.zeros((self.num_nodes, 1))
-        not_prob_contact = scipy.sparse.csr_matrix(vysek)
-        assert np.all(not_prob_contact.data >= 0) and np.all(
-            not_prob_contact.data <= 1)
-        #        print(not_prob_contact)
-        beta = np.tile(beta[dest_flags == 1].ravel(),
-                       (not_prob_contact.shape[0], 1))
-        # print(not_prob_contact.shape, beta.shape)
-        not_prob_contact = scipy.sparse.csr_matrix(
-            not_prob_contact.multiply(beta))
-        not_prob_contact.data = 1.0 - not_prob_contact.data
-        # print("**** == 1", np.all(not_prob_contact.data == 1))
-        # print("**** prop columns", prop_of_column(not_prob_contact), np.all(prop_of_column(not_prob_contact)==1))
-        # print("*** contact ",  1 - prop_of_column(not_prob_contact))
-        result = np.zeros(self.num_nodes)
-        # print((1 - prop_of_row(not_prob_contact)).shape, result.shape,
-        #      result[source_flags == 1].shape)
-        result[source_flags == 1] = 1 - prop_of_row(not_prob_contact)
-        return result.reshape(self.num_nodes, 1)
+        if old:
+            source_flags = self.memberships[source_states, :, :].reshape(
+                len(source_states), self.num_nodes).sum(axis=0)
+            #        print("state flags", state_flags.shape)
+            #        print(self.node_ids[state_flags == 1])
+            dest_flags = self.memberships[dest_states, :, :].reshape(
+                len(dest_states), self.num_nodes).sum(axis=0)
+
+            vysek = self.A[source_flags == 1, :][:, dest_flags == 1]
+            vysek.eliminate_zeros()
+            #        print(vysek.shape)
+            if vysek.shape[0] == 0:
+                return np.zeros((self.num_nodes, 1))
+            not_prob_contact = scipy.sparse.csr_matrix(vysek)
+            assert np.all(not_prob_contact.data >= 0) and np.all(
+                not_prob_contact.data <= 1)
+            #        print(not_prob_contact)
+            beta = np.tile(beta[dest_flags == 1].ravel(),
+                           (not_prob_contact.shape[0], 1))
+            # print(not_prob_contact.shape, beta.shape)
+            not_prob_contact = scipy.sparse.csr_matrix(
+                not_prob_contact.multiply(beta))
+            not_prob_contact.data = 1.0 - not_prob_contact.data
+            # print("**** == 1", np.all(not_prob_contact.data == 1))
+            # print("**** prop columns", prop_of_column(not_prob_contact), np.all(prop_of_column(not_prob_contact)==1))
+            # print("*** contact ",  1 - prop_of_column(not_prob_contact))
+            result = np.zeros(self.num_nodes)
+            # print((1 - prop_of_row(not_prob_contact)).shape, result.shape,
+            #      result[source_flags == 1].shape)
+            result[source_flags == 1] = 1 - prop_of_row(not_prob_contact)
+            return result.reshape(self.num_nodes, 1)
 
         # not_prob_contact = prob_contact
         # not_prob_contact.data = 1.0 - not_prob_contact.data
@@ -246,10 +258,10 @@ class SeirsPlusLikeEngine(BaseEngine):
         self.tseries.bloat(tseries_len)
         self.history.bloat(tseries_len)
         for state in self.states:
-            self.state_counts[state].bloat(tseries_len)
+            self.state_counts[state].bloat(self.expected_num_days)
         # for tran in self.transitions:
         #     self.propensities_repo[tran].bloat(tseries_len)
-        self.N.bloat(tseries_len)
+        self.N.bloat(self.expected_num_days)
 
     def finalize_data_series(self):
 

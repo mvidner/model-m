@@ -174,15 +174,15 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
     def increase_data_series_length(self):
         for state in self.states:
-            self.state_counts[state].bloat(300)
-        self.N.bloat(300)
-        self.states_history(300)
-        self.meaneprobs.bloat(300)
-        self.medianeprobs.bloat(300)
+            self.state_counts[state].bloat(100)
+        self.N.bloat(100)
+        self.states_history.bloat(100)
+        self.meaneprobs.bloat(100)
+        self.medianeprobs.bloat(100)
 
     def increase_history_len(self):
-        self.tseries.bloat(100*self.num_nodes)
-        self.history.bloat(100*self.num_nodes)
+        self.tseries.bloat(10*self.num_nodes)
+        self.history.bloat(10*self.num_nodes)
 
     def finalize_data_series(self):
         self.tseries.finalize(self.tidx)
