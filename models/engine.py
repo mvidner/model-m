@@ -54,7 +54,7 @@ class BaseEngine():
             # adj_matrix gives scipy.sparse csr_matrix
             self.A = nx.adj_matrix(new_G)
         else:
-            print(type(new_G))
+            # print(type(new_G))
             raise TypeError(
                 "Input an adjacency matrix or networkx object only.")
 
