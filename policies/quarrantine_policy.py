@@ -46,7 +46,7 @@ def quarrantine_policy_setup(graph, normal_life):
     }
 
 
-def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time):
+def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time, **kwargs):
 
     print("Hello world! This is the policy function speaking.")
 
@@ -72,10 +72,13 @@ def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time):
     return to_change
 
 
-def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tseries, time):
+def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tseries, time, contact_history=None):
 
     print("Hello world! This is the policy function speaking.")
-    print("Contact tracing is ON.")
+    if contact_history is not None:
+        print("Contact tracing is ON.")
+    else:
+        print("Warning: Contact tracing is OFF.")
 
     # and not isinstance(graph, LightGraph):
     if not isinstance(graph, GraphGenerator):
@@ -91,8 +94,11 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
         if e == states.I_d
     ]
 
-    contacts = _select_contacts(
-        detected_nodes, graph, policy_coefs["threashold"])
+    if contact_history is not None:
+        contacts = _select_contacts(
+            detected_nodes, contact_history, graph, policy_coefs["threashold"])
+    else:
+        contacts = []
 
     print(f"Qurantined nodes: {detected_nodes}")
     print(f"Qurantined contacts: {contacts}")
@@ -141,10 +147,25 @@ def _quarrantine_nodes(detected_nodes, policy_coefs, graph):
     return {"graph": graph.final_adjacency_matrix()}
 
 
-def _select_contacts(detected_nodes, graph, threashold):
-    matrix = graph.final_adjacency_matrix()
-    active_edges = matrix[detected_nodes]
+def _select_contacts(detected_nodes, contact_history, graph, threashold):
+    # matrix = graph.final_adjacency_matrix()
+    # active_edges = matrix[detected_nodes]
 
-    important_values = active_edges > threashold
-    detected_contacts = important_values.nonzero()[1]
-    return detected_contacts
+    # important_values = active_edges > threashold
+    # detected_contacts = important_values.nonzero()[1]
+    # return detected_contacts
+    if not contact_history:
+        return []
+
+    relevant_contacts = [
+        contact[1]
+        for contact_list in contact_history
+        for contact in contact_list
+        if contact[0] in detected_nodes
+    ]
+
+    # if relevant_contacts:
+    #     print(relevant_contacts)
+    #     exit()
+
+    return set(relevant_contacts)

@@ -204,6 +204,12 @@ def calc_propensities(model, use_dict=True):
 
     P1 = model.prob_of_no_contact(
         [STATES.S_s, STATES.S],
+        [STATES.S,
+         STATES.S_s,
+         STATES.E,
+         STATES.I_n,
+         STATES.I_a,
+         STATES.I_s],
         [STATES.I_n, STATES.I_a, STATES.I_s, STATES.I_d],
         model.beta
     )

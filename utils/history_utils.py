@@ -74,3 +74,20 @@ class TransitionHistory(BaseSeries):
     def finalize(self, tidx):
         """ throw away ending zeros """
         self.values = self.values[:tidx+1, :]
+
+
+class ShortListSeries():
+    def __init__(self, length):
+        self.values = []
+        self.length = length
+
+    def append(self, member):
+        self.values.append(member)
+        if len(self.values) > self.length:
+            self.values.pop(0)
+
+    def __getitem__(self, idx):
+        return self.values[idx]
+
+    def __len__(self):
+        return len(self.values)

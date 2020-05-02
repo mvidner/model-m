@@ -5,7 +5,7 @@ import scipy.integrate
 import networkx as nx
 import time
 
-from history_utils import TimeSeries, TransitionHistory
+from history_utils import TimeSeries, TransitionHistory, ShortListSeries
 from sparse_utils import prop_of_row
 from engine import BaseEngine
 
@@ -30,9 +30,8 @@ class SeirsPlusLikeEngine(BaseEngine):
             else:
                 setattr(self, param_name,
                         np.full(fill_value=param, shape=(self.num_nodes, 1)))
-            #print(param_name, getattr(self, param_name))
+            # print(param_name, getattr(self, param_name))
 #        exit()
-
 
     def setup_series_and_time_keeping(self):
 
@@ -42,7 +41,7 @@ class SeirsPlusLikeEngine(BaseEngine):
         self.tseries = TimeSeries(tseries_len, dtype=float)
         self.meaneprobs = TimeSeries(tseries_len, dtype=float)
         self.medianeprobs = TimeSeries(tseries_len, dtype=float)
-        
+
         self.history = TransitionHistory(tseries_len)
 
         self.states_history = TransitionHistory(
@@ -61,6 +60,8 @@ class SeirsPlusLikeEngine(BaseEngine):
 
         # N ... actual number of individuals in population
         self.N = TimeSeries(tseries_len, dtype=float)
+
+        self.contact_history = ShortListSeries(7)
 
         # float time
         self.t = 0
@@ -164,38 +165,69 @@ class SeirsPlusLikeEngine(BaseEngine):
             raise TypeException(
                 "num_contacts(state) accepts str or list of strings")
 
-    def prob_of_no_contact(self, source_states, dest_states, beta):
+    def prob_of_no_contact(self, source_states, source_candidate_states, dest_states, beta):
         #        print(states)
-        #for i in states:
+        # for i in states:
         #    print(self.current_state_count(i))
-        assert type(dest_states) == list and type(source_states) == list 
+        assert type(dest_states) == list and type(source_states) == list
         dest_flags = self.memberships[dest_states, :, :].reshape(
             len(dest_states), self.num_nodes).sum(axis=0)
+        source_candidate_flags = self.memberships[source_candidate_states, :, :].reshape(
+            len(source_candidate_states), self.num_nodes).sum(axis=0)
+        source_candidate_indices = source_candidate_flags.nonzero()[0]
+        dest_indices = dest_flags.nonzero()[0]
+
+        vysek = self.A[source_candidate_flags == 1, :][:, dest_flags == 1]
+        vysek.eliminate_zeros()
+        print(vysek.shape)
+        if vysek.shape[0] == 0 or vysek.shape[1] == 0:
+            return np.zeros((self.num_nodes, 1))
+        # for each active edge flip coin
+        r = np.random.rand(len(vysek.data))
+        # set to 0/1 according the coin
+        vysek.data = (vysek.data > r).astype(int)
+        contact_indices = vysek.nonzero()
+        # print(source_candidate_indices, contact_indices[0])
+        # print(source_candidate_indices[contact_indices[0]])
+        # covert vysek indicies to node numbers
+        contact_indices = list(zip(dest_indices[contact_indices[1]],
+                                   source_candidate_indices[contact_indices[0]]))
+
+        #        print(contact_indices)
+        # assert not [contact for contact in contact_indices if contact[0]
+        #             == contact[1]], "self contatct detected!!!"
+        # the first element of couple is the infected one !
+        self.contact_history.append(contact_indices)
+        #        print("-->", self.contact_history.values)
+
         source_flags = self.memberships[source_states, :, :].reshape(
             len(source_states), self.num_nodes).sum(axis=0)
         #        print("state flags", state_flags.shape)
         #        print(self.node_ids[state_flags == 1])
 
-        vysek = self.A[source_flags == 1, :][:, dest_flags == 1] 
+        vysek = self.A[source_flags == 1, :][:, dest_flags == 1]
         vysek.eliminate_zeros()
         #        print(vysek.shape)
-        if vysek.shape[0] == 0: 
+        if vysek.shape[0] == 0:
             return np.zeros((self.num_nodes, 1))
         not_prob_contact = scipy.sparse.csr_matrix(vysek)
-        assert np.all(not_prob_contact.data >= 0) and np.all(not_prob_contact.data <= 1)
+        assert np.all(not_prob_contact.data >= 0) and np.all(
+            not_prob_contact.data <= 1)
         #        print(not_prob_contact)
-        beta = np.tile(beta[dest_flags==1].ravel(), (not_prob_contact.shape[0], 1))
-        #print(not_prob_contact.shape, beta.shape)
-        not_prob_contact = scipy.sparse.csr_matrix(not_prob_contact.multiply(beta))
+        beta = np.tile(beta[dest_flags == 1].ravel(),
+                       (not_prob_contact.shape[0], 1))
+        # print(not_prob_contact.shape, beta.shape)
+        not_prob_contact = scipy.sparse.csr_matrix(
+            not_prob_contact.multiply(beta))
         not_prob_contact.data = 1.0 - not_prob_contact.data
         # print("**** == 1", np.all(not_prob_contact.data == 1))
         # print("**** prop columns", prop_of_column(not_prob_contact), np.all(prop_of_column(not_prob_contact)==1))
         # print("*** contact ",  1 - prop_of_column(not_prob_contact))
         result = np.zeros(self.num_nodes)
-        #print((1 - prop_of_row(not_prob_contact)).shape, result.shape, 
+        # print((1 - prop_of_row(not_prob_contact)).shape, result.shape,
         #      result[source_flags == 1].shape)
         result[source_flags == 1] = 1 - prop_of_row(not_prob_contact)
-        return result.reshape(self.num_nodes, 1) 
+        return result.reshape(self.num_nodes, 1)
 
         # not_prob_contact = prob_contact
         # not_prob_contact.data = 1.0 - not_prob_contact.data
@@ -328,7 +360,7 @@ class SeirsPlusLikeEngine(BaseEngine):
             if self.periodic_update_callback and day != 0 and day_changed:
                 print(self.periodic_update_callback)
                 changes = self.periodic_update_callback(
-                    self.history, self.tseries[:self.tidx+1], self.t)
+                    self.history, self.tseries[: self.tidx+1], self.t)
 
                 if "graph" in changes:
                     print("CHANGING GRAPH")
