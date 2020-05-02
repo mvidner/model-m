@@ -10,7 +10,7 @@ from config_utils import ConfigFile
 from hyperparam_search.hyperparam_utils import run_hyperparam_search
 
 
-def load_gold_data(csv_path):
+def load_gold_data(csv_path, first_n_zeros=0):
     df = pd.read_csv(csv_path)
     dates = pd.to_datetime(df["datum"])
     dates = dates - dates[0]
@@ -21,6 +21,12 @@ def load_gold_data(csv_path):
 
     result.fillna(method='ffill', inplace=True)
 
+    if first_n_zeros > 0:
+        result["day"] += first_n_zeros
+
+        first_n = [{"day": i + 1, "infected": 0} for i in range(first_n_zeros)]
+        result = pd.concat([pd.DataFrame(first_n), result], ignore_index=True)
+
     return result
 
 
@@ -29,12 +35,15 @@ def load_gold_data(csv_path):
 @click.option('--policy', '-p', default=None)
 @click.option('--n_jobs', default=1)
 @click.option('--run_n_times', default=1)
+@click.option('--first_n_zeros', default=5)
 @click.option('--return_func', default='rmse')
 @click.option('--fit_data', default='litovel.csv')
 @click.option('--out_dir',  default=f'./search_{datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")}')
 @click.argument('filename', default="town0.ini")
 @click.argument('hyperparam_filename', default="example_gridsearch.json")
-def test(set_random_seed, policy, n_jobs, run_n_times, return_func, fit_data, out_dir, filename, hyperparam_filename):
+def test(set_random_seed, policy, n_jobs, run_n_times, first_n_zeros, return_func, fit_data, out_dir,
+         filename, hyperparam_filename):
+
     random_seed = 42 if set_random_seed else random.randint(0, 10000)
 
     cf = ConfigFile()
@@ -44,14 +53,17 @@ def test(set_random_seed, policy, n_jobs, run_n_times, return_func, fit_data, ou
     print(f"Running with n_jobs == {n_jobs}.")
 
     def search_func():
+        gold_data = load_gold_data(fit_data, first_n_zeros=first_n_zeros)["infected"].to_numpy()
+
         results = run_hyperparam_search(
             filename,
             hyperparam_filename,
             model_random_seed=random_seed,
             use_policy=policy,
             n_jobs=n_jobs,
+            n_days=len(gold_data),
             return_func=return_func,
-            return_func_kwargs={"y_true": load_gold_data(fit_data)["infected"].to_numpy()},
+            return_func_kwargs={"y_true": gold_data},
             run_n_times=run_n_times
         )
 

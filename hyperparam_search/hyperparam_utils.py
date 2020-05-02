@@ -16,6 +16,7 @@ def run_hyperparam_search(model_config: str,
                           model_random_seed: int = 42,
                           use_policy: str = None,
                           run_n_times: int = 1,
+                          n_days: int = None,
                           return_func: str = None,
                           return_func_kwargs: Dict = None,
                           **kwargs):
@@ -52,6 +53,7 @@ def run_hyperparam_search(model_config: str,
                               model_random_seed=model_random_seed,
                               run_n_times=run_n_times,
                               use_policy=use_policy,
+                              n_days=n_days,
                               return_func=return_func,
                               return_func_kwargs=return_func_kwargs)
 
@@ -68,11 +70,12 @@ def _run_models_from_config(cf: ConfigFile,
                             hyperparams: Dict = None,
                             model_random_seed: int = 42,
                             run_n_times: int = 1,
+                            n_days: int = None,
                             use_policy: str = None,
                             return_func: str = None,
                             return_func_kwargs: Dict = None):
     # copy model
-    ndays = cf.section_as_dict("TASK").get("duration_in_days", 60)
+    ndays = n_days if n_days is not None else cf.section_as_dict("TASK").get("duration_in_days", 60)
     print_interval = cf.section_as_dict("TASK").get("print_interval", 1)
     verbose = cf.section_as_dict("TASK").get("verbose", "Yes") == "Yes"
 
