@@ -18,8 +18,8 @@ def load_model_from_config(cf, use_policy, model_random_seed):
     graph = _load_graph(cf)
 
     # apply policy on model
-    policy, policy_setup = _load_policy_function(
-        cf, use_policy) if use_policy else (None, None)
+    policy, policy_setup, policy_cfg = _load_policy_function(
+        cf, use_policy)
 
     # sceanario
     scenario = cf.section_as_dict("SCENARIO")
@@ -30,7 +30,7 @@ def load_model_from_config(cf, use_policy, model_random_seed):
         "model", "ExtendedNetworkModel")
 
     model = ModelM(graph,
-                   policy, policy_setup,
+                   policy, policy_setup, policy_cfg,
                    model_params,
                    scenario,
                    random_seed=model_random_seed,
@@ -43,7 +43,7 @@ class ModelM():
 
     def __init__(self,
                  graph,
-                 policy, policy_setup,
+                 policy, policy_setup, policy_cfg,
                  model_params: dict = None,
                  scenario: list = None,
                  model_type: str = "ExtendedSequentialNetworkModel",
@@ -62,6 +62,7 @@ class ModelM():
         self.random_seed = random_seed
         self.policy = policy
         self.policy_setup = policy_setup
+        self.policy_cfg = policy_cfg
 
         self.ready = False
 
@@ -77,8 +78,11 @@ class ModelM():
                            **self.model_params,
                            random_seed=self.random_seed)
 
+        policy_coefs = dict()
         if self.policy_setup:
             policy_coefs = self.policy_setup(self.graph, self.start_graph)
+        if self.policy_cfg:
+            policy_coefs.update(self.policy_cfg)
         if self.policy:
             policy_function = bound_policy(
                 self.policy, self.graph, coefs=policy_coefs)
@@ -174,7 +178,12 @@ def _load_graph(cf: ConfigFile):
 
 def _load_policy_function(cf: ConfigFile, policy_name: str):
     policy_cfg = cf.section_as_dict("POLICY")
-    if policy_name not in policy_cfg["name"]:
+
+    if not policy_name:
+        policy_name = policy_cfg.get("switch_on", None)
+        if not policy_name:
+            return (None, None, {})
+    elif policy_name not in policy_cfg["name"]:
         raise ValueError("Unknown policy name.")
 
     if policy_cfg and "filename" in policy_cfg:
@@ -183,7 +192,7 @@ def _load_policy_function(cf: ConfigFile, policy_name: str):
         setup = policy_cfg.get("setup", None)
         policy_setup = getattr(__import__(
             policy_cfg["filename"]), setup) if setup else None
-        return policy, policy_setup
+        return policy, policy_setup, cf.section_as_dict(policy_name.upper())
     else:
         print("Warning: NO POLICY IN CFG")
         print(policy_cfg)
