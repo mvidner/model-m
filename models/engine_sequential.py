@@ -116,7 +116,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
                 print(f"\t {self.state_str_dict[state]} = {self.current_state_count(state)}")
 #                print(flush=True)
 
-    def run(self, T, print_interval=10, verbose=False):
+    def run(self, T, print_interval=0, verbose=False):
 
         # keep it, saves time
         self.delta = np.empty((self.num_states, self.num_nodes, 1), dtype=int)
@@ -124,14 +124,17 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
         running = True
         self.tidx = 0
-        self.print(True)
+        if print_interval >= 0:
+            self.print(verbose)
 
         for self.t in range(1, T+1):
-            #            input()
-            if __debug__:
+            if __debug__ and print_interval >= 0 and verbose:
                 print(flush=True)
             #            print(f"day {self.t}")
 
+            #print(self.t)
+            #print(len(self.state_counts[0]))
+            #print(len(self.states_history))
             if (self.t >= len(self.state_counts[0])):
                 # room has run out in the timeseries storage arrays; double the size of these arrays
                 self.increase_data_series_length()
@@ -148,9 +151,10 @@ class SequentialEngine(SeirsPlusLikeEngine):
                     print("CHANGING GRAPH")
                     self.update_graph(changes["graph"])
             end = time.time()
-            print("Last day took: ", end - start, "seconds")
+            if print_interval > 0:
+                print("Last day took: ", end - start, "seconds")
 
-            if print_interval and (self.t % print_interval == 0):
+            if print_interval > 0 and (self.t % print_interval == 0):
                 self.print(verbose)
 
             # Terminate if tmax reached or num infectious and num exposed is 0:
@@ -168,7 +172,9 @@ class SequentialEngine(SeirsPlusLikeEngine):
                     self.state_counts[state][t] = self.state_counts[state][t-1]
         self.t = T
 
-        self.print(verbose)
+
+        if print_interval >= 0:
+            self.print(verbose)
         self.finalize_data_series()
         return True
 

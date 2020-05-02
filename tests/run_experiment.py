@@ -2,20 +2,15 @@ import timeit
 import time
 import click
 import random
-import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
-from scipy.sparse import csr_matrix
 
 from config_utils import ConfigFile
 from graph_gen import GraphGenerator
 from load_model import create_graph, matrix,  load_graph
 from policy import bound_policy
 
-# from seirs_extended import ExtendedNetworkModel, custom_exponential_graph
 from model_zoo import model_zoo
-from seirs import custom_exponential_graph
 
 
 from model_m import ModelM, load_model_from_config
@@ -71,6 +66,7 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
 
     cf = ConfigFile()
     cf.load(filename)
+
 
     # create model
     model = load_model_from_config(cf, use_policy, model_random_seed)

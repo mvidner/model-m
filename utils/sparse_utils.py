@@ -110,7 +110,7 @@ if __name__ == "__main__":
     # probability of contact (whatever layer)
     prob_of_contact = prob_no_contact
     prob_of_contact.data = 1.0 - prob_no_contact.data
-    print(prob_of_contact.todense())
+#    print(prob_of_contact.todense())
 
     a = np.zeros((5, 5))
     b = np.zeros((5, 5))
@@ -125,8 +125,8 @@ if __name__ == "__main__":
     c[2, 1] = 0.2
     c[1, 2] = 0.2
 
-    print()
-    print()
+#    print()
+#    print()
 
     prob_no_contact = np.ones((N, N))
 
@@ -141,4 +141,4 @@ if __name__ == "__main__":
 
     # probability of contact (whatever layer)
     prob_of_contact = 1.0 - prob_no_contact
-    print(prob_of_contact)
+#    print(prob_of_contact)
