@@ -42,7 +42,7 @@ def quarrantine_policy_setup(graph, normal_life):
             14: 0  # contacts of customers at shops
         },
         "duration": 14,
-        "threashold": 0.04,
+        "threashold": 0.7,
         "days_back": 7
     }
 
@@ -146,7 +146,7 @@ def _quarrantine_nodes(detected_nodes, policy_coefs, graph):
                                       normal_life,
                                       depo.quarrantine)
 
-    return {"graph": graph.final_adjacency_matrix()}
+    return {"graph"}
 
 
 def _select_contacts(detected_nodes, contact_history, graph, threashold, days_back=7):

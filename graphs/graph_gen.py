@@ -236,21 +236,21 @@ class GraphGenerator:
         A.layout('dot')
         A.draw(filename)
 
-    def close_layers(self, list_of_layers):
-        for name in list_of_layers:
+    def close_layers(self, list_of_layers, coefs=None):
+        for idx, name in enumerate(list_of_layers):
             print(f"Closing {name}")
             i = self.G.graph["layer_names"].index(name)
-            self.G.graph["layer_probs"][i] = 0
+            self.G.graph["layer_probs"][i] = 0 if not coefs else coefs[idx]
         self.A_valid = False
 
     def write_pickle(self, path):
         nx.write_gpickle(self.G, path)
-        
+
     def read_picke(self, path):
         self.G = nx.read_gpickle(path)
-        self.layer_names = self.G.graph['layer_names'] 
-        self.layer_probs = self.G.graph['layer_probs'] 
-                      
+        self.layer_names = self.G.graph['layer_names']
+        self.layer_probs = self.G.graph['layer_probs']
+
 
 def custom_exponential_graph(base_graph=None, scale=100, min_num_edges=0, m=9, n=None):
     """ Generate a random preferential attachment power law graph as a starting point.
@@ -340,10 +340,12 @@ class RandomGraphGenerator(GraphGenerator):
     def as_dict_of_graphs(self):
         return self.Graphs
 
+
 class PickleGraphGenerator(GraphGenerator):
     def __init__(self, path_to_pickle='graph.pickle', **kwardgs):
-        self.read_pickle(path_to_pickle)    
-        
+        self.read_pickle(path_to_pickle)
+
+
 class CSVGraphGenerator(GraphGenerator):
 
     layer_names = []
