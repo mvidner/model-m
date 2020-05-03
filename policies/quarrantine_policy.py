@@ -47,7 +47,7 @@ def quarrantine_policy_setup(graph, normal_life):
     }
 
 
-def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time, **kwargs):
+def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time, contact_history=None):
 
     print("Hello world! This is the policy function speaking.")
 
