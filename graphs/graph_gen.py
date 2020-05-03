@@ -166,6 +166,10 @@ class GraphGenerator:
 #            print(*e)
         return self.G.edges([node_id], data=True, keys=True)
 
+    def get_layers_for_edge(self, u, v):
+        edges = self.G[u][v]
+        return [d["type"] for d in edges.values()]
+
     def modify_layers_for_nodes(self, node_id_list, what_by_what, is_quarrantined=None):
         """ changes edges' weights """
 
