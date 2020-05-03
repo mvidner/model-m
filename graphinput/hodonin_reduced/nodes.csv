@@ -1,0 +1,1001 @@
+type,sex, age, ecactivity, worktype, commutetime, town,x,y
+7974,M,36,working,industry,not commuting,586021,-563425,-1.20167e+06
+55256,F,61,working,it,not commuting,586609,-554453,-1.20155e+06
+12429,F,27,working,health,not commuting,586021,-565504,-1.20185e+06
+8084,M,40,working,eatinghousing,not commuting,586021,-565295,-1.20155e+06
+33605,M,27,at home,undef,not commuting,586161,-565348,-1.19459e+06
+9715,F,7,student,undef,not commuting,586021,-564558,-1.2016e+06
+324,M,32,working,industry,not commuting,586021,-563667,-1.20164e+06
+2632,M,30,at home,undef,not commuting,586021,-564791,-1.20187e+06
+48249,F,54,working,adminetc,not commuting,586510,-561193,-1.19573e+06
+34935,M,66,retired,undef,not commuting,586161,-564921,-1.19459e+06
+12114,F,24,student,undef,not commuting,586021,-563680,-1.20285e+06
+49346,M,34,working,tradeandmoto,not commuting,586510,-560993,-1.19553e+06
+8480,M,34,working,education,45 to 60 mins,586021,-564531,-1.20237e+06
+35918,M,85,working,industry,not commuting,586234,-572896,-1.20314e+06
+3952,F,14,student,undef,not commuting,586021,-565539,-1.20206e+06
+31532,F,68,retired,undef,not commuting,586161,-565370,-1.19483e+06
+24295,M,59,retired,undef,not commuting,586102,-577597,-1.19579e+06
+30398,F,47,working,construction,not commuting,586161,-566334,-1.19548e+06
+44118,M,14,student,undef,not commuting,586412,-570703,-1.19643e+06
+6667,M,10,student,undef,not commuting,586021,-564229,-1.20191e+06
+5617,F,35,working,education,not commuting,586021,-564628,-1.20234e+06
+14831,F,25,working,eatinghousing,not commuting,586021,-563336,-1.20152e+06
+41936,M,10,student,undef,not commuting,586412,-571084,-1.19643e+06
+52805,F,69,retired,undef,not commuting,586528,-560411,-1.2005e+06
+13619,M,42,at home,undef,not commuting,586021,-565121,-1.2018e+06
+44634,M,36,working,tradeandmoto,not commuting,586498,-575888,-1.20375e+06
+10323,F,56,working,health,not commuting,586021,-565571,-1.20222e+06
+51455,F,28,at home,undef,not commuting,586528,-559938,-1.20007e+06
+24197,M,47,at home,undef,not commuting,586021,-563811,-1.20256e+06
+47929,F,34,working,agriculture,30 to 45 mins,586510,-561018,-1.19561e+06
+24478,F,65,retired,undef,not commuting,586102,-577431,-1.19503e+06
+24707,F,16,student,undef,not commuting,586102,-577224,-1.19633e+06
+5852,M,9,student,undef,not commuting,586021,-564598,-1.20178e+06
+4894,M,64,retired,undef,not commuting,586021,-565295,-1.20155e+06
+12607,M,57,working,education,not commuting,586021,-563826,-1.20274e+06
+18993,F,38,at home,undef,not commuting,586021,-564989,-1.20166e+06
+47378,M,36,working,adminetc,not commuting,586510,-560709,-1.19565e+06
+53396,F,2,at home,undef,not commuting,586528,-560167,-1.19996e+06
+29730,F,45,at home,undef,not commuting,586161,-566930,-1.19489e+06
+48361,F,54,working,industry,not commuting,586510,-560398,-1.19554e+06
+56000,M,5,at home,undef,not commuting,586609,-554503,-1.20168e+06
+19633,M,56,working,construction,not commuting,586021,-563841,-1.20291e+06
+43969,M,35,working,construction,60 to 90 mins,586412,-571410,-1.19592e+06
+30767,M,40,working,it,60 to 90 mins,586161,-566313,-1.19502e+06
+43624,F,70,retired,undef,not commuting,586412,-570794,-1.19626e+06
+14960,F,16,student,undef,not commuting,586021,-562707,-1.20162e+06
+18478,F,83,retired,undef,not commuting,586021,-563611,-1.2024e+06
+27631,F,8,student,undef,not commuting,586137,-571584,-1.20118e+06
+8117,M,58,working,adminetc,not commuting,586021,-564115,-1.20196e+06
+17281,F,65,retired,undef,not commuting,586021,-563227,-1.20169e+06
+31042,F,1,at home,undef,not commuting,586161,-565973,-1.19524e+06
+34645,F,39,working,industry,not commuting,586161,-566190,-1.19514e+06
+35025,F,32,working,industry,not commuting,586161,-564969,-1.19469e+06
+30180,M,61,retired,undef,not commuting,586161,-564713,-1.19453e+06
+17129,F,0,at home,undef,not commuting,586021,-564913,-1.20156e+06
+11350,M,50,working,industry,not commuting,586021,-566415,-1.2037e+06
+39752,M,15,working,industry,not commuting,586374,-570121,-1.20589e+06
+22773,F,19,student,undef,not commuting,586021,-564169,-1.20197e+06
+19068,F,33,working,industry,not commuting,586021,-564461,-1.20286e+06
+37537,M,71,retired,undef,not commuting,586358,-568920,-1.20385e+06
+55985,F,65,retired,undef,not commuting,586609,-554453,-1.20155e+06
+17660,M,35,working,industry,not commuting,586021,-564558,-1.2016e+06
+49519,M,44,working,industry,not commuting,586510,-560852,-1.195e+06
+22974,M,72,retired,undef,not commuting,586021,-564389,-1.20249e+06
+913,F,27,at home,undef,not commuting,586021,-563383,-1.20153e+06
+34760,M,49,working,industry,15 to 30 min,586161,-566013,-1.19508e+06
+37150,M,7,student,undef,not commuting,586358,-568613,-1.20362e+06
+13743,M,28,working,publicsector,not commuting,586021,-563892,-1.20215e+06
+45115,M,65,retired,undef,not commuting,586498,-575146,-1.20425e+06
+17495,F,47,working,adminetc,not commuting,586021,-564280,-1.20244e+06
+14143,F,8,student,undef,not commuting,586021,-563963,-1.20323e+06
+8305,M,2,at home,undef,not commuting,586021,-563819,-1.20271e+06
+16403,M,19,student,undef,not commuting,586021,-564212,-1.20195e+06
+33799,M,37,working,transportation,not commuting,586161,-566097,-1.19533e+06
+28654,M,31,working,publicsector,not commuting,586137,-571408,-1.20136e+06
+1243,M,46,working,adminetc,not commuting,586021,-564628,-1.20234e+06
+13085,F,0,at home,undef,not commuting,586021,-563735,-1.20289e+06
+48965,M,19,student,undef,not commuting,586510,-560714,-1.19544e+06
+29882,F,11,student,undef,not commuting,586161,-566621,-1.19526e+06
+44767,F,32,working,construction,not commuting,586498,-575174,-1.20384e+06
+29180,F,42,at home,undef,not commuting,586137,-571608,-1.20081e+06
+32421,M,32,working,tradeandmoto,not commuting,586161,-565555,-1.19599e+06
+23687,F,75,retired,undef,not commuting,586021,-564558,-1.2016e+06
+16451,M,69,retired,undef,not commuting,586021,-564455,-1.20294e+06
+30103,F,20,working,transportation,not commuting,586161,-564771,-1.19454e+06
+24050,M,48,at home,undef,not commuting,586021,-564737,-1.2014e+06
+854,M,45,working,health,not commuting,586021,-565411,-1.20174e+06
+34290,M,3,at home,undef,not commuting,586161,-566268,-1.1951e+06
+19570,M,75,retired,undef,not commuting,586021,-563703,-1.20277e+06
+22729,M,54,working,publicsector,not commuting,586021,-564235,-1.20232e+06
+381,F,5,at home,undef,not commuting,586021,-564991,-1.2018e+06
+54524,F,63,retired,undef,not commuting,586561,-575127,-1.1989e+06
+6733,F,33,working,health,not commuting,586021,-564272,-1.20312e+06
+22513,M,74,retired,undef,not commuting,586021,-564012,-1.20193e+06
+8190,F,46,working,industry,not commuting,586021,-564710,-1.20222e+06
+29309,M,48,working,tradeandmoto,not commuting,586137,-572079,-1.20092e+06
+20138,M,33,at home,undef,not commuting,586021,-564913,-1.20156e+06
+33642,M,46,working,education,not commuting,586161,-566532,-1.19521e+06
+35675,F,52,working,education,not commuting,586161,-565656,-1.19486e+06
+27778,M,6,student,undef,not commuting,586137,-571183,-1.20144e+06
+40202,F,82,retired,undef,not commuting,586374,-570083,-1.20574e+06
+30316,M,49,working,construction,not commuting,586161,-566533,-1.19521e+06
+25544,M,23,working,industry,not commuting,586102,-577308,-1.19489e+06
+50961,M,48,working,industry,less than 15min,586528,-559483,-1.19915e+06
+42548,M,35,working,publicsector,not commuting,586412,-571707,-1.19574e+06
+46131,M,67,retired,undef,not commuting,586498,-574788,-1.204e+06
+23092,M,45,working,eatinghousing,not commuting,586021,-563689,-1.20261e+06
+41920,F,27,working,transportation,less than 15min,586412,-570211,-1.19564e+06
+10060,F,51,at home,undef,not commuting,586021,-565748,-1.20212e+06
+3169,F,38,working,health,not commuting,586021,-563901,-1.20264e+06
+18815,F,69,retired,undef,not commuting,586021,-563708,-1.20295e+06
+24304,F,42,working,health,45 to 60 mins,586102,-577763,-1.19614e+06
+39207,F,8,student,undef,not commuting,586374,-569872,-1.20584e+06
+46086,F,79,retired,undef,not commuting,586498,-575019,-1.20458e+06
+50416,M,64,working,adminetc,not commuting,586510,-560515,-1.19504e+06
+18797,F,53,at home,undef,not commuting,586021,-563144,-1.20186e+06
+50724,F,43,working,industry,15 to 30 min,586528,-560420,-1.20046e+06
+50024,F,18,working,industry,15 to 30 min,586510,-560422,-1.19588e+06
+43289,M,34,working,eatinghousing,not commuting,586412,-570715,-1.19626e+06
+1118,M,45,working,industry,15 to 30 min,586021,-565245,-1.20193e+06
+29341,F,68,retired,undef,not commuting,586137,-571456,-1.20102e+06
+13816,F,52,at home,undef,not commuting,586021,-564313,-1.20225e+06
+46521,M,40,at home,undef,not commuting,586498,-575398,-1.20397e+06
+49627,M,25,working,health,not commuting,586510,-560676,-1.19545e+06
+19996,F,6,student,undef,not commuting,586021,-563680,-1.20285e+06
+54035,M,25,working,industry,15 to 30 min,586561,-574830,-1.19867e+06
+18602,F,68,retired,undef,not commuting,586021,-565039,-1.20165e+06
+43568,M,34,working,agriculture,not commuting,586412,-571385,-1.19649e+06
+21484,F,33,working,tradeandmoto,not commuting,586021,-564435,-1.20177e+06
+53179,F,54,working,industry,not commuting,586528,-559850,-1.20051e+06
+25280,F,15,student,undef,more than 90 mins,586102,-577031,-1.19513e+06
+12455,M,31,at home,undef,not commuting,586021,-564365,-1.20227e+06
+25205,M,33,working,industry,not commuting,586102,-577347,-1.19522e+06
+6881,F,18,student,undef,not commuting,586021,-565646,-1.20203e+06
+42604,M,11,student,undef,not commuting,586412,-571361,-1.19666e+06
+24110,M,40,working,tradeandmoto,not commuting,586021,-563687,-1.2019e+06
+49886,F,48,working,tradeandmoto,not commuting,586510,-560895,-1.19578e+06
+43913,F,76,retired,undef,not commuting,586412,-570433,-1.19596e+06
+44612,M,53,at home,undef,not commuting,586498,-575280,-1.20383e+06
+41000,F,64,retired,undef,not commuting,586412,-571822,-1.19673e+06
+53517,M,40,at home,undef,not commuting,586528,-559168,-1.19927e+06
+47976,F,29,working,construction,not commuting,586510,-560216,-1.19505e+06
+102,M,65,retired,undef,not commuting,586021,-565111,-1.20165e+06
+12257,F,68,retired,undef,not commuting,586021,-564509,-1.20287e+06
+53125,F,34,at home,undef,not commuting,586528,-560434,-1.19999e+06
+21680,F,63,retired,undef,not commuting,586021,-563735,-1.20289e+06
+10723,F,19,at home,undef,not commuting,586021,-566431,-1.20369e+06
+51059,M,40,working,tradeandmoto,not commuting,586528,-560318,-1.19982e+06
+14754,M,39,working,banks,not commuting,586021,-564374,-1.20321e+06
+26618,F,9,student,undef,not commuting,586102,-577774,-1.19613e+06
+22845,M,19,student,undef,not commuting,586021,-563433,-1.20161e+06
+37787,F,14,student,undef,not commuting,586358,-568487,-1.20362e+06
+43011,M,53,working,tradeandmoto,15 to 30 min,586412,-570539,-1.19634e+06
+52699,F,61,retired,undef,not commuting,586528,-560726,-1.20013e+06
+35495,F,58,retired,undef,not commuting,586161,-565881,-1.19511e+06
+8545,M,38,working,industry,15 to 30 min,586021,-563689,-1.20261e+06
+22465,F,67,retired,undef,not commuting,586021,-563841,-1.20291e+06
+24799,F,15,working,industry,not commuting,586102,-577578,-1.19538e+06
+44195,M,21,student,undef,15 to 30 min,586412,-571322,-1.19599e+06
+31769,F,18,working,construction,not commuting,586161,-565707,-1.19564e+06
+15200,F,28,working,adminetc,not commuting,586021,-563773,-1.20301e+06
+5839,M,60,working,tradeandmoto,not commuting,586021,-564791,-1.20187e+06
+41389,F,61,retired,undef,not commuting,586412,-571064,-1.19615e+06
+27339,F,4,at home,undef,not commuting,586137,-571209,-1.20126e+06
+37256,F,75,retired,undef,not commuting,586358,-568319,-1.20336e+06
+3550,F,38,working,construction,not commuting,586021,-565799,-1.2023e+06
+38800,M,9,student,undef,not commuting,586358,-568977,-1.20372e+06
+21710,F,4,at home,undef,not commuting,586021,-564565,-1.20184e+06
+26805,F,31,at home,undef,not commuting,586137,-571974,-1.20096e+06
+33953,M,42,at home,undef,not commuting,586161,-566046,-1.19529e+06
+35569,M,29,at home,undef,not commuting,586161,-567910,-1.19497e+06
+19431,F,28,working,industry,15 to 30 min,586021,-564457,-1.2023e+06
+30218,M,43,working,tradeandmoto,not commuting,586161,-566474,-1.19496e+06
+33334,F,65,retired,undef,not commuting,586161,-565910,-1.19558e+06
+16320,F,79,retired,undef,not commuting,586021,-564694,-1.20265e+06
+5628,F,57,working,transportation,not commuting,586021,-564292,-1.20241e+06
+32533,F,6,student,undef,not commuting,586161,-565908,-1.19523e+06
+6899,M,76,retired,undef,not commuting,586021,-565823,-1.20216e+06
+24546,M,54,at home,undef,not commuting,586102,-577711,-1.19594e+06
+23066,F,62,retired,undef,not commuting,586021,-563613,-1.2018e+06
+18523,F,44,working,industry,not commuting,586021,-563199,-1.20161e+06
+12204,F,25,working,industry,60 to 90 mins,586021,-565624,-1.202e+06
+23776,F,84,retired,undef,not commuting,586021,-563844,-1.20172e+06
+29182,F,18,student,undef,not commuting,586137,-571608,-1.20081e+06
+24726,F,43,working,industry,not commuting,586102,-577624,-1.19562e+06
+851,F,59,retired,undef,not commuting,586021,-564374,-1.20321e+06
+3218,F,40,working,publicsector,not commuting,586021,-564455,-1.20294e+06
+7758,F,51,working,tradeandmoto,not commuting,586021,-565053,-1.20277e+06
+52705,M,76,retired,undef,not commuting,586528,-559786,-1.20042e+06
+52638,F,64,retired,undef,not commuting,586528,-560224,-1.19973e+06
+43534,M,22,working,education,not commuting,586412,-571241,-1.1961e+06
+347,F,13,student,undef,not commuting,586021,-564189,-1.20283e+06
+12790,M,37,working,publicsector,not commuting,586021,-563905,-1.20257e+06
+26645,F,79,retired,undef,not commuting,586102,-577400,-1.19601e+06
+34463,F,75,retired,undef,not commuting,586161,-565154,-1.19588e+06
+38437,M,76,retired,undef,not commuting,586358,-568771,-1.2038e+06
+47715,M,5,at home,undef,not commuting,586510,-560572,-1.1956e+06
+49910,F,77,retired,undef,not commuting,586510,-561868,-1.19442e+06
+20265,F,81,retired,undef,not commuting,586021,-564334,-1.20326e+06
+27362,F,30,at home,undef,not commuting,586137,-571156,-1.20145e+06
+17077,F,73,retired,undef,not commuting,586021,-563477,-1.20168e+06
+47765,F,35,working,industry,not commuting,586510,-560668,-1.19575e+06
+6118,F,53,at home,undef,not commuting,586021,-565326,-1.20183e+06
+19189,M,50,working,industry,not commuting,586021,-564035,-1.2032e+06
+22684,F,35,working,tradeandmoto,not commuting,586021,-564461,-1.20299e+06
+4630,M,50,working,adminetc,not commuting,586021,-565738,-1.20179e+06
+25923,M,23,working,industry,not commuting,586102,-577704,-1.19602e+06
+55199,M,5,at home,undef,not commuting,586609,-554829,-1.20198e+06
+27729,M,33,at home,undef,not commuting,586137,-571796,-1.2012e+06
+52715,F,36,at home,undef,not commuting,586528,-559958,-1.19968e+06
+40030,M,7,student,undef,not commuting,586374,-569863,-1.20584e+06
+38726,F,57,retired,undef,not commuting,586358,-568939,-1.20365e+06
+32591,M,14,student,undef,not commuting,586161,-566587,-1.19517e+06
+53832,F,33,working,industry,less than 15min,586528,-560511,-1.20024e+06
+11493,F,43,working,construction,not commuting,586021,-565705,-1.2021e+06
+21293,F,1,at home,undef,not commuting,586021,-565326,-1.20183e+06
+25391,M,26,at home,undef,not commuting,586102,-578002,-1.19571e+06
+8410,F,55,working,transportation,not commuting,586021,-564693,-1.20293e+06
+1293,M,9,student,undef,not commuting,586021,-565507,-1.20209e+06
+52070,M,62,retired,undef,not commuting,586528,-559323,-1.19921e+06
+2737,M,58,working,industry,not commuting,586021,-564592,-1.20135e+06
+17813,F,37,working,health,not commuting,586021,-564412,-1.20123e+06
+3399,F,16,student,undef,60 to 90 mins,586021,-564098,-1.2027e+06
+20395,M,44,working,publicsector,not commuting,586021,-564891,-1.20162e+06
+9861,M,55,working,tradeandmoto,not commuting,586021,-563751,-1.20307e+06
+48642,M,50,working,adminetc,less than 15min,586510,-560378,-1.19563e+06
+9954,F,37,working,industry,not commuting,586021,-563773,-1.20273e+06
+41684,F,36,working,agriculture,15 to 30 min,586412,-570429,-1.19623e+06
+47677,M,7,student,undef,not commuting,586510,-560342,-1.19479e+06
+32261,M,16,student,undef,15 to 30 min,586161,-564890,-1.19585e+06
+48589,M,40,working,adminetc,not commuting,586510,-561185,-1.1955e+06
+34065,M,29,at home,undef,not commuting,586161,-565504,-1.19485e+06
+26237,M,68,retired,undef,not commuting,586102,-577329,-1.19559e+06
+22668,M,34,working,industry,not commuting,586021,-564542,-1.20216e+06
+8297,F,27,working,adminetc,not commuting,586021,-564854,-1.20183e+06
+29063,M,49,working,industry,less than 15min,586137,-571521,-1.20162e+06
+37877,M,52,working,tradeandmoto,not commuting,586358,-567960,-1.20334e+06
+32398,M,46,working,industry,not commuting,586161,-567010,-1.19488e+06
+36428,F,36,working,industry,less than 15min,586358,-568300,-1.20353e+06
+46100,M,30,working,tradeandmoto,30 to 45 mins,586498,-576037,-1.20374e+06
+10064,M,41,at home,undef,not commuting,586021,-563703,-1.20277e+06
+44269,M,17,student,undef,not commuting,586412,-570753,-1.19587e+06
+12149,F,29,at home,undef,not commuting,586021,-564667,-1.20233e+06
+35004,F,42,working,publicsector,not commuting,586161,-565444,-1.19592e+06
+3869,M,79,retired,undef,not commuting,586021,-565648,-1.20172e+06
+45497,M,21,at home,undef,not commuting,586498,-575163,-1.20412e+06
+43483,M,7,student,undef,not commuting,586412,-571279,-1.19598e+06
+35005,M,47,working,tradeandmoto,not commuting,586161,-565444,-1.19592e+06
+41288,M,18,student,undef,15 to 30 min,586412,-570615,-1.19615e+06
+31959,F,71,retired,undef,not commuting,586161,-565744,-1.19575e+06
+24696,M,0,at home,undef,not commuting,586102,-577404,-1.19501e+06
+30989,F,48,working,industry,15 to 30 min,586161,-565853,-1.19545e+06
+1303,M,60,working,adminetc,not commuting,586021,-565680,-1.20202e+06
+32840,F,34,working,industry,not commuting,586161,-566533,-1.19521e+06
+25499,M,58,working,industry,not commuting,586102,-577677,-1.19612e+06
+18765,M,57,working,banks,not commuting,586021,-563687,-1.2019e+06
+20643,F,54,at home,undef,not commuting,586021,-564173,-1.20307e+06
+25345,M,52,working,industry,not commuting,586102,-577554,-1.19546e+06
+46002,M,57,retired,undef,not commuting,586498,-575387,-1.204e+06
+38099,M,30,working,agriculture,not commuting,586358,-568969,-1.20444e+06
+54737,F,62,retired,undef,not commuting,586561,-575126,-1.19894e+06
+32029,M,26,working,publicsector,not commuting,586161,-564679,-1.19456e+06
+279,F,59,retired,undef,not commuting,586021,-565835,-1.20176e+06
+18193,F,40,working,construction,not commuting,586021,-564317,-1.20314e+06
+53227,F,35,working,tradeandmoto,not commuting,586528,-560495,-1.19996e+06
+30071,F,32,at home,undef,not commuting,586161,-567650,-1.19464e+06
+5751,M,77,retired,undef,not commuting,586021,-563433,-1.20161e+06
+24596,M,18,student,undef,60 to 90 mins,586102,-577080,-1.19483e+06
+55,M,13,student,undef,not commuting,586021,-563477,-1.20168e+06
+39788,F,76,retired,undef,not commuting,586374,-570272,-1.20583e+06
+9072,M,57,retired,undef,not commuting,586021,-563689,-1.20261e+06
+49655,F,24,student,undef,not commuting,586510,-560464,-1.19499e+06
+29796,F,40,working,adminetc,not commuting,586161,-565534,-1.19555e+06
+3001,M,44,working,construction,less than 15min,586021,-564461,-1.20299e+06
+21506,F,33,working,industry,not commuting,586021,-564519,-1.20264e+06
+49691,F,44,working,industry,not commuting,586510,-560352,-1.19526e+06
+23351,F,21,student,undef,not commuting,586021,-564473,-1.20252e+06
+43788,M,45,working,industry,not commuting,586412,-570581,-1.19556e+06
+10897,M,45,working,industry,not commuting,586021,-564038,-1.20209e+06
+8515,F,37,at home,undef,not commuting,586021,-563679,-1.20256e+06
+12703,M,60,retired,undef,not commuting,586021,-563433,-1.20161e+06
+186,F,12,student,undef,not commuting,586021,-564373,-1.2023e+06
+12639,F,37,working,publicsector,not commuting,586021,-565823,-1.20216e+06
+6247,F,37,working,tradeandmoto,not commuting,586021,-564455,-1.20294e+06
+47841,M,55,working,industry,less than 15min,586510,-560371,-1.19485e+06
+20371,F,3,at home,undef,not commuting,586021,-563653,-1.2025e+06
+46124,F,80,working,publicsector,15 to 30 min,586498,-574902,-1.20397e+06
+49303,M,34,working,transportation,15 to 30 min,586510,-560550,-1.19578e+06
+50317,F,46,working,industry,not commuting,586510,-560577,-1.1949e+06
+29638,F,68,retired,undef,not commuting,586161,-565908,-1.19523e+06
+55020,M,13,student,undef,not commuting,586609,-554962,-1.20172e+06
+17819,F,38,at home,undef,not commuting,586021,-563827,-1.20261e+06
+9348,F,12,student,undef,not commuting,586021,-564422,-1.2024e+06
+41459,F,24,student,undef,not commuting,586412,-570567,-1.19562e+06
+46686,F,33,at home,undef,not commuting,586510,-560407,-1.19589e+06
+42371,F,54,working,industry,30 to 45 mins,586412,-571424,-1.1958e+06
+29624,M,60,working,agriculture,15 to 30 min,586161,-567044,-1.19471e+06
+9034,F,49,working,education,not commuting,586021,-564111,-1.20198e+06
+33209,F,10,student,undef,not commuting,586161,-566269,-1.19504e+06
+15870,M,27,working,banks,not commuting,586021,-564598,-1.20178e+06
+42623,F,33,working,agriculture,not commuting,586412,-571340,-1.19624e+06
+22411,M,14,student,undef,not commuting,586021,-565121,-1.2018e+06
+45499,F,13,student,undef,not commuting,586498,-575403,-1.20387e+06
+10339,M,72,retired,undef,not commuting,586021,-564111,-1.20198e+06
+52108,M,40,working,agriculture,not commuting,586528,-560575,-1.20013e+06
+48039,F,11,student,undef,not commuting,586510,-560316,-1.19477e+06
+44467,F,38,working,industry,less than 15min,586463,-576290,-1.19984e+06
+2987,F,30,working,transportation,60 to 90 mins,586021,-564153,-1.20186e+06
+44979,F,67,retired,undef,not commuting,586498,-575570,-1.2034e+06
+46620,F,57,working,health,less than 15min,586510,-560726,-1.19561e+06
+42360,M,19,student,undef,30 to 45 mins,586412,-571293,-1.19652e+06
+26941,M,24,working,industry,not commuting,586137,-571590,-1.20178e+06
+45730,F,3,at home,undef,not commuting,586498,-575231,-1.20414e+06
+39985,F,65,retired,undef,not commuting,586374,-569652,-1.2057e+06
+11901,M,5,at home,undef,not commuting,586021,-563697,-1.20248e+06
+38166,F,17,working,industry,not commuting,586358,-568627,-1.20321e+06
+16789,F,66,retired,undef,not commuting,586021,-563433,-1.20161e+06
+383,M,4,at home,undef,not commuting,586021,-564991,-1.2018e+06
+24380,M,29,working,transportation,not commuting,586102,-576778,-1.19569e+06
+43029,M,0,at home,undef,not commuting,586412,-570410,-1.19598e+06
+29696,F,54,working,industry,15 to 30 min,586161,-566365,-1.19528e+06
+99,M,24,student,undef,not commuting,586021,-565256,-1.20168e+06
+37290,M,55,retired,undef,not commuting,586358,-568573,-1.20353e+06
+30708,F,81,retired,undef,not commuting,586161,-565388,-1.19502e+06
+8681,M,4,at home,undef,not commuting,586021,-564668,-1.20198e+06
+12551,F,65,retired,undef,not commuting,586021,-564447,-1.203e+06
+21883,M,82,retired,undef,not commuting,586021,-565021,-1.20277e+06
+3611,F,46,working,construction,not commuting,586021,-563513,-1.20181e+06
+31570,F,13,student,undef,not commuting,586161,-565197,-1.19448e+06
+50146,F,27,at home,undef,not commuting,586510,-560378,-1.19563e+06
+7700,F,72,retired,undef,not commuting,586021,-564457,-1.2023e+06
+12884,M,46,at home,undef,not commuting,586021,-563521,-1.20176e+06
+26723,F,25,working,tradeandmoto,not commuting,586137,-571778,-1.20123e+06
+44258,M,68,retired,undef,not commuting,586412,-570879,-1.19533e+06
+55291,F,40,at home,undef,not commuting,586609,-554979,-1.20201e+06
+28757,M,29,at home,undef,not commuting,586137,-571809,-1.2008e+06
+18445,F,11,student,undef,not commuting,586021,-564457,-1.2023e+06
+6995,M,24,student,undef,not commuting,586021,-564891,-1.20162e+06
+4462,M,38,at home,undef,not commuting,586021,-563414,-1.20148e+06
+21084,F,28,working,banks,not commuting,586021,-563796,-1.20251e+06
+32231,M,31,working,industry,not commuting,586161,-565799,-1.19553e+06
+1686,F,81,retired,undef,not commuting,586021,-565688,-1.20215e+06
+17264,F,49,at home,undef,not commuting,586021,-563720,-1.20166e+06
+626,M,37,working,industry,not commuting,586021,-566421,-1.2037e+06
+47828,M,58,retired,undef,not commuting,586510,-560506,-1.1951e+06
+28992,F,15,student,undef,15 to 30 min,586137,-571600,-1.20152e+06
+28128,M,7,student,undef,not commuting,586137,-571272,-1.20107e+06
+23172,M,55,working,industry,not commuting,586021,-564167,-1.20297e+06
+43674,M,62,retired,undef,not commuting,586412,-570954,-1.19636e+06
+49281,F,36,working,industry,not commuting,586510,-561253,-1.19531e+06
+38442,F,73,retired,undef,not commuting,586358,-569302,-1.2043e+06
+25983,F,66,retired,undef,not commuting,586102,-577556,-1.19621e+06
+51165,F,35,working,construction,not commuting,586528,-560304,-1.19978e+06
+37153,F,31,at home,undef,not commuting,586358,-568010,-1.20321e+06
+4793,F,45,working,industry,not commuting,586021,-565342,-1.20157e+06
+26013,F,27,working,construction,not commuting,586102,-577430,-1.19505e+06
+33039,F,17,student,undef,not commuting,586161,-565770,-1.19542e+06
+48108,M,40,working,tradeandmoto,not commuting,586510,-560733,-1.19575e+06
+47058,M,59,retired,undef,not commuting,586510,-560249,-1.19533e+06
+7280,F,65,retired,undef,not commuting,586021,-563513,-1.20181e+06
+45378,F,21,at home,undef,not commuting,586498,-575294,-1.20391e+06
+21075,M,22,student,undef,45 to 60 mins,586021,-564239,-1.20311e+06
+54730,M,45,working,construction,not commuting,586561,-574494,-1.19853e+06
+49605,F,11,student,undef,not commuting,586510,-560363,-1.19514e+06
+2651,F,66,retired,undef,not commuting,586021,-564339,-1.2018e+06
+20899,M,22,at home,undef,not commuting,586021,-563697,-1.20248e+06
+46981,M,3,at home,undef,not commuting,586510,-560699,-1.19583e+06
+4612,F,65,retired,undef,not commuting,586021,-564379,-1.20201e+06
+16052,F,73,retired,undef,not commuting,586021,-564989,-1.20166e+06
+21527,F,53,working,industry,not commuting,586021,-565799,-1.2023e+06
+24688,F,48,working,industry,not commuting,586102,-577658,-1.19611e+06
+635,F,79,retired,undef,not commuting,586021,-563788,-1.20227e+06
+49688,F,19,student,undef,not commuting,586510,-560327,-1.19577e+06
+44301,M,72,retired,undef,not commuting,586463,-576307,-1.19985e+06
+40432,F,33,working,industry,less than 15min,586374,-570638,-1.20583e+06
+29176,M,71,retired,undef,not commuting,586137,-571898,-1.20103e+06
+3557,F,24,student,undef,less than 15min,586021,-563773,-1.20273e+06
+11549,M,78,retired,undef,not commuting,586021,-565181,-1.20273e+06
+43169,F,20,at home,undef,not commuting,586412,-570545,-1.19546e+06
+35024,M,40,working,industry,not commuting,586161,-564969,-1.19469e+06
+3594,M,37,working,transportation,not commuting,586021,-564435,-1.20177e+06
+1738,F,5,at home,undef,not commuting,586021,-565156,-1.20171e+06
+21911,M,35,working,construction,not commuting,586021,-563067,-1.20181e+06
+44008,M,75,retired,undef,not commuting,586412,-571127,-1.19609e+06
+609,M,31,at home,undef,not commuting,586021,-564628,-1.20269e+06
+6679,F,21,student,undef,not commuting,586021,-564292,-1.20218e+06
+34492,F,56,retired,undef,not commuting,586161,-565600,-1.19557e+06
+42570,F,57,retired,undef,not commuting,586412,-570447,-1.19568e+06
+47695,M,50,working,industry,not commuting,586510,-560553,-1.19568e+06
+56081,M,32,working,industry,not commuting,586609,-555008,-1.20168e+06
+7847,M,5,at home,undef,not commuting,586021,-563901,-1.20264e+06
+42751,F,30,working,transportation,not commuting,586412,-571027,-1.19604e+06
+39699,M,64,retired,undef,not commuting,586374,-570035,-1.20561e+06
+33532,M,77,retired,undef,not commuting,586161,-565881,-1.19503e+06
+46767,M,62,retired,undef,not commuting,586510,-560593,-1.19494e+06
+23230,M,58,retired,undef,not commuting,586021,-564584,-1.20153e+06
+52667,M,62,retired,undef,not commuting,586528,-560065,-1.20004e+06
+34195,F,51,working,adminetc,not commuting,586161,-565005,-1.19458e+06
+41269,M,39,working,transportation,not commuting,586412,-571148,-1.19658e+06
+24701,F,19,student,undef,not commuting,586102,-577000,-1.19512e+06
+45229,M,19,working,tradeandmoto,not commuting,586498,-574977,-1.20443e+06
+14819,F,27,at home,undef,not commuting,586021,-563696,-1.20232e+06
+30571,M,38,working,industry,not commuting,586161,-564771,-1.19454e+06
+22770,M,30,working,industry,not commuting,586021,-565342,-1.20157e+06
+55417,M,45,working,health,15 to 30 min,586609,-555361,-1.20157e+06
+51209,F,76,retired,undef,not commuting,586528,-560258,-1.2006e+06
+41134,M,27,working,industry,not commuting,586412,-570866,-1.19635e+06
+8276,F,27,at home,undef,not commuting,586021,-564169,-1.20197e+06
+34816,M,35,working,education,not commuting,586161,-564970,-1.19443e+06
+1788,F,33,working,transportation,not commuting,586021,-563653,-1.2025e+06
+7607,M,41,at home,undef,not commuting,586021,-564044,-1.20219e+06
+37149,M,43,working,eatinghousing,not commuting,586358,-568613,-1.20362e+06
+51056,M,72,retired,undef,not commuting,586528,-558302,-1.19921e+06
+11803,F,50,working,tradeandmoto,not commuting,586021,-564202,-1.20237e+06
+15667,F,63,retired,undef,not commuting,586021,-564300,-1.20205e+06
+46440,F,39,working,tradeandmoto,not commuting,586498,-575294,-1.20391e+06
+46380,F,25,working,adminetc,15 to 30 min,586498,-575753,-1.20376e+06
+3732,F,19,working,industry,not commuting,586021,-564454,-1.20258e+06
+4989,F,22,working,industry,not commuting,586021,-564370,-1.20123e+06
+30962,F,19,at home,undef,not commuting,586161,-565445,-1.19608e+06
+46965,M,49,at home,undef,not commuting,586510,-560973,-1.19536e+06
+38958,M,2,at home,undef,not commuting,586374,-571025,-1.20631e+06
+40972,M,42,working,construction,not commuting,586412,-571235,-1.19666e+06
+18356,F,53,working,tradeandmoto,not commuting,586021,-565233,-1.20161e+06
+30692,F,58,retired,undef,not commuting,586161,-565504,-1.19485e+06
+2677,M,28,working,tradeandmoto,not commuting,586021,-563739,-1.20191e+06
+54507,F,59,working,transportation,not commuting,586561,-574628,-1.19872e+06
+26236,F,63,retired,undef,not commuting,586102,-577329,-1.19559e+06
+40994,F,60,retired,undef,not commuting,586412,-571184,-1.19616e+06
+20663,M,56,retired,undef,not commuting,586021,-564989,-1.20166e+06
+33485,M,19,student,undef,not commuting,586161,-566681,-1.19516e+06
+38765,F,76,retired,undef,not commuting,586358,-568635,-1.20396e+06
+19255,M,29,working,publicsector,not commuting,586021,-565088,-1.20187e+06
+30947,M,17,working,education,not commuting,586161,-564988,-1.19439e+06
+9505,F,24,student,undef,not commuting,586021,-565390,-1.20165e+06
+44411,M,44,working,tradeandmoto,not commuting,586463,-576069,-1.19947e+06
+16358,M,61,retired,undef,not commuting,586021,-564461,-1.20286e+06
+27721,F,64,retired,undef,not commuting,586137,-571432,-1.20112e+06
+3414,M,20,working,banks,not commuting,586021,-565799,-1.2023e+06
+54655,F,29,at home,undef,not commuting,586561,-574496,-1.19898e+06
+31972,M,46,working,construction,not commuting,586161,-564994,-1.19464e+06
+6272,M,76,retired,undef,not commuting,586021,-564534,-1.2021e+06
+5913,F,80,retired,undef,not commuting,586021,-565191,-1.20191e+06
+12693,M,40,working,publicsector,not commuting,586021,-564519,-1.20264e+06
+8666,M,35,working,transportation,not commuting,586021,-565799,-1.2023e+06
+16625,M,38,working,industry,less than 15min,586021,-564169,-1.20197e+06
+3563,M,43,working,publicsector,not commuting,586021,-563826,-1.20274e+06
+50242,M,41,working,industry,not commuting,586510,-560345,-1.19582e+06
+15550,M,77,retired,undef,not commuting,586021,-564055,-1.20304e+06
+20605,M,34,working,adminetc,not commuting,586021,-563885,-1.20292e+06
+13149,M,4,at home,undef,not commuting,586021,-565647,-1.20182e+06
+24757,M,42,working,construction,less than 15min,586102,-577786,-1.19608e+06
+10993,M,31,working,industry,15 to 30 min,586021,-564092,-1.20222e+06
+1659,M,85,retired,undef,not commuting,586021,-564791,-1.20187e+06
+48161,M,25,working,adminetc,not commuting,586510,-561070,-1.1957e+06
+38594,F,78,retired,undef,not commuting,586358,-568682,-1.20332e+06
+17732,F,23,at home,undef,not commuting,586021,-563663,-1.20281e+06
+31366,F,21,at home,undef,not commuting,586161,-566152,-1.19526e+06
+4993,M,31,working,adminetc,not commuting,586021,-563819,-1.20271e+06
+36519,M,49,working,adminetc,not commuting,586358,-567880,-1.20331e+06
+2765,F,22,student,undef,not commuting,586021,-563984,-1.20342e+06
+46352,M,31,working,construction,less than 15min,586498,-575376,-1.20404e+06
+3325,F,34,working,health,not commuting,586021,-563708,-1.20295e+06
+29018,M,27,working,industry,not commuting,586137,-571785,-1.20179e+06
+35679,F,3,at home,undef,not commuting,586161,-566272,-1.19526e+06
+1627,M,36,working,publicsector,not commuting,586021,-565823,-1.20216e+06
+38434,M,23,at home,undef,not commuting,586358,-568915,-1.20405e+06
+42440,M,27,working,agriculture,not commuting,586412,-570372,-1.19573e+06
+55141,M,42,working,publicsector,15 to 30 min,586609,-555229,-1.20185e+06
+6166,F,39,working,industry,not commuting,586021,-565428,-1.2016e+06
+37351,M,34,working,industry,not commuting,586358,-569154,-1.20466e+06
+31135,F,30,at home,undef,not commuting,586161,-565973,-1.19524e+06
+3058,M,5,at home,undef,not commuting,586021,-564598,-1.20178e+06
+18655,M,41,working,transportation,not commuting,586021,-564259,-1.2017e+06
+47572,M,58,retired,undef,not commuting,586510,-560529,-1.19478e+06
+29839,F,25,at home,undef,not commuting,586161,-565729,-1.19551e+06
+12077,M,11,student,undef,not commuting,586021,-564917,-1.20184e+06
+44879,F,63,retired,undef,not commuting,586498,-575050,-1.2045e+06
+17144,F,47,at home,undef,not commuting,586021,-563815,-1.20205e+06
+46494,F,62,retired,undef,not commuting,586498,-574758,-1.20402e+06
+52952,F,25,working,health,not commuting,586528,-560632,-1.20019e+06
+17594,M,24,student,undef,not commuting,586021,-565663,-1.20218e+06
+29247,F,1,at home,undef,not commuting,586137,-571345,-1.20149e+06
+8810,M,41,working,industry,not commuting,586021,-565411,-1.20174e+06
+20360,M,31,working,banks,not commuting,586021,-563689,-1.20261e+06
+32601,M,42,working,publicsector,not commuting,586161,-565849,-1.19573e+06
+45150,M,45,at home,undef,not commuting,586498,-574859,-1.20463e+06
+47650,M,47,working,industry,15 to 30 min,586510,-560383,-1.19462e+06
+50882,M,75,retired,undef,not commuting,586528,-559950,-1.20012e+06
+25096,M,4,at home,undef,not commuting,586102,-576886,-1.19532e+06
+31812,M,17,student,undef,not commuting,586161,-564666,-1.19455e+06
+45616,M,77,retired,undef,not commuting,586498,-574944,-1.20435e+06
+1903,F,28,at home,undef,not commuting,586021,-562868,-1.20178e+06
+10905,F,6,student,undef,not commuting,586021,-564480,-1.20129e+06
+15212,M,59,retired,undef,not commuting,586021,-563720,-1.20166e+06
+46568,F,61,working,industry,60 to 90 mins,586510,-560657,-1.1952e+06
+31458,M,13,student,undef,not commuting,586161,-566941,-1.19508e+06
+13427,F,4,at home,undef,not commuting,586021,-563665,-1.20195e+06
+32879,F,71,retired,undef,not commuting,586161,-566272,-1.19526e+06
+14597,F,52,at home,undef,not commuting,586021,-563433,-1.20161e+06
+7283,M,23,working,health,not commuting,586021,-564103,-1.20241e+06
+11109,F,73,retired,undef,not commuting,586021,-564301,-1.20308e+06
+35391,M,21,working,transportation,not commuting,586161,-566605,-1.19487e+06
+10225,F,43,working,tradeandmoto,not commuting,586021,-564790,-1.20136e+06
+11429,F,22,student,undef,not commuting,586021,-563613,-1.2018e+06
+1678,F,24,working,tradeandmoto,not commuting,586021,-563750,-1.20172e+06
+29858,F,53,working,industry,not commuting,586161,-566554,-1.19519e+06
+25482,F,36,working,industry,not commuting,586102,-577921,-1.19584e+06
+55588,M,0,at home,undef,not commuting,586609,-554708,-1.20215e+06
+2914,M,1,at home,undef,not commuting,586021,-563697,-1.20248e+06
+18771,F,67,retired,undef,not commuting,586021,-564531,-1.20237e+06
+1266,F,24,student,undef,60 to 90 mins,586021,-563751,-1.20307e+06
+43714,M,51,at home,undef,not commuting,586412,-571300,-1.19587e+06
+29924,M,34,working,eatinghousing,not commuting,586161,-564937,-1.19477e+06
+26679,F,58,retired,undef,not commuting,586102,-577889,-1.19569e+06
+17003,M,56,retired,undef,not commuting,586021,-564818,-1.20172e+06
+51191,F,81,working,publicsector,15 to 30 min,586528,-559446,-1.1992e+06
+35258,M,26,working,eatinghousing,not commuting,586161,-564912,-1.19429e+06
+54480,M,50,working,health,less than 15min,586561,-574153,-1.19922e+06
+18311,M,68,retired,undef,not commuting,586021,-564933,-1.20119e+06
+41898,M,80,retired,undef,not commuting,586412,-571496,-1.19653e+06
+55670,F,26,at home,undef,not commuting,586609,-554717,-1.20222e+06
+45449,F,63,retired,undef,not commuting,586498,-575356,-1.20424e+06
+55252,M,22,working,publicsector,15 to 30 min,586609,-555060,-1.20206e+06
+54581,F,22,working,transportation,not commuting,586561,-575127,-1.1989e+06
+19794,M,61,working,tradeandmoto,not commuting,586021,-563414,-1.20148e+06
+55690,F,41,working,publicsector,not commuting,586609,-554537,-1.20172e+06
+40264,M,4,at home,undef,not commuting,586374,-569643,-1.20577e+06
+33180,M,5,at home,undef,not commuting,586161,-566668,-1.19498e+06
+10349,M,23,working,industry,not commuting,586021,-563940,-1.20187e+06
+10335,M,49,working,publicsector,30 to 45 mins,586021,-564084,-1.20326e+06
+3634,F,79,retired,undef,not commuting,586021,-563661,-1.20221e+06
+38126,M,41,working,education,15 to 30 min,586358,-567989,-1.20356e+06
+44385,F,81,retired,undef,not commuting,586463,-575769,-1.19929e+06
+47252,F,9,student,undef,not commuting,586510,-560366,-1.19563e+06
+51930,M,17,student,undef,less than 15min,586528,-559846,-1.19972e+06
+26472,M,75,retired,undef,not commuting,586102,-577348,-1.19561e+06
+6234,F,44,at home,undef,not commuting,586021,-564559,-1.20219e+06
+31709,F,37,working,industry,not commuting,586161,-565375,-1.19508e+06
+53236,F,4,at home,undef,not commuting,586528,-559929,-1.20004e+06
+30388,M,59,retired,undef,not commuting,586161,-566788,-1.19508e+06
+23831,M,46,at home,undef,not commuting,586021,-565539,-1.20206e+06
+10950,M,32,working,publicsector,not commuting,586021,-563915,-1.2027e+06
+12904,M,38,at home,undef,not commuting,586021,-563952,-1.20257e+06
+33629,F,51,working,publicsector,not commuting,586161,-565225,-1.19456e+06
+31224,F,73,retired,undef,not commuting,586161,-566350,-1.19516e+06
+52620,F,50,working,industry,15 to 30 min,586528,-560169,-1.1997e+06
+37681,F,29,at home,undef,not commuting,586358,-568514,-1.20346e+06
+50640,M,54,working,industry,15 to 30 min,586528,-559957,-1.20072e+06
+34683,F,71,retired,undef,not commuting,586161,-565408,-1.19512e+06
+9179,F,10,student,undef,not commuting,586021,-563712,-1.2029e+06
+54841,F,53,working,industry,15 to 30 min,586561,-574676,-1.19871e+06
+41491,F,68,working,agriculture,not commuting,586412,-571202,-1.19651e+06
+34494,M,33,at home,undef,not commuting,586161,-565374,-1.19496e+06
+44784,M,64,retired,undef,not commuting,586498,-575760,-1.20392e+06
+37338,M,83,retired,undef,not commuting,586358,-569016,-1.20444e+06
+30345,M,16,student,undef,not commuting,586161,-567330,-1.1942e+06
+14608,F,77,retired,undef,not commuting,586021,-564913,-1.20156e+06
+25808,F,50,working,publicsector,30 to 45 mins,586102,-577598,-1.19584e+06
+3903,M,67,retired,undef,not commuting,586021,-563365,-1.20146e+06
+3482,M,50,at home,undef,not commuting,586021,-563915,-1.2027e+06
+47047,M,66,retired,undef,not commuting,586510,-560599,-1.196e+06
+18122,M,6,student,undef,not commuting,586021,-565783,-1.20179e+06
+35838,F,9,student,undef,not commuting,586234,-572927,-1.20311e+06
+40918,F,65,retired,undef,not commuting,586412,-570520,-1.1958e+06
+38497,M,38,working,industry,not commuting,586358,-568927,-1.20386e+06
+29797,M,34,working,it,15 to 30 min,586161,-565534,-1.19555e+06
+42327,M,48,working,tradeandmoto,not commuting,586412,-571300,-1.19587e+06
+23080,F,68,retired,undef,not commuting,586021,-564598,-1.20178e+06
+14262,F,39,working,transportation,not commuting,586021,-563963,-1.20188e+06
+52106,F,52,working,industry,not commuting,586528,-559947,-1.19983e+06
+23588,M,22,student,undef,not commuting,586021,-564488,-1.20247e+06
+23991,M,40,working,industry,not commuting,586021,-564164,-1.20303e+06
+49907,M,49,at home,undef,not commuting,586510,-560414,-1.19564e+06
+6121,F,29,working,adminetc,not commuting,586021,-563703,-1.20277e+06
+48223,F,58,working,adminetc,30 to 45 mins,586510,-560343,-1.19591e+06
+1950,M,29,working,education,not commuting,586021,-565039,-1.20165e+06
+2366,F,45,working,industry,not commuting,586021,-565830,-1.20221e+06
+18985,F,27,working,banks,30 to 45 mins,586021,-563653,-1.2025e+06
+55677,F,28,at home,undef,not commuting,586609,-554747,-1.2022e+06
+4540,M,15,working,adminetc,not commuting,586021,-564239,-1.20311e+06
+17159,M,35,working,industry,not commuting,586021,-563336,-1.20152e+06
+29415,F,9,student,undef,not commuting,586137,-571530,-1.20115e+06
+51706,M,42,working,education,less than 15min,586528,-559876,-1.20003e+06
+54874,M,41,working,education,not commuting,586609,-554861,-1.20188e+06
+50221,M,1,at home,undef,not commuting,586510,-560314,-1.1953e+06
+48226,M,61,retired,undef,not commuting,586510,-561806,-1.19442e+06
+50905,F,18,student,undef,60 to 90 mins,586528,-559968,-1.1997e+06
+17623,M,35,working,industry,not commuting,586021,-565417,-1.20205e+06
+24524,F,62,retired,undef,not commuting,586102,-577379,-1.19469e+06
+1158,M,64,retired,undef,not commuting,586021,-564818,-1.20172e+06
+20237,F,23,student,undef,not commuting,586021,-564463,-1.20123e+06
+47539,M,42,working,tradeandmoto,not commuting,586510,-560533,-1.19573e+06
+45898,M,48,working,agriculture,not commuting,586498,-575333,-1.20392e+06
+456,F,42,working,industry,not commuting,586021,-563727,-1.20195e+06
+14249,M,24,student,undef,less than 15min,586021,-564694,-1.20265e+06
+42433,M,17,working,industry,15 to 30 min,586412,-570774,-1.19546e+06
+21360,M,21,student,undef,not commuting,586021,-564628,-1.20269e+06
+55742,M,25,working,industry,less than 15min,586609,-555324,-1.20152e+06
+53422,F,33,at home,undef,not commuting,586528,-559923,-1.20031e+06
+22863,F,47,working,publicsector,15 to 30 min,586021,-563720,-1.20196e+06
+27745,F,65,retired,undef,not commuting,586137,-571636,-1.20139e+06
+31890,M,50,working,tradeandmoto,not commuting,586161,-565186,-1.19451e+06
+39373,F,50,working,construction,not commuting,586374,-569442,-1.20499e+06
+34973,F,41,working,adminetc,not commuting,586161,-566327,-1.19508e+06
+10442,M,25,at home,undef,not commuting,586021,-564365,-1.20236e+06
+3379,F,5,at home,undef,not commuting,586021,-563943,-1.20262e+06
+30027,F,49,working,industry,not commuting,586161,-566134,-1.19518e+06
+570,M,35,working,banks,not commuting,586021,-565823,-1.20216e+06
+45697,F,36,at home,undef,not commuting,586498,-575777,-1.20355e+06
+43963,M,20,student,undef,not commuting,586412,-570578,-1.1955e+06
+42718,F,44,working,industry,less than 15min,586412,-571175,-1.19616e+06
+35585,M,85,retired,undef,not commuting,586161,-565510,-1.19571e+06
+55161,F,70,retired,undef,not commuting,586609,-555169,-1.20191e+06
+14030,F,77,retired,undef,not commuting,586021,-563679,-1.20256e+06
+12587,M,53,working,agriculture,45 to 60 mins,586021,-563820,-1.20199e+06
+17648,M,33,working,construction,not commuting,586021,-565326,-1.20183e+06
+24969,M,47,working,transportation,not commuting,586102,-577329,-1.19559e+06
+45965,M,19,student,undef,15 to 30 min,586498,-575422,-1.20402e+06
+52895,F,65,retired,undef,not commuting,586528,-560040,-1.20042e+06
+15750,F,7,student,undef,not commuting,586021,-564410,-1.20182e+06
+55457,F,11,student,undef,not commuting,586609,-554462,-1.20163e+06
+15631,M,61,working,industry,not commuting,586021,-563925,-1.2031e+06
+18446,M,13,student,undef,not commuting,586021,-564457,-1.2023e+06
+1739,F,36,at home,undef,not commuting,586021,-565702,-1.20171e+06
+36985,M,63,retired,undef,not commuting,586358,-568635,-1.20367e+06
+47153,M,22,student,undef,15 to 30 min,586510,-560354,-1.19576e+06
+45472,M,59,working,industry,30 to 45 mins,586498,-575886,-1.20387e+06
+7205,F,32,at home,undef,not commuting,586021,-563663,-1.20281e+06
+22664,M,60,retired,undef,not commuting,586021,-564646,-1.20256e+06
+17345,F,45,working,publicsector,30 to 45 mins,586021,-563709,-1.20268e+06
+44080,M,14,student,undef,not commuting,586412,-570866,-1.19682e+06
+38234,F,42,working,adminetc,30 to 45 mins,586358,-567940,-1.20333e+06
+36365,F,33,working,publicsector,not commuting,586358,-568719,-1.20383e+06
+8972,F,33,working,education,not commuting,586021,-563700,-1.20264e+06
+18533,M,33,working,eatinghousing,not commuting,586021,-563987,-1.20259e+06
+37183,F,34,working,construction,not commuting,586358,-568026,-1.20336e+06
+32524,M,59,working,transportation,not commuting,586161,-566358,-1.19504e+06
+55276,F,67,retired,undef,not commuting,586609,-555012,-1.20155e+06
+41905,M,7,student,undef,not commuting,586412,-571290,-1.19638e+06
+21025,M,64,retired,undef,not commuting,586021,-563789,-1.20231e+06
+46972,F,72,retired,undef,not commuting,586510,-560707,-1.1953e+06
+43448,F,51,working,industry,45 to 60 mins,586412,-570631,-1.19624e+06
+26857,F,19,student,undef,not commuting,586137,-571495,-1.20081e+06
+32145,M,24,working,health,not commuting,586161,-565126,-1.1948e+06
+29273,F,19,student,undef,not commuting,586137,-571771,-1.20046e+06
+15812,F,46,working,agriculture,not commuting,586021,-564299,-1.20321e+06
+22003,M,65,retired,undef,not commuting,586021,-564656,-1.20238e+06
+4079,F,37,working,banks,15 to 30 min,586021,-564038,-1.20209e+06
+20063,M,85,retired,undef,not commuting,586021,-564867,-1.20168e+06
+21125,F,71,retired,undef,not commuting,586021,-563613,-1.2018e+06
+12925,F,64,retired,undef,not commuting,586021,-564628,-1.20269e+06
+31049,M,64,retired,undef,not commuting,586161,-565881,-1.19511e+06
+51541,F,59,retired,undef,not commuting,586528,-557226,-1.19821e+06
+21792,F,23,at home,undef,not commuting,586021,-563827,-1.20261e+06
+27291,F,70,retired,undef,not commuting,586137,-571558,-1.20108e+06
+46456,M,68,retired,undef,not commuting,586498,-575570,-1.20394e+06
+28360,F,13,student,undef,not commuting,586137,-571150,-1.2015e+06
+36811,M,52,working,tradeandmoto,less than 15min,586358,-569154,-1.20466e+06
+33873,M,23,at home,undef,not commuting,586161,-566152,-1.19526e+06
+7054,M,46,working,construction,60 to 90 mins,586021,-565669,-1.20197e+06
+49935,M,3,at home,undef,not commuting,586510,-560498,-1.19608e+06
+17368,F,56,working,construction,not commuting,586021,-563365,-1.20146e+06
+24213,F,36,working,industry,not commuting,586021,-564772,-1.20172e+06
+18463,F,42,working,banks,not commuting,586021,-564025,-1.20346e+06
+50136,F,41,working,agriculture,not commuting,586510,-560500,-1.19486e+06
+38055,M,65,retired,undef,not commuting,586358,-567987,-1.20364e+06
+35906,F,7,student,undef,not commuting,586234,-573281,-1.20324e+06
+10804,F,43,at home,undef,not commuting,586021,-563687,-1.2019e+06
+10364,F,22,student,undef,not commuting,586021,-564288,-1.20326e+06
+38788,M,36,at home,undef,not commuting,586358,-568418,-1.20322e+06
+28777,F,32,working,education,not commuting,586137,-574056,-1.19836e+06
+35606,M,10,student,undef,not commuting,586161,-566500,-1.19537e+06
+56091,F,15,student,undef,less than 15min,586609,-555014,-1.20201e+06
+39281,F,83,retired,undef,not commuting,586374,-570620,-1.20601e+06
+24287,M,60,working,industry,not commuting,586102,-577449,-1.19497e+06
+30749,M,28,working,industry,not commuting,586161,-566499,-1.19544e+06
+38901,F,68,retired,undef,not commuting,586374,-569271,-1.20488e+06
+40455,F,60,retired,undef,not commuting,586374,-570476,-1.20599e+06
+39493,M,60,retired,undef,not commuting,586374,-569197,-1.20484e+06
+43076,F,9,student,undef,not commuting,586412,-570959,-1.19637e+06
+36730,M,44,working,tradeandmoto,30 to 45 mins,586358,-568628,-1.20315e+06
+41812,M,65,retired,undef,not commuting,586412,-571065,-1.19671e+06
+43409,F,73,retired,undef,not commuting,586412,-570617,-1.1964e+06
+14541,F,9,student,undef,not commuting,586021,-563425,-1.20167e+06
+46836,M,17,student,undef,not commuting,586510,-561822,-1.19446e+06
+41032,M,29,working,health,not commuting,586412,-570682,-1.19559e+06
+41601,M,69,retired,undef,not commuting,586412,-571422,-1.19663e+06
+3202,F,20,at home,undef,not commuting,586021,-563680,-1.20285e+06
+38945,F,11,student,undef,not commuting,586374,-569354,-1.20498e+06
+45571,M,59,working,tradeandmoto,not commuting,586498,-574859,-1.20463e+06
+34873,F,61,retired,undef,not commuting,586161,-565785,-1.19561e+06
+34464,F,20,working,adminetc,not commuting,586161,-565543,-1.19466e+06
+19490,F,61,retired,undef,not commuting,586021,-564055,-1.20304e+06
+22197,M,26,working,industry,60 to 90 mins,586021,-564668,-1.20198e+06
+48447,F,10,student,undef,not commuting,586510,-561036,-1.19524e+06
+19727,M,37,working,publicsector,not commuting,586021,-565428,-1.2016e+06
+45311,M,48,at home,undef,not commuting,586498,-575998,-1.20389e+06
+43774,M,36,working,industry,not commuting,586412,-571362,-1.19593e+06
+39106,F,24,at home,undef,not commuting,586374,-569933,-1.20584e+06
+4570,M,41,working,tradeandmoto,not commuting,586021,-563712,-1.2029e+06
+36765,F,65,retired,undef,not commuting,586358,-568962,-1.20443e+06
+54858,F,43,at home,undef,not commuting,586561,-574740,-1.19862e+06
+33050,F,69,retired,undef,not commuting,586161,-566966,-1.19506e+06
+50568,F,87,retired,undef,not commuting,586528,-558150,-1.19888e+06
+36287,M,67,retired,undef,not commuting,586358,-568475,-1.20316e+06
+22515,F,58,retired,undef,not commuting,586021,-563751,-1.20307e+06
+65,M,12,student,undef,not commuting,586021,-563885,-1.20292e+06
+51070,F,6,student,undef,not commuting,586528,-559478,-1.19919e+06
+13103,F,49,working,industry,not commuting,586021,-563513,-1.20181e+06
+25448,F,25,working,publicsector,not commuting,586102,-577135,-1.19481e+06
+29707,F,22,student,undef,not commuting,586161,-565630,-1.19556e+06
+18275,F,83,retired,undef,not commuting,586021,-565417,-1.20205e+06
+55925,M,71,retired,undef,not commuting,586609,-555357,-1.2016e+06
+6579,F,52,working,publicsector,not commuting,586021,-564694,-1.20265e+06
+13426,F,37,working,transportation,less than 15min,586021,-563665,-1.20195e+06
+40359,F,23,working,tradeandmoto,not commuting,586374,-569271,-1.20488e+06
+41789,M,51,working,industry,not commuting,586412,-570656,-1.19653e+06
+9195,F,57,working,construction,not commuting,586021,-564115,-1.20196e+06
+35194,F,66,retired,undef,not commuting,586161,-566856,-1.19494e+06
+43241,M,2,at home,undef,not commuting,586412,-570695,-1.19583e+06
+46416,F,66,retired,undef,not commuting,586498,-575178,-1.20426e+06
+55410,M,45,working,industry,not commuting,586609,-555361,-1.20157e+06
+38478,M,21,working,publicsector,less than 15min,586358,-568451,-1.20315e+06
+33410,F,9,student,undef,not commuting,586161,-567044,-1.19471e+06
+39529,F,66,retired,undef,not commuting,586374,-570014,-1.20573e+06
+47253,F,32,working,industry,30 to 45 mins,586510,-560294,-1.19568e+06
+48616,M,39,working,industry,not commuting,586510,-561146,-1.196e+06
+8886,M,44,working,education,not commuting,586021,-563867,-1.20236e+06
+19878,M,3,at home,undef,not commuting,586021,-563232,-1.20163e+06
+52717,M,6,student,undef,not commuting,586528,-559958,-1.19968e+06
+14250,F,47,working,industry,not commuting,586021,-564694,-1.20265e+06
+6779,M,12,student,undef,not commuting,586021,-563708,-1.20295e+06
+36914,F,57,working,eatinghousing,less than 15min,586358,-567945,-1.20322e+06
+13714,F,74,retired,undef,not commuting,586021,-563697,-1.20248e+06
+8618,M,23,student,undef,not commuting,586021,-565464,-1.20175e+06
+15423,M,18,student,undef,not commuting,586021,-565729,-1.20204e+06
+8332,F,45,working,construction,not commuting,586021,-564668,-1.20198e+06
+37932,M,43,working,tradeandmoto,not commuting,586358,-568630,-1.20298e+06
+41688,F,44,working,it,not commuting,586412,-571059,-1.1964e+06
+16790,F,15,student,undef,not commuting,586021,-564592,-1.20135e+06
+38572,M,1,at home,undef,not commuting,586358,-568784,-1.20383e+06
+53684,F,80,retired,undef,not commuting,586528,-560683,-1.2003e+06
+53751,F,10,student,undef,not commuting,586528,-558361,-1.19876e+06
+37657,F,27,working,construction,15 to 30 min,586358,-568762,-1.2033e+06
+13477,M,59,working,industry,not commuting,586021,-564584,-1.20153e+06
+13599,M,48,working,adminetc,not commuting,586021,-563679,-1.20256e+06
+54173,F,30,working,industry,not commuting,586561,-574062,-1.19931e+06
+55159,F,61,retired,undef,not commuting,586609,-555197,-1.20175e+06
+27966,F,74,retired,undef,not commuting,586137,-571486,-1.20096e+06
+927,M,67,retired,undef,not commuting,586021,-563957,-1.20198e+06
+187,M,60,retired,undef,not commuting,586021,-564457,-1.2023e+06
+26,M,21,working,tradeandmoto,not commuting,586021,-564917,-1.20184e+06
+40407,F,64,retired,undef,not commuting,586374,-570440,-1.20591e+06
+10792,M,45,working,industry,not commuting,586021,-565642,-1.20212e+06
+8584,F,27,at home,undef,not commuting,586021,-564791,-1.20187e+06
+32046,M,17,student,undef,more than 90 mins,586161,-565881,-1.19511e+06
+51286,F,54,working,health,not commuting,586528,-559159,-1.19934e+06
+16636,M,62,retired,undef,not commuting,586021,-564558,-1.2016e+06
+27460,M,29,working,industry,not commuting,586137,-571716,-1.20178e+06
+43730,M,7,student,undef,not commuting,586412,-571014,-1.19654e+06
+48471,F,25,working,industry,15 to 30 min,586510,-561179,-1.19547e+06
+20995,F,31,working,health,not commuting,586021,-563767,-1.20298e+06
+48819,F,22,student,undef,not commuting,586510,-560247,-1.19508e+06
+29473,F,9,student,undef,not commuting,586137,-572195,-1.20084e+06
+27687,F,73,retired,undef,not commuting,586137,-571584,-1.20148e+06
+43494,M,0,at home,undef,not commuting,586412,-571433,-1.19663e+06
+54791,M,34,working,agriculture,not commuting,586561,-575096,-1.1989e+06
+25893,F,55,retired,undef,not commuting,586102,-577344,-1.19527e+06
+55106,F,67,retired,undef,not commuting,586609,-554572,-1.20157e+06
+31626,M,46,working,construction,not commuting,586161,-565799,-1.19513e+06
+15298,M,2,at home,undef,not commuting,586021,-564356,-1.20326e+06
+30733,M,56,retired,undef,not commuting,586161,-566736,-1.19537e+06
+14791,F,9,student,undef,not commuting,586021,-565411,-1.20174e+06
+40060,F,29,at home,undef,not commuting,586374,-570358,-1.20625e+06
+37804,M,20,at home,undef,not commuting,586358,-567531,-1.20314e+06
+3155,F,54,working,tradeandmoto,not commuting,586021,-564818,-1.20172e+06
+40465,F,65,retired,undef,not commuting,586374,-571004,-1.20616e+06
+17428,M,26,working,eatinghousing,not commuting,586021,-565556,-1.20195e+06
+31302,M,38,at home,undef,not commuting,586161,-565655,-1.19579e+06
+1069,M,67,retired,undef,not commuting,586021,-563819,-1.20271e+06
+55316,M,1,at home,undef,not commuting,586609,-554299,-1.20142e+06
+22265,F,43,working,industry,not commuting,586021,-564301,-1.20308e+06
+6393,F,36,working,eatinghousing,not commuting,586021,-563720,-1.20166e+06
+22214,F,59,working,health,not commuting,586021,-564917,-1.20184e+06
+36220,F,29,at home,undef,not commuting,586358,-567915,-1.20352e+06
+30277,M,22,at home,undef,not commuting,586161,-565340,-1.1949e+06
+43508,M,45,at home,undef,not commuting,586412,-571410,-1.19592e+06
+34518,M,61,retired,undef,not commuting,586161,-566334,-1.19548e+06
+16962,F,19,at home,undef,not commuting,586021,-563644,-1.20265e+06
+20658,F,60,retired,undef,not commuting,586021,-563915,-1.2027e+06
+45202,M,72,retired,undef,not commuting,586498,-574903,-1.20462e+06
+50989,M,66,retired,undef,not commuting,586528,-560554,-1.20023e+06
+56072,M,37,at home,undef,not commuting,586609,-554829,-1.20198e+06
+23498,F,44,at home,undef,not commuting,586021,-565344,-1.20178e+06
+52858,F,55,working,publicsector,not commuting,586528,-560385,-1.20042e+06
+25089,M,33,working,tradeandmoto,not commuting,586102,-577673,-1.19582e+06
+51744,M,61,retired,undef,not commuting,586528,-560286,-1.20056e+06
+32338,F,38,at home,undef,not commuting,586161,-566268,-1.19519e+06
+19848,F,37,working,industry,not commuting,586021,-563653,-1.2025e+06
+18125,M,35,working,construction,not commuting,586021,-567969,-1.20172e+06
+9605,F,61,retired,undef,not commuting,586021,-563614,-1.20255e+06
+34072,F,72,retired,undef,not commuting,586161,-566500,-1.19537e+06
+24081,M,53,working,industry,not commuting,586021,-563614,-1.20255e+06
+3073,F,17,working,tradeandmoto,not commuting,586021,-563697,-1.20248e+06
+32159,F,30,at home,undef,not commuting,586161,-565715,-1.19501e+06
+23445,F,35,working,health,60 to 90 mins,586021,-564891,-1.20162e+06
+33592,M,13,student,undef,not commuting,586161,-564916,-1.19464e+06
+13271,F,67,retired,undef,not commuting,586021,-565790,-1.20225e+06
+47908,F,84,retired,undef,not commuting,586510,-560592,-1.19562e+06
+8592,F,999,retired,undef,not commuting,586021,-565688,-1.20215e+06
+14454,F,51,working,construction,not commuting,586021,-563414,-1.20148e+06
+39340,F,39,working,tradeandmoto,less than 15min,586374,-570274,-1.20607e+06
+43735,M,42,working,industry,not commuting,586412,-570645,-1.19626e+06
+8286,M,46,working,publicsector,not commuting,586021,-563712,-1.2029e+06
+24678,F,19,at home,undef,not commuting,586102,-577677,-1.19546e+06
+32963,F,67,retired,undef,not commuting,586161,-566358,-1.19504e+06
+18761,F,75,retired,undef,not commuting,586021,-564241,-1.20266e+06
+52250,F,48,working,tradeandmoto,not commuting,586528,-560053,-1.20042e+06
+27197,F,1,at home,undef,not commuting,586137,-571464,-1.20088e+06
+35342,M,36,working,industry,not commuting,586161,-565852,-1.19514e+06
+13470,M,41,working,industry,not commuting,586021,-563680,-1.20285e+06
+40331,F,52,at home,undef,not commuting,586374,-570083,-1.20574e+06
+55258,M,29,working,tradeandmoto,less than 15min,586609,-554453,-1.20155e+06
+41939,M,3,at home,undef,not commuting,586412,-571084,-1.19643e+06
+29975,F,17,working,industry,not commuting,586161,-566854,-1.19518e+06
+21851,M,40,working,industry,not commuting,586021,-563943,-1.20262e+06
+30,F,50,working,adminetc,not commuting,586021,-564008,-1.20251e+06
+50226,F,51,working,industry,not commuting,586510,-560232,-1.19501e+06
+33181,M,63,retired,undef,not commuting,586161,-566668,-1.19498e+06
+16671,M,18,student,undef,not commuting,586021,-565782,-1.2017e+06
+49598,M,4,at home,undef,not commuting,586510,-560443,-1.19477e+06
+15323,M,58,working,industry,not commuting,586021,-564299,-1.20321e+06
+436,M,12,student,undef,not commuting,586021,-563644,-1.20265e+06
+20214,F,59,retired,undef,not commuting,586021,-565610,-1.20171e+06
+26304,F,36,at home,undef,not commuting,586102,-577400,-1.19484e+06
+23519,F,48,at home,undef,not commuting,586021,-564592,-1.20135e+06
+40619,F,48,at home,undef,not commuting,586374,-569402,-1.20499e+06
+19744,M,30,working,industry,not commuting,586021,-564092,-1.20335e+06
+28937,F,35,at home,undef,not commuting,586137,-571432,-1.20112e+06
+26761,M,1,at home,undef,not commuting,586137,-571209,-1.20126e+06
+15696,F,25,at home,undef,not commuting,586021,-563378,-1.20159e+06
+15804,M,24,student,undef,15 to 30 min,586021,-564066,-1.2023e+06
+4739,M,9,student,undef,not commuting,586021,-564476,-1.2028e+06
+55071,F,32,at home,undef,not commuting,586609,-554926,-1.20157e+06
+41906,F,4,at home,undef,not commuting,586412,-571290,-1.19638e+06
+15060,M,7,student,undef,not commuting,586021,-563069,-1.20176e+06
+22023,M,25,working,industry,not commuting,586021,-563764,-1.20269e+06
+40336,F,61,retired,undef,not commuting,586374,-569872,-1.20584e+06
+38097,F,45,working,industry,less than 15min,586358,-568193,-1.2033e+06
+26518,M,42,at home,undef,not commuting,586102,-577681,-1.19602e+06
+23982,F,18,student,undef,30 to 45 mins,586021,-565799,-1.2023e+06
+10483,M,46,working,industry,not commuting,586021,-564891,-1.20162e+06
+29128,F,69,retired,undef,not commuting,586137,-571566,-1.20156e+06
+41125,M,55,working,industry,not commuting,586412,-570410,-1.19565e+06
+27137,F,24,at home,undef,not commuting,586137,-571486,-1.20096e+06
+41407,M,46,working,industry,not commuting,586412,-571174,-1.19619e+06
+42227,F,7,student,undef,not commuting,586412,-571163,-1.19628e+06
+37278,F,38,working,industry,not commuting,586358,-568012,-1.20312e+06
+55473,M,60,retired,undef,not commuting,586609,-555054,-1.20234e+06
+6186,F,29,working,industry,not commuting,586021,-563116,-1.20179e+06
+7277,F,68,retired,undef,not commuting,586021,-563741,-1.20305e+06
+37757,F,58,retired,undef,not commuting,586358,-568887,-1.2043e+06
+52073,F,56,working,industry,15 to 30 min,586528,-558213,-1.19896e+06
+30601,F,22,at home,undef,not commuting,586161,-565630,-1.19555e+06
+29162,M,1,at home,undef,not commuting,586137,-571647,-1.20072e+06
+24027,F,51,working,tradeandmoto,not commuting,586021,-564120,-1.20195e+06
+12272,M,30,working,health,not commuting,586021,-565663,-1.20218e+06
+7279,M,83,retired,undef,not commuting,586021,-563513,-1.20181e+06
+16038,F,24,student,undef,not commuting,586021,-563689,-1.20261e+06
+8557,F,34,at home,undef,not commuting,586021,-564791,-1.20187e+06
+54713,M,1,at home,undef,not commuting,586561,-574498,-1.1985e+06
+16252,F,50,working,industry,not commuting,586021,-564131,-1.20192e+06
+42543,F,34,working,industry,not commuting,586412,-571406,-1.19621e+06
+18370,F,50,at home,undef,not commuting,586021,-565417,-1.20205e+06
+31497,M,67,retired,undef,not commuting,586161,-566238,-1.1951e+06
+29515,F,94,retired,undef,not commuting,586137,-571790,-1.20041e+06
+26634,F,51,working,construction,not commuting,586102,-577610,-1.19588e+06
+29114,F,26,working,adminetc,45 to 60 mins,586137,-571537,-1.20079e+06
+29377,M,71,retired,undef,not commuting,586137,-571382,-1.20119e+06
+54389,M,74,retired,undef,not commuting,586561,-574070,-1.19923e+06
+42396,M,20,student,undef,not commuting,586412,-570246,-1.19559e+06
+30186,M,37,working,transportation,not commuting,586161,-566415,-1.19521e+06
+9151,M,51,working,adminetc,not commuting,586021,-565445,-1.20188e+06
+21289,F,30,at home,undef,not commuting,586021,-563709,-1.20268e+06
+22712,M,85,retired,undef,not commuting,586021,-564891,-1.20162e+06
+10556,M,27,at home,undef,not commuting,586021,-564094,-1.20194e+06
+29149,F,63,retired,undef,not commuting,586137,-571449,-1.20127e+06
+41850,M,33,working,construction,not commuting,586412,-570801,-1.19595e+06
+21079,M,18,student,undef,not commuting,586021,-565543,-1.20215e+06
+12878,F,24,working,industry,not commuting,586021,-565519,-1.2016e+06
+8255,F,59,retired,undef,not commuting,586021,-563741,-1.20183e+06
+46402,F,8,student,undef,not commuting,586498,-575777,-1.20355e+06
+27131,F,2,at home,undef,not commuting,586137,-571802,-1.20038e+06
+54762,M,25,working,industry,not commuting,586561,-574341,-1.19901e+06
+25754,F,68,retired,undef,not commuting,586102,-576986,-1.19538e+06
+20228,F,15,student,undef,not commuting,586021,-564038,-1.20209e+06
+16648,F,15,student,undef,30 to 45 mins,586021,-563793,-1.20199e+06
+28577,M,12,student,undef,not commuting,586137,-571689,-1.2019e+06
+42357,F,68,retired,undef,not commuting,586412,-571362,-1.19593e+06
+23537,M,1,at home,undef,not commuting,586021,-564054,-1.20197e+06
+43747,M,35,working,tradeandmoto,not commuting,586412,-570398,-1.19576e+06
+12895,F,38,working,adminetc,not commuting,586021,-564991,-1.2018e+06
+40242,F,10,student,undef,not commuting,586374,-570097,-1.20579e+06
+54299,M,68,retired,undef,not commuting,586561,-574475,-1.19899e+06
+35367,F,84,retired,undef,not commuting,586161,-565782,-1.19502e+06
+34334,F,7,student,undef,not commuting,586161,-565265,-1.19587e+06
+28483,F,25,working,industry,not commuting,586137,-571349,-1.20087e+06
+25664,M,51,at home,undef,not commuting,586102,-577531,-1.19624e+06
+11277,F,52,working,construction,30 to 45 mins,586021,-563796,-1.20251e+06
+55898,F,61,retired,undef,not commuting,586609,-555107,-1.20202e+06
+48403,M,44,at home,undef,not commuting,586510,-561202,-1.19579e+06
+42576,F,20,student,undef,60 to 90 mins,586412,-570478,-1.19567e+06
+49400,F,6,student,undef,not commuting,586510,-560779,-1.19571e+06
+16333,F,46,working,publicsector,not commuting,586021,-563663,-1.20281e+06
+19661,F,58,retired,undef,not commuting,586021,-563957,-1.20198e+06
+8980,M,56,working,industry,not commuting,586021,-563915,-1.2027e+06
+42805,F,11,student,undef,not commuting,586412,-570666,-1.19588e+06
+32441,M,55,retired,undef,not commuting,586161,-566778,-1.1953e+06
+2790,F,41,working,tradeandmoto,15 to 30 min,586021,-564603,-1.20195e+06
+1363,M,46,at home,undef,not commuting,586021,-564349,-1.20202e+06
+7110,M,65,retired,undef,not commuting,586021,-563623,-1.20118e+06
+46503,F,10,student,undef,not commuting,586498,-574707,-1.20408e+06
+6002,M,38,at home,undef,not commuting,586021,-563653,-1.2025e+06
+39150,F,9,student,undef,not commuting,586374,-569987,-1.20585e+06
+35039,F,70,retired,undef,not commuting,586161,-564946,-1.19447e+06
+30371,F,61,retired,undef,not commuting,586161,-566854,-1.19518e+06
+18095,M,16,student,undef,not commuting,586021,-565156,-1.20171e+06
+7370,M,46,at home,undef,not commuting,586021,-565688,-1.20215e+06
+5938,F,54,working,industry,not commuting,586021,-564547,-1.20179e+06
+41253,F,46,working,industry,45 to 60 mins,586412,-570261,-1.19559e+06
+9976,F,34,working,education,less than 15min,586021,-564146,-1.20188e+06
+34183,F,8,student,undef,not commuting,586161,-565740,-1.19507e+06
+46793,M,34,working,tradeandmoto,not commuting,586510,-560327,-1.19577e+06
+1685,M,80,retired,undef,not commuting,586021,-565688,-1.20215e+06
+40743,M,37,working,industry,not commuting,586412,-570581,-1.19556e+06
+10138,M,21,working,transportation,not commuting,586021,-565548,-1.20197e+06
+45745,M,44,working,industry,not commuting,586498,-574876,-1.20396e+06
+13351,F,51,working,publicsector,not commuting,586021,-563720,-1.20166e+06
+4295,M,0,at home,undef,not commuting,586021,-563414,-1.20148e+06
+23361,M,33,working,industry,not commuting,586021,-563938,-1.20204e+06
+43330,F,24,student,undef,30 to 45 mins,586412,-571198,-1.19635e+06
+43737,M,47,at home,undef,not commuting,586412,-570940,-1.19634e+06
+36702,M,6,student,undef,not commuting,586358,-568503,-1.20341e+06
+50815,M,71,retired,undef,not commuting,586528,-558347,-1.19879e+06
+15618,F,56,retired,undef,not commuting,586021,-564488,-1.20247e+06
+17779,F,35,working,industry,not commuting,586021,-564309,-1.20227e+06
+51488,F,53,working,health,less than 15min,586528,-560776,-1.20021e+06
+28602,M,35,working,construction,not commuting,586137,-571708,-1.20152e+06
+16639,F,57,working,adminetc,not commuting,586021,-564018,-1.20206e+06
+2285,F,25,at home,undef,not commuting,586021,-563906,-1.20256e+06
+18663,M,2,at home,undef,not commuting,586021,-564660,-1.20138e+06
+26427,M,32,at home,undef,not commuting,586102,-577816,-1.19583e+06
+26481,F,19,at home,undef,not commuting,586102,-577977,-1.19573e+06
+29251,F,60,retired,undef,not commuting,586137,-571832,-1.20099e+06
+8948,M,64,working,banks,not commuting,586021,-563754,-1.20197e+06
+49861,M,34,working,construction,not commuting,586510,-560412,-1.19561e+06
+16527,M,82,retired,undef,not commuting,586021,-564153,-1.20186e+06
+5209,M,54,working,industry,not commuting,586021,-563741,-1.20263e+06
+23899,F,59,working,health,not commuting,586021,-565818,-1.20172e+06
+9454,M,5,at home,undef,not commuting,586021,-563477,-1.20168e+06
+9740,F,35,working,publicsector,not commuting,586021,-565233,-1.20174e+06
+26423,F,18,student,undef,30 to 45 mins,586102,-577742,-1.19611e+06
+44047,F,22,at home,undef,not commuting,586412,-571180,-1.196e+06
+39602,F,38,at home,undef,not commuting,586374,-570938,-1.20639e+06
+25198,M,25,working,industry,not commuting,586102,-577774,-1.19613e+06
+10342,F,39,working,education,not commuting,586021,-563915,-1.2027e+06
+51084,M,29,working,tradeandmoto,less than 15min,586528,-560180,-1.19996e+06
+43915,F,80,retired,undef,not commuting,586412,-571166,-1.19646e+06
+18249,F,35,working,construction,not commuting,586021,-563971,-1.20262e+06
+24231,F,52,working,industry,not commuting,586021,-563659,-1.20235e+06
+34093,F,45,working,tradeandmoto,less than 15min,586161,-564954,-1.19421e+06
+45410,M,62,working,banks,not commuting,586498,-575097,-1.20483e+06
+16349,M,33,at home,undef,not commuting,586021,-565818,-1.20172e+06
+2118,F,60,retired,undef,not commuting,586021,-565578,-1.20206e+06
+24085,M,66,retired,undef,not commuting,586021,-565688,-1.20215e+06
+33340,F,61,retired,undef,not commuting,586161,-566315,-1.19518e+06
+18013,M,37,working,education,not commuting,586021,-563741,-1.20305e+06
+14889,M,18,student,undef,not commuting,586021,-565997,-1.20221e+06
+32829,M,70,retired,undef,not commuting,586161,-565164,-1.19489e+06
+49073,F,36,working,transportation,not commuting,586510,-560525,-1.19508e+06
+49145,M,52,working,tradeandmoto,not commuting,586510,-561872,-1.19441e+06
+48908,F,40,working,industry,not commuting,586510,-561111,-1.19546e+06
+48834,M,64,retired,undef,not commuting,586510,-560518,-1.19555e+06
+54986,M,80,retired,undef,not commuting,586609,-555016,-1.20228e+06
+13261,M,47,at home,undef,not commuting,586021,-566352,-1.20378e+06
+11813,M,54,working,industry,more than 90 mins,586021,-563653,-1.2025e+06
+1977,M,59,working,tradeandmoto,not commuting,586021,-564368,-1.20172e+06
+2843,M,70,retired,undef,not commuting,586021,-564264,-1.20218e+06
+23084,M,18,working,publicsector,not commuting,586021,-565039,-1.20165e+06
+17996,M,7,student,undef,not commuting,586021,-565675,-1.20166e+06
+26391,F,18,working,tradeandmoto,not commuting,586102,-577800,-1.19603e+06
+15163,F,21,student,undef,not commuting,586021,-564584,-1.20153e+06
+21814,M,57,retired,undef,not commuting,586021,-564374,-1.20217e+06
+5871,M,37,at home,undef,not commuting,586021,-563616,-1.20226e+06
+38804,F,52,working,industry,not commuting,586358,-568405,-1.20348e+06
+39078,F,52,working,industry,not commuting,586374,-569776,-1.20551e+06
+24644,F,58,working,industry,less than 15min,586102,-577470,-1.19623e+06
+39196,F,38,working,industry,not commuting,586374,-570372,-1.20628e+06
+1252,F,38,working,eatinghousing,not commuting,586021,-564096,-1.2022e+06
