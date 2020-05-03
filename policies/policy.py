@@ -6,9 +6,15 @@ def bound_policy(func, graph, coefs=None):
     """
     if coefs is None:
         def policy_function(*args,  **kwargs):
-            return func(graph, *args, **kwargs)
+            ret = func(graph, *args, **kwargs)
+            if "graph" in ret:
+                ret["graph"] = graph.final_adjacency_matrix()
+            return ret
         return policy_function
     else:
         def policy_function(*args, **kwargs):
-            return func(graph, coefs, *args, **kwargs)
+            ret = func(graph, coefs, *args, **kwargs)
+            if "graph" in ret:
+                ret["graph"] = graph.final_adjacency_matrix()
+            return ret
         return policy_function

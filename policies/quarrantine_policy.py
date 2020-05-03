@@ -22,6 +22,25 @@ class QuarrantineDepo:
 
 
 def quarrantine_policy_setup(graph, normal_life):
+
+    risk_for_layers = {
+        1: 1.0,  # family
+        2: 0.8,
+        3: 0.8,
+        4: 0.8,  # lower elementary children
+        5: 0.8,  # lower elementary teachers to children
+        6: 0.8,  # higher elementary children
+        7: 0.8,  # higher elementary teachers to children
+        8: 0.8,  # highschool children
+        9: 0.8,  # highschool teachers to children
+        10: 0.5,  # friend and relative encounetr
+        11: 0.8,  # work contacts
+        12: 0.3,  # workers to clients
+        13: 0.3,  # public transport contacts
+        14: 0.1  # contacts of customers at shops
+    }
+    riskiness = np.array([risk_for_layers[i] for i in range(1, 14)])
+
     return {
         "quarrantine_depo": QuarrantineDepo(graph.number_of_nodes()),
         "normal_life": normal_life,
@@ -43,7 +62,8 @@ def quarrantine_policy_setup(graph, normal_life):
         },
         "duration": 14,
         "threashold": 0.7,
-        "days_back": 7
+        "days_back": 7,
+        "riskiness": riskiness
     }
 
 
@@ -98,7 +118,7 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
     if contact_history is not None:
         contacts = _select_contacts(
             detected_nodes, contact_history, graph,
-            policy_coefs["threashold"], policy_coefs["days_back"])
+            policy_coefs["threashold"], policy_coefs["days_back"], policy_coefs["riskiness"])
     else:
         contacts = []
 
@@ -146,10 +166,10 @@ def _quarrantine_nodes(detected_nodes, policy_coefs, graph):
                                       normal_life,
                                       depo.quarrantine)
 
-    return {"graph"}
+    return {"graph": None}
 
 
-def _select_contacts(detected_nodes, contact_history, graph, threashold, days_back=7):
+def _select_contacts(detected_nodes, contact_history, graph, threashold, days_back=7, riskiness=None):
     # matrix = graph.final_adjacency_matrix()
     # active_edges = matrix[detected_nodes]
 
@@ -161,15 +181,52 @@ def _select_contacts(detected_nodes, contact_history, graph, threashold, days_ba
 
     my_contact_history = contact_history[-days_back:]
 
-    relevant_contacts = [
-        contact[1]
-        for contact_list in my_contact_history
-        for contact in contact_list
-        if contact[0] in detected_nodes
-    ]
+    relevant_contacts = _filter_contact_history(
+        my_contact_history, detected_nodes, graph, riskiness)
 
     # if relevant_contacts:
     #     print(relevant_contacts)
     #     exit()
 
     return set(relevant_contacts)
+
+
+def _filter_contact_history(contact_history, detected_nodes, graph, riskiness):
+
+    if riskiness is None:
+        relevant_contacts = [
+            contact[1]
+            for contact_list in contact_history
+            for contact in contact_list
+            if contact[0] in detected_nodes
+        ]
+        return relevant_contacts
+    else:
+        relevant_contacts = [
+            (contact[1], _riskiness(contact, graph, riskiness))
+            for contact_list in contact_history
+            for contact in contact_list
+            if contact[0] in detected_nodes
+        ]
+
+        if not relevant_contacts:
+            return relevant_contacts
+
+        r = np.random.rand(len(relevant_contacts))
+        print(r)
+        print(relevant_contacts)
+        print(r[0])
+
+        # for i, (contact, threashold) in enumerate(relevant_contacts):
+        #     print(i, contact, threashold, r[i])
+
+        filtered = [
+            contact
+            for i, (contact, threashold) in enumerate(relevant_contacts)
+            if r[i] < threashold
+        ]
+        return filtered
+
+
+def _riskiness(contact, graph, riskiness):
+    return np.max(riskiness[graph.get_layers_for_edge(*contact)])

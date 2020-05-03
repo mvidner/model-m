@@ -12,10 +12,7 @@ def litovel_policy(graph, policy_coefs, history, tseries, time, contact_history=
         graph, policy_coefs, history, tseries, time, contact_history)
     ret.update(calendar_policy(graph, policy_coefs,
                                history, tseries, time, contact_history))
-    if "graph" in ret:
-        return {"graph": graph.final_adjacency_matrix()}
-    else:
-        return {}
+    return ret
 
 def litovel_old_policy(graph, policy_coefs, history, tseries, time, contact_history=None):
 
@@ -23,7 +20,4 @@ def litovel_old_policy(graph, policy_coefs, history, tseries, time, contact_hist
         graph, policy_coefs, history, tseries, time, contact_history)
     ret.update(calendar_policy(graph, policy_coefs,
                                history, tseries, time, contact_history))
-    if "graph" in ret:
-        return {"graph": graph.final_adjacency_matrix()}
-    else:
-        return {}
+    return ret
