@@ -4,7 +4,8 @@ import pickle
 from model_zoo import model_zoo
 
 from graph_gen import GraphGenerator, CSVGraphGenerator, RandomSingleGraphGenerator
-from light_graph import LightGraph
+#from light_graph import LightGraph
+from light import LightGraph
 from policy import bound_policy
 from config_utils import ConfigFile
 
@@ -162,8 +163,14 @@ def _load_graph(cf: ConfigFile):
     if graph_name == "csv":
         return CSVGraphGenerator(path_to_nodes=nodes, path_to_edges=edges, path_to_layers=layers)
 
-    if graph_name == "csv_light":
-        return LightGraph(path_to_nodes=nodes, path_to_edges=edges, path_to_layers=layers)
+#    if graph_name == "csv_light":
+#        return LightGraph(path_to_nodes=nodes, path_to_edges=edges, path_to_layers=layers)
+
+    if graph_name == "light":
+        g = LightGraph()
+        g.read_csv(path_to_nodes=nodes, path_to_edges=edges,
+                   path_to_layers=layers)
+        return g
 
     if graph_name == "random":
         return RandomGraphGenerator()

@@ -18,6 +18,13 @@ def main(filename, outputname, precalc_matrix):
     cf.load(filename)
 
     graph = _load_graph(cf)
+
+    # for e in set(graph.G.edges()):
+    #     print(e)
+    #     edges = graph.get_layers_for_edge(*e)
+    #     print(edges)
+    # exit()
+
     if precalc_matrix:
         graph.final_adjacency_matrix()
 
