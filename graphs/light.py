@@ -116,32 +116,37 @@ class LightGraph:
                       np.where(self.nodes_id == row.vertex2))
                 exit()
 
+            i_row, i_col = min(i_row, i_col), max(i_row, i_col)    
+                
             self.e_source[i] = i_row
             self.e_dest[i] = i_col
 
             if tmpA[i_row, i_col] == 0:
                 # first edge between (row, col)
                 self.edges_repo[key], self.edges_directions[key] = [
-                    i], [forward_edge]
+                    i], forward_edge
                 self.edges_repo[key +
-                                1], self.edges_directions[key+1] = [i], [backward_edge]
+                                1], self.edges_directions[key+1] = [i], backward_edge
                 tmpA[i_row, i_col] = key
                 tmpA[i_col, i_row] = key + 1
                 key += 2
             else:
                 # add to existing edge list
+                print("+", end="")
                 key_forward = tmpA[i_row, i_col]
                 key_backward = tmpA[i_col, i_row]
                 self.edges_repo[key_forward].append(i)
-                self.edges_directions[key_forward].append(forward_edge)
+                assert self.edges_directions[key_forward] == forward_edge
+                # self.edges_directions[key_forward].append(forward_edge)
                 self.edges_repo[key_backward].append(i)
-                self.edges_directions[key_backward].append(backward_edge)
+                # self.edges_directions[key_backward].append(backward_edge)
+                assert self.edges_directions[key_backward] == backward_edge
 
             if i % 1000 == 0:
-                print("Edges loaded", i)
+                print("\nEdges loaded", i)
 
         # create matrix (A[i,j] is an index of edge (i,j) in array of edges)
-        print("Converting to csr ...", end="")
+        print("\nConverting to csr ...", end="")
         self.A = csr_matrix(tmpA)
         print("level done")
         del tmpA
@@ -164,17 +169,16 @@ class LightGraph:
         dest_nodes = sources * (1 - flags) + dests * flags
         return source_nodes, dest_nodes
 
-    def get_edges_subset(self, source_flags, dest_flags):
-        subset = self.A[source_flags == 1, :][:, dest_flags == 1]
-        active_subset = self.A[source_flags == 1, :][:, dest_flags == 1]
-        edge_lists = [self.edges_repo[key] for key in active_subset.data]
-        return subset, sum(edge_lists, [])
+        #    def get_edges_subset(self, source_flags, dest_flags):
+        #        active_subset = self.A[source_flags == 1, :][:, dest_flags == 1]
+        #        edge_lists = [self.edges_repo[key] for key in active_subset.data]
+        #        return subset, sum(edge_lists, [])
 
     def get_edges(self, source_flags, dest_flags, dirs=True):
         active_subset = self.A[source_flags == 1, :][:, dest_flags == 1]
         edge_lists = [self.edges_repo[key] for key in active_subset.data]
         if dirs:
-            edge_dirs = [self.edges_directions[key]
+            edge_dirs = [[self.edges_directions[key]] * len(self.edges_repo[key])
                          for key in active_subset.data]
             return sum(edge_lists, []), sum(edge_dirs, [])
         return sum(edge_lists, [])
