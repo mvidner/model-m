@@ -23,6 +23,7 @@ class LightGraph:
         nodes = pd.read_csv(path_to_nodes, **csv_hacking)
         edges = pd.read_csv(path_to_edges, **csv_hacking)
         layers = pd.read_csv(path_to_layers, **csv_hacking)
+        external_nodes = pd.read_csv("../data/newtown/e.csv", **csv_hacking)
 
         # layer names, ids and weights go to graph
         layers_to_add = layers.to_dict('list')
@@ -63,6 +64,8 @@ class LightGraph:
         self.nodes = np.array(nodes.index)
         self.num_nodes = len(self.nodes)
 
+        self.ignored = set(external_nodes["id"])
+
         # edges
         # drop self edges
         indexNames = edges[edges['vertex1'] == edges['vertex2']].index
@@ -72,11 +75,13 @@ class LightGraph:
 
         # fill edges to a graph
         n_edges = len(edges)
-        # edges data
-        self.e_types = np.empty(n_edges)
-        self.e_subtypes = np.empty(n_edges)
+        # edges data"
+        self.e_types = np.empty(n_edges, dtype="uint16")
+        self.e_subtypes = np.empty(n_edges, dtype="uint16")
         self.e_probs = np.empty(n_edges)
         self.e_intensities = np.empty(n_edges)
+        self.e_source = np.empty(n_edges, dtype="uint32")
+        self.e_dest = np.empty(n_edges, dtype="uint32")
         # edges repo
         self.edges_repo = {
             0: None
@@ -85,26 +90,44 @@ class LightGraph:
         # working matrix
         tmpA = lil_matrix((self.num_nodes, self.num_nodes), dtype=int)
 
+        forward_edge = (self.e_source, self.e_dest)
+        backward_edge = (self.e_dest, self.e_source)
+
         # fill data and get indicies
         for i, row in enumerate(edges.itertuples()):
             self.e_types[i] = row.layer
             self.e_subtypes[i] = row.sublayer
             self.e_probs[i] = row.probability
             self.e_intensities[i] = row.intensity
+            self.e_source[i] = row.vertex1
+            self.e_dest[i] = row.vertex2
 
-            i_row = np.where(self.nodes_id == row.vertex1)
-            i_col = np.where(self.nodes_id == row.vertex2)
+            if row.vertex1 in self.ignored or row.vertex2 in self.ignored:
+                continue
+
+            try:
+                i_row = np.where(self.nodes_id == row.vertex1)[0][0]
+                i_col = np.where(self.nodes_id == row.vertex2)[0][0]
+            except IndexError:
+                print("Node does not exist")
+                print(row.vertex1, row.vertex2)
+                print(np.where(self.nodes_id == row.vertex1),
+                      np.where(self.nodes_id == row.vertex2))
+                exit()
 
             if tmpA[i_row, i_col] == 0:
                 # first edge between (row, col)
-                self.edges_repo[key] = [i]
+                self.edges_repo[key] = [(i, forward_edge)]
+                self.edges_repo[key+1] = [(i, backward_edge)]
                 tmpA[i_row, i_col] = key
-                tmpA[i_col, i_row] = key
-                key += 1
+                tmpA[i_col, i_row] = key + 1
+                key += 2
             else:
                 # add to existing edge list
-                key = tmpA[i_row, i_col]
-                self.edges[key].append(i)
+                key_forward = tmpA[i_row, i_col]
+                key_backward = tmpA[i_col, i_row]
+                self.edges_repo[key_forward].append((i, forward_edge))
+                self.edges_repo[key_backward].append((i, backward_edge))
 
             if i % 1000 == 0:
                 print("Edges loaded", i)
@@ -118,3 +141,18 @@ class LightGraph:
     @property
     def number_of_nodes(self):
         return self.num_nodes
+
+    def get_edges_subset(self, source_flags, dest_flags):
+        subset = self.A[source_flags == 1, :][:, dest_flags == 1]
+        active_subset = self.A[source_flags == 1, :][:, dest_flags == 1]
+        edge_lists = [self.edges_repo[key] for key in active_subset.data]
+        return subset, sum(edge_lists, [])
+
+    def get_edges(self, source_flags, dest_flags):
+        active_subset = self.A[source_flags == 1, :][:, dest_flags == 1]
+        edge_lists = [self.edges_repo[key] for key in active_subset.data]
+        return sum(edge_lists, [])
+
+    def get_edges_probs(self, edges):
+        assert type(edges) == list
+        return self.e_probs[edges]
