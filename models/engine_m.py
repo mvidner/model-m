@@ -89,6 +89,7 @@ class EngineM(SequentialEngine):
         self.contact_history.append(contact_indices)
 
         print("Potkali se u kolina:", contact_indices)
+        print("Todays contact num:",  len(contact_indices))
 
         # restrict the selection to only relevant states
         # (ie. candidates can be both E and I, relevant are only I)
@@ -121,25 +122,30 @@ class EngineM(SequentialEngine):
         #        assert len(relevant_sources) == len(set(relevant_sources))
         # TOD beta - b_ij
         # new beta depands on the one who is going to be infected
-        b_intensitites = beta[relevant_sources]
+        b_intensities = beta[relevant_sources]
 
-        assert b_intensitites.shape == intensities.shape
+        assert b_intensities.shape == intensities.shape
         # print(b_intensitites.shape, intensities.shape,
         #      prob_of_no_infection.shape)
         relevant_sources_unique = np.unique(relevant_sources)
         relevant_sources = relevant_sources.reshape(-1, 1)
 
+        #print(relevant_sources.shape, relevant_sources_unique.shape)
         A = scipy.sparse.csr_matrix(
-            (np.ones(len(b_intensitites)),
+            (np.ones(len(b_intensities)),
              np.where((relevant_sources == relevant_sources_unique).T)
-             )
+             ),
+            shape=(len(relevant_sources_unique), len(relevant_sources)) 
         )
         assert A.shape[0] == len(
-            relevant_sources_unique) and A.shape[1] == len(b_intensitites)
+            relevant_sources_unique) and A.shape[1] == len(b_intensities)
 
+        no_infection = (1 - b_intensities * intensities).ravel()
+        #print(no_infection.shape, A.shape)
         prob_of_no_infection = scipy.sparse.csr_matrix(
-            A.multiply(1 - b_intensitites * intensities)
+            A.multiply(no_infection)
         )
+        #        print(prob_of_no_infection.shape)
 
         prob_of_no_infection = prop_of_row(prob_of_no_infection)
 

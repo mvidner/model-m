@@ -27,7 +27,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         for state in self.states:
             self.state_counts[state][self.t] = self.state_counts[state][self.t-1]
         self.N[self.t] = self.N[self.t-1]
-        self.states_history[self.t] = self.states_history[self.t-1]
+#        self.states_history[self.t] = self.states_history[self.t-1]
         # self.meaneprobs[self.t] = self.meaneprobs[self.t-1]
         # self.medianprobs[self.t] = self.meaneprobs[self.t-1]
 
@@ -94,7 +94,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.delta[e, node, :] = 1
             self.state_counts[s][self.t] -= 1
             self.state_counts[e][self.t] += 1
-            self.states_history[self.t][node] = e
+#            self.states_history[self.t][node] = e
             self.tidx += 1
             if self.tidx >= len(self.history):
                 self.increase_history_len()
@@ -145,7 +145,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             # run periodical update
             if self.periodic_update_callback:
                 changes = self.periodic_update_callback(
-                    self.history, self.tseries[:self.tidx+1], self.t, contact_history=self.contact_history)
+                    self.history, self.tseries[:self.tidx+1], self.t, self.contact_history)
 
                 if "graph" in changes:
                     print("CHANGING GRAPH")
@@ -182,7 +182,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         for state in self.states:
             self.state_counts[state].bloat(100)
         self.N.bloat(100)
-        self.states_history.bloat(100)
+#        self.states_history.bloat(100)
         self.meaneprobs.bloat(100)
         self.medianeprobs.bloat(100)
 
@@ -196,7 +196,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         for state in self.states:
             self.state_counts[state].finalize(self.t)
         self.N.finalize(self.t)
-        self.states_history.finalize(self.t)
+#        self.states_history.finalize(self.t)
         self.meaneprobs.finalize(self.t)
         self.medianeprobs.finalize(self.t)
 
