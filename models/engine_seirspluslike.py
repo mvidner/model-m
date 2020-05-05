@@ -46,7 +46,7 @@ class SeirsPlusLikeEngine(BaseEngine):
         self.history = TransitionHistory(tseries_len)
 
         self.states_history = TransitionHistory(
-            self.expected_num_days, width=self.num_nodes)
+            1, width=self.num_nodes)
 
         # state_counts ... numbers of inidividuals in given states
         self.state_counts = {
@@ -87,7 +87,7 @@ class SeirsPlusLikeEngine(BaseEngine):
             [self.state_counts[s][0] for s in self.invisible_states]
         )
 
-        # self.states_history[0] ... initial array of states
+        #self.states_history[0] ... initial array of states
         start = 0
         for state, count in self.state_counts.items():
             self.states_history[0][start:start+count[0]].fill(state)
