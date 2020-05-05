@@ -133,8 +133,9 @@ class ModelM():
 
     def init_matrix(self):
         if isinstance(self.graph, LightGraph):
-            raise NotImplementedError(
-                "LighGraph not  supported at the moment, waits for fixes.")
+            #            raise NotImplementedError(
+            #                "LighGraph not  supported at the moment, waits for fixes.")
+            return self.graph
 
         if isinstance(self.graph, RandomSingleGraphGenerator):
             if self.scenario:
@@ -178,8 +179,11 @@ def _load_graph(cf: ConfigFile):
     if graph_name == "pickle":
         with open(filename, "rb") as f:
             g = pickle.load(f)
-            if g.A_valid:
-                print("Wow, matrix A is ready.")
+            if isinstance(g, GraphGenerator):
+                if g.A_valid:
+                    print("Wow, matrix A is ready.")
+            else:
+                assert isinstance(g, LightGraph), f"Something weird ({type(g)}) was loaded."
             return g
 
     raise ValueError(f"Graph {graph_name} not available.")

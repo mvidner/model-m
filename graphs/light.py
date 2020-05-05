@@ -86,12 +86,15 @@ class LightGraph:
         self.edges_repo = {
             0: None
         }
+        self.edges_directions = {
+            0: None
+        }
         key = 1
         # working matrix
         tmpA = lil_matrix((self.num_nodes, self.num_nodes), dtype=int)
 
-        forward_edge = (self.e_source, self.e_dest)
-        backward_edge = (self.e_dest, self.e_source)
+        forward_edge = True
+        backward_edge = False
 
         # fill data and get indicies
         for i, row in enumerate(edges.itertuples()):
@@ -99,8 +102,6 @@ class LightGraph:
             self.e_subtypes[i] = row.sublayer
             self.e_probs[i] = row.probability
             self.e_intensities[i] = row.intensity
-            self.e_source[i] = row.vertex1
-            self.e_dest[i] = row.vertex2
 
             if row.vertex1 in self.ignored or row.vertex2 in self.ignored:
                 continue
@@ -115,10 +116,15 @@ class LightGraph:
                       np.where(self.nodes_id == row.vertex2))
                 exit()
 
+            self.e_source[i] = i_row
+            self.e_dest[i] = i_col
+
             if tmpA[i_row, i_col] == 0:
                 # first edge between (row, col)
-                self.edges_repo[key] = [(i, forward_edge)]
-                self.edges_repo[key+1] = [(i, backward_edge)]
+                self.edges_repo[key], self.edges_directions[key] = [
+                    i], [forward_edge]
+                self.edges_repo[key +
+                                1], self.edges_directions[key+1] = [i], [backward_edge]
                 tmpA[i_row, i_col] = key
                 tmpA[i_col, i_row] = key + 1
                 key += 2
@@ -126,8 +132,10 @@ class LightGraph:
                 # add to existing edge list
                 key_forward = tmpA[i_row, i_col]
                 key_backward = tmpA[i_col, i_row]
-                self.edges_repo[key_forward].append((i, forward_edge))
-                self.edges_repo[key_backward].append((i, backward_edge))
+                self.edges_repo[key_forward].append(i)
+                self.edges_directions[key_forward].append(forward_edge)
+                self.edges_repo[key_backward].append(i)
+                self.edges_directions[key_backward].append(backward_edge)
 
             if i % 1000 == 0:
                 print("Edges loaded", i)
@@ -142,17 +150,40 @@ class LightGraph:
     def number_of_nodes(self):
         return self.num_nodes
 
+    def get_edges_nodes(self, edges, edges_dirs):
+        """ returns source and dest nodes numbers (not ids)
+        WARNING: NOT IDs
+        """
+        sources = self.e_source[edges]
+        dests = self.e_dest[edges]
+        # sources, dests numpy vectors on node_ids
+        # edges_dirs - bool vector
+        # if True take source if False take dest
+        flags = np.array(edges_dirs)
+        source_nodes = sources * flags + dests * (1 - flags)
+        dest_nodes = sources * (1 - flags) + dests * flags
+        return source_nodes, dest_nodes
+
     def get_edges_subset(self, source_flags, dest_flags):
         subset = self.A[source_flags == 1, :][:, dest_flags == 1]
         active_subset = self.A[source_flags == 1, :][:, dest_flags == 1]
         edge_lists = [self.edges_repo[key] for key in active_subset.data]
         return subset, sum(edge_lists, [])
 
-    def get_edges(self, source_flags, dest_flags):
+    def get_edges(self, source_flags, dest_flags, dirs=True):
         active_subset = self.A[source_flags == 1, :][:, dest_flags == 1]
         edge_lists = [self.edges_repo[key] for key in active_subset.data]
+        if dirs:
+            edge_dirs = [self.edges_directions[key]
+                         for key in active_subset.data]
+            return sum(edge_lists, []), sum(edge_dirs, [])
         return sum(edge_lists, [])
 
     def get_edges_probs(self, edges):
         assert type(edges) == list
+        # multiply by layer weight! TODO
         return self.e_probs[edges]
+
+    def get_edges_intensities(self, edges):
+        assert type(edges) == list
+        return self.e_intensities[edges]
