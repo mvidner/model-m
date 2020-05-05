@@ -2,6 +2,7 @@ import numpy as np
 from model import create_custom_model
 from engine_daily import DailyEngine
 from engine_sequential import SequentialEngine
+from engine_m import EngineM
 # models
 
 # model = ENGINE + MODEL DEFINITION
@@ -203,7 +204,7 @@ def calc_propensities(model, use_dict=True):
         # ) / model.current_N()
         # + (1 - model.p)
 
-    P1 = model.prob_of_no_contact(
+    P1 = model.prob_of_contact(
         [STATES.S_s, STATES.S],
         [STATES.S,
          STATES.S_s,
@@ -375,3 +376,8 @@ ExtendedSequentialNetworkModel = create_custom_model("ExtendedSequentialNetworkM
 
 # TODO: inherit from ExtendedNetworkModel a new model (high level) that includes the workaround
 #      about multi-graphs, manages call backs, etc.
+
+TGMNetworkModel = create_custom_model("TGMNetworkModel",
+                                      **model_definition,
+                                      calc_propensities=calc_propensities,
+                                      engine=EngineM)

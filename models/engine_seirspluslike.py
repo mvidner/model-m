@@ -166,7 +166,7 @@ class SeirsPlusLikeEngine(BaseEngine):
             raise TypeException(
                 "num_contacts(state) accepts str or list of strings")
 
-    def prob_of_no_contact(self, source_states, source_candidate_states, dest_states, dest_candidate_states, beta):
+    def prob_of_contact(self, source_states, source_candidate_states, dest_states, dest_candidate_states, beta):
         #        print(states)
         # for i in states:
         #    print(self.current_state_count(i))

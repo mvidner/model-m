@@ -25,7 +25,7 @@ def calendar_policy(graph, policy_coefs, history, tseries, time, contact_history
         return {"graph": None}
 
     if int(time) == 25:
-        # close everything
+        # open little bit
         stronger = [
             "friend and relative encounetr",
             "work contacts",

@@ -8,6 +8,7 @@
 
 from seirs import SEIRSModel, SEIRSNetworkModel
 from extended_network_model import ExtendedNetworkModel, ExtendedDailyNetworkModel, ExtendedSequentialNetworkModel
+from extended_network_model import TGMNetworkModel
 from seirs_extended import ExtendedNetworkModel as OldExtendedNetworkModel
 
 __all__ = [
@@ -25,5 +26,6 @@ model_zoo = {
     "ExtendedDailyNetworkModel": ExtendedDailyNetworkModel,
     "ExtendedSequentialNetworkModel": ExtendedSequentialNetworkModel,
     "OldExtendedNetworkModel": OldExtendedNetworkModel,
-    "SEIRSNetworkModel": SEIRSNetworkModel
+    "SEIRSNetworkModel": SEIRSNetworkModel,
+    "TGMNetworkModel": TGMNetworkModel
 }

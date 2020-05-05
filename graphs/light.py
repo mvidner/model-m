@@ -23,6 +23,7 @@ class LightGraph:
         nodes = pd.read_csv(path_to_nodes, **csv_hacking)
         edges = pd.read_csv(path_to_edges, **csv_hacking)
         layers = pd.read_csv(path_to_layers, **csv_hacking)
+        external_nodes = pd.read_csv("../data/newtown/e.csv", **csv_hacking)
 
         # layer names, ids and weights go to graph
         layers_to_add = layers.to_dict('list')
@@ -63,6 +64,8 @@ class LightGraph:
         self.nodes = np.array(nodes.index)
         self.num_nodes = len(self.nodes)
 
+        self.ignored = set(external_nodes["id"])
+
         # edges
         # drop self edges
         indexNames = edges[edges['vertex1'] == edges['vertex2']].index
@@ -72,18 +75,26 @@ class LightGraph:
 
         # fill edges to a graph
         n_edges = len(edges)
-        # edges data
-        self.e_types = np.empty(n_edges)
-        self.e_subtypes = np.empty(n_edges)
+        # edges data"
+        self.e_types = np.empty(n_edges, dtype="uint16")
+        self.e_subtypes = np.empty(n_edges, dtype="uint16")
         self.e_probs = np.empty(n_edges)
         self.e_intensities = np.empty(n_edges)
+        self.e_source = np.empty(n_edges, dtype="uint32")
+        self.e_dest = np.empty(n_edges, dtype="uint32")
         # edges repo
         self.edges_repo = {
+            0: None
+        }
+        self.edges_directions = {
             0: None
         }
         key = 1
         # working matrix
         tmpA = lil_matrix((self.num_nodes, self.num_nodes), dtype=int)
+
+        forward_edge = True
+        backward_edge = False
 
         # fill data and get indicies
         for i, row in enumerate(edges.itertuples()):
@@ -92,19 +103,39 @@ class LightGraph:
             self.e_probs[i] = row.probability
             self.e_intensities[i] = row.intensity
 
-            i_row = np.where(self.nodes_id == row.vertex1)
-            i_col = np.where(self.nodes_id == row.vertex2)
+            if row.vertex1 in self.ignored or row.vertex2 in self.ignored:
+                continue
+
+            try:
+                i_row = np.where(self.nodes_id == row.vertex1)[0][0]
+                i_col = np.where(self.nodes_id == row.vertex2)[0][0]
+            except IndexError:
+                print("Node does not exist")
+                print(row.vertex1, row.vertex2)
+                print(np.where(self.nodes_id == row.vertex1),
+                      np.where(self.nodes_id == row.vertex2))
+                exit()
+
+            self.e_source[i] = i_row
+            self.e_dest[i] = i_col
 
             if tmpA[i_row, i_col] == 0:
                 # first edge between (row, col)
-                self.edges_repo[key] = [i]
+                self.edges_repo[key], self.edges_directions[key] = [
+                    i], [forward_edge]
+                self.edges_repo[key +
+                                1], self.edges_directions[key+1] = [i], [backward_edge]
                 tmpA[i_row, i_col] = key
-                tmpA[i_col, i_row] = key
-                key += 1
+                tmpA[i_col, i_row] = key + 1
+                key += 2
             else:
                 # add to existing edge list
-                key = tmpA[i_row, i_col]
-                self.edges[key].append(i)
+                key_forward = tmpA[i_row, i_col]
+                key_backward = tmpA[i_col, i_row]
+                self.edges_repo[key_forward].append(i)
+                self.edges_directions[key_forward].append(forward_edge)
+                self.edges_repo[key_backward].append(i)
+                self.edges_directions[key_backward].append(backward_edge)
 
             if i % 1000 == 0:
                 print("Edges loaded", i)
@@ -118,3 +149,41 @@ class LightGraph:
     @property
     def number_of_nodes(self):
         return self.num_nodes
+
+    def get_edges_nodes(self, edges, edges_dirs):
+        """ returns source and dest nodes numbers (not ids)
+        WARNING: NOT IDs
+        """
+        sources = self.e_source[edges]
+        dests = self.e_dest[edges]
+        # sources, dests numpy vectors on node_ids
+        # edges_dirs - bool vector
+        # if True take source if False take dest
+        flags = np.array(edges_dirs)
+        source_nodes = sources * flags + dests * (1 - flags)
+        dest_nodes = sources * (1 - flags) + dests * flags
+        return source_nodes, dest_nodes
+
+    def get_edges_subset(self, source_flags, dest_flags):
+        subset = self.A[source_flags == 1, :][:, dest_flags == 1]
+        active_subset = self.A[source_flags == 1, :][:, dest_flags == 1]
+        edge_lists = [self.edges_repo[key] for key in active_subset.data]
+        return subset, sum(edge_lists, [])
+
+    def get_edges(self, source_flags, dest_flags, dirs=True):
+        active_subset = self.A[source_flags == 1, :][:, dest_flags == 1]
+        edge_lists = [self.edges_repo[key] for key in active_subset.data]
+        if dirs:
+            edge_dirs = [self.edges_directions[key]
+                         for key in active_subset.data]
+            return sum(edge_lists, []), sum(edge_dirs, [])
+        return sum(edge_lists, [])
+
+    def get_edges_probs(self, edges):
+        assert type(edges) == list
+        # multiply by layer weight! TODO
+        return self.e_probs[edges]
+
+    def get_edges_intensities(self, edges):
+        assert type(edges) == list
+        return self.e_intensities[edges]

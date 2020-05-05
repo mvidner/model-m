@@ -8,6 +8,6 @@ gg = NewGraph()
 gg.read_csv(prefix)
 print(nx.info(gg.G))
 
-e = gg.get_edges_for_node(5)
+#e = gg.get_edges_for_node(5)
 
-print(e)
+#print(e)
