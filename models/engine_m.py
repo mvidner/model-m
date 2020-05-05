@@ -51,21 +51,33 @@ class EngineM(SequentialEngine):
         dest_candidate_flags = self.memberships[dest_candidate_states, :, :].reshape(
             len(dest_candidate_states), self.num_nodes).sum(axis=0)
         #dest_candidate_indices = dest_candidate_flags.nonzero()[0]
+        e = time.time() 
+        print("Create flags", e-s) 
 
+        s = time.time() 
         possibly_active_edges, possibly_active_edges_dirs = self.graph.get_edges(
             source_candidate_flags,
             dest_candidate_flags
         )
         num_possibly_active_edges = len(possibly_active_edges)
+        e = time.time() 
+        print("Select possibly active", e-s) 
 
+        s = time.time() 
         if num_possibly_active_edges == 0:
             return np.zeros((self.num_nodes, 1))
 
         # for each possibly active edge flip coin
         r = np.random.rand(num_possibly_active_edges)
+        e = time.time() 
+        print("Random numbers: ", e-s) 
+        s = time.time() 
         # edges probs
         p = self.graph.get_edges_probs(possibly_active_edges)
+        e = time.time() 
+        print("Get intensities:", e-s) 
 
+        s = time.time() 
         active_indices = list((r < p).nonzero()[0])
         num_active_edges = len(active_indices)
         if num_active_edges == 0:
