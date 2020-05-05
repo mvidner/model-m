@@ -43,13 +43,14 @@ class EngineM(SequentialEngine):
         # source (the one who is going to be infected)
         # dest (the one who can offer infection)
 
+        s = time.time() 
         source_candidate_flags = self.memberships[source_candidate_states, :, :].reshape(
             len(source_candidate_states), self.num_nodes).sum(axis=0)
-        source_candidate_indices = source_candidate_flags.nonzero()[0]
+        #source_candidate_indices = source_candidate_flags.nonzero()[0]
 
         dest_candidate_flags = self.memberships[dest_candidate_states, :, :].reshape(
             len(dest_candidate_states), self.num_nodes).sum(axis=0)
-        dest_candidate_indices = dest_candidate_flags.nonzero()[0]
+        #dest_candidate_indices = dest_candidate_flags.nonzero()[0]
 
         possibly_active_edges, possibly_active_edges_dirs = self.graph.get_edges(
             source_candidate_flags,
@@ -79,7 +80,10 @@ class EngineM(SequentialEngine):
                                 (possibly_active_edges))
             active_edges_dirs = list(itemgetter(
                 *active_indices)(possibly_active_edges_dirs))
+        e = time.time()
+        print("Select active edges:", e-s)
 
+        s = time.time() 
         # get source and dest nodes for active edges
         # source and dest met today, dest is possibly infectious, source was possibly infected
         source_nodes, dest_nodes = self.graph.get_edges_nodes(
@@ -88,12 +92,16 @@ class EngineM(SequentialEngine):
         contact_indices = list(zip(dest_nodes, source_nodes))
         self.contact_history.append(contact_indices)
 
-        print("Potkali se u kolina:", contact_indices)
+        # print("Potkali se u kolina:", contact_indices)
         print("Todays contact num:",  len(contact_indices))
+        e = time.time() 
+        print("Archive active edges:", e-s)
+        
 
         # restrict the selection to only relevant states
         # (ie. candidates can be both E and I, relevant are only I)
         # candidates are those who will be possibly relevant in future
+        s = time.time() 
         dest_flags = self.memberships[dest_states, :, :].reshape(
             len(dest_states), self.num_nodes).sum(axis=0)
         source_flags = self.memberships[source_states, :, :].reshape(
@@ -113,7 +121,10 @@ class EngineM(SequentialEngine):
             relevant_edges_dirs[relevant_edges.index(e)]
             for e in active_relevant_edges
         ]
+        e = time.time() 
+        print("Get relevant active edges:", e-s) 
 
+        s = time.time() 
         intensities = self.graph.get_edges_intensities(
             active_relevant_edges).reshape(-1, 1)
         relevant_sources, relevant_dests = self.graph.get_edges_nodes(
@@ -151,4 +162,6 @@ class EngineM(SequentialEngine):
 
         result = np.zeros(self.num_nodes)
         result[relevant_sources_unique] = 1 - prob_of_no_infection
+        e = time.time() 
+        print("Comp probability", e-s) 
         return result.reshape(self.num_nodes, 1)
