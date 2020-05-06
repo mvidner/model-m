@@ -91,7 +91,7 @@ class LightGraph:
         }
         key = 1
         # working matrix
-        tmpA = lil_matrix((self.num_nodes, self.num_nodes), dtype=int)
+        tmpA = lil_matrix((self.num_nodes, self.num_nodes), dtype="uint32")
 
         forward_edge = True
         backward_edge = False
@@ -116,8 +116,8 @@ class LightGraph:
                       np.where(self.nodes_id == row.vertex2))
                 exit()
 
-            i_row, i_col = min(i_row, i_col), max(i_row, i_col)    
-                
+            i_row, i_col = min(i_row, i_col), max(i_row, i_col)
+
             self.e_source[i] = i_row
             self.e_dest[i] = i_col
 
@@ -146,10 +146,28 @@ class LightGraph:
                 print("\nEdges loaded", i)
 
         # create matrix (A[i,j] is an index of edge (i,j) in array of edges)
-        print("\nConverting to csr ...", end="")
+        print("\nConverting lil_matrix A to csr ...", end="")
         self.A = csr_matrix(tmpA)
         print("level done")
         del tmpA
+
+        print("Converting edges_repo to numpy array ...", end="")
+        data = [None]
+        for i_key in range(1, key):
+            value_list = self.edges_repo[i_key]
+            # if len(value_list) > 1:
+            #     print(i_key)
+            data.append(np.array(value_list, dtype="uint32"))
+        self.edges_repo = np.array(data, dtype=object)
+        print("level done")
+
+        print("Converting edges_directions to numpy bool array ... ", end="")
+        data = [False]
+        for i_key in range(1, key):
+            data.append(self.edges_directions[i_key])
+        self.edges_directions = np.array(data, dtype=bool)
+        print("level done")
+        print("LightGraph is ready to use.")
 
     @property
     def number_of_nodes(self):
