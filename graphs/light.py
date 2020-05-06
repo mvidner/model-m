@@ -30,7 +30,7 @@ class LightGraph:
 
         self.layer_ids = layers_to_add['id']
         self.layer_name = layers_to_add['name']
-        self.layer_weights = layers_to_add['weight']
+        self.layer_weights = np.array(layers_to_add['weight'])
 
         # nodes
         # select categorical columns
@@ -217,7 +217,9 @@ class LightGraph:
     def get_edges_probs(self, edges):
         assert type(edges) == np.ndarray
         # multiply by layer weight! TODO
-        return self.e_probs[edges]
+        layer_types = self.e_types[edges]
+        weights = self.layer_weights[layer_types]
+        return self.e_probs[edges] * weights
 
     def get_edges_intensities(self, edges):
         assert type(edges) == np.ndarray
