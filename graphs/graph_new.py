@@ -90,10 +90,10 @@ class NewGraph:
         
     
     def read_pickle(self, path_to_pickle='graph.pickle'):
-        G = nx.read_gpickle(path_to_pickle)
+        self.G = nx.read_gpickle(path_to_pickle)
         
     def write_pickle(self, path_to_pickle='graph.pickle'):
-        nx.write_gpickle(G, path_to_pickle)
+        nx.write_gpickle(self.G, path_to_pickle)
         
     def close_layers(self, list_of_layers, coefs=None):
         for idx, name in enumerate(list_of_layers):
