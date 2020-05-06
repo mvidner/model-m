@@ -153,11 +153,13 @@ class LightGraph:
 
         print("Converting edges_repo to numpy array ...", end="")
         data = [None]
+        subedges_counts = [0]
         for i_key in range(1, key):
             value_list = self.edges_repo[i_key]
             # if len(value_list) > 1:
             #     print(i_key)
             data.append(np.array(value_list, dtype="uint32"))
+            subedges_counts.append(len(value_list))
         self.edges_repo = np.array(data, dtype=object)
         print("level done")
 
@@ -166,7 +168,14 @@ class LightGraph:
         for i_key in range(1, key):
             data.append(self.edges_directions[i_key])
         self.edges_directions = np.array(data, dtype=bool)
+        # uint16 is enough, should be numbers < 100 (todo: find the max number for hodonin)
+        self.subedges_counts = np.array(subedges_counts, dtype="uint16")
         print("level done")
+
+        print("Control check ... ", end="")
+        for i_key in range(1, key):
+            assert len(self.edges_repo[i_key]) == self.subedges_counts[i_key]
+        print("ok")
         print("LightGraph is ready to use.")
 
     @property
@@ -182,7 +191,7 @@ class LightGraph:
         # sources, dests numpy vectors on node_ids
         # edges_dirs - bool vector
         # if True take source if False take dest
-        flags = np.array(edges_dirs)
+        flags = edges_dirs
         source_nodes = sources * flags + dests * (1 - flags)
         dest_nodes = sources * (1 - flags) + dests * flags
         return source_nodes, dest_nodes
@@ -194,12 +203,18 @@ class LightGraph:
 
     def get_edges(self, source_flags, dest_flags, dirs=True):
         active_subset = self.A[source_flags == 1, :][:, dest_flags == 1]
-        edge_lists = [self.edges_repo[key] for key in active_subset.data]
+        active_edges_indices = active_subset.data
+        edge_lists = self.edges_repo[active_edges_indices]
+        result = np.concatenate(edge_lists)
         if dirs:
+            dirs_values = self.edges_directions[active_edges_indices]
+            print(dirs_values)
+            print(len(dirs_values), len(active_edges_indices))
+            exit()
             edge_dirs = [[self.edges_directions[key]] * len(self.edges_repo[key])
                          for key in active_subset.data]
-            return sum(edge_lists, []), sum(edge_dirs, [])
-        return sum(edge_lists, [])
+            return result, sum(edge_dirs, [])
+        return result
 
     def get_edges_probs(self, edges):
         assert type(edges) == list
