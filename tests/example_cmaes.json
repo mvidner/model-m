@@ -1,0 +1,16 @@
+{
+  "method": "CMA-ES",
+  "description": "Contains initial hyperparam values for cma-es search and algorithm config (see pycma docs).",
+  "MODEL": {
+    "beta": 0.4,
+    "sigma": 0.2,
+    "asymptomatic_rate": 0.5,
+    "symptoms_manifest_rate": 0.4
+  },
+  "SIGMA": 0.01,
+  "CMA": {
+    "options": {
+      "maxfevals": 20
+    }
+  }
+}
