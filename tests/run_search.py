@@ -37,11 +37,11 @@ def load_gold_data(csv_path, first_n_zeros=0):
 @click.option('--run_n_times', default=1)
 @click.option('--first_n_zeros', default=5)
 @click.option('--return_func', default='rmse')
-@click.option('--fit_data', default='litovel.csv')
+@click.option('--fit_data', default='../data/litovel.csv')
 @click.option('--out_dir',  default=f'./search_{datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")}')
 @click.argument('filename', default="town0.ini")
 @click.argument('hyperparam_filename', default="example_gridsearch.json")
-def test(set_random_seed, policy, n_jobs, run_n_times, first_n_zeros, return_func, fit_data, out_dir,
+def run(set_random_seed, policy, n_jobs, run_n_times, first_n_zeros, return_func, fit_data, out_dir,
          filename, hyperparam_filename):
 
     random_seed = 42 if set_random_seed else random.randint(0, 10000)
@@ -86,4 +86,4 @@ def test(set_random_seed, policy, n_jobs, run_n_times, first_n_zeros, return_fun
 
 
 if __name__ == "__main__":
-    test()
+    run()
