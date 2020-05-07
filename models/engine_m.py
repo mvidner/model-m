@@ -4,6 +4,7 @@ import scipy as scipy
 import scipy.integrate
 import networkx as nx
 import time
+import numpy_indexed as npi
 from operator import itemgetter
 
 from history_utils import TimeSeries, TransitionHistory
@@ -134,8 +135,14 @@ class EngineM(SequentialEngine):
         # print(active_relevant_edges.shape)
         # print(relevant_edges.shape)
         # print((active_relevant_edges[:, np.newaxis] == relevant_edges).shape)
-        where_indices = (
-            active_relevant_edges[:, np.newaxis] == relevant_edges).nonzero()[1]
+        try:
+            where_indices = (
+                active_relevant_edges[:, np.newaxis] == relevant_edges).nonzero()[1]
+        except AttributeError:
+            print(active_relevant_edges.shape)
+            print(relevant_edges.shape)
+            pirnt(active_relevant_edges[:, np.newaxis] == relevant_edges)
+            exit()
         #        print(where_indices, len(where_indices))
         # always one index! (sources and dest must be disjunct)
         active_relevant_edges_dirs = relevant_edges_dirs[where_indices]
