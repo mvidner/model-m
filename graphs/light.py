@@ -12,6 +12,8 @@ class LightGraph:
             np.random.seed(random_seed)
         self.edge_repo = None
         self.A = None
+        self.invalids = None
+        self.quarantined_probs_repo = {}
 
     def read_csv(self,
                  path_to_nodes='p.csv',
@@ -82,6 +84,8 @@ class LightGraph:
         self.e_intensities = np.empty(n_edges)
         self.e_source = np.empty(n_edges, dtype="uint32")
         self.e_dest = np.empty(n_edges, dtype="uint32")
+        # if value == 2 than is valid, other numbers prob in quarantine
+        self.e_valid = 2 * np.ones(n_edges)
         # edges repo
         self.edges_repo = {
             0: None
@@ -214,13 +218,67 @@ class LightGraph:
             return result, result_dirs
         return result
 
+    def get_nodes_edges(self, nodes):
+        active_subset = self.A[nodes]
+        active_edges_indices = active_subset.data
+        if len(active_edges_indices) == 0:
+            return np.array([])
+        edge_lists = self.edges_repo[active_edges_indices]
+        result = np.concatenate(edge_lists)
+        return result
+
     def get_edges_probs(self, edges):
         assert type(edges) == np.ndarray
         # multiply by layer weight! TODO
         layer_types = self.e_types[edges]
+        probs = self.e_probs[edges] * (self.e_valid[edges] == 2)
+        probs += self.e_valid[edges] * (self.e_valid[edges] != 2)
         weights = self.layer_weights[layer_types]
-        return self.e_probs[edges] * weights
+        return probs * weights
 
     def get_edges_intensities(self, edges):
         assert type(edges) == np.ndarray
         return self.e_intensities[edges]
+
+    def modify_layers_for_nodes(self, node_id_list, what_by_what, is_quarrantined=None):
+        """ changes edges' weights """
+
+        if not what_by_what:
+            return
+        relevant_edges = np.unique(self.get_nodes_edges(node_id_list))
+        valid = self.e_valid[relevant_edges]
+        relevant_edges = relevant_edges[valid == 2]
+        edges_types = self.e_types[relevant_edges]
+
+        print("relevant edges", len(relevant_edges))
+        # print(edges_types)
+
+        for layer_type, coef in what_by_what.items():
+            # print(layer_type)
+            edges_on_this_layer = relevant_edges[edges_types == layer_type]
+            # modify their probabilities
+            self.e_valid[edges_on_this_layer] = self.e_probs[edges_on_this_layer] * coef
+            # use out in clip to work inplace
+            np.clip(self.e_valid[edges_on_this_layer], 0.0,
+                    1.0, out=self.e_valid[edges_on_this_layer])
+
+    def recover_edges_for_nodes(self, release, normal_life, is_quarrantined):
+
+        relevant_edges = np.unique(self.get_nodes_edges(release))
+        # from source and dest nodes select those who are not in quarantine
+        source_nodes = self.e_source[relevant_edges]
+        dest_nodes = self.e_source[relevant_edges]
+
+        is_quarrantined_source = is_quarrantined[source_nodes]
+        is_quarrantined_dest = is_quarrantined[dest_nodes]
+
+        # leave only edges where both nodes are free
+        relevant_edges = relevant_edges[np.logical_not(
+            np.logical_or(is_quarrantined_source, is_quarrantined_dest))]
+
+        # recover probs
+        self.e_valid[relevant_edges] = 2
+
+    def final_adjacency_matrix(self):
+        """ just for backward compatibility """
+        return self
