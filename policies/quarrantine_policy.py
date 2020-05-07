@@ -24,6 +24,7 @@ class QuarrantineDepo:
 def quarrantine_policy_setup(graph, normal_life):
 
     risk_for_layers = {
+        0: 0.0,  # never appears 
         1: 1.0,  # family
         2: 0.8,
         3: 0.8,
@@ -39,7 +40,7 @@ def quarrantine_policy_setup(graph, normal_life):
         13: 0.3,  # public transport contacts
         14: 0.1  # contacts of customers at shops
     }
-    riskiness = np.array([risk_for_layers[i] for i in range(1, 14)])
+    riskiness = np.array([risk_for_layers[i] for i in range(0, 15)])
 
     return {
         "quarrantine_depo": QuarrantineDepo(graph.number_of_nodes()),
@@ -64,6 +65,33 @@ def quarrantine_policy_setup(graph, normal_life):
         "threashold": 0.7,
         "days_back": 7,
         "riskiness": riskiness
+    }
+
+def all_risky_setup(graph, normal_life):
+
+    return {
+        "quarrantine_depo": QuarrantineDepo(graph.number_of_nodes()),
+        "normal_life": normal_life,
+        "quarrantine_coefs": {
+            1: 100,  # family
+            2: 0,
+            3: 0,
+            4: 0,  # lower elementary children
+            5: 0,  # lower elementary teachers to children
+            6: 0,  # higher elementary children
+            7: 0,  # higher elementary teachers to children
+            8: 0,  # highschool children
+            9: 0,  # highschool teachers to children
+            10: 0.1,  # friend and relative encounetr
+            11: 0,  # work contacts
+            12: 0,  # workers to clients
+            13: 0,  # public transport contacts
+            14: 0  # contacts of customers at shops
+        },
+        "duration": 14,
+        "threashold": 0.7,
+        "days_back": 7,
+        "riskiness": None
     }
 
 
@@ -213,9 +241,9 @@ def _filter_contact_history(contact_history, detected_nodes, graph, riskiness):
             return relevant_contacts
 
         r = np.random.rand(len(relevant_contacts))
-        print(r)
-        print(relevant_contacts)
-        print(r[0])
+        #print(r)
+        #print(relevant_contacts)
+        #print(r[0])
 
         # for i, (contact, threashold) in enumerate(relevant_contacts):
         #     print(i, contact, threashold, r[i])
