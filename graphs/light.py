@@ -282,3 +282,6 @@ class LightGraph:
     def final_adjacency_matrix(self):
         """ just for backward compatibility """
         return self
+
+    def get_layer_for_edge(self, e):
+        return self.e_types[e]

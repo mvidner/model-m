@@ -103,7 +103,7 @@ class EngineM(SequentialEngine):
         source_nodes, dest_nodes = self.graph.get_edges_nodes(
             active_edges, active_edges_dirs)
         # add to contact_history (infectious node goes first!!!)
-        contact_indices = list(zip(dest_nodes, source_nodes))
+        contact_indices = list(zip(dest_nodes, source_nodes, active_edges))
         self.contact_history.append(contact_indices)
 
         # print("Potkali se u kolina:", contact_indices)
