@@ -25,22 +25,40 @@ class QuarrantineDepo:
 def quarrantine_policy_setup(graph, normal_life):
 
     risk_for_layers = {
-        1: 1.0,  # family
-        2: 0.8,
-        3: 0.8,
-        4: 0.8,  # lower elementary children
-        5: 0.8,  # lower elementary teachers to children
-        6: 0.8,  # higher elementary children
-        7: 0.8,  # higher elementary teachers to children
-        8: 0.8,  # highschool children
-        9: 0.8,  # highschool teachers to children
-        10: 0.5,  # friend and relative encounetr
-        11: 0.8,  # work contacts
-        12: 0.3,  # workers to clients
-        13: 0.3,  # public transport contacts
-        14: 0.1  # contacts of customers at shops
+        0: 0,
+        1: 1,  # family_inside
+        2: 1,  # family_in_house
+        3: 1,  # family_visitsors_to_visited
+        4: 0.8,  # nursary_children_inclass
+        5: 0.8,  # nursary_teachers_to_children
+        6: 0.8,  # lower_elementary_children_inclass
+        7: 0.8,  # lower_elementary_teachers_to_children
+        8: 0.8,  # higher_elementary_children_inclass
+        9: 0.8,  # higher_elementary_teachers_to_children
+        10: 0.8,  # highschool_children_inclass
+        11: 0.8,  # highschool_teachers_to_children
+        12: 0.8,  # nursary_children_coridors
+        13: 0.8,  # lower_elementary_children_coridors
+        14: 0.8,  # higher_elementary_children_coridors
+        15: 0.8,  # highschool_children_coridors
+        16: 0.8,  # nursary_teachers
+        17: 0.8,  # lower_elementary_teachers
+        18: 0.8,  # higher_elementary_teachers
+        19: 0.8,  # highschool_teachers
+        20: 0.4,  # leasure_outdoor
+        21: 0.5,  # leasure_visit
+        22: 0.3,  # leasure_pub
+        23: 0.8,  # work_contacts
+        24: 0.8,  # work_workers_to_clients_distant
+        25: 0.8,  # work_workers_to_clients_plysical_short
+        26: 0.8,  # work_workers_to_clients_physical_long
+        27: 0.1,  # public_transport
+        28: 0.1,  # shops_customers
+        29: 0.0,  # shops_workers_to_clients
+        30: 0.0,  # pubs_customers
+        31: 0.0,  # pubs_workers_to_clients
     }
-    riskiness = np.array([risk_for_layers[i] for i in range(1, 14)])
+    riskiness = np.array([risk_for_layers[i] for i in range(0, 32)])
 
     return {
         "quarrantine_depo": QuarrantineDepo(graph.number_of_nodes),
@@ -101,10 +119,9 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
     else:
         print("Warning: Contact tracing is OFF.")
 
-    # and not isinstance(graph, LightGraph):
-    if not isinstance(graph, GraphGenerator):
+    if not isinstance(graph, LightGraph):
         raise TypeError(
-            "This policy works with GraphGenerator derived graphs only.")
+            "This policy works with LightGraph derived graphs only.")
 
     last_day = _get_last_day(history, tseries, time)
 
@@ -203,7 +220,7 @@ def _filter_contact_history(contact_history, detected_nodes, graph, riskiness):
         return relevant_contacts
     else:
         relevant_contacts = [
-            (contact[1], _riskiness(contact, graph, riskiness))
+            (contact[1], _riskiness(contact[2], graph, riskiness))
             for contact_list in contact_history
             for contact in contact_list
             if contact[0] in detected_nodes
@@ -229,4 +246,4 @@ def _filter_contact_history(contact_history, detected_nodes, graph, riskiness):
 
 
 def _riskiness(contact, graph, riskiness):
-    return np.max(riskiness[graph.get_layers_for_edge(*contact)])
+    return np.max(riskiness[graph.get_layer_for_edge(contact)])

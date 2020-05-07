@@ -104,7 +104,7 @@ class EngineM(SequentialEngine):
         source_nodes, dest_nodes = self.graph.get_edges_nodes(
             active_edges, active_edges_dirs)
         # add to contact_history (infectious node goes first!!!)
-        contact_indices = list(zip(dest_nodes, source_nodes))
+        contact_indices = list(zip(dest_nodes, source_nodes, active_edges))
         self.contact_history.append(contact_indices)
 
         # print("Potkali se u kolina:", contact_indices)
@@ -140,7 +140,7 @@ class EngineM(SequentialEngine):
                 active_relevant_edges[:, np.newaxis] == relevant_edges).nonzero()[1]
         except AttributeError:
             print(active_relevant_edges.shape)
-            print(relevant_edges.shape)
+            print(relevant_edges.shap)
             pirnt(active_relevant_edges[:, np.newaxis] == relevant_edges)
             exit()
         #        print(where_indices, len(where_indices))
