@@ -2,6 +2,7 @@ import numpy as np
 from scipy.sparse import csr_matrix
 from functools import partial
 from graph_gen import GraphGenerator
+from light import LightGraph
 from extended_network_model import STATES as states
 
 
@@ -42,7 +43,7 @@ def quarrantine_policy_setup(graph, normal_life):
     riskiness = np.array([risk_for_layers[i] for i in range(1, 14)])
 
     return {
-        "quarrantine_depo": QuarrantineDepo(graph.number_of_nodes()),
+        "quarrantine_depo": QuarrantineDepo(graph.number_of_nodes),
         "normal_life": normal_life,
         "quarrantine_coefs": {
             1: 100,  # family
@@ -71,8 +72,7 @@ def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time, conta
 
     print("Hello world! This is the policy function speaking.")
 
-    # and not isinstance(graph, LightGraph):
-    if not isinstance(graph, GraphGenerator):
+    if not isinstance(graph, GraphGenerator) and not isinstance(graph, LightGraph):
         raise TypeError(
             "This policy works with GraphGenerator derived graphs only.")
 
@@ -89,7 +89,7 @@ def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time, conta
 
     _quarrantine_nodes(detected_nodes, policy_coefs, graph)
 
-    to_change = {"graph": graph.final_adjacency_matrix()}
+    to_change = {"graph": graph}
     return to_change
 
 
