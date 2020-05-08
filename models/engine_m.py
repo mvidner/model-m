@@ -137,10 +137,13 @@ class EngineM(SequentialEngine):
         try:
             where_indices = (
                 active_relevant_edges[:, np.newaxis] == relevant_edges).nonzero()[1]
-        except AttributeError:
+        except AttributeError as e:
+            print(e)
             print("Lucky we are ...")
             print(active_relevant_edges.shape)
+            np.save("active_relevant_edges", active_relevant_edges)
             print(relevant_edges.shape)
+            np.save("relevant_edges", relevant_edges)
             print(active_relevant_edges[:, np.newaxis] == relevant_edges)
             exit()
         #        print(where_indices, len(where_indices))
