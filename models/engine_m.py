@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import numpy_indexed as npi
 import scipy as scipy
 import scipy.integrate
 import networkx as nx
@@ -135,8 +136,11 @@ class EngineM(SequentialEngine):
         # print(relevant_edges.shape)
         # print((active_relevant_edges[:, np.newaxis] == relevant_edges).shape)
         try:
-            where_indices = (
-                active_relevant_edges[:, np.newaxis] == relevant_edges).nonzero()[1]
+            # this causes exceptin, but only sometimes ???
+            #where_indices = (
+            #    active_relevant_edges[:, np.newaxis] == relevant_edges).nonzero()[1]
+            # lets try npi instead
+            where_indices = npi.indices(relevant_edges, active_relevant_edges)
         except AttributeError as e:
             print(e)
             print("Lucky we are ...")
