@@ -65,6 +65,9 @@ class LightGraph:
 
         self.nodes = np.array(nodes.index)
         self.num_nodes = len(self.nodes)
+        if self.num_nodes > 65535:
+            raise ValueError(
+                "Number of nodes too high (we are using unit16, change it to unit32 for higher numbers of nodes.")
 
         self.ignored = set(external_nodes["id"])
 
@@ -78,14 +81,14 @@ class LightGraph:
         # fill edges to a graph
         n_edges = len(edges)
         # edges data"
-        self.e_types = np.empty(n_edges, dtype="uint16")
-        self.e_subtypes = np.empty(n_edges, dtype="uint16")
-        self.e_probs = np.empty(n_edges)
-        self.e_intensities = np.empty(n_edges)
-        self.e_source = np.empty(n_edges, dtype="uint32")
-        self.e_dest = np.empty(n_edges, dtype="uint32")
+        self.e_types = np.empty(n_edges, dtype="uint8")
+        self.e_subtypes = np.empty(n_edges, dtype="int16")
+        self.e_probs = np.empty(n_edges, dtype="float32")
+        self.e_intensities = np.empty(n_edges, dtype="float32")
+        self.e_source = np.empty(n_edges, dtype="uint16")
+        self.e_dest = np.empty(n_edges, dtype="uint16")
         # if value == 2 than is valid, other numbers prob in quarantine
-        self.e_valid = 2 * np.ones(n_edges)
+        self.e_valid = 2 * np.ones(n_edges, dtype="float32")
         # edges repo
         self.edges_repo = {
             0: None
