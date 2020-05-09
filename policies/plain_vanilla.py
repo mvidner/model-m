@@ -127,7 +127,7 @@ def open_all(graph, *args, **kwargs):
               "work_workers_to_clients_physical_long", "work_workers_to_clients_plysical_short",
               "public_transport",
               "shops_customers", "shops_workers_to_clients",
-              "pubs_workers_to_clients", "pubs_workers_to_clients"]
+              "pubs_customers", "pubs_workers_to_clients"]
     coefs = [1,
              1, 1,
              0.6, 0.6,
@@ -175,4 +175,5 @@ def policy(graph, policy_coefs, history, tseries, time, contact_history=None):
     ret2 = policy_coefs["policy_object"].run(graph, policy_coefs, history,
                                              tseries, time, contact_history)
 
+    print("---> ", graph.layer_weights[:32])
     return {**ret, **ret2}
