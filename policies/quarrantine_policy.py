@@ -64,26 +64,127 @@ def quarrantine_policy_setup(graph, normal_life):
         "quarrantine_depo": QuarrantineDepo(graph.number_of_nodes),
         "normal_life": normal_life,
         "quarrantine_coefs": {
-            1: 100,  # family
-            2: 0,
-            3: 0,
-            4: 0,  # lower elementary children
-            5: 0,  # lower elementary teachers to children
-            6: 0,  # higher elementary children
-            7: 0,  # higher elementary teachers to children
-            8: 0,  # highschool children
-            9: 0,  # highschool teachers to children
-            10: 0.1,  # friend and relative encounetr
-            11: 0,  # work contacts
-            12: 0,  # workers to clients
-            13: 0,  # public transport contacts
-            14: 0  # contacts of customers at shops
+        0: 0,
+        1: 100,  # family_inside
+        2: 100,  # family_in_house
+        3: 0.5,  # family_visitsors_to_visited
+        4: 0,  # nursary_children_inclass
+        5: 0,  # nursary_teachers_to_children
+        6: 0,  # lower_elementary_children_inclass
+        7: 0,  # lower_elementary_teachers_to_children
+        8: 0,  # higher_elementary_children_inclass
+        9: 0,  # higher_elementary_teachers_to_children
+        10: 0,  # highschool_children_inclass
+        11: 0,  # highschool_teachers_to_children
+        12: 0,  # nursary_children_coridors
+        13: 0,  # lower_elementary_children_coridors
+        14: 0,  # higher_elementary_children_coridors
+        15: 0,  # highschool_children_coridors
+        16: 0,  # nursary_teachers
+        17: 0,  # lower_elementary_teachers
+        18: 0,  # higher_elementary_teachers
+        19: 0,  # highschool_teachers
+        20: 0,  # leasure_outdoor
+        21: 0,  # leasure_visit
+        22: 0,  # leasure_pub
+        23: 0,  # work_contacts
+        24: 0,  # work_workers_to_clients_distant
+        25: 0,  # work_workers_to_clients_plysical_short
+        26: 0,  # work_workers_to_clients_physical_long
+        27: 0,  # public_transport
+        28: 0,  # shops_customers
+        29: 0.0,  # shops_workers_to_clients
+        30: 0.0,  # pubs_customers
+        31: 0.0,  # pubs_workers_to_clients
         },
         "duration": 14,
         "threashold": 0.7,
         "days_back": 7,
         "riskiness": riskiness
     }
+
+def quarrantine_policy_setup2(graph, normal_life):
+
+    risk_for_layers = {
+        0: 0,
+        1: 1,  # family_inside
+        2: 1,  # family_in_house
+        3: 1,  # family_visitsors_to_visited
+        4: 0.5,  # nursary_children_inclass
+        5: 0.5,  # nursary_teachers_to_children
+        6: 0.5,  # lower_elementary_children_inclass
+        7: 0.5,  # lower_elementary_teachers_to_children
+        8: 0.5,  # higher_elementary_children_inclass
+        9: 0.5,  # higher_elementary_teachers_to_children
+        10: 0.5,  # highschool_children_inclass
+        11: 0.5,  # highschool_teachers_to_children
+        12: 0.5,  # nursary_children_coridors
+        13: 0.5,  # lower_elementary_children_coridors
+        14: 0.5,  # higher_elementary_children_coridors
+        15: 0.5,  # highschool_children_coridors
+        16: 0.5,  # nursary_teachers
+        17: 0.5,  # lower_elementary_teachers
+        18: 0.5,  # higher_elementary_teachers
+        19: 0.5,  # highschool_teachers
+        20: 0.2,  # leasure_outdoor
+        21: 0.5,  # leasure_visit
+        22: 0.15,  # leasure_pub
+        23: 0.5,  # work_contacts
+        24: 0.5,  # work_workers_to_clients_distant
+        25: 0.5,  # work_workers_to_clients_plysical_short
+        26: 0.5,  # work_workers_to_clients_physical_long
+        27: 0.05,  # public_transport
+        28: 0.05,  # shops_customers
+        29: 0.0,  # shops_workers_to_clients
+        30: 0.0,  # pubs_customers
+        31: 0.0,  # pubs_workers_to_clients
+    }
+    riskiness = np.array([risk_for_layers[i] for i in range(0, 32)])
+
+    return {
+        "quarrantine_depo": QuarrantineDepo(graph.number_of_nodes),
+        "normal_life": normal_life,
+        "quarrantine_coefs": {
+        0: 0,
+        1: 100,  # family_inside
+        2: 100,  # family_in_house
+        3: 0.5,  # family_visitsors_to_visited
+        4: 0,  # nursary_children_inclass
+        5: 0,  # nursary_teachers_to_children
+        6: 0,  # lower_elementary_children_inclass
+        7: 0,  # lower_elementary_teachers_to_children
+        8: 0,  # higher_elementary_children_inclass
+        9: 0,  # higher_elementary_teachers_to_children
+        10: 0,  # highschool_children_inclass
+        11: 0,  # highschool_teachers_to_children
+        12: 0,  # nursary_children_coridors
+        13: 0,  # lower_elementary_children_coridors
+        14: 0,  # higher_elementary_children_coridors
+        15: 0,  # highschool_children_coridors
+        16: 0,  # nursary_teachers
+        17: 0,  # lower_elementary_teachers
+        18: 0,  # higher_elementary_teachers
+        19: 0,  # highschool_teachers
+        20: 0,  # leasure_outdoor
+        21: 0,  # leasure_visit
+        22: 0,  # leasure_pub
+        23: 0,  # work_contacts
+        24: 0,  # work_workers_to_clients_distant
+        25: 0,  # work_workers_to_clients_plysical_short
+        26: 0,  # work_workers_to_clients_physical_long
+        27: 0,  # public_transport
+        28: 0,  # shops_customers
+        29: 0.0,  # shops_workers_to_clients
+        30: 0.0,  # pubs_customers
+        31: 0.0,  # pubs_workers_to_clients
+        },
+        "duration": 14,
+        "threashold": 0.7,
+        "days_back": 7,
+        "riskiness": riskiness
+    }
+
+
 
 def all_risky_setup(graph, normal_life):
 
