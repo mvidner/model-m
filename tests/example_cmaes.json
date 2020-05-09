@@ -9,8 +9,6 @@
   },
   "SIGMA": 0.01,
   "CMA": {
-    "options": {
-      "maxfevals": 20
-    }
+      "maxfevals": 1000
   }
 }
