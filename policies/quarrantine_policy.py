@@ -85,6 +85,7 @@ def quarrantine_policy_setup(graph, normal_life):
         "riskiness": riskiness
     }
 
+
 def all_risky_setup(graph, normal_life):
 
     return {
@@ -132,9 +133,8 @@ def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time, conta
 
     print(f"Qurantined nodes: {detected_nodes}")
 
-    _quarrantine_nodes(detected_nodes, policy_coefs, graph)
+    to_change = _quarrantine_nodes(detected_nodes, policy_coefs, graph)
 
-    to_change = {"graph": graph}
     return to_change
 
 
@@ -257,9 +257,9 @@ def _filter_contact_history(contact_history, detected_nodes, graph, riskiness):
             return relevant_contacts
 
         r = np.random.rand(len(relevant_contacts))
-        #print(r)
-        #print(relevant_contacts)
-        #print(r[0])
+        # print(r)
+        # print(relevant_contacts)
+        # print(r[0])
 
         # for i, (contact, threashold) in enumerate(relevant_contacts):
         #     print(i, contact, threashold, r[i])
