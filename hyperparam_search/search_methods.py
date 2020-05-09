@@ -38,7 +38,7 @@ def _keys_with_evolved_vals(evolved_vals, keys):
     return {k: v for k, v in zip(keys, evolved_vals)}
 
 
-def cma_es(model_func, hyperparam_config, return_only_best=True, n_jobs=1):
+def cma_es(model_func, hyperparam_config, return_only_best=False, n_jobs=1):
     initial_kwargs = hyperparam_config["MODEL"]
 
     initial_vals = [v for v in initial_kwargs.values()]
@@ -59,7 +59,7 @@ def cma_es(model_func, hyperparam_config, return_only_best=True, n_jobs=1):
 
     if return_only_best:
         return {"hyperparams": x, "result": res[1]}  # best evaluated solution, its objective function value
-    return {"hyperparams": x, "es_data": res[1:]}  # full result
+    return {"hyperparams": x, "result": res[1], "es_data": res[2:]}  # full result
 
 
 hyperparam_search_zoo = {
