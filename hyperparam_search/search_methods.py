@@ -3,6 +3,7 @@ import numpy as np
 from functools import partial
 from multiprocessing import Pool
 
+from cma.optimization_tools import EvalParallel2
 from sklearn.model_selection import ParameterGrid
 
 
@@ -25,27 +26,40 @@ def perform_gridsearch(model_func, hyperparam_config, n_jobs=1):
     return res
 
 
-def cma_es(model_func, hyperparam_config, mean_of_runs=False, return_only_best=True, **kwargs):
-    initial_vals = [v for v in hyperparam_config["MODEL"].values()]
+def evaluate_with_params(param_array: np.ndarray, model_func, param_keys):
+    assert len(param_array) == len(param_keys)
+    hyperparam_dict = _keys_with_evolved_vals(param_array, param_keys)
+    model_res = model_func(hyperparam_dict)["result"]
+
+    return np.mean(model_res)
+
+
+def _keys_with_evolved_vals(evolved_vals, keys):
+    return {k: v for k, v in zip(keys, evolved_vals)}
+
+
+def cma_es(model_func, hyperparam_config, return_only_best=True, n_jobs=1):
+    initial_kwargs = hyperparam_config["MODEL"]
+
+    initial_vals = [v for v in initial_kwargs.values()]
     sigma = hyperparam_config["SIGMA"]
     cma_kwargs = hyperparam_config["CMA"]
 
-    def keys_with_evolved_vals(evolved_vals):
-        return {k: v for k, v in zip(hyperparam_config["MODEL"].keys(), evolved_vals)}
+    eval_func = partial(evaluate_with_params, model_func=model_func, param_keys=list(initial_kwargs.keys()))
 
-    def evaluate_with_params(param_array: np.ndarray):
-        assert len(param_array) == len(hyperparam_config["MODEL"])
-        hyperparam_dict = keys_with_evolved_vals(param_array)
-        model_res = model_func(hyperparam_dict)["result"]
+    es = cma.CMAEvolutionStrategy(initial_vals, sigma, cma_kwargs)
+    with EvalParallel2(fitness_function=eval_func, number_of_processes=n_jobs) as eval_all:
+        while not es.stop():
+            X = es.ask()
+            es.tell(X, eval_all(X))
+            es.disp()
 
-        return model_res if not mean_of_runs else np.mean(model_res)
-
-    es = cma.fmin(evaluate_with_params, initial_vals, sigma, **cma_kwargs)
-    x = keys_with_evolved_vals(es[0])
+    res = es.result
+    x = _keys_with_evolved_vals(res[0], initial_kwargs.keys())
 
     if return_only_best:
-        return {"result": x, "objective": es[1]}  # best evaluated solution, its objective function value
-    return {"result": x, "es_data": es[1:]}  # full cma.fmin output
+        return {"hyperparams": x, "result": res[1]}  # best evaluated solution, its objective function value
+    return {"hyperparams": x, "es_data": res[1:]}  # full result
 
 
 hyperparam_search_zoo = {

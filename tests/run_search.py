@@ -66,9 +66,12 @@ def run(set_random_seed, policy, n_jobs, run_n_times, first_n_zeros, return_func
             return_func_kwargs={"y_true": gold_data},
             run_n_times=run_n_times
         )
-
         if not os.path.exists(out_dir):
             os.mkdir(out_dir)
+
+        # TODO better solution later
+        if not isinstance(results, list):
+            results = [results]
 
         res_list = []
         for res in results:
@@ -78,9 +81,10 @@ def run(set_random_seed, policy, n_jobs, run_n_times, first_n_zeros, return_func
             res_list.append(res_row)
 
         fit_name = os.path.split(fit_data)[1].split('.')[0]
+        search_method = os.path.split(hyperparam_filename)[1].split('.')[0]
 
         df = pd.DataFrame(data=res_list)
-        df.to_csv(os.path.join(out_dir, f'result_{return_func}_{fit_name}_seed={random_seed}.csv'))
+        df.to_csv(os.path.join(out_dir, f'{search_method}_{return_func}_{fit_name}_seed={random_seed}.csv'))
 
     print(timeit.timeit(search_func, number=1))
 
