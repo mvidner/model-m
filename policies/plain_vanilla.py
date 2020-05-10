@@ -1,4 +1,5 @@
 from quarrantine_policy import quarrantine_policy_setup, quarrantine_with_contact_tracing_policy, simple_quarrantine_policy
+from quarrantine_policy import wee_cold_policy, wee_cold_policy_setup
 
 
 class PlainVanilla:
@@ -151,14 +152,32 @@ CALENDAR = {
     90: open_all
 }
 
+CALENDAR2 = {
+    5: switch_on_simple_policy,
+    66: switch_on_eva_policy,
+}
+
 
 def setup(graph, normal_life=None):
     policy_object = PlainVanilla()
     policy_coefs = quarrantine_policy_setup(graph, normal_life)
+    wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
     return {**policy_coefs,
             **{"policy_object": policy_object,
-               "calendar": CALENDAR}
+               "calendar": CALENDAR,
+               "wee_cold": wee_cold_coefs}
             }
+
+def setup_no_close(graph, normal_life=None):
+    policy_object = PlainVanilla()
+    policy_coefs = quarrantine_policy_setup(graph, normal_life)
+    return {**policy_coefs,
+            **{"policy_object": policy_object,
+               "calendar": CALENDAR2}
+            }
+
+
+
 
 
 def policy(graph, policy_coefs, history, tseries, time, contact_history=None):
@@ -172,7 +191,8 @@ def policy(graph, policy_coefs, history, tseries, time, contact_history=None):
         ret = calendar[today](graph, policy_coefs, history,
                               tseries, time, contact_history)
 
+    ret_wee = wee_cold_policy(graph, policy_coefs["wee_cold"], history, tseries, time, None)
     ret2 = policy_coefs["policy_object"].run(graph, policy_coefs, history,
                                              tseries, time, contact_history)
 
-    return {**ret, **ret2}
+    return {**ret, **ret_wee, **ret2}
