@@ -68,6 +68,8 @@ def _plot_lineplot(history_df, x, y, hue=None, save_path=None,  **kwargs):
 
     sns_plot = sns.lineplot(x=x, y=y, data=history_df,
                             hue=hue, estimator=np.median, **kwargs)
+    # dirty hack (ro)
+    sns_plot.set(ylim=(0,500))
     if save_path is not None:
         sns_plot.get_figure().savefig(save_path)
 
