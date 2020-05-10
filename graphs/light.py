@@ -225,6 +225,7 @@ class LightGraph:
         active_subset = self.A[nodes]
         active_edges_indices = active_subset.data
         if len(active_edges_indices) == 0:
+            print("Warning: no edges for nodes", nodes)
             return np.array([])
         edge_lists = self.edges_repo[active_edges_indices]
         result = np.concatenate(edge_lists)
@@ -268,9 +269,12 @@ class LightGraph:
     def recover_edges_for_nodes(self, release, normal_life, is_quarrantined):
 
         relevant_edges = np.unique(self.get_nodes_edges(release))
+        if len(relevant_edges) == 0:
+            print("Warning: recovering nodes with no edges")
+            return
         # from source and dest nodes select those who are not in quarantine
         source_nodes = self.e_source[relevant_edges]
-        dest_nodes = self.e_source[relevant_edges]
+        dest_nodes = self.e_dest[relevant_edges]
 
         is_quarrantined_source = is_quarrantined[source_nodes]
         is_quarrantined_dest = is_quarrantined[dest_nodes]
