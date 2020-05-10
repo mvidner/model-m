@@ -33,7 +33,7 @@ print(get_size(gg))
 print(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))	
 
 print(nx.info(gg.G))
-gg.write_pickle()
+#gg.write_pickle()
 
 #e = gg.get_edges_for_node(5)
 

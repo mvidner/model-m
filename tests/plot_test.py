@@ -20,7 +20,7 @@ variant_dict = {}
 for variant in variants_list:
     variant_dict[variant] = [
         f"{BASEDIR}/history_{variant}_{i}.csv"
-        for i in range(0, 100)
+        for i in range(0, 30)
     ]
 
 
