@@ -56,6 +56,42 @@ QUARANTINE_COEFS = {
         31: 0.0,  # pubs_workers_to_clients
 }
 
+WEE_COLD_COEFS = {
+        0: 0,
+        1: 100,  # family_inside
+        2: 100,  # family_in_house
+        3: 0.9,  # family_visitsors_to_visited
+        4: 0,  # nursary_children_inclass
+        5: 0,  # nursary_teachers_to_children
+        6: 0,  # lower_elementary_children_inclass
+        7: 0,  # lower_elementary_teachers_to_children
+        8: 0,  # higher_elementary_children_inclass
+        9: 0,  # higher_elementary_teachers_to_children
+        10: 0,  # highschool_children_inclass
+        11: 0,  # highschool_teachers_to_children
+        12: 0,  # nursary_children_coridors
+        13: 0,  # lower_elementary_children_coridors
+        14: 0,  # higher_elementary_children_coridors
+        15: 0,  # highschool_children_coridors
+        16: 0,  # nursary_teachers
+        17: 0,  # lower_elementary_teachers
+        18: 0,  # higher_elementary_teachers
+        19: 0,  # highschool_teachers
+        20: 0,  # leasure_outdoor
+        21: 0,  # leasure_visit
+        22: 0,  # leasure_pub
+        23: 0,  # work_contacts
+        24: 0,  # work_workers_to_clients_distant
+        25: 0,  # work_workers_to_clients_plysical_short
+        26: 0,  # work_workers_to_clients_physical_long
+        27: 0,  # public_transport
+        28: 0,  # shops_customers
+        29: 0.0,  # shops_workers_to_clients
+        30: 0.0,  # pubs_customers
+        31: 0.0,  # pubs_workers_to_clients
+}
+
+
 RISK_FOR_LAYERS = {
         0: 0,
         1: 1,  # family_inside
@@ -108,6 +144,19 @@ def quarrantine_policy_setup(graph, normal_life):
         "riskiness": riskiness
     }
 
+def wee_cold_policy_setup(graph, normal_life):
+
+
+    return {
+        "quarrantine_depo": QuarrantineDepo(graph.number_of_nodes),
+        "normal_life": normal_life,
+        "quarrantine_coefs": WEE_COLD_COEFS,
+        "duration": 100,
+        "threshold": 0.5
+    }
+
+
+
 def quarrantine_policy_setup2(graph, normal_life):
 
     risk_for_layers = RISK_FOR_LAYERS
@@ -142,6 +191,26 @@ def quarrantine_policy_setup2(graph, normal_life):
 
 
 
+def wee_cold_policy(graph, policy_coefs, history, tseries, time, contact_history=None):
+    
+    last_day = _get_last_day(history, tseries, time)
+
+    # those who became infected today
+    detected_nodes = [
+        node
+        for node, _, e in last_day
+        if e == states.I_s
+        if np.random.rand() < 0.7 
+    ]
+
+    print(f"Nodes with a wee cold: {len(detected_nodes)}")
+
+    to_change = _quarrantine_nodes(detected_nodes, policy_coefs, graph)
+
+    return to_change
+
+
+
 
 def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time, contact_history=None):
 
@@ -160,7 +229,8 @@ def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time, conta
         if e == states.I_d
     ]
 
-    print(f"Qurantined nodes: {detected_nodes}")
+
+    print(f"Qurantined nodes: {len(detected_nodes)}")
 
     to_change = _quarrantine_nodes(detected_nodes, policy_coefs, graph)
 
@@ -188,6 +258,7 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
         if e == states.I_d
     ]
 
+        
     if contact_history is not None:
         contacts = _select_contacts(
             detected_nodes, contact_history, graph,
@@ -195,8 +266,9 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
     else:
         contacts = []
 
-    print(f"Qurantined nodes: {detected_nodes}")
-    print(f"Qurantined contacts: {contacts}")
+    print(f"Qurantined nodes: {len(detected_nodes)}")
+    print(f"Qurantined contacts: {len(contacts)}")
+
 
     # friends of detected
     to_change = _quarrantine_nodes(

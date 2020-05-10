@@ -171,9 +171,11 @@ def setup(graph, normal_life=None):
 def setup_no_close(graph, normal_life=None):
     policy_object = PlainVanilla()
     policy_coefs = quarrantine_policy_setup(graph, normal_life)
+    wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
     return {**policy_coefs,
             **{"policy_object": policy_object,
-               "calendar": CALENDAR2}
+               "calendar": CALENDAR2,
+               "wee_cold": wee_cold_coefs}
             }
 
 

@@ -5,6 +5,9 @@ from calendar_policy import calendar_policy
 def litovel_setup(*args, **kwargs):
     return quarrantine_policy_setup(*args, **kwargs)
 
+#def litovel_all_risky_setup(*args, **kwargs):
+#    return all_risky_setup(*args, **kwargs)
+
 
 def litovel_policy(graph, policy_coefs, history, tseries, time, contact_history=None):
 
