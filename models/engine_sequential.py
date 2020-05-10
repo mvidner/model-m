@@ -130,11 +130,12 @@ class SequentialEngine(SeirsPlusLikeEngine):
         for self.t in range(1, T+1):
             if __debug__ and print_interval >= 0 and verbose:
                 print(flush=True)
+#                input()
             #            print(f"day {self.t}")
 
-            #print(self.t)
-            #print(len(self.state_counts[0]))
-            #print(len(self.states_history))
+            # print(self.t)
+            # print(len(self.state_counts[0]))
+            # print(len(self.states_history))
             if (self.t >= len(self.state_counts[0])):
                 # room has run out in the timeseries storage arrays; double the size of these arrays
                 self.increase_data_series_length()
@@ -145,7 +146,9 @@ class SequentialEngine(SeirsPlusLikeEngine):
             # run periodical update
             if self.periodic_update_callback:
                 changes = self.periodic_update_callback(
-                    self.history, self.tseries[:self.tidx+1], self.t, self.contact_history)
+                    self.history, self.tseries[:self.tidx +
+                                               1], self.t, self.contact_history,
+                    self.memberships)
 
                 if "graph" in changes:
                     print("CHANGING GRAPH")
@@ -171,7 +174,6 @@ class SequentialEngine(SeirsPlusLikeEngine):
                 for state in self.states:
                     self.state_counts[state][t] = self.state_counts[state][t-1]
         self.t = T
-
 
         if print_interval >= 0:
             self.print(verbose)
