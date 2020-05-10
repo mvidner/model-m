@@ -22,13 +22,14 @@ def plot_histories(*args, group_days: int = None, group_func: str = "max", **kwa
 
 
 def plot_mutliple_policies(policy_dict: Dict[str, List[str]],
-                           group_days: int = None, group_func: str = "max", value="all_infectious", **kwargs):
+                           group_days: int = None, group_func: str = "max", value="all_infectious", max_days=None, **kwargs):
     histories = []
     for policy_key, history_list in policy_dict.items():
         histories.extend([_history_with_fname(filename,
                                               group_days=group_days,
                                               group_func=group_func,
-                                              policy_name=policy_key)
+                                              policy_name=policy_key,
+                                              max_days=max_days)
                           for filename in history_list])
 
     history_one_df = pd.concat(histories)
@@ -63,7 +64,8 @@ def plot_state_histogram(filename: str, title: str = "Simulation", states: List[
     plt.show()
 
 
-def _plot_lineplot(history_df, x, y, hue=None, save_path=None, **kwargs):
+def _plot_lineplot(history_df, x, y, hue=None, save_path=None,  **kwargs):
+
     sns_plot = sns.lineplot(x=x, y=y, data=history_df,
                             hue=hue, estimator=np.median, **kwargs)
     if save_path is not None:
@@ -73,8 +75,8 @@ def _plot_lineplot(history_df, x, y, hue=None, save_path=None, **kwargs):
 
 
 def _history_with_fname(filename, group_days: int = None, group_func: str = "max", policy_name: str = None,
-                        keep_only_all: bool = True):
-    history = _load_history(filename)
+                        keep_only_all: bool = False, max_days=None):
+    history = _load_history(filename, max_days=max_days)
     if keep_only_all:
         history = history[["day", "all_infectious"]]
 
@@ -90,11 +92,13 @@ def _history_with_fname(filename, group_days: int = None, group_func: str = "max
     return history
 
 
-def _load_history(filename: str) -> pd.DataFrame:
+def _load_history(filename: str, max_days=None) -> pd.DataFrame:
     print(filename)
     history = pd.read_csv(filename, comment="#")
     history["all_infectious"] = history[[
         "I_n", "I_a", "I_s", "I_d", "E"]].sum(axis=1)
+    if max_days is not None:
+        history = history[:max_days]
     return history
 
 
