@@ -26,4 +26,4 @@ for variant in variants_list:
 
 plt.rcParams["figure.figsize"] = (20, 15)
 plot_mutliple_policies(variant_dict, group_days=2,
-                       group_func="max", save_path=filename)
+                       group_func="max", save_path=filename, ylim=(0,500))
