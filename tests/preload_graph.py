@@ -29,7 +29,7 @@ def main(filename, outputname, precalc_matrix):
         graph.final_adjacency_matrix()
 
     with open(outputname, 'wb') as f:
-        pickle.dump(graph, f)
+        pickle.dump(graph, f, protocol=4)
 
 
 if __name__ == "__main__":
