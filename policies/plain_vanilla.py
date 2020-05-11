@@ -182,7 +182,7 @@ def setup_no_close(graph, normal_life=None):
 
 
 
-def policy(graph, policy_coefs, history, tseries, time, contact_history=None):
+def policy(graph, policy_coefs, history, tseries, time, contact_history=None, memberships=None):
 
     calendar = policy_coefs["calendar"]
     today = int(time)
@@ -193,8 +193,8 @@ def policy(graph, policy_coefs, history, tseries, time, contact_history=None):
         ret = calendar[today](graph, policy_coefs, history,
                               tseries, time, contact_history)
 
-    ret_wee = wee_cold_policy(graph, policy_coefs["wee_cold"], history, tseries, time, None)
+    ret_wee = wee_cold_policy(graph, policy_coefs["wee_cold"], history, tseries, time, None, memberships)
     ret2 = policy_coefs["policy_object"].run(graph, policy_coefs, history,
-                                             tseries, time, contact_history)
+                                             tseries, time, contact_history, memberships)
 
     return {**ret, **ret_wee, **ret2}
