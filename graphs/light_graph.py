@@ -40,7 +40,7 @@ class LightGraph():
                  ):
 
         csv_hacking = {'na_values': 'undef', 'skipinitialspace': True}
-        nodes = pd.read_csv(path_to_nodes, index_col="type ", **csv_hacking)
+        nodes = pd.read_csv(path_to_nodes, index_col="type", **csv_hacking)
         edges = pd.read_csv(path_to_edges, **csv_hacking)
         layers = pd.read_csv(path_to_layers, **csv_hacking)
 
@@ -63,11 +63,11 @@ class LightGraph():
             col: list(nodes[col].cat.categories)
             for col in cat_columns
         }
-        print(cat_table)
+        #print(cat_table)
 
         nodes[cat_columns] = nodes[cat_columns].apply(
             lambda x: x.cat.codes)
-        pprint(nodes)
+        #pprint(nodes)
 
         # just test of conversion back
         # print(cat_columns)
@@ -100,7 +100,7 @@ class LightGraph():
         edges.drop(columns=["type", "subtype"], inplace=True)
         # TODO duplicity by tam mit nemeli!!!! hlidat
         edges.drop_duplicates(inplace=True, subset=["t", "e"])
-        print(edges)
+#        print(edges)
 
         g = edges.groupby("t").groups
         # for k, v in g.items():
@@ -126,6 +126,9 @@ class LightGraph():
         }
         self.A = self.computeA()
         #        print(self.A)
+
+    def number_of_nodes(self):
+        return self.num_nodes
 
     def computeA(self):
         # compute weights
@@ -155,6 +158,10 @@ class LightGraph():
 
     def __str__(self):
         return "\n".join([str(e) for e in self.G.edges(data=True)])
+
+    def final_adjacency_matrix(self):
+        return self.A
+
 
     def modify_layers_for_node(self, node_id, what_by_what):
         """ changes edges' weights """
