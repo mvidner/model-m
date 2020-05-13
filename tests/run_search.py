@@ -10,14 +10,14 @@ from config_utils import ConfigFile
 from hyperparam_search.hyperparam_utils import run_hyperparam_search
 
 
-def load_gold_data(csv_path, first_n_zeros=0):
+def load_gold_data(csv_path, first_n_zeros=0, data_column=2):
     df = pd.read_csv(csv_path)
     dates = pd.to_datetime(df["datum"])
     dates = dates - dates[0]
     dates = dates.apply(lambda t: t.days + 1)
 
     result = pd.DataFrame({"day": range(1, dates.max() + 1), "infected": pd.NA})
-    result.loc[result["day"].isin(dates), "infected"] = df.iloc[:, 2].to_list()
+    result.loc[result["day"].isin(dates), "infected"] = df.iloc[:, data_column].to_list()
 
     result.fillna(method='ffill', inplace=True)
 
@@ -36,12 +36,13 @@ def load_gold_data(csv_path, first_n_zeros=0):
 @click.option('--n_jobs', default=1)
 @click.option('--run_n_times', default=1)
 @click.option('--first_n_zeros', default=5)
+@click.option('--data_column', default=2)
 @click.option('--return_func', default='rmse')
 @click.option('--fit_data', default='../data/litovel.csv')
 @click.option('--out_dir',  default=f'./search_{datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")}')
 @click.argument('filename', default="town0.ini")
 @click.argument('hyperparam_filename', default="example_gridsearch.json")
-def run(set_random_seed, policy, n_jobs, run_n_times, first_n_zeros, return_func, fit_data, out_dir,
+def run(set_random_seed, policy, n_jobs, run_n_times, data_column, first_n_zeros, return_func, fit_data, out_dir,
          filename, hyperparam_filename):
 
     random_seed = 42 if set_random_seed else random.randint(0, 10000)
@@ -53,7 +54,7 @@ def run(set_random_seed, policy, n_jobs, run_n_times, first_n_zeros, return_func
     print(f"Running with n_jobs == {n_jobs}.")
 
     def search_func():
-        gold_data = load_gold_data(fit_data, first_n_zeros=first_n_zeros)["infected"].to_numpy()
+        gold_data = load_gold_data(fit_data, first_n_zeros=first_n_zeros, data_column=data_column)["infected"].to_numpy()
 
         results = run_hyperparam_search(
             filename,
