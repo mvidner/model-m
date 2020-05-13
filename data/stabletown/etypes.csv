@@ -29,7 +29,7 @@ id,name,weight
 27,shops_workers_to_clients,1
 28,pubs_customers,1
 29,pubs_workers_to_clients,1
-30,superspreader,1
+30,superspreader,0
 ,,
 ,,
 ,,
