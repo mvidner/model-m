@@ -235,7 +235,7 @@ def wee_cold_policy(graph, policy_coefs, history, tseries, time, contact_history
     return to_change
 
 
-def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time, contact_history=None):
+def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time, contact_history=None, memberships=None):
 
     print("Hello world! This is the policy function speaking.")
 
@@ -254,7 +254,7 @@ def simple_quarrantine_policy(graph, policy_coefs, history, tseries, time, conta
 
     print(f"Qurantined nodes: {len(detected_nodes)}")
 
-    _quarrantine_nodes(detected_nodes, policy_coefs, graph)
+    _quarrantine_nodes(detected_nodes, policy_coefs, graph, memberships)
     released = _tick(policy_coefs, memberships)
     to_change = _release_nodes(released, policy_coefs, graph)
 

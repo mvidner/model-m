@@ -79,7 +79,16 @@ def _run_models_from_config(cf: ConfigFile,
     print_interval = cf.section_as_dict("TASK").get("print_interval", 1)
     verbose = cf.section_as_dict("TASK").get("verbose", "Yes") == "Yes"
 
+    if "theta" in hyperparams:
+        hyperparams.update({"theta_E": hyperparams["theta"],
+                            "theta_Ia": hyperparams["theta"],
+                            "theta_In": hyperparams["theta"]
+                        })
+        del hyperparams["theta"]
+
+    
     model = load_model_from_config(cf, use_policy, model_random_seed, hyperparams=hyperparams)
+    
 
     # for different seeds
     def _run_one_model(seed):

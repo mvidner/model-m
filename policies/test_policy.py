@@ -4,7 +4,7 @@ from simple_policy import simple_policy
 
 
 @simple_policy
-def strong_policy(graph, history):
+def strong_policy(graph, policy_coefs, history, tseries, time, contact_history=None):
     """ people dected are disconnected from the graph """
     quarantine = {
         layer: 0 for layer in graph.layer_names

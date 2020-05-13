@@ -1,6 +1,9 @@
 # model-m
 Model of an imaginary town 
 
+TODO: rewrite README completely
+
+
 The model started as an extension of [seirsplus
 model](https://github.com/ryansmcgee/seirsplus) adding more states. Later it
 started to diverge by modifying the simulation cycle. Currently, the main

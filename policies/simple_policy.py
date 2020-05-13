@@ -9,7 +9,7 @@ def simple_policy(policy_func):
     """ decorarotor for creation of simple policies 
     that only change weights of contacts of detected people """
 
-    def wrapper(graph, history, tseries, time):
+    def wrapper(graph, policy_coefs, history, tseries, time, contact_history=None):
         print("Hello world! This is the policy function speaking.")
 
         # print("Current time:", time)
@@ -42,7 +42,7 @@ def simple_policy(policy_func):
         print(f"Qurantined nodes: {detected_nodes}")
         if detected_nodes:
 
-            quarantine = policy_func(graph, history)
+            quarantine = policy_func(graph, policy_coefs, history, tseries, time, contact_history)
 
             for node in detected_nodes:
                 # print(f"Node {node} goes to quarntine")

@@ -242,9 +242,9 @@ class GraphGenerator:
 
     def close_layers(self, list_of_layers, coefs=None):
         for idx, name in enumerate(list_of_layers):
-            print(f"Closing {name}")
             i = self.G.graph["layer_names"].index(name)
             self.G.graph["layer_probs"][i] = 0 if not coefs else coefs[idx]
+            print(f"Closing {name} (new value {self.G.graph['layer_probs'][i]})")
         self.A_valid = False
 
     def write_pickle(self, path):

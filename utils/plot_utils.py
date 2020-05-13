@@ -72,7 +72,7 @@ def _plot_lineplot(history_df, x, y, hue=None, save_path=None,  **kwargs):
     sns_plot.set(ylim=(0,500))
     if save_path is not None:
         sns_plot.get_figure().savefig(save_path)
-
+        
     plt.show()
 
 

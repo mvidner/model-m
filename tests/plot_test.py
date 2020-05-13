@@ -23,7 +23,11 @@ for variant in variants_list:
         for i in range(0, 30)
     ]
 
+#variant_dict["gold"] = [ "../data/litovel_plot.csv" ]
 
 plt.rcParams["figure.figsize"] = (20, 15)
-plot_mutliple_policies(variant_dict, group_days=2,
-                       group_func="max", save_path=filename)
+plot_mutliple_policies(variant_dict, group_days=None, 
+                       group_func="max",  save_path=f"{filename}_all_ill.png", max_days=55)
+
+#plot_mutliple_policies(variant_dict, group_days=None,
+#                       group_func="max", value="I_d", save_path=f"{filename}_Id.png")
