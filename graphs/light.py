@@ -6,7 +6,8 @@ from scipy.sparse import csr_matrix, lil_matrix
 
 
 class LightGraph:
-
+    # __slots__ = ['e_types', 'e_subtypes', 'e_probs', 'e_intensities', 'e_source', 'e_dest', 'e_valid', 'edges_repo',
+     # 'edges_directions', '__dict__'] # not really helpful here, beneficial only for lots of small objects
     def __init__(self, random_seed=None):
         if random_seed:
             np.random.seed(random_seed)
@@ -89,12 +90,12 @@ class LightGraph:
         self.e_dest = np.empty(n_edges, dtype="uint16")
         # if value == 2 than is valid, other numbers prob in quarantine
         self.e_valid = 2 * np.ones(n_edges, dtype="float32")
-        # edges repo
+        # edges repo which will eventually be list of sets and not a dict
         self.edges_repo = {
-            0: None
+            0: set()
         }
         self.edges_directions = {
-            0: None
+            0: set()
         }
         key = 1
         # working matrix
@@ -130,10 +131,8 @@ class LightGraph:
 
             if tmpA[i_row, i_col] == 0:
                 # first edge between (row, col)
-                self.edges_repo[key], self.edges_directions[key] = [
-                    i], forward_edge
-                self.edges_repo[key +
-                                1], self.edges_directions[key+1] = [i], backward_edge
+                self.edges_repo[key], self.edges_directions[key] = {i}, forward_edge
+                self.edges_repo[key + 1], self.edges_directions[key+1] = {i}, backward_edge
                 tmpA[i_row, i_col] = key
                 tmpA[i_col, i_row] = key + 1
                 key += 2
@@ -142,10 +141,10 @@ class LightGraph:
                 print("+", end="")
                 key_forward = tmpA[i_row, i_col]
                 key_backward = tmpA[i_col, i_row]
-                self.edges_repo[key_forward].append(i)
+                self.edges_repo[key_forward].add(i)
                 assert self.edges_directions[key_forward] == forward_edge
                 # self.edges_directions[key_forward].append(forward_edge)
-                self.edges_repo[key_backward].append(i)
+                self.edges_repo[key_backward].add(i)
                 # self.edges_directions[key_backward].append(backward_edge)
                 assert self.edges_directions[key_backward] == backward_edge
 
@@ -158,24 +157,29 @@ class LightGraph:
         print("level done")
         del tmpA
 
-        print("Converting edges_repo to numpy array ...", end="")
-        data = [None]
-        subedges_counts = [0]
-        for i_key in range(1, key):
-            value_list = self.edges_repo[i_key]
-            # if len(value_list) > 1:
-            #     print(i_key)
-            data.append(np.array(value_list, dtype="uint32"))
-            subedges_counts.append(len(value_list))
-        self.edges_repo = np.array(data, dtype=object)
+
+        print("Converting edges_repo to list ...", end="")
+        # data = [None]
+        # subedges_counts = [0]
+        # for i_key in range(1, key):
+        #     value_set = self.edges_repo[i_key]
+        #     # if len(value_list) > 1:
+        #     #     print(i_key)
+        #     data.append(value_set)
+        #     subedges_counts.append(len(value_set))
+        # self.edges_repo = data
+        # the above can be replaced by
+        self.edges_repo = list(self.edges_repo.values())
+        subedges_counts = [len(s) for s in self.edges_repo]
         print("level done")
 
-        print("Converting edges_directions to numpy bool array ... ", end="")
+
+        print("Converting edges_directions to list ... ", end="")
         data = [None]
         for i_key in range(1, key):
             dir_list = [self.edges_directions[i_key]] * subedges_counts[i_key]
-            data.append(np.array(dir_list, dtype="bool"))
-        self.edges_directions = np.array(data, dtype=object)
+            data.append(dir_list)
+        self.edges_directions = data
         print("level done")
 
         print("Control check ... ", end="")
@@ -213,11 +217,11 @@ class LightGraph:
         active_edges_indices = active_subset.data
         if len(active_edges_indices) == 0:
             return np.array([]), np.array([])
-        edge_lists = self.edges_repo[active_edges_indices]
-        result = np.concatenate(edge_lists)
+        edge_lists = (self.edges_repo[i] for i in active_edges_indices)
+        result = np.fromiter(set.union(*edge_lists), dtype='uint32')
         if dirs:
-            dirs_lists = self.edges_directions[active_edges_indices]
-            result_dirs = np.concatenate(dirs_lists)
+            dirs = (b for i in active_edges_indices for b in self.edges_directions[i] )
+            result_dirs = np.fromiter(dirs, dtype='bool')
             return result, result_dirs
         return result
 
@@ -227,8 +231,8 @@ class LightGraph:
         if len(active_edges_indices) == 0:
             print("Warning: no edges for nodes", nodes)
             return np.array([])
-        edge_lists = self.edges_repo[active_edges_indices]
-        result = np.concatenate(edge_lists)
+        edge_lists = (self.edges_repo[i] for i in active_edges_indices)
+        result = np.fromiter(set.union(*edge_lists), dtype='uint32')
         return result
 
     def get_edges_probs(self, edges):
