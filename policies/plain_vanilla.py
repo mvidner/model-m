@@ -25,17 +25,23 @@ def switch_on_eva_policy(graph, policy_coefs, *args, **kwargs):
     policy_object.set_policy(quarrantine_with_contact_tracing_policy)
     return {}
 
-
 def close_schools(graph, *args, **kwargs):
-    close = ["nursary_children_inclass", "nursary_teachers_to_children",
-             "lower_elementary_children_inclass", "lower_elementary_teachers_to_children",
-             "higher_elementary_children_inclass", "higher_elementary_teachers_to_children",
-             "highschool_children_inclass", "highschool_teachers_to_children",
-             "nursary_children_coridors", "lower_elementary_children_coridors",
-             "higher_elementary_children_coridors", "highschool_children_coridors",
-             "nursary_teachers", "lower_elementary_teachers",
-             "higher_elementary_teachers", "highschool_teachers"
-             ]
+    close = [
+        "nursary_children_inclass",
+        "nursary_teachers_to_children",
+        "lower_elementary_children_inclass",
+        "lower_elementary_teachers_to_children",
+        "higher_elementary_children_inclass",
+        "higher_elementary_teachers_to_children",
+        "highschool_children_inclass",
+        "highschool_teachers_to_children",
+        "nursary_children_coridors",
+        "elementary_children_coridors",
+        "highschool_children_coridors",
+        "nursary_teachers",
+        "elementary_teachers",
+        "highschool_teachers"
+    ]
     graph.close_layers(close)
     return {"graph": None}
 
@@ -86,10 +92,14 @@ def open_small_shops(graph, *args, **kwargs):
 
 def all_shops(graph, *args, **kwargs):
     change = ["family_visitsors_to_visited",
-              "higher_elementary_children_inclass", "higher_elementary_teachers_to_children",
-              "highschool_children_inclass", "highschool_teachers_to_children",
-              "higher_elementary_children_coridors", "highschool_children_coridors",
-              "higher_elementary_teachers", "highschool_teachers",
+              "higher_elementary_children_inclass", 
+              "higher_elementary_teachers_to_children",
+              "highschool_children_inclass", 
+              "highschool_teachers_to_children",
+              "elementary_children_coridors", 
+              "highschool_children_coridors",
+              "elementary_teachers", 
+              "highschool_teachers",
               "leasure_outdoor",
               "work_contacts", "work_workers_to_clients_distant",
               "work_workers_to_clients_physical_long", "work_workers_to_clients_plysical_short",
@@ -118,10 +128,9 @@ def open_all(graph, *args, **kwargs):
               "higher_elementary_children_inclass", "higher_elementary_teachers_to_children",
               "highschool_children_inclass", "highschool_teachers_to_children",
               "nursary_children_coridors",
-              "lower_elementary_children_coridors",
-              "higher_elementary_children_coridors",
+              "elementary_children_coridors",
               "highschool_children_coridors",
-              "nursary_teachers", "lower_elementary_teachers", "higher_elementary_teachers",
+              "nursary_teachers", "elementary_teachers", 
               "highschool_teachers"]
     opened = ["leasure_outdoor", "leasure_pub", "leasure_visit",
               "work_contacts", "work_workers_to_clients_distant",
@@ -134,8 +143,10 @@ def open_all(graph, *args, **kwargs):
              0.6, 0.6,
              0.2, 0.2,
              0.2, 0.2,
-             1, 0.5, 0.2, 0.2,
-             1, 0.5, 0.5, 0.5]
+             1, 
+             0.0,
+             0.2,
+             1, 0.5, 0.5]
     graph.close_layers(change+opened, coefs+[1]*len(opened))
     return {"graph": None}
 
