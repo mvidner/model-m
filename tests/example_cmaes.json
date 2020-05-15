@@ -7,7 +7,7 @@
     "asymptomatic_rate": 0.5,
     "symptoms_manifest_rate": 0.4
   },
-  "SIGMA": 0.01,
+  "SIGMA": 2,
   "CMA": {
       "maxfevals": 1000
   }

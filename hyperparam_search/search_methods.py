@@ -1,8 +1,8 @@
 import warnings
-from typing import Dict
 
 import cma
 import numpy as np
+import scipy.special
 from functools import partial
 from multiprocessing import Pool
 
@@ -34,6 +34,9 @@ def perform_gridsearch(model_func, hyperparam_config, n_jobs=1, output_file=None
 
 def evaluate_with_params(param_array: np.ndarray, model_func, param_keys):
     assert len(param_array) == len(param_keys)
+
+    param_array = scipy.special.expit(param_array)  # sigmoid scaling between 0 and 1
+
     hyperparam_dict = _keys_with_evolved_vals(param_array, param_keys)
     model_res = model_func(hyperparam_dict)["result"]
 
@@ -57,11 +60,17 @@ def _log_inidividual(output_file, x: np.ndarray, fitness, gen):
             of.write(f'{gen},{",".join(str(val) for val in x.tolist())},{fitness}\n')  # joined hyperparam values and fitness
 
 
+def _inverse_sigmoid(x):
+    return np.log(x/(1-x))
+
+
 def cma_es(model_func, hyperparam_config: dict, return_only_best=False, output_file=None, n_jobs=1):
     initial_kwargs = hyperparam_config["MODEL"]
     _init_output_file(output_file, initial_kwargs.keys())
 
-    initial_vals = [v for v in initial_kwargs.values()]
+    initial_vals = np.array([v for v in initial_kwargs.values()])
+    initial_vals = _inverse_sigmoid(initial_vals)
+
     sigma = hyperparam_config["SIGMA"]
     cma_kwargs = hyperparam_config["CMA"]
 
