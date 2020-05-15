@@ -146,6 +146,7 @@ model_definition = {
 
     "model_parameters": {
         "beta": (0,  "rate of transmission (exposure)"),
+        "beta_reduction": (0,  "todo"),
         "sigma": (0, "rate of infection (upon exposure)"),
         "gamma_In": (0, "rate of recovery (upon infection)"),
         "gamma_Is": (0, "rate of recovery (upon infection)"),
