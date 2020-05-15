@@ -137,6 +137,10 @@ class SequentialEngine(SeirsPlusLikeEngine):
 #                input()
             #            print(f"day {self.t}")
 
+            if self.t == 23:
+                self.beta *= self.beta_reduction 
+                self.beta = np.clip(self.beta, 0.0, 1.0)
+
             # print(self.t)
             # print(len(self.state_counts[0]))
             # print(len(self.states_history))
