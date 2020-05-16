@@ -10,10 +10,11 @@ from cma.optimization_tools import EvalParallel2
 from sklearn.model_selection import ParameterGrid
 
 
-def _run_model_with_hyperparams(model_func, hyperparams):
+def _run_model_with_hyperparams(model_func, hyperparams, output_file=None):
     print(f"Running with hyperparams: {hyperparams}", flush=True)
 
     res = model_func(hyperparams=hyperparams)
+    _log_inidividual(output_file, hyperparams.values(), res, 0)
     print(f"Finished run with hyperparams: {hyperparams}")
     return res
 
@@ -22,8 +23,8 @@ def perform_gridsearch(model_func, hyperparam_config, n_jobs=1, output_file=None
     grid = hyperparam_config["MODEL"]
     param_grid = ParameterGrid(grid)
 
-    if output_file is not None:
-        warnings.warn("Logging of all evaluations for gridsearch is not enabled.")
+    header = grid.keys()
+    _init_output_file(output_file, header)
 
     run_model = partial(_run_model_with_hyperparams, model_func)
     with Pool(processes=n_jobs) as pool:
@@ -54,10 +55,10 @@ def _init_output_file(output_file, header):
             of.write(f"gen,{key_string},fitness\n")
 
 
-def _log_inidividual(output_file, x: np.ndarray, fitness, gen):
+def _log_inidividual(output_file, x, fitness, gen):
     if output_file is not None:
         with open(output_file, 'a') as of:
-            of.write(f'{gen},{",".join(str(val) for val in x.tolist())},{fitness}\n')  # joined hyperparam values and fitness
+            of.write(f'{gen},{",".join(str(val) for val in x)},{fitness}\n')  # joined hyperparam values and fitness
 
 
 def _inverse_sigmoid(x):
@@ -86,12 +87,13 @@ def cma_es(model_func, hyperparam_config: dict, return_only_best=False, output_f
             es.disp()
 
             for x, f in zip(X, fitnesses):
-                _log_inidividual(output_file, x, f, gen_n)
+                _log_inidividual(output_file, scipy.special.expit(x).tolist(), f, gen_n)
 
             gen_n += 1
 
     res = es.result
     x = _keys_with_evolved_vals(res[0], initial_kwargs.keys())
+    x = scipy.special.expit(x)
 
     if return_only_best:
         return {"hyperparams": x, "result": res[1]}  # best evaluated solution, its objective function value
