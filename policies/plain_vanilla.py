@@ -63,7 +63,7 @@ def close_shops(graph, *args, **kwargs):
               "public_transport",
               "shops_customers", "shops_workers_to_clients",
               "pubs_customers", "pubs_workers_to_clients",
-              "leasure_outdoor", "leasure_pub", "leausure_visit"]
+              "leasure_outdoor", "leasure_pub", "leasure_visit"]
     coefs = [0.2, 0.5, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0, 0,
              0, 0, 0]
     graph.close_layers(weaken, coefs)

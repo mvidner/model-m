@@ -69,7 +69,7 @@ def _plot_lineplot(history_df, x, y, hue=None, save_path=None,  **kwargs):
     sns_plot = sns.lineplot(x=x, y=y, data=history_df,
                             hue=hue, estimator=np.median, **kwargs)
     # dirty hack (ro)
-    sns_plot.set(ylim=(0,500))
+#    sns_plot.set(ylim=(0,500))
     if save_path is not None:
         sns_plot.get_figure().savefig(save_path)
         
@@ -97,10 +97,14 @@ def _history_with_fname(filename, group_days: int = None, group_func: str = "max
 def _load_history(filename: str, max_days=None) -> pd.DataFrame:
     print(filename)
     history = pd.read_csv(filename, comment="#")
-    history["all_infectious"] = history[[
-        "I_n", "I_a", "I_s", "I_d", "E"]].sum(axis=1)
+    if "E" in history.columns:
+        history["all_infectious"] = history[[
+            "I_n", "I_a", "I_s", "I_d", "E"]].sum(axis=1)
     if max_days is not None:
         history = history[:max_days]
+    if "day" not in history.columns:
+        history["day"] = range(len(history))
+    print(history)
     return history
 
 
