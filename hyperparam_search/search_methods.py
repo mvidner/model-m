@@ -86,7 +86,7 @@ def cma_es(model_func, hyperparam_config: dict, return_only_best=False, output_f
             es.disp()
 
             for x, f in zip(X, fitnesses):
-                _log_inidividual(output_file, x, f, gen_n)
+                _log_inidividual(output_file, scipy.special.expit(x), f, gen_n)
 
             gen_n += 1
 
