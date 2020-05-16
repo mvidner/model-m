@@ -5,7 +5,7 @@
     "beta": 0.54,
     "beta_reduction": 0.38
   },
-  "SIGMA": 0.01,
+  "SIGMA": 2,
   "CMA": {
       "maxfevals": 10000,
       "popsize": 30
