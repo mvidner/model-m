@@ -92,6 +92,7 @@ def cma_es(model_func, hyperparam_config: dict, return_only_best=False, output_f
 
     res = es.result
     x = _keys_with_evolved_vals(res[0], initial_kwargs.keys())
+    x = scipy.special.expit(x)
 
     if return_only_best:
         return {"hyperparams": x, "result": res[1]}  # best evaluated solution, its objective function value
