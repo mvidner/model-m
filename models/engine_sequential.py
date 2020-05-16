@@ -28,6 +28,8 @@ class SequentialEngine(SeirsPlusLikeEngine):
         # add timeseries members
         for state in self.states:
             self.state_counts[state][self.t] = self.state_counts[state][self.t-1]
+            self.state_increments[state][self.t] = 0
+
         self.N[self.t] = self.N[self.t-1]
 #        self.states_history[self.t] = self.states_history[self.t-1]
         # self.meaneprobs[self.t] = self.meaneprobs[self.t-1]
@@ -97,6 +99,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.delta[e, node, :] = 1
             self.state_counts[s][self.t] -= 1
             self.state_counts[e][self.t] += 1
+            self.state_increments[e][self.t] += 1
 #            self.states_history[self.t][node] = e
             self.tidx += 1
             if self.tidx >= len(self.history):
@@ -182,6 +185,8 @@ class SequentialEngine(SeirsPlusLikeEngine):
                     self.increase_data_series_length()
                 for state in self.states:
                     self.state_counts[state][t] = self.state_counts[state][t-1]
+                    self.state_increments[state][t] = 0
+
         self.t = T
 
         if print_interval >= 0:
@@ -192,6 +197,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
     def increase_data_series_length(self):
         for state in self.states:
             self.state_counts[state].bloat(100)
+            self.state_increments[state].bloat(100)
         self.N.bloat(100)
 #        self.states_history.bloat(100)
         self.meaneprobs.bloat(100)
@@ -206,6 +212,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         self.history.finalize(self.tidx)
         for state in self.states:
             self.state_counts[state].finalize(self.t)
+            self.state_increments[state].finalize(self.t)
         self.N.finalize(self.t)
 #        self.states_history.finalize(self.t)
         self.meaneprobs.finalize(self.t)
@@ -226,14 +233,20 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
     def to_df(self):
         index = range(0, self.t+1)
-        columns = self.state_counts
+        col_increments = {
+            "inc_" + self.state_str_dict[x]: col_inc 
+            for x, col_inc in self.state_increments.items()
+        } 
+        col_states =  { 
+            self.state_str_dict[x]: count 
+            for x, count in self.state_counts.items() 
+        } 
+        columns = {**col_states, **col_increments}
+        columns["day"] = np.floor(index).astype(int)
         columns["mean_p_infection"] = self.meaneprobs
         columns["median_p_infection"] = self.medianeprobs
-        columns["day"] = index
         df = pd.DataFrame(columns, index=index)
         df.index.rename('T', inplace=True)
-        df.columns = [self.state_str_dict[x] for x in self.states] + \
-            ["mean_p_infection", "median_p_infection", "day"]
         return df
 
     def save(self, file_or_filename):
