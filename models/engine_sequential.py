@@ -4,6 +4,8 @@ import scipy as scipy
 import scipy.integrate
 import networkx as nx
 import time
+import os
+import gc
 
 from history_utils import TimeSeries, TransitionHistory
 from engine_seirspluslike import SeirsPlusLikeEngine
@@ -46,9 +48,10 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
         propensities = np.column_stack(plist)
 
-        assert np.all(propensities >= 0) and np.all(propensities <= 1), \
-            f">=0 & <= 0 failed for {propensities[propensities >= 0]} a \
-            {propensities[propensities<=1]} "
+        #assert np.all(propensities >= 0) and np.all(propensities <= 1), \
+        #    f">=0 & <= 1 failed for {propensities[propensities >= 0]} a \
+        #    {propensities[propensities<=1]} "
+
         # check
         # print(propensities.shape)
         # print(self.memberships.shape)
@@ -128,10 +131,15 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.print(verbose)
 
         for self.t in range(1, T+1):
+#            os.system("free -h")
             if __debug__ and print_interval >= 0 and verbose:
                 print(flush=True)
 #                input()
             #            print(f"day {self.t}")
+
+            if self.t == 23:
+                self.beta *= self.beta_reduction 
+                self.beta = np.clip(self.beta, 0.0, 1.0)
 
             # print(self.t)
             # print(len(self.state_counts[0]))
@@ -166,6 +174,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
                         ])
             if not numI > 0:
                 break
+            #gc.collect()
 
         if self.t < T:
             for t in range(self.t+1, T+1):
