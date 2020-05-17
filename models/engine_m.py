@@ -13,6 +13,23 @@ from engine_sequential import SequentialEngine
 from sparse_utils import prop_of_row
 
 
+class STATES():
+    # TODO get rid of this
+    S = 0
+    S_s = 1
+    E = 2
+    I_n = 3
+    I_a = 4
+    I_s = 5
+    I_d = 6
+    R_d = 7
+    R_u = 8
+    D_d = 9
+    D_u = 10
+
+    pass
+
+
 def _searchsorted2d(a, b):
     m, n = a.shape
     max_num = np.maximum(a.max() - a.min(), b.max() - b.min()) + 1
@@ -47,11 +64,11 @@ class EngineM(SequentialEngine):
         s = time.time()
         source_candidate_flags = self.memberships[source_candidate_states, :, :].reshape(
             len(source_candidate_states), self.num_nodes).sum(axis=0)
-        #source_candidate_indices = source_candidate_flags.nonzero()[0]
+        # source_candidate_indices = source_candidate_flags.nonzero()[0]
 
         dest_candidate_flags = self.memberships[dest_candidate_states, :, :].reshape(
             len(dest_candidate_states), self.num_nodes).sum(axis=0)
-        #dest_candidate_indices = dest_candidate_flags.nonzero()[0]
+        # dest_candidate_indices = dest_candidate_flags.nonzero()[0]
         e = time.time()
         print("Create flags", e-s)
 
@@ -167,11 +184,27 @@ class EngineM(SequentialEngine):
         #        assert len(relevant_sources) == len(set(relevant_sources))
         # TOD beta - b_ij
         # new beta depands on the one who is going to be infected
-#        b_intensities = beta[relevant_sources]
-#        b_f_intensities = beta_in_family[relevant_sources]
+        #        b_intensities = beta[relevant_sources]
+        #        b_f_intensities = beta_in_family[relevant_sources]
 
-        b_intensities = beta_in_family[relevant_sources] * is_family_edge
-        +  beta[relevant_sources] * (1 - is_family_edge)
+        # reduce asymptomatic
+        is_A = (
+            self.memberships[STATES.I_a][relevant_dests] +
+            self.memberships[STATES.I_n][relevant_dests]
+        )
+        b_original_intensities = (
+            beta_in_family[relevant_sources] * (1 - is_A) +
+            self.beta_A_in_family[relevant_sources] * is_A
+        )
+        b_reduced_intensities = (
+            beta[relevant_sources] * (1 - is_A) +
+            self.beta_A[relevant_sources] * is_A
+        )
+
+        b_intensities = (
+            b_original_intensities * is_family_edge +
+            b_reduced_intensities * (1 - is_family_edge)
+        )
 
         # print(beta[relevant_sources].shape)
         # print(is_family_edge)
@@ -184,7 +217,7 @@ class EngineM(SequentialEngine):
         relevant_sources_unique = np.unique(relevant_sources)
         relevant_sources = relevant_sources.reshape(-1, 1)
 
-        #print(relevant_sources.shape, relevant_sources_unique.shape)
+        # print(relevant_sources.shape, relevant_sources_unique.shape)
         A = scipy.sparse.csr_matrix(
             (np.ones(len(b_intensities)),
              np.where((relevant_sources == relevant_sources_unique).T)
@@ -195,7 +228,7 @@ class EngineM(SequentialEngine):
             relevant_sources_unique) and A.shape[1] == len(b_intensities)
 
         no_infection = (1 - b_intensities * intensities).ravel()
-        #print(no_infection.shape, A.shape)
+        # print(no_infection.shape, A.shape)
         prob_of_no_infection = scipy.sparse.csr_matrix(
             A.multiply(no_infection)
         )
