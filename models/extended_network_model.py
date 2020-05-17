@@ -234,7 +234,15 @@ def calc_propensities(model, use_dict=True):
     #    )
     #    print("-->", P_infection.shape, np.any(P_infection.flatten() > 0), np.all(P_infection.flatten() <= 1))
 
-    P_infection = P1
+    N = model.current_N()
+    numIn = model.current_state_count(
+        STATES.I_a) + model.current_state_count(STATES.I_n)
+    numI = model.current_state_count(
+        STATES.I_s) + model.current_state_count(STATES.I_d)
+
+    P2 = (model.beta * numI/N + model.beta_A * numIn/N)
+
+    P_infection = (1-model.p)*P1 + model.p*P2
 
     #    print(P_infection.shape)
 
