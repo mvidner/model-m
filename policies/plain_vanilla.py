@@ -62,21 +62,27 @@ def close_shops(graph, *args, **kwargs):
               "work_workers_to_clients_physical_long",
               "public_transport",
               "shops_customers", "shops_workers_to_clients",
-              "pubs_customers", "pubs_workers_to_clients"]
-    coefs = [0.2, 0.5, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0, 0]
+              "pubs_customers", "pubs_workers_to_clients",
+              "leasure_outdoor", "leasure_pub", "leasure_visit"]
+    coefs = [0.2, 0.5, 0.1, 0.1, 0.1, 0.1, 0.2, 0.2, 0, 0,
+             0, 0, 0]
     graph.close_layers(weaken, coefs)
     return {"graph": None}
 
 
 def open_some(graph, *args, **kwargs):
     change = ["leasure_outdoor",
+              "work_contacts",
               "work_workers_to_clients_distant",
               "work_workers_to_clients_physical_long",
               "work_workers_to_clients_plysical_short",
               "public_transport",
               "shops_customers", "shops_workers_to_clients"
               ]
-    coefs = [0.2, 0.2, 0.2, 0.2, 0.2, 0.3, 0.3]
+    coefs = [0.2, 
+             0.5,
+             0.2, 0.2, 0.2, 0.2, 
+             0.3, 0.3]
     graph.close_layers(change, coefs)
     return {"graph": None}
 
@@ -114,7 +120,7 @@ def all_shops(graph, *args, **kwargs):
              0.5,
              0.5, 0.5,
              0.5, 0.5,
-             0.4,
+             0.5,
              1, 1,
              0.1]
     graph.close_layers(change, coefs)
@@ -144,8 +150,8 @@ def open_all(graph, *args, **kwargs):
              0.2, 0.2,
              0.2, 0.2,
              1, 
-             0.0,
-             0.2,
+             0.5,
+             0.5,
              1, 0.5, 0.5]
     graph.close_layers(change+opened, coefs+[1]*len(opened))
     return {"graph": None}

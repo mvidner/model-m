@@ -146,6 +146,10 @@ model_definition = {
 
     "model_parameters": {
         "beta": (0,  "rate of transmission (exposure)"),
+        "beta_reduction": (0,  "todo"),
+        "beta_in_family": (0, "todo"),
+        "beta_A": (0, "todo"),
+        "beta_A_in_family": (0, "todo"),
         "sigma": (0, "rate of infection (upon exposure)"),
         "gamma_In": (0, "rate of recovery (upon infection)"),
         "gamma_Is": (0, "rate of recovery (upon infection)"),
@@ -214,7 +218,7 @@ def calc_propensities(model, use_dict=True):
          STATES.I_s],
         [STATES.I_n, STATES.I_a, STATES.I_s, STATES.I_d],
         [STATES.I_n, STATES.I_a, STATES.I_s, STATES.I_d, STATES.E],
-        model.beta
+        model.beta, model.beta_in_family
     )
 
     #    P2 = model.prob_of_no_contact([STATES.I_d], model.beta_D)

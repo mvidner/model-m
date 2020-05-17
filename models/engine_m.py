@@ -13,6 +13,23 @@ from engine_sequential import SequentialEngine
 from sparse_utils import prop_of_row
 
 
+class STATES():
+    # TODO get rid of this
+    S = 0
+    S_s = 1
+    E = 2
+    I_n = 3
+    I_a = 4
+    I_s = 5
+    I_d = 6
+    R_d = 7
+    R_u = 8
+    D_d = 9
+    D_u = 10
+
+    pass
+
+
 def _searchsorted2d(a, b):
     m, n = a.shape
     max_num = np.maximum(a.max() - a.min(), b.max() - b.min()) + 1
@@ -35,7 +52,7 @@ class EngineM(SequentialEngine):
     def node_degrees(self, Amat):
         raise NotImplementedError("We use the graph directly, not matrix.")
 
-    def prob_of_contact(self, source_states, source_candidate_states, dest_states, dest_candidate_states, beta):
+    def prob_of_contact(self, source_states, source_candidate_states, dest_states, dest_candidate_states, beta, beta_in_family):
 
         assert type(dest_states) == list and type(source_states) == list
 
@@ -47,11 +64,11 @@ class EngineM(SequentialEngine):
         s = time.time()
         source_candidate_flags = self.memberships[source_candidate_states, :, :].reshape(
             len(source_candidate_states), self.num_nodes).sum(axis=0)
-        #source_candidate_indices = source_candidate_flags.nonzero()[0]
+        # source_candidate_indices = source_candidate_flags.nonzero()[0]
 
         dest_candidate_flags = self.memberships[dest_candidate_states, :, :].reshape(
             len(dest_candidate_states), self.num_nodes).sum(axis=0)
-        #dest_candidate_indices = dest_candidate_flags.nonzero()[0]
+        # dest_candidate_indices = dest_candidate_flags.nonzero()[0]
         e = time.time()
         print("Create flags", e-s)
 
@@ -137,7 +154,7 @@ class EngineM(SequentialEngine):
         # print((active_relevant_edges[:, np.newaxis] == relevant_edges).shape)
         try:
             # this causes exceptin, but only sometimes ???
-            #where_indices = (
+            # where_indices = (
             #    active_relevant_edges[:, np.newaxis] == relevant_edges).nonzero()[1]
             # lets try npi instead
             where_indices = npi.indices(relevant_edges, active_relevant_edges)
@@ -161,15 +178,43 @@ class EngineM(SequentialEngine):
             active_relevant_edges).reshape(-1, 1)
         relevant_sources, relevant_dests = self.graph.get_edges_nodes(
             active_relevant_edges, active_relevant_edges_dirs)
+        is_family_edge = self.graph.is_family_edge(
+            active_relevant_edges).reshape(-1, 1)
 
         #        assert len(relevant_sources) == len(set(relevant_sources))
         # TOD beta - b_ij
         # new beta depands on the one who is going to be infected
-        b_intensities = beta[relevant_sources]
+        #        b_intensities = beta[relevant_sources]
+        #        b_f_intensities = beta_in_family[relevant_sources]
+
+        # reduce asymptomatic
+        is_A = (
+            self.memberships[STATES.I_a][relevant_dests] +
+            self.memberships[STATES.I_n][relevant_dests]
+        )
+        b_original_intensities = (
+            beta_in_family[relevant_sources] * (1 - is_A) +
+            self.beta_A_in_family[relevant_sources] * is_A
+        )
+        b_reduced_intensities = (
+            beta[relevant_sources] * (1 - is_A) +
+            self.beta_A[relevant_sources] * is_A
+        )
+
+        b_intensities = (
+            b_original_intensities * is_family_edge +
+            b_reduced_intensities * (1 - is_family_edge)
+        )
+
+        # print(beta[relevant_sources].shape)
+        # print(is_family_edge)
+        # print(b_intensities.shape)
+        # exit()
 
         assert b_intensities.shape == intensities.shape
         # print(b_intensitites.shape, intensities.shape,
         #      prob_of_no_infection.shape)
+
         relevant_sources_unique, unique_indices = np.unique(relevant_sources, return_inverse=True)
         no_infection = (1 - b_intensities * intensities).ravel()
 

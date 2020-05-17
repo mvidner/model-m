@@ -261,6 +261,11 @@ class LightGraph:
         assert type(edges) == np.ndarray
         return self.e_intensities[edges]
 
+    def is_family_edge(self, edges):
+        assert type(edges) == np.ndarray
+        etypes = self.e_types[edges]
+        return np.logical_or(etypes == 1, etypes == 2)
+
     def modify_layers_for_nodes(self, node_id_list, what_by_what, is_quarrantined=None):
         """ changes edges' weights """
 

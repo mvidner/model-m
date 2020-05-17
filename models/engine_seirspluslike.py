@@ -54,6 +54,12 @@ class SeirsPlusLikeEngine(BaseEngine):
             for state in self.states
         }
 
+        self.state_increments = {
+            state: TimeSeries(self.expected_num_days, dtype=int)
+            for state in self.states
+        }
+
+
         # self.propensities_repo = {
         #     transition: TimeSeries(tseries_len, dtype=float)
         #     for transition in self.transitions
@@ -75,6 +81,10 @@ class SeirsPlusLikeEngine(BaseEngine):
 
         for state, init_value in state_counts.items():
             self.state_counts[state][0] = init_value
+
+        for state in state_counts.keys():
+            self.state_increments[state][0] = 0
+
 
         nodes_left = self.num_nodes - sum(
             [self.state_counts[s][0] for s in self.states]
@@ -274,6 +284,7 @@ class SeirsPlusLikeEngine(BaseEngine):
         self.history.bloat(tseries_len)
         for state in self.states:
             self.state_counts[state].bloat(self.expected_num_days)
+            self.state_increments[state].bloat(self.expected_num_days)
         # for tran in self.transitions:
         #     self.propensities_repo[tran].bloat(tseries_len)
         self.N.bloat(self.expected_num_days)
@@ -284,15 +295,23 @@ class SeirsPlusLikeEngine(BaseEngine):
         self.history.finalize(self.tidx)
         for state in self.states:
             self.state_counts[state].finalize(self.tidx)
+            self.state_incrementss[state].finalize(self.tidx)
         self.N.finalize(self.tidx)
 
     def save(self, file_or_filename):
         index = self.tseries
-        columns = self.state_counts
+        col_increments = {
+            "inc_" + self.state_str_dict[x]: col_inc 
+            for x, col_inc in self.state_increments
+        } 
+        col_states =  { 
+            self.state_str_dic[x]: count 
+            for x, count in self.state_counts 
+        } 
+        columns = {**col_states, **col_increments}
         columns["day"] = np.floor(index).astype(int)
-        df = pd.DataFrame(self.state_counts, index=self.tseries)
+        df = pd.DataFrame(columns, index=index)
         df.index.rename('T', inplace=True)
-        df.columns = [self.state_str_dict[x] for x in self.states] + ["day"]
         df.to_csv(file_or_filename)
         print(df)
 

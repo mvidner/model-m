@@ -12,7 +12,7 @@
 function wait_for_finished {
     while true; do
 	C=`pgrep -c python`
-	if test $C -lt 50; then
+	if test $C -lt 45; then
 	    break
 	fi 
 	sleep 1m
@@ -23,10 +23,11 @@ function wait_for_finished {
 #NAME=newtown
 #INTERVAL="0 19"
 
-for NAME in "plain_vanilla_stable"; do
+for NAME in "plain_vanilla_fitted"; do
+ID=$NAME
 for I in `seq 0 99`; do
     wait_for_finished
-    python -OO run_experiment.py -r ${NAME}.ini ${NAME}_$I > ${NAME}_$I.log  2> ${NAME}_$I.err &
+    python -OO run_experiment.py -r ${NAME}.ini ${ID}_$I > ${ID}_$I.log  2> ${ID}_$I.err &
     sleep 1s
     pids[${I}]=$!
 done
