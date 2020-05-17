@@ -27,6 +27,7 @@ def switch_on_eva_policy(graph, policy_coefs, *args, **kwargs):
     policy_coefs["riskiness"] = riskiness
     return {}
 
+
 def close_schools(graph, *args, **kwargs):
     close = [
         "nursary_children_inclass",
@@ -81,9 +82,9 @@ def open_some(graph, *args, **kwargs):
               "public_transport",
               "shops_customers", "shops_workers_to_clients"
               ]
-    coefs = [0.2, 
+    coefs = [0.2,
              0.5,
-             0.2, 0.2, 0.2, 0.2, 
+             0.2, 0.2, 0.2, 0.2,
              0.3, 0.3]
     graph.close_layers(change, coefs)
     return {"graph": None}
@@ -100,13 +101,13 @@ def open_small_shops(graph, *args, **kwargs):
 
 def all_shops(graph, *args, **kwargs):
     change = ["family_visitsors_to_visited",
-              "higher_elementary_children_inclass", 
+              "higher_elementary_children_inclass",
               "higher_elementary_teachers_to_children",
-              "highschool_children_inclass", 
+              "highschool_children_inclass",
               "highschool_teachers_to_children",
-              "elementary_children_coridors", 
+              "elementary_children_coridors",
               "highschool_children_coridors",
-              "elementary_teachers", 
+              "elementary_teachers",
               "highschool_teachers",
               "leasure_outdoor",
               "work_contacts", "work_workers_to_clients_distant",
@@ -138,7 +139,7 @@ def open_all(graph, *args, **kwargs):
               "nursary_children_coridors",
               "elementary_children_coridors",
               "highschool_children_coridors",
-              "nursary_teachers", "elementary_teachers", 
+              "nursary_teachers", "elementary_teachers",
               "highschool_teachers"]
     opened = ["leasure_outdoor", "leasure_pub", "leasure_visit",
               "work_contacts", "work_workers_to_clients_distant",
@@ -151,7 +152,7 @@ def open_all(graph, *args, **kwargs):
              0.6, 0.6,
              0.2, 0.2,
              0.2, 0.2,
-             1, 
+             1,
              0.5,
              0.5,
              1, 0.5, 0.5]
@@ -187,6 +188,7 @@ def setup(graph, normal_life=None):
                "wee_cold": wee_cold_coefs}
             }
 
+
 def setup_no_close(graph, normal_life=None):
     policy_object = PlainVanilla()
     policy_coefs = quarrantine_policy_setup(graph, normal_life)
@@ -196,9 +198,6 @@ def setup_no_close(graph, normal_life=None):
                "calendar": CALENDAR2,
                "wee_cold": wee_cold_coefs}
             }
-
-
-
 
 
 def policy(graph, policy_coefs, history, tseries, time, contact_history=None, memberships=None):
@@ -212,7 +211,8 @@ def policy(graph, policy_coefs, history, tseries, time, contact_history=None, me
         ret = calendar[today](graph, policy_coefs, history,
                               tseries, time, contact_history)
 
-    ret_wee = wee_cold_policy(graph, policy_coefs["wee_cold"], history, tseries, time, None, memberships)
+    ret_wee = wee_cold_policy(
+        graph, policy_coefs["wee_cold"], history, tseries, time, None, memberships)
     ret2 = policy_coefs["policy_object"].run(graph, policy_coefs, history,
                                              tseries, time, contact_history, memberships)
 
