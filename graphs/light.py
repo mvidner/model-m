@@ -4,14 +4,20 @@ from scipy.sparse import csr_matrix, lil_matrix
 
 # novej light graph
 
-from functools import reduce; from operator import iconcat
-def concat_lists(l):
+from itertools import chain
+def concat_lists(l, dtype=None):
     """
-    Returns concatenation of lists in the iterable l
-    :param l: iterable of lists
-    :return: concatenation of lists in l
+    Returns concatenation of iterables in the iterable l
+    :param l: iterable of iterables
+    :param dtype: dtype of the resulting array, compulsory
+    :return: concatenation of iterables in l as numpy array
     """
-    return reduce(iconcat, l, [])
+    # Specify count to improve performance.
+    # It allows fromiter to pre-allocate the output array, instead of resizing it on demand.
+    # We can calculate the size by c = sum(len(x) for x in l) or using np.ufunc.reduce to do it in one run.
+    # But then the fromiter goes from 7768ms to 7490ms. Not worth it.
+    return np.fromiter(chain.from_iterable(l), dtype=dtype)
+    # return np.array(list(chain.from_iterable(l)), dtype=dtype)
 
 class LightGraph:
     # __slots__ = ['e_types', 'e_subtypes', 'e_probs', 'e_intensities', 'e_source', 'e_dest', 'e_valid', 'edges_repo',
@@ -225,10 +231,10 @@ class LightGraph:
         if len(active_edges_indices) == 0:
             return np.array([]), np.array([])
         edge_lists = self.edges_repo[active_edges_indices]
-        result = np.array(concat_lists(edge_lists))
+        result = concat_lists(edge_lists, dtype='uint16')
         if dirs:
             dirs_lists = self.edges_directions[active_edges_indices]
-            result_dirs = np.array(concat_lists(dirs_lists), dtype=bool)
+            result_dirs = concat_lists(dirs_lists, dtype=bool)
             return result, result_dirs
         return result
 
@@ -239,7 +245,7 @@ class LightGraph:
             print("Warning: no edges for nodes", nodes)
             return np.array([])
         edge_lists = self.edges_repo[active_edges_indices]
-        result = concat_lists(edge_lists)
+        result = concat_lists(edge_lists, dtype='uint16')
         return result
 
     def get_edges_probs(self, edges):
@@ -309,3 +315,5 @@ class LightGraph:
             print(f"Closing {name}")
             i = self.layer_name.index(name)
             self.layer_weights[i] = 0 if not coefs else coefs[idx]
+
+
