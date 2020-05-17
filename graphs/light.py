@@ -3,15 +3,15 @@ import pandas as pd
 from scipy.sparse import csr_matrix, lil_matrix
 
 # novej light graph
-from itertools import chain
 
+from functools import reduce; from operator import iconcat
 def concat_lists(l):
     """
     Returns concatenation of lists in the iterable l
     :param l: iterable of lists
     :return: concatenation of lists in l
     """
-    return list(chain.from_iterable(l))
+    return reduce(iconcat, l, [])
 
 class LightGraph:
     # __slots__ = ['e_types', 'e_subtypes', 'e_probs', 'e_intensities', 'e_source', 'e_dest', 'e_valid', 'edges_repo',
