@@ -1,6 +1,7 @@
 from quarrantine_policy import quarrantine_policy_setup, quarrantine_with_contact_tracing_policy, simple_quarrantine_policy
 from quarrantine_policy import wee_cold_policy, wee_cold_policy_setup
-
+from quarrantine_policy import RISK_FOR_LAYERS
+import numpy as np
 
 class PlainVanilla:
     def __init__(self):
@@ -16,13 +17,14 @@ class PlainVanilla:
 
 def switch_on_simple_policy(graph, policy_coefs, *args, **kwargs):
     policy_object = policy_coefs["policy_object"]
-    policy_object.set_policy(simple_quarrantine_policy)
+    policy_object.set_policy(quarrantine_with_contact_tracing_policy)
     return {}
 
 
 def switch_on_eva_policy(graph, policy_coefs, *args, **kwargs):
-    policy_object = policy_coefs["policy_object"]
-    policy_object.set_policy(quarrantine_with_contact_tracing_policy)
+    risk_for_layers = RISK_FOR_LAYERS
+    riskiness = np.array([risk_for_layers[i] for i in range(0, 31)])
+    policy_coefs["riskiness"] = riskiness
     return {}
 
 def close_schools(graph, *args, **kwargs):
