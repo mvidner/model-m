@@ -1,6 +1,7 @@
 from quarrantine_policy import quarrantine_policy_setup, quarrantine_with_contact_tracing_policy, simple_quarrantine_policy
 from quarrantine_policy import wee_cold_policy, wee_cold_policy_setup
 from policy_utils import load_scenario_dict
+from functools import partial
 
 
 class PlainVanilla:
@@ -28,7 +29,8 @@ def switch_on_eva_policy(graph, policy_coefs, *args, **kwargs):
 
 
 def update_layers(coefs, graph, *args, **kwargs):
-    graph.close_layers(graph.layer_name, coefs)
+    print("--->", graph.layer_name, coefs)
+    graph.close_layers(graph.layer_name[:31], coefs)
     return {"graph": None}
 
 
@@ -44,8 +46,9 @@ def setup(graph, normal_life=None):
     wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
 
     calendar_adds = load_scenario_dict("../data/policy_params/sour_2.csv")
+    print(calendar_adds)
     for t, clist in calendar_adds.items():
-        CALENDAR[t] = clist
+        CALENDAR[int(t)] = partial(update_layers, clist)
 
     print(CALENDAR)
     return {**policy_coefs,
