@@ -35,7 +35,7 @@ class EngineM(SequentialEngine):
     def node_degrees(self, Amat):
         raise NotImplementedError("We use the graph directly, not matrix.")
 
-    def prob_of_contact(self, source_states, source_candidate_states, dest_states, dest_candidate_states, beta):
+    def prob_of_contact(self, source_states, source_candidate_states, dest_states, dest_candidate_states, beta, beta_in_family):
 
         assert type(dest_states) == list and type(source_states) == list
 
@@ -137,7 +137,7 @@ class EngineM(SequentialEngine):
         # print((active_relevant_edges[:, np.newaxis] == relevant_edges).shape)
         try:
             # this causes exceptin, but only sometimes ???
-            #where_indices = (
+            # where_indices = (
             #    active_relevant_edges[:, np.newaxis] == relevant_edges).nonzero()[1]
             # lets try npi instead
             where_indices = npi.indices(relevant_edges, active_relevant_edges)
@@ -161,11 +161,22 @@ class EngineM(SequentialEngine):
             active_relevant_edges).reshape(-1, 1)
         relevant_sources, relevant_dests = self.graph.get_edges_nodes(
             active_relevant_edges, active_relevant_edges_dirs)
+        is_family_edge = self.graph.is_family_edge(
+            active_relevant_edges).reshape(-1, 1)
 
         #        assert len(relevant_sources) == len(set(relevant_sources))
         # TOD beta - b_ij
         # new beta depands on the one who is going to be infected
-        b_intensities = beta[relevant_sources]
+#        b_intensities = beta[relevant_sources]
+#        b_f_intensities = beta_in_family[relevant_sources]
+
+        b_intensities = beta_in_family[relevant_sources] * is_family_edge
+        +  beta[relevant_sources] * (1 - is_family_edge)
+
+        # print(beta[relevant_sources].shape)
+        # print(is_family_edge)
+        # print(b_intensities.shape)
+        # exit()
 
         assert b_intensities.shape == intensities.shape
         # print(b_intensitites.shape, intensities.shape,

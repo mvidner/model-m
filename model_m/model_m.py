@@ -30,7 +30,7 @@ def load_model_from_config(cf, use_policy, model_random_seed, hyperparams=None):
 
     # model type
     model_type = cf.section_as_dict("TASK").get(
-        "model", "ExtendedNetworkModel")
+        "model", "TGMNetworkModel")
 
     model = ModelM(graph,
                    policy, policy_setup, policy_cfg,
