@@ -29690,7 +29690,7 @@ id,sex, age, ecactivity, worktype, commutetime, town, x, y, apartment
 29688,M,33,working,education,30 to 45 mins,Du,-566358,-1.19504e+06,3428
 29689,F,50,working,industry,15 to 30 min,Du,-566358,-1.19504e+06,3428
 29690,F,76,retired,undef,not commuting,Du,-566848,-1.19526e+06,3196
-29691,M,20,student,undef,not commuting,Du,-566848,-1.19526e+06,3196
+29691,F,20,student,undef,not commuting,Du,-566848,-1.19526e+06,3196
 29692,M,44,working,industry,not commuting,Du,-565973,-1.19524e+06,3436
 29693,F,90,retired,undef,not commuting,Du,-567503,-1.19432e+06,3486
 29694,M,999,retired,undef,not commuting,Du,-567575,-1.19455e+06,3568
