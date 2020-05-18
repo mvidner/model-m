@@ -302,6 +302,7 @@ class LightGraph:
 
     def close_layers(self, list_of_layers, coefs=None):
         for idx, name in enumerate(list_of_layers):
-            print(f"Closing {name}")
+            print(f"Closing {name}", end="")
             i = self.layer_name.index(name)
             self.layer_weights[i] = 0 if not coefs else coefs[idx]
+            print(f"{self.layer_weights[i]}")

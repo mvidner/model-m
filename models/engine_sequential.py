@@ -109,7 +109,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             # print(f"{node} goes from {self.state_str_dict[s]} to {self.state_str_dict[e]}")
             # if self.memberships[s, node, 0] != 1:
             #     print(f"node not in state {self.state_str_dict[s]}")
-            if node == 6686:
+            if node == 29691:
                 # stalking
                 print(f"ACTION LOG ({self.t}): node {node} changing state to {self.state_str_dict[e]}")
 
@@ -118,7 +118,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.state_counts[s][self.t] -= 1
             self.state_counts[e][self.t] += 1
             self.state_increments[e][self.t] += 1
-#            self.states_history[self.t][node] = e
+            #self.states_history[self.t][node] = e
             self.tidx += 1
             if self.tidx >= len(self.history):
                 self.increase_history_len()
@@ -160,21 +160,6 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
             # TODO - tohle tu nebude, ma delat policy !!!! :(
 
-            if self.t == 92:
-                GIRL = 29691 
-                # infect the girl 29691
-                if self.graph.layer_weights[30] == 1.0:
-                    # move node 29691 to E
-                    my_state = self.memberships[:, GIRL]
-                    print(my_state)
-                    exit()
-                    orig_state = None
-                    print(f"ACTION LOG(92): node 29691 feeded by infection")
-                    self.state_counts[STATES.I_d][self.t] += 1
-                    self.state_counts[orig_state][self.t] += 1
-                    self.state_increments[STATES.I_d][self.t] += 1
-                    self.memberships[STATES.I_d][GIRL] = 1 
-                    self.memberships[orig_state][GIRL] = 1 
 
 
             if self.t == 23:
@@ -241,9 +226,28 @@ class SequentialEngine(SeirsPlusLikeEngine):
             numI = sum([self.current_state_count(s)
                         for s in self.unstable_states
                         ])
+            if True:
+                GIRL = 29691 
+                # infect the girl 29691
+                if self.graph.layer_weights[30] == 1.0:
+                    # move node 29691 to E
+                    orig_state = self.memberships[:, GIRL].nonzero()[0][0] 
+                    if orig_state == STATES.E:
+                        print(f"ACTION LOG(92): node 29691 enters the party already exposed")
+                    else:
+                        print(f"ACTION LOG(92): node 29691 feeded by infection")
+                        self.state_counts[STATES.E][self.t] += 1
+                        self.state_counts[orig_state][self.t] -= 1
+                        self.state_increments[STATES.E][self.t] += 1
+                        self.memberships[STATES.E][GIRL] = 1 
+                        self.memberships[orig_state][GIRL] = 0
+           
+
             if not numI > 0:
                 break
             # gc.collect()
+
+
 
         if self.t < T:
             for t in range(self.t+1, T+1):
@@ -265,7 +269,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.state_counts[state].bloat(100)
             self.state_increments[state].bloat(100)
         self.N.bloat(100)
-#        self.states_history.bloat(100)
+        #self.states_history.bloat(100)
         self.meaneprobs.bloat(100)
         self.medianeprobs.bloat(100)
 
@@ -280,7 +284,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.state_counts[state].finalize(self.t)
             self.state_increments[state].finalize(self.t)
         self.N.finalize(self.t)
-#        self.states_history.finalize(self.t)
+        #self.states_history.finalize(self.t)
         self.meaneprobs.finalize(self.t)
         self.medianeprobs.finalize(self.t)
 
@@ -329,4 +333,4 @@ class SequentialEngine(SeirsPlusLikeEngine):
         df.to_csv(filename)
         # df = df.replace(self.state_str_dict)
         # df.to_csv(filename)
-        print(df)
+        #print(df)
