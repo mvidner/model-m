@@ -255,6 +255,8 @@ class LightGraph:
         if not what_by_what:
             return
         relevant_edges = np.unique(self.get_nodes_edges(node_id_list))
+        if len(relevant_edges) == 0:
+            return
         valid = self.e_valid[relevant_edges]
         relevant_edges = relevant_edges[valid == 2]
         edges_types = self.e_types[relevant_edges]

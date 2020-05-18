@@ -3,6 +3,7 @@ from quarrantine_policy import wee_cold_policy, wee_cold_policy_setup, petra_pol
 from quarrantine_policy import RISK_FOR_LAYERS
 import numpy as np
 
+
 class PlainVanilla:
     def __init__(self):
         # do nothing function
@@ -29,10 +30,11 @@ def switch_on_eva_policy(graph, policy_coefs, *args, **kwargs):
     policy_object.set_policy(quarrantine_with_contact_tracing_policy)
     return {}
 
+
 def switch_on_half_policy(graph, policy_coefs, *args, **kwargs):
     risk_for_layers = RISK_FOR_LAYERS
     riskiness = np.array([
-        risk_for_layers[i] if i < 3 else risk_for_layers[i]*0.5 
+        risk_for_layers[i] if i < 3 else risk_for_layers[i]*0.5
         for i in range(0, 31)
     ])
     policy_coefs["riskiness"] = riskiness
@@ -48,6 +50,11 @@ def switch_on_super_eva_policy(graph, policy_coefs, *args, **kwargs):
     policy_object = policy_coefs["policy_object"]
     policy_object.set_policy(quarrantine_with_contact_tracing_policy)
     return {}
+
+
+def start(graph, *args, **kwargs):
+    graph.close_layers(["superspreader"], [1.0])
+    return {"graph": None}
 
 
 def close_schools(graph, *args, **kwargs):
@@ -183,7 +190,8 @@ def open_all(graph, *args, **kwargs):
 
 
 CALENDAR = {
-    5: switch_on_simple_policy,
+    1:  start,
+    5:  switch_on_simple_policy,
     15: close_schools,
     16: close_pubs,
     18: close_shops,
@@ -210,6 +218,7 @@ def setup(graph, normal_life=None):
                "wee_cold": wee_cold_coefs}
             }
 
+
 def setup_super_eva(graph, normal_life=None):
     policy_object = PlainVanilla()
     policy_coefs = quarrantine_policy_setup(graph, normal_life)
@@ -220,6 +229,7 @@ def setup_super_eva(graph, normal_life=None):
                "calendar": CALENDAR,
                "wee_cold": wee_cold_coefs}
             }
+
 
 def setup_half_eva(graph, normal_life=None):
     policy_object = PlainVanilla()
@@ -233,7 +243,6 @@ def setup_half_eva(graph, normal_life=None):
             }
 
 
-
 def setup_no_eva(graph, normal_life=None):
     policy_object = PlainVanilla()
     policy_coefs = quarrantine_policy_setup(graph, normal_life)
@@ -244,7 +253,6 @@ def setup_no_eva(graph, normal_life=None):
                "calendar": CALENDAR,
                "wee_cold": wee_cold_coefs}
             }
-
 
 
 def setup_no_close(graph, normal_life=None):
