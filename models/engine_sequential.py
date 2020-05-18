@@ -11,6 +11,21 @@ from history_utils import TimeSeries, TransitionHistory
 from engine_seirspluslike import SeirsPlusLikeEngine
 # from extended_network_model import STATES as s
 
+class STATES():
+    S = 0
+    S_s = 1
+    E = 2
+    I_n = 3
+    I_a = 4
+    I_s = 5
+    I_d = 6
+    R_d = 7
+    R_u = 8
+    D_d = 9
+    D_u = 10
+
+    pass
+
 
 def _searchsorted2d(a, b):
     m, n = a.shape
@@ -144,6 +159,23 @@ class SequentialEngine(SeirsPlusLikeEngine):
             #            print(f"day {self.t}")
 
             # TODO - tohle tu nebude, ma delat policy !!!! :(
+
+            if self.t == 92:
+                GIRL = 29691 
+                # infect the girl 29691
+                if self.graph.layer_weights[30] == 1.0:
+                    # move node 29691 to E
+                    my_state = self.memberships[:, GIRL]
+                    print(my_state)
+                    exit()
+                    orig_state = None
+                    print(f"ACTION LOG(92): node 29691 feeded by infection")
+                    self.state_counts[STATES.I_d][self.t] += 1
+                    self.state_counts[orig_state][self.t] += 1
+                    self.state_increments[STATES.I_d][self.t] += 1
+                    self.memberships[STATES.I_d][GIRL] = 1 
+                    self.memberships[orig_state][GIRL] = 1 
+
 
             if self.t == 23:
                 self.beta *= self.beta_reduction
