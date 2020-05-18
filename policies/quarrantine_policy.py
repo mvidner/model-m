@@ -10,7 +10,7 @@ class QuarrantineDepo:
     def __init__(self, size, leave_cond=None):
         self.quarrantine = np.zeros(size)
         self.leave_cond = leave_cond
-        self.waiting_room = np.zeros(size, dtype=bool) 
+        self.waiting_room = np.zeros(size, dtype=bool)
 
     def wait(self, nodes):
         print("nodes w", nodes)
@@ -18,11 +18,11 @@ class QuarrantineDepo:
             return
         self.waiting_room[nodes] = True
 
-    def get_waiting(self): 
+    def get_waiting(self):
         released = np.nonzero(self.waiting_room)[0]
         print("released w", released)
         self.waiting_room.fill(False)
-        return released 
+        return released
 
     def lock_up(self, nodes, duration):
         self.quarrantine[nodes] = duration
@@ -55,33 +55,33 @@ QUARANTINE_COEFS = {
     1: 100,  # family_inside
     2: 100,  # family_in_house
     3: 0.2,  # family_visitsors_to_visited
-    4: 0, # nursary_children_inclass
-    5: 0, # nursary_teachers_to_children
-    6: 0, # lower_elementary_children_inclass
-    7: 0, # lower_elementary_teachers_to_children
-    8: 0, # higher_elementary_children_inclass
-    9: 0, # higher_elementary_teachers_to_children
-    10: 0, # highschool_children_inclass
-    11: 0, # highschool_teachers_to_children
-    12: 0, # nursary_children_coridors
-    13: 0, # elementary_children_coridors
-    14: 0, # highschool_children_coridors
-    15: 0, # nursary_teachers
-    16: 0, # elementary_teachers
-    17: 0, # highschool_teachers
-    18: 0, # leasure_outdoor
-    19: 0, # leasure_visit
-    20: 0, # leasure_pub
-    21: 0, # work_contacts
-    22: 0, # work_workers_to_clients_distant
-    23: 0, # work_workers_to_clients_plysical_short
-    24: 0, # work_workers_to_clients_physical_long
-    25: 0, # public_transport
-    26: 0, # shops_customers
-    27: 0, # shops_workers_to_clients
-    28: 0, # pubs_customers
-    29: 0, # pubs_workers_to_clients    
-    30: 0, # superspreader
+    4: 0,  # nursary_children_inclass
+    5: 0,  # nursary_teachers_to_children
+    6: 0,  # lower_elementary_children_inclass
+    7: 0,  # lower_elementary_teachers_to_children
+    8: 0,  # higher_elementary_children_inclass
+    9: 0,  # higher_elementary_teachers_to_children
+    10: 0,  # highschool_children_inclass
+    11: 0,  # highschool_teachers_to_children
+    12: 0,  # nursary_children_coridors
+    13: 0,  # elementary_children_coridors
+    14: 0,  # highschool_children_coridors
+    15: 0,  # nursary_teachers
+    16: 0,  # elementary_teachers
+    17: 0,  # highschool_teachers
+    18: 0,  # leasure_outdoor
+    19: 0,  # leasure_visit
+    20: 0,  # leasure_pub
+    21: 0,  # work_contacts
+    22: 0,  # work_workers_to_clients_distant
+    23: 0,  # work_workers_to_clients_plysical_short
+    24: 0,  # work_workers_to_clients_physical_long
+    25: 0,  # public_transport
+    26: 0,  # shops_customers
+    27: 0,  # shops_workers_to_clients
+    28: 0,  # pubs_customers
+    29: 0,  # pubs_workers_to_clients
+    30: 0,  # superspreader
 }
 
 WEE_COLD_COEFS = {
@@ -89,33 +89,33 @@ WEE_COLD_COEFS = {
     1: 100,  # family_inside
     2: 100,  # family_in_house
     3: 0.9,  # family_visitsors_to_visited
-    4: 0, # nursary_children_inclass
-    5: 0, # nursary_teachers_to_children
-    6: 0, # lower_elementary_children_inclass
-    7: 0, # lower_elementary_teachers_to_children
-    8: 0, # higher_elementary_children_inclass
-    9: 0, # higher_elementary_teachers_to_children
-    10: 0, # highschool_children_inclass
-    11: 0, # highschool_teachers_to_children
-    12: 0, # nursary_children_coridors
-    13: 0, # elementary_children_coridors
-    14: 0, # highschool_children_coridors
-    15: 0, # nursary_teachers
-    16: 0, # elementary_teachers
-    17: 0, # highschool_teachers
-    18: 0, # leasure_outdoor
-    19: 0, # leasure_visit
-    20: 0, # leasure_pub
-    21: 0, # work_contacts
-    22: 0, # work_workers_to_clients_distant
-    23: 0, # work_workers_to_clients_plysical_short
-    24: 0, # work_workers_to_clients_physical_long
-    25: 0, # public_transport
-    26: 0, # shops_customers
-    27: 0, # shops_workers_to_clients
-    28: 0, # pubs_customers
-    29: 0, # pubs_workers_to_clients    
-    30: 0, # superspreader
+    4: 0,  # nursary_children_inclass
+    5: 0,  # nursary_teachers_to_children
+    6: 0,  # lower_elementary_children_inclass
+    7: 0,  # lower_elementary_teachers_to_children
+    8: 0,  # higher_elementary_children_inclass
+    9: 0,  # higher_elementary_teachers_to_children
+    10: 0,  # highschool_children_inclass
+    11: 0,  # highschool_teachers_to_children
+    12: 0,  # nursary_children_coridors
+    13: 0,  # elementary_children_coridors
+    14: 0,  # highschool_children_coridors
+    15: 0,  # nursary_teachers
+    16: 0,  # elementary_teachers
+    17: 0,  # highschool_teachers
+    18: 0,  # leasure_outdoor
+    19: 0,  # leasure_visit
+    20: 0,  # leasure_pub
+    21: 0,  # work_contacts
+    22: 0,  # work_workers_to_clients_distant
+    23: 0,  # work_workers_to_clients_plysical_short
+    24: 0,  # work_workers_to_clients_physical_long
+    25: 0,  # public_transport
+    26: 0,  # shops_customers
+    27: 0,  # shops_workers_to_clients
+    28: 0,  # pubs_customers
+    29: 0,  # pubs_workers_to_clients
+    30: 0,  # superspreader
 }
 
 
@@ -124,33 +124,33 @@ RISK_FOR_LAYERS = {
     1: 1,  # family_inside
     2: 1,  # family_in_house
     3: 1,  # family_visitsors_to_visited
-    4: 0.8, # nursary_children_inclass
-    5: 0.8, # nursary_teachers_to_children
-    6: 0.8, # lower_elementary_children_inclass
-    7: 0.8, # lower_elementary_teachers_to_children
-    8: 0.8, # higher_elementary_children_inclass
-    9: 0.8, # higher_elementary_teachers_to_children
-    10: 0.8, # highschool_children_inclass
-    11: 0.8, # highschool_teachers_to_children
-    12: 0.8, # nursary_children_coridors
-    13: 0.8, # elementary_children_coridors
-    14: 0.8, # highschool_children_coridors
-    15: 0.8, # nursary_teachers
-    16: 0.8, # elementary_teachers
-    17: 0.8, # highschool_teachers
-    18: 0.4, # leasure_outdoor
-    19: 0.5, # leasure_visit
-    20: 0.3, # leasure_pub
-    21: 0.8, # work_contacts
-    22: 0.8, # work_workers_to_clients_distant
-    23: 0.8, # work_workers_to_clients_plysical_short
-    24: 0.8, # work_workers_to_clients_physical_long
-    25: 0.1, # public_transport
-    26: 0.1, # shops_customers
-    27: 0, # shops_workers_to_clients
-    28: 0, # pubs_customers
-    29: 0, # pubs_workers_to_clients    
-    30: 0, # superspreader
+    4: 0.8,  # nursary_children_inclass
+    5: 0.8,  # nursary_teachers_to_children
+    6: 0.8,  # lower_elementary_children_inclass
+    7: 0.8,  # lower_elementary_teachers_to_children
+    8: 0.8,  # higher_elementary_children_inclass
+    9: 0.8,  # higher_elementary_teachers_to_children
+    10: 0.8,  # highschool_children_inclass
+    11: 0.8,  # highschool_teachers_to_children
+    12: 0.8,  # nursary_children_coridors
+    13: 0.8,  # elementary_children_coridors
+    14: 0.8,  # highschool_children_coridors
+    15: 0.8,  # nursary_teachers
+    16: 0.8,  # elementary_teachers
+    17: 0.8,  # highschool_teachers
+    18: 0.4,  # leasure_outdoor
+    19: 0.5,  # leasure_visit
+    20: 0.3,  # leasure_pub
+    21: 0.8,  # work_contacts
+    22: 0.8,  # work_workers_to_clients_distant
+    23: 0.8,  # work_workers_to_clients_plysical_short
+    24: 0.8,  # work_workers_to_clients_physical_long
+    25: 0.1,  # public_transport
+    26: 0.1,  # shops_customers
+    27: 0,  # shops_workers_to_clients
+    28: 0,  # pubs_customers
+    29: 0,  # pubs_workers_to_clients
+    30: 0,  # superspreader
 }
 
 RISK_FOR_LAYERS_FOR_SIMPLE = {
@@ -158,33 +158,33 @@ RISK_FOR_LAYERS_FOR_SIMPLE = {
     1: 1,  # family_inside
     2: 1,  # family_in_house
     3: 0,  # family_visitsors_to_visited
-    4: 0.0, # nursary_children_inclass
-    5: 0.0, # nursary_teachers_to_children
-    6: 0.0, # lower_elementary_children_inclass
-    7: 0.0, # lower_elementary_teachers_to_children
-    8: 0.0, # higher_elementary_children_inclass
-    9: 0.0, # higher_elementary_teachers_to_children
-    10: 0.0, # highschool_children_inclass
-    11: 0.0, # highschool_teachers_to_children
-    12: 0.0, # nursary_children_coridors
-    13: 0.0, # elementary_children_coridors
-    14: 0.0, # highschool_children_coridors
-    15: 0.0, # nursary_teachers
-    16: 0.0, # elementary_teachers
-    17: 0.0, # highschool_teachers
-    18: 0.0, # leasure_outdoor
-    19: 0.0, # leasure_visit
-    20: 0.0, # leasure_pub
-    21: 0.0, # work_contacts
-    22: 0.0, # work_workers_to_clients_distant
-    23: 0.0, # work_workers_to_clients_plysical_short
-    24: 0.0, # work_workers_to_clients_physical_long
-    25: 0.0, # public_transport
-    26: 0.0, # shops_customers
-    27: 0, # shops_workers_to_clients
-    28: 0, # pubs_customers
-    29: 0, # pubs_workers_to_clients    
-    30: 0, # superspreader
+    4: 0.0,  # nursary_children_inclass
+    5: 0.0,  # nursary_teachers_to_children
+    6: 0.0,  # lower_elementary_children_inclass
+    7: 0.0,  # lower_elementary_teachers_to_children
+    8: 0.0,  # higher_elementary_children_inclass
+    9: 0.0,  # higher_elementary_teachers_to_children
+    10: 0.0,  # highschool_children_inclass
+    11: 0.0,  # highschool_teachers_to_children
+    12: 0.0,  # nursary_children_coridors
+    13: 0.0,  # elementary_children_coridors
+    14: 0.0,  # highschool_children_coridors
+    15: 0.0,  # nursary_teachers
+    16: 0.0,  # elementary_teachers
+    17: 0.0,  # highschool_teachers
+    18: 0.0,  # leasure_outdoor
+    19: 0.0,  # leasure_visit
+    20: 0.0,  # leasure_pub
+    21: 0.0,  # work_contacts
+    22: 0.0,  # work_workers_to_clients_distant
+    23: 0.0,  # work_workers_to_clients_plysical_short
+    24: 0.0,  # work_workers_to_clients_physical_long
+    25: 0.0,  # public_transport
+    26: 0.0,  # shops_customers
+    27: 0,  # shops_workers_to_clients
+    28: 0,  # pubs_customers
+    29: 0,  # pubs_workers_to_clients
+    30: 0,  # superspreader
 }
 
 
@@ -260,6 +260,8 @@ def quarrantine_policy_setup2(graph, normal_life):
 
 def wee_cold_policy(graph, policy_coefs, history, tseries, time, contact_history=None, memberships=None):
 
+    print("Hello, this is wee cold policy")
+
     last_day = _get_last_day(history, tseries, time)
 
     # those who became infected today
@@ -269,12 +271,17 @@ def wee_cold_policy(graph, policy_coefs, history, tseries, time, contact_history
         if e == states.I_s
         if np.random.rand() < 0.7
     ]
+    if 6686 in list(detected_nodes):
+        print(f"ACTION LOG({int(time)}): node {6686} does not feel well and stays home.")
 
     print(f"Nodes with a wee cold: {len(detected_nodes)}")
 
     _quarrantine_nodes(
         detected_nodes, policy_coefs, graph, memberships)
     released = _tick(policy_coefs, memberships)
+    if 6686 in list(released):
+        print(f"ACTION LOG({int(time)}: node {6686} feels well again and stops staying home.")
+
     to_change = _release_nodes(released, policy_coefs, graph)
 
     return to_change
@@ -326,6 +333,8 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
         for node, _, e in last_day
         if e == states.I_d
     ]
+    if 6686 in detected_nodes:
+        print(f"ACTION LOG({int(time)}): node {6686} was detected and is quarrantined by eva and asked for contacts.")
 
     if contact_history is not None:
         contacts = _select_contacts(
@@ -336,11 +345,15 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
 
     print(f"Qurantined nodes: {len(detected_nodes)}")
     print(f"Found contacts: {len(contacts)}")
+    if 6686 in list(contacts):
+        print(f"ACTION LOG({int(time)}): node {6686} was marked as contact.")
 
     depo = policy_coefs["quarrantine_depo"]
     released_waiting_nodes = depo.get_waiting()
     depo.wait(list(contacts))
     print(f"Quaratinted contacts: {len(released_waiting_nodes)}")
+    if 6686 in list(released_waiting_nodes):
+        print(f"ACTION LOG({int(time)}): node {6686} was quarrantined by Eva (because beeing contact).")
 
     # friends of detected
     _quarrantine_nodes(
@@ -354,6 +367,9 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
     # prisoners back to quarrantine
     if len(prisoners) > 0:
         policy_coefs["quarrantine_depo"].lock_up(prisoners, 2)
+
+    if 6686 in list(really_released):
+        print(f"ACTION LOG({int(time)}): node {6686} was released from qurrantine by eva.")
 
     #    _quarrantine_nodes(
     #        detected_nodes+list(contacts), policy_coefs, graph, memberships)
@@ -383,6 +399,8 @@ def petra_policy(graph, policy_coefs, history, tseries, time, contact_history=No
         for node, _, e in last_day
         if e == states.I_d
     ]
+    if 6686 in detected_nodes:
+        print(f"ACTION LOG({int(time)}): node {6686} was dectected and qurrantined by petra.")
 
     if contact_history is not None:
         contacts = _select_contacts(
@@ -393,6 +411,8 @@ def petra_policy(graph, policy_coefs, history, tseries, time, contact_history=No
 
     print(f"Qurantined nodes: {len(detected_nodes)}")
     print(f"Quaratinted contacts: {len(contacts)}")
+    if 6686 in list(contacts):
+        print(f"ACTION LOG({int(time)}): node {6686} has detected family member and stays home.")
 
     # friends of detected
     _quarrantine_nodes(
@@ -411,10 +431,18 @@ def petra_policy(graph, policy_coefs, history, tseries, time, contact_history=No
     if len(prisoners) > 0:
         policy_coefs["quarrantine_depo"].lock_up(prisoners, 2)
 
+    if 6686 in list(prisoners):
+        print(f"ACTION LOG({int(time)}): node {6686} tested and stays in quarrantine by petra.")
+
+    if 6686 in list(really_released):
+        print(f"ACTION LOG({int(time)}): node {6686} was released from quarrantine by petra.")
+
     released = _tick_home(policy_coefs, memberships)
+    if 6686 in list(released):
+        print(f"ACTION LOG({int(time)}): node {6686} stops staying home.")
 
-    to_change = _release_nodes(list(really_released)+list(released), policy_coefs, graph)
-
+    to_change = _release_nodes(
+        list(really_released)+list(released), policy_coefs, graph)
 
     return to_change
 
@@ -432,7 +460,7 @@ def _do_testing(released, memberships):
     really_released = released[node_is_R]
     still_ill = released[node_is_R == False]
 
-    return released, np.array([]), still_ill
+    return really_released, np.array([]), still_ill
 
 
 def _get_last_day(history, tseries, time):
@@ -483,6 +511,7 @@ def _tick(policy_coefs, memberships):
     depo = policy_coefs["quarrantine_depo"]
     released = depo.tick_and_get_released(memberships)
     return released
+
 
 def _tick_home(policy_coefs, memberships):
     depo = policy_coefs["stayhome_depo"]

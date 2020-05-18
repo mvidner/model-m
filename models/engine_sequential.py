@@ -50,7 +50,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
         propensities = np.column_stack(plist)
 
-        #assert np.all(propensities >= 0) and np.all(propensities <= 1), \
+        # assert np.all(propensities >= 0) and np.all(propensities <= 1), \
         #    f">=0 & <= 1 failed for {propensities[propensities >= 0]} a \
         #    {propensities[propensities<=1]} "
 
@@ -94,6 +94,9 @@ class SequentialEngine(SeirsPlusLikeEngine):
             # print(f"{node} goes from {self.state_str_dict[s]} to {self.state_str_dict[e]}")
             # if self.memberships[s, node, 0] != 1:
             #     print(f"node not in state {self.state_str_dict[s]}")
+            if node == 6686:
+                # stalking
+                print(f"ACTION LOG ({self.t}): node {node} changing state to {self.state_str_dict[e]}")
 
             self.delta[s, node, :] = -1
             self.delta[e, node, :] = 1
@@ -134,21 +137,19 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.print(verbose)
 
         for self.t in range(1, T+1):
-#            os.system("free -h")
+            #            os.system("free -h")
             if __debug__ and print_interval >= 0 and verbose:
                 print(flush=True)
 #                input()
             #            print(f"day {self.t}")
 
-            
             # TODO - tohle tu nebude, ma delat policy !!!! :(
 
             if self.t == 23:
-                self.beta *= self.beta_reduction 
+                self.beta *= self.beta_reduction
                 self.beta = np.clip(self.beta, 0.0, 1.0)
-                self.beta_A *= self.beta_reduction 
+                self.beta_A *= self.beta_reduction
                 self.beta_A = np.clip(self.beta_A, 0.0, 1.0)
-
 
             if self.t == 10:
                 self.theta_Is[:] = 0.05
@@ -162,24 +163,20 @@ class SequentialEngine(SeirsPlusLikeEngine):
                 self.theta_In = self.theta_E
                 self.theta_Ia = self.theta_E
 
-
             if self.t == 30:
                 self.theta_Is[:] = 0.2
                 self.theta_E[:] = 0.02
                 self.theta_In = self.theta_E
                 self.theta_Ia = self.theta_E
 
-                
             if self.t == 40:
                 self.theta_Is[:] = 0.2
                 self.theta_E[:] = 0.02
                 self.theta_In = self.theta_E
                 self.theta_Ia = self.theta_E
 
-
             if self.t == 50:
-                self.theta_Is[:] = 0.2 
-
+                self.theta_Is[:] = 0.2
 
             # print(self.t)
             # print(len(self.state_counts[0]))
@@ -214,7 +211,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
                         ])
             if not numI > 0:
                 break
-            #gc.collect()
+            # gc.collect()
 
         if self.t < T:
             for t in range(self.t+1, T+1):
@@ -271,13 +268,13 @@ class SequentialEngine(SeirsPlusLikeEngine):
     def to_df(self):
         index = range(0, self.t+1)
         col_increments = {
-            "inc_" + self.state_str_dict[x]: col_inc 
+            "inc_" + self.state_str_dict[x]: col_inc
             for x, col_inc in self.state_increments.items()
-        } 
-        col_states =  { 
-            self.state_str_dict[x]: count 
-            for x, count in self.state_counts.items() 
-        } 
+        }
+        col_states = {
+            self.state_str_dict[x]: count
+            for x, count in self.state_counts.items()
+        }
         columns = {**col_states, **col_increments}
         columns["day"] = np.floor(index).astype(int)
         columns["mean_p_infection"] = self.meaneprobs
