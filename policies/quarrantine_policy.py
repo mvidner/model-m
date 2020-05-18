@@ -271,16 +271,16 @@ def wee_cold_policy(graph, policy_coefs, history, tseries, time, contact_history
         if e == states.I_s
         if np.random.rand() < 0.7
     ]
-    if 6686 in list(detected_nodes):
-        print(f"ACTION LOG({int(time)}): node {6686} does not feel well and stays home.")
+    if 29691 in list(detected_nodes):
+        print(f"ACTION LOG({int(time)}): node {29691} does not feel well and stays home.")
 
     print(f"Nodes with a wee cold: {len(detected_nodes)}")
 
     _quarrantine_nodes(
         detected_nodes, policy_coefs, graph, memberships)
     released = _tick(policy_coefs, memberships)
-    if 6686 in list(released):
-        print(f"ACTION LOG({int(time)}: node {6686} feels well again and stops staying home.")
+    if 29691 in list(released):
+        print(f"ACTION LOG({int(time)}: node {29691} feels well again and stops staying home.")
 
     to_change = _release_nodes(released, policy_coefs, graph)
 
@@ -333,8 +333,8 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
         for node, _, e in last_day
         if e == states.I_d
     ]
-    if 6686 in detected_nodes:
-        print(f"ACTION LOG({int(time)}): node {6686} was detected and is quarrantined by eva and asked for contacts.")
+    if 29691 in detected_nodes:
+        print(f"ACTION LOG({int(time)}): node {29691} was detected and is quarantined by eva and asked for contacts.")
 
     if contact_history is not None:
         contacts = _select_contacts(
@@ -345,15 +345,15 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
 
     print(f"Qurantined nodes: {len(detected_nodes)}")
     print(f"Found contacts: {len(contacts)}")
-    if 6686 in list(contacts):
-        print(f"ACTION LOG({int(time)}): node {6686} was marked as contact.")
+    if 29691 in list(contacts):
+        print(f"ACTION LOG({int(time)}): node {29691} was marked as contact.")
 
     depo = policy_coefs["quarrantine_depo"]
     released_waiting_nodes = depo.get_waiting()
     depo.wait(list(contacts))
     print(f"Quaratinted contacts: {len(released_waiting_nodes)}")
-    if 6686 in list(released_waiting_nodes):
-        print(f"ACTION LOG({int(time)}): node {6686} was quarrantined by Eva (because beeing contact).")
+    if 29691 in list(released_waiting_nodes):
+        print(f"ACTION LOG({int(time)}): node {29691} was quarantined by Eva (because beeing contact).")
 
     # friends of detected
     _quarrantine_nodes(
@@ -367,9 +367,13 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
     # prisoners back to quarrantine
     if len(prisoners) > 0:
         policy_coefs["quarrantine_depo"].lock_up(prisoners, 2)
+        if 29691 in list(prisoners):
+            print(f"ACTION LOG({int(time)}): node {29691} waits for possitive tests in eva quarantine.")
 
-    if 6686 in list(really_released):
-        print(f"ACTION LOG({int(time)}): node {6686} was released from qurrantine by eva.")
+
+
+    if 29691 in list(really_released):
+        print(f"ACTION LOG({int(time)}): node {29691} was released from quarantine by eva.")
 
     #    _quarrantine_nodes(
     #        detected_nodes+list(contacts), policy_coefs, graph, memberships)
@@ -399,8 +403,8 @@ def petra_policy(graph, policy_coefs, history, tseries, time, contact_history=No
         for node, _, e in last_day
         if e == states.I_d
     ]
-    if 6686 in detected_nodes:
-        print(f"ACTION LOG({int(time)}): node {6686} was dectected and qurrantined by petra.")
+    if 29691 in detected_nodes:
+        print(f"ACTION LOG({int(time)}): node {29691} was dectected and qurantined by petra.")
 
     if contact_history is not None:
         contacts = _select_contacts(
@@ -411,8 +415,8 @@ def petra_policy(graph, policy_coefs, history, tseries, time, contact_history=No
 
     print(f"Qurantined nodes: {len(detected_nodes)}")
     print(f"Quaratinted contacts: {len(contacts)}")
-    if 6686 in list(contacts):
-        print(f"ACTION LOG({int(time)}): node {6686} has detected family member and stays home.")
+    if 29691 in list(contacts):
+        print(f"ACTION LOG({int(time)}): node {29691} has detected family member and stays home.")
 
     # friends of detected
     _quarrantine_nodes(
@@ -431,15 +435,15 @@ def petra_policy(graph, policy_coefs, history, tseries, time, contact_history=No
     if len(prisoners) > 0:
         policy_coefs["quarrantine_depo"].lock_up(prisoners, 2)
 
-    if 6686 in list(prisoners):
-        print(f"ACTION LOG({int(time)}): node {6686} tested and stays in quarrantine by petra.")
+    if 29691 in list(prisoners):
+        print(f"ACTION LOG({int(time)}): node {29691} tested and stays in quarantine by petra.")
 
-    if 6686 in list(really_released):
-        print(f"ACTION LOG({int(time)}): node {6686} was released from quarrantine by petra.")
+    if 29691 in list(really_released):
+        print(f"ACTION LOG({int(time)}): node {29691} was released from quarantine by petra.")
 
     released = _tick_home(policy_coefs, memberships)
-    if 6686 in list(released):
-        print(f"ACTION LOG({int(time)}): node {6686} stops staying home.")
+    if 29691 in list(released):
+        print(f"ACTION LOG({int(time)}): node {29691} stops staying home.")
 
     to_change = _release_nodes(
         list(really_released)+list(released), policy_coefs, graph)

@@ -34,7 +34,7 @@ def switch_on_eva_policy(graph, policy_coefs, *args, **kwargs):
 def switch_on_half_policy(graph, policy_coefs, *args, **kwargs):
     risk_for_layers = RISK_FOR_LAYERS
     riskiness = np.array([
-        risk_for_layers[i] if i < 3 else risk_for_layers[i]*0.5
+        risk_for_layers[i] if i < 3 else risk_for_layers[i]*0.25
         for i in range(0, 31)
     ])
     policy_coefs["riskiness"] = riskiness
@@ -230,6 +230,7 @@ def setup_story(graph, normal_life=None):
     wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
     CALENDAR[90] = start_party 
     CALENDAR[92] = stop_party 
+    del CALENDAR[66]
     return {**policy_coefs,
             **{"policy_object": policy_object,
                "calendar": CALENDAR,
