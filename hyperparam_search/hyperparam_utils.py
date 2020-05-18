@@ -86,6 +86,13 @@ def _run_models_from_config(cf: ConfigFile,
                         })
         del hyperparams["theta"]
 
+    if "A" in hyperparams:
+        hyperparams["beta_A"] = hyperparams["beta"]*hyperparams["A"]
+        del hyperparams["A"] 
+
+    hyperparams["beta_in_family"] = hyperparams["beta"] 
+    hyperparams["beta_A_in_family"] = hyperparams["beta_A"] 
+
     
     model = load_model_from_config(cf, use_policy, model_random_seed, hyperparams=hyperparams)
     

@@ -238,7 +238,7 @@ def calc_propensities(model, use_dict=True):
     numIn = model.current_state_count(
         STATES.I_a) + model.current_state_count(STATES.I_n)
     numI = model.current_state_count(
-        STATES.I_s) + model.current_state_count(STATES.I_d)
+        STATES.I_s) 
 
     P2 = (model.beta * numI/N + model.beta_A * numIn/N)
 
