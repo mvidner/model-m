@@ -5,6 +5,10 @@
     "beta": 0.54,
     "beta_reduction": 0.38
   },
+  "param_ranges": {
+    "beta": [0.4, 0.6],
+    "beta_reduction": [0.2, 0.4]
+  },
   "SIGMA": 2,
   "CMA": {
       "maxfevals": 10000,

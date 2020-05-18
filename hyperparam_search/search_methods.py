@@ -33,12 +33,10 @@ def perform_gridsearch(model_func, hyperparam_config, n_jobs=1, output_file=None
     return res
 
 
-def evaluate_with_params(param_array: np.ndarray, model_func, param_keys):
+def evaluate_with_params(param_array: np.ndarray, model_func, param_keys, param_ranges=None):
     assert len(param_array) == len(param_keys)
 
-    param_array = scipy.special.expit(param_array)  # sigmoid scaling between 0 and 1
-
-    hyperparam_dict = _keys_with_evolved_vals(param_array, param_keys)
+    hyperparam_dict = _compile_individual(param_array, param_keys=param_keys, param_ranges=param_ranges)
     model_res = model_func(hyperparam_dict)["result"]
 
     return np.mean(model_res)
@@ -65,17 +63,56 @@ def _inverse_sigmoid(x):
     return np.log(x/(1-x))
 
 
+def _init_values(value_dict, ranges=None):
+    if ranges is None:
+        initial_vals = np.array([v for v in value_dict.values()])
+        return _inverse_sigmoid(initial_vals)
+
+    def scale(x, lower, upper):
+        return (x - lower) / (upper - lower)
+
+    res_vals = []
+    for k, v in value_dict.items():
+        if k not in ranges:
+            res_vals.append(v)
+        else:
+            low, up = ranges[k]
+            res_vals.append(scale(v, low, up))
+
+    return _inverse_sigmoid(np.array(res_vals))
+
+
+def _compile_individual(x, param_keys=None, param_ranges=None, with_keys=True):
+    def scale_back(val, key):
+        val = scipy.special.expit(val)
+        low, up = param_ranges[key]
+        return val * (up - low) + low
+
+    # optional rescaling
+    if param_ranges is None:
+        ind = scipy.special.expit(x).tolist()
+    else:
+        ind = []
+        for key, val in zip(param_keys, x):
+            ind.append(val if key not in param_ranges else scale_back(val, key))
+
+    # return with keys or not
+    return _keys_with_evolved_vals(ind, param_keys) if with_keys else ind
+
+
+
 def cma_es(model_func, hyperparam_config: dict, return_only_best=False, output_file=None, n_jobs=1):
     initial_kwargs = hyperparam_config["MODEL"]
     _init_output_file(output_file, initial_kwargs.keys())
 
-    initial_vals = np.array([v for v in initial_kwargs.values()])
-    initial_vals = _inverse_sigmoid(initial_vals)
+    param_ranges = hyperparam_config.get("param_ranges", None)
+    initial_vals = _init_values(initial_kwargs, ranges=param_ranges)
 
     sigma = hyperparam_config["SIGMA"]
     cma_kwargs = hyperparam_config["CMA"]
 
-    eval_func = partial(evaluate_with_params, model_func=model_func, param_keys=list(initial_kwargs.keys()))
+    eval_func = partial(evaluate_with_params, model_func=model_func,
+                        param_keys=list(initial_kwargs.keys()), param_ranges=param_ranges)
 
     es = cma.CMAEvolutionStrategy(initial_vals, sigma, cma_kwargs)
     with EvalParallel2(fitness_function=eval_func, number_of_processes=n_jobs) as eval_all:
@@ -87,13 +124,14 @@ def cma_es(model_func, hyperparam_config: dict, return_only_best=False, output_f
             es.disp()
 
             for x, f in zip(X, fitnesses):
-                _log_inidividual(output_file, scipy.special.expit(x).tolist(), f, gen_n)
+                ind = _compile_individual(x, param_keys=initial_kwargs.keys(),
+                                          param_ranges=param_ranges, with_keys=False)
+                _log_inidividual(output_file, list(ind), f, gen_n)
 
             gen_n += 1
 
     res = es.result
-    x = _keys_with_evolved_vals(res[0], initial_kwargs.keys())
-    x = scipy.special.expit(x)
+    x = _compile_individual(res[0], initial_kwargs.keys(), param_ranges=param_ranges)
 
     if return_only_best:
         return {"hyperparams": x, "result": res[1]}  # best evaluated solution, its objective function value
