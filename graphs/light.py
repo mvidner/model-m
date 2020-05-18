@@ -4,9 +4,24 @@ from scipy.sparse import csr_matrix, lil_matrix
 
 # novej light graph
 
+from itertools import chain
+def concat_lists(l, dtype=None):
+    """
+    Returns concatenation of iterables in the iterable l
+    :param l: iterable of iterables
+    :param dtype: dtype of the resulting array, compulsory
+    :return: concatenation of iterables in l as numpy array
+    """
+    # Specify count to improve performance.
+    # It allows fromiter to pre-allocate the output array, instead of resizing it on demand.
+    # We can calculate the size by c = sum(len(x) for x in l) or using np.ufunc.reduce to do it in one run.
+    # But then the fromiter goes from 7768ms to 7490ms. Not worth it.
+    return np.fromiter(chain.from_iterable(l), dtype=dtype)
+    # return np.array(list(chain.from_iterable(l)), dtype=dtype)
 
 class LightGraph:
-
+    # __slots__ = ['e_types', 'e_subtypes', 'e_probs', 'e_intensities', 'e_source', 'e_dest', 'e_valid', 'edges_repo',
+     # 'edges_directions', '__dict__'] # not really helpful here, beneficial only for lots of small objects
     def __init__(self, random_seed=None):
         if random_seed:
             np.random.seed(random_seed)
@@ -89,12 +104,12 @@ class LightGraph:
         self.e_dest = np.empty(n_edges, dtype="uint16")
         # if value == 2 than is valid, other numbers prob in quarantine
         self.e_valid = 2 * np.ones(n_edges, dtype="float32")
-        # edges repo
+        # edges repo which will eventually be list of sets and not a dict
         self.edges_repo = {
-            0: None
+            0: []
         }
         self.edges_directions = {
-            0: None
+            0: []
         }
         key = 1
         # working matrix
@@ -130,10 +145,8 @@ class LightGraph:
 
             if tmpA[i_row, i_col] == 0:
                 # first edge between (row, col)
-                self.edges_repo[key], self.edges_directions[key] = [
-                    i], forward_edge
-                self.edges_repo[key +
-                                1], self.edges_directions[key+1] = [i], backward_edge
+                self.edges_repo[key], self.edges_directions[key] = [i], forward_edge
+                self.edges_repo[key + 1], self.edges_directions[key+1] = [i], backward_edge
                 tmpA[i_row, i_col] = key
                 tmpA[i_col, i_row] = key + 1
                 key += 2
@@ -158,23 +171,27 @@ class LightGraph:
         print("level done")
         del tmpA
 
-        print("Converting edges_repo to numpy array ...", end="")
-        data = [None]
-        subedges_counts = [0]
-        for i_key in range(1, key):
-            value_list = self.edges_repo[i_key]
-            # if len(value_list) > 1:
-            #     print(i_key)
-            data.append(np.array(value_list, dtype="uint32"))
-            subedges_counts.append(len(value_list))
-        self.edges_repo = np.array(data, dtype=object)
+        print("Converting edges_repo to list ...", end="")
+        # data = [None]
+        # subedges_counts = [0]
+        # for i_key in range(1, key):
+        #     value_set = self.edges_repo[i_key]
+        #     # if len(value_list) > 1:
+        #     #     print(i_key)
+        #     data.append(value_set)
+        #     subedges_counts.append(len(value_set))
+        # self.edges_repo = data
+        # the above can be replaced by
+        self.edges_repo = np.array(list(self.edges_repo.values()), dtype=object)
+        subedges_counts = [len(s) for s in self.edges_repo]
+        # subedges_counts = [len(s) for s in np.nditer(self.edges_repo, flags=['refs_ok'], op_flags=['readonly'])]
         print("level done")
 
-        print("Converting edges_directions to numpy bool array ... ", end="")
+        print("Converting edges_directions to list ... ", end="")
         data = [None]
         for i_key in range(1, key):
             dir_list = [self.edges_directions[i_key]] * subedges_counts[i_key]
-            data.append(np.array(dir_list, dtype="bool"))
+            data.append(dir_list)
         self.edges_directions = np.array(data, dtype=object)
         print("level done")
 
@@ -214,10 +231,10 @@ class LightGraph:
         if len(active_edges_indices) == 0:
             return np.array([]), np.array([])
         edge_lists = self.edges_repo[active_edges_indices]
-        result = np.concatenate(edge_lists)
+        result = concat_lists(edge_lists, dtype='uint16')
         if dirs:
             dirs_lists = self.edges_directions[active_edges_indices]
-            result_dirs = np.concatenate(dirs_lists)
+            result_dirs = concat_lists(dirs_lists, dtype=bool)
             return result, result_dirs
         return result
 
@@ -228,7 +245,7 @@ class LightGraph:
             print("Warning: no edges for nodes", nodes)
             return np.array([])
         edge_lists = self.edges_repo[active_edges_indices]
-        result = np.concatenate(edge_lists)
+        result = concat_lists(edge_lists, dtype='uint16')
         return result
 
     def get_edges_probs(self, edges):
@@ -303,3 +320,5 @@ class LightGraph:
             print(f"Closing {name}")
             i = self.layer_name.index(name)
             self.layer_weights[i] = 0 if not coefs else coefs[idx]
+
+
