@@ -17,7 +17,7 @@ class PlainVanilla:
 
 def switch_on_simple_policy(graph, policy_coefs, *args, **kwargs):
     policy_object = policy_coefs["policy_object"]
-    policy_object.set_policy(quarrantine_with_contact_tracing_policy)
+    policy_object.set_policy(petra_policy)
     return {}
 
 
@@ -25,6 +25,28 @@ def switch_on_eva_policy(graph, policy_coefs, *args, **kwargs):
     risk_for_layers = RISK_FOR_LAYERS
     riskiness = np.array([risk_for_layers[i] for i in range(0, 31)])
     policy_coefs["riskiness"] = riskiness
+    policy_object = policy_coefs["policy_object"]
+    policy_object.set_policy(quarrantine_with_contact_tracing_policy)
+    return {}
+
+def switch_on_half_policy(graph, policy_coefs, *args, **kwargs):
+    risk_for_layers = RISK_FOR_LAYERS
+    riskiness = np.array([
+        risk_for_layers[i] if i < 3 else risk_for_layers[i]*0.5 
+        for i in range(0, 31)
+    ])
+    policy_coefs["riskiness"] = riskiness
+    policy_object = policy_coefs["policy_object"]
+    policy_object.set_policy(quarrantine_with_contact_tracing_policy)
+    return {}
+
+
+def switch_on_super_eva_policy(graph, policy_coefs, *args, **kwargs):
+    risk_for_layers = RISK_FOR_LAYERS
+    riskiness = np.array([1.0 for i in range(0, 31)])
+    policy_coefs["riskiness"] = riskiness
+    policy_object = policy_coefs["policy_object"]
+    policy_object.set_policy(quarrantine_with_contact_tracing_policy)
     return {}
 
 
@@ -187,6 +209,42 @@ def setup(graph, normal_life=None):
                "calendar": CALENDAR,
                "wee_cold": wee_cold_coefs}
             }
+
+def setup_super_eva(graph, normal_life=None):
+    policy_object = PlainVanilla()
+    policy_coefs = quarrantine_policy_setup(graph, normal_life)
+    wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
+    CALENDAR[66] = switch_on_super_eva_policy
+    return {**policy_coefs,
+            **{"policy_object": policy_object,
+               "calendar": CALENDAR,
+               "wee_cold": wee_cold_coefs}
+            }
+
+def setup_half_eva(graph, normal_life=None):
+    policy_object = PlainVanilla()
+    policy_coefs = quarrantine_policy_setup(graph, normal_life)
+    wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
+    CALENDAR[66] = switch_on_half_policy
+    return {**policy_coefs,
+            **{"policy_object": policy_object,
+               "calendar": CALENDAR,
+               "wee_cold": wee_cold_coefs}
+            }
+
+
+
+def setup_no_eva(graph, normal_life=None):
+    policy_object = PlainVanilla()
+    policy_coefs = quarrantine_policy_setup(graph, normal_life)
+    wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
+    del CALENDAR[66]
+    return {**policy_coefs,
+            **{"policy_object": policy_object,
+               "calendar": CALENDAR,
+               "wee_cold": wee_cold_coefs}
+            }
+
 
 
 def setup_no_close(graph, normal_life=None):

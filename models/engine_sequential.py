@@ -140,9 +140,46 @@ class SequentialEngine(SeirsPlusLikeEngine):
 #                input()
             #            print(f"day {self.t}")
 
+            
+            # TODO - tohle tu nebude, ma delat policy !!!! :(
+
             if self.t == 23:
                 self.beta *= self.beta_reduction 
                 self.beta = np.clip(self.beta, 0.0, 1.0)
+                self.beta_A *= self.beta_reduction 
+                self.beta_A = np.clip(self.beta_A, 0.0, 1.0)
+
+
+            if self.t == 10:
+                self.theta_Is[:] = 0.05
+                self.theta_E[:] = 0.005
+                self.theta_In = self.theta_E
+                self.theta_Ia = self.theta_E
+
+            if self.t == 20:
+                self.theta_Is[:] = 0.1
+                self.theta_E[:] = 0.01
+                self.theta_In = self.theta_E
+                self.theta_Ia = self.theta_E
+
+
+            if self.t == 30:
+                self.theta_Is[:] = 0.2
+                self.theta_E[:] = 0.02
+                self.theta_In = self.theta_E
+                self.theta_Ia = self.theta_E
+
+                
+            if self.t == 40:
+                self.theta_Is[:] = 0.2
+                self.theta_E[:] = 0.02
+                self.theta_In = self.theta_E
+                self.theta_Ia = self.theta_E
+
+
+            if self.t == 50:
+                self.theta_Is[:] = 0.2 
+
 
             # print(self.t)
             # print(len(self.state_counts[0]))
