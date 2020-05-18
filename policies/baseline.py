@@ -52,9 +52,6 @@ def switch_on_super_eva_policy(graph, policy_coefs, *args, **kwargs):
     return {}
 
 
-def start(graph, *args, **kwargs):
-    graph.close_layers(["superspreader"], [1.0])
-    return {"graph": None}
 
 
 def close_schools(graph, *args, **kwargs):
@@ -188,9 +185,17 @@ def open_all(graph, *args, **kwargs):
     graph.close_layers(change+opened, coefs+[1]*len(opened))
     return {"graph": None}
 
+def start_party(graph, *args, **kwargs):
+    open_all(graph, *args, **kwargs)
+    graph.close_layers(["superspreader"], [1.0])
+    return {"graph": None}
+
+def stop_party(graph, *args, **kwargs):
+    graph.close_layers(["superspreader"], [0.0])
+    return {"graph": None}
+
 
 CALENDAR = {
-    1:  start,
     5:  switch_on_simple_policy,
     15: close_schools,
     16: close_pubs,
@@ -212,6 +217,19 @@ def setup(graph, normal_life=None):
     policy_object = PlainVanilla()
     policy_coefs = quarrantine_policy_setup(graph, normal_life)
     wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
+    return {**policy_coefs,
+            **{"policy_object": policy_object,
+               "calendar": CALENDAR,
+               "wee_cold": wee_cold_coefs}
+            }
+
+
+def setup_story(graph, normal_life=None):
+    policy_object = PlainVanilla()
+    policy_coefs = quarrantine_policy_setup(graph, normal_life)
+    wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
+    CALENDAR[90] = start_party 
+    CALENDAR[92] = stop_party 
     return {**policy_coefs,
             **{"policy_object": policy_object,
                "calendar": CALENDAR,
