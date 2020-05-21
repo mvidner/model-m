@@ -185,6 +185,12 @@ def open_all(graph, *args, **kwargs):
     graph.close_layers(change+opened, coefs+[1]*len(opened))
     return {"graph": None}
 
+def big_opening(graph, *args, **kwargs):
+    graph.close_layers(graph.layer_name[:31], [1.0 for i in range(0, 31)])
+    return {"graph": None}
+
+
+
 def start_party(graph, *args, **kwargs):
     open_all(graph, *args, **kwargs)
     graph.close_layers(["superspreader"], [1.0])
@@ -224,6 +230,18 @@ def setup(graph, normal_life=None):
             }
 
 
+def setup_with_june(graph, normal_life=None):
+    policy_object = PlainVanilla()
+    policy_coefs = quarrantine_policy_setup(graph, normal_life)
+    wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
+    CALENDAR[120] = big_opening
+    return {**policy_coefs,
+            **{"policy_object": policy_object,
+               "calendar": CALENDAR,
+               "wee_cold": wee_cold_coefs}
+            }
+
+
 def setup_story(graph, normal_life=None):
     policy_object = PlainVanilla()
     policy_coefs = quarrantine_policy_setup(graph, normal_life)
@@ -250,6 +268,19 @@ def setup_super_eva(graph, normal_life=None):
             }
 
 
+def setup_super_eva_with_june(graph, normal_life=None):
+    policy_object = PlainVanilla()
+    policy_coefs = quarrantine_policy_setup(graph, normal_life)
+    wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
+    CALENDAR[66] = switch_on_super_eva_policy
+    CALENDAR[120] = big_opening
+    return {**policy_coefs,
+            **{"policy_object": policy_object,
+               "calendar": CALENDAR,
+               "wee_cold": wee_cold_coefs}
+            }
+
+
 def setup_half_eva(graph, normal_life=None):
     policy_object = PlainVanilla()
     policy_coefs = quarrantine_policy_setup(graph, normal_life)
@@ -267,6 +298,18 @@ def setup_no_eva(graph, normal_life=None):
     policy_coefs = quarrantine_policy_setup(graph, normal_life)
     wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
     del CALENDAR[66]
+    return {**policy_coefs,
+            **{"policy_object": policy_object,
+               "calendar": CALENDAR,
+               "wee_cold": wee_cold_coefs}
+            }
+
+def setup_no_eva_with_june(graph, normal_life=None):
+    policy_object = PlainVanilla()
+    policy_coefs = quarrantine_policy_setup(graph, normal_life)
+    wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
+    del CALENDAR[66]
+    CALENDAR[120] = big_opening
     return {**policy_coefs,
             **{"policy_object": policy_object,
                "calendar": CALENDAR,

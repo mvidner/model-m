@@ -11,9 +11,11 @@ class QuarrantineDepo:
         self.quarrantine = np.zeros(size)
         self.leave_cond = leave_cond
         self.waiting_room = np.zeros(size, dtype=bool)
+        self.waiting_for_test = np.zeros(size, dtype="uint8")
+
 
     def wait(self, nodes):
-        print("nodes w", nodes)
+#        print("nodes w", nodes)
         if len(nodes) == 0:
             return
         self.waiting_room[nodes] = True
@@ -23,6 +25,17 @@ class QuarrantineDepo:
         print("released w", released)
         self.waiting_room.fill(False)
         return released
+
+    def wait_for_test(self, nodes):         
+        if len(nodes) == 0:
+            return
+        self.waiting_for_test[nodes] = 2
+
+    def get_retested(self):
+        released = np.nonzero(self.quarrantine == 1)[0]
+        self.quarrantine[self.quarrantine > 0] -= 1
+        return released
+        
 
     def lock_up(self, nodes, duration):
         self.quarrantine[nodes] = duration
@@ -191,7 +204,10 @@ RISK_FOR_LAYERS_FOR_SIMPLE = {
 def is_R(node_ids, memberships):
     if memberships is None:
         return np.ones(len(node_ids), dtype="bool")
-    recovered_states_flags = memberships[states.R_u] + memberships[states.R_d]
+    recovered_states_flags = (memberships[states.R_u] + 
+                              memberships[states.R_d] + 
+                              memberships[states.S] + 
+                              memberships[states.S_s])
     release_recovered = recovered_states_flags.ravel()[node_ids]
     return release_recovered
 
@@ -331,7 +347,7 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
     detected_nodes = [
         node
         for node, _, e in last_day
-        if e == states.I_d
+        if e == states.I_d and not policy_coefs["quarrantine_depo"].is_locked(node)
     ]
     if 29691 in detected_nodes:
         print(f"ACTION LOG({int(time)}): node {29691} was detected and is quarantined by eva and asked for contacts.")
@@ -349,28 +365,39 @@ def quarrantine_with_contact_tracing_policy(graph, policy_coefs, history, tserie
         print(f"ACTION LOG({int(time)}): node {29691} was marked as contact.")
 
     depo = policy_coefs["quarrantine_depo"]
-    released_waiting_nodes = depo.get_waiting()
+    released_waiting_nodes = [ 
+        x 
+        for x in depo.get_waiting()
+        if not policy_coefs["quarrantine_depo"].is_locked(x)
+    ]
     depo.wait(list(contacts))
     print(f"Quaratinted contacts: {len(released_waiting_nodes)}")
     if 29691 in list(released_waiting_nodes):
         print(f"ACTION LOG({int(time)}): node {29691} was quarantined by Eva (because beeing contact).")
 
     # friends of detected
+    released = _tick(policy_coefs, memberships)
     _quarrantine_nodes(
         detected_nodes+list(released_waiting_nodes), policy_coefs, graph, memberships)
-    released = _tick(policy_coefs, memberships)
 
-    really_released, release_candidates, prisoners = _do_testing(
+    release_candidates, prisoners = _do_testing(
         released, memberships)
-    assert len(release_candidates) == 0
+    #    assert len(release_candidates) == 0
 
     # prisoners back to quarrantine
     if len(prisoners) > 0:
         policy_coefs["quarrantine_depo"].lock_up(prisoners, 2)
         if 29691 in list(prisoners):
-            print(f"ACTION LOG({int(time)}): node {29691} waits for possitive tests in eva quarantine.")
+            print(f"ACTION LOG({int(time)}): node {29691} waits for negative test in eva quarantine.")
 
-
+    # realease candidates are waiting for the second test 
+    if len(release_candidates) > 0:
+        policy_coefs["quarrantine_depo"].wait_for_test(release_candidates) 
+        if 29691 in list(release_candidates):
+            print(f"ACTION LOG({int(time)}): node {29691} has negative test and waits for second one  in eva quarantine.")
+        
+    really_released = policy_coefs["quarrantine_depo"].get_retested()
+            
 
     if 29691 in list(really_released):
         print(f"ACTION LOG({int(time)}): node {29691} was released from quarantine by eva.")
@@ -401,7 +428,7 @@ def petra_policy(graph, policy_coefs, history, tseries, time, contact_history=No
     detected_nodes = [
         node
         for node, _, e in last_day
-        if e == states.I_d
+        if e == states.I_d and not policy_coefs["quarrantine_depo"].is_locked(node)
     ]
     if 29691 in detected_nodes:
         print(f"ACTION LOG({int(time)}): node {29691} was dectected and qurantined by petra.")
@@ -427,9 +454,18 @@ def petra_policy(graph, policy_coefs, history, tseries, time, contact_history=No
 
     released = _tick(policy_coefs, memberships)
 
-    really_released, release_candidates, prisoners = _do_testing(
-        released, memberships)
-    assert len(release_candidates) == 0
+    really_released, prisoners = _do_testing(released, memberships)
+    #assert len(release_candidates) == 0
+
+    # realease candidates are waiting for the second test 
+#    if len(release_candidates) > 0:
+#        policy_coefs["quarrantine_depo"].wait_for_test(release_candidates) 
+#        if 29691 in list(release_candidate):
+#            print(f"ACTION LOG({int(time)}): node {29691} has negative test and waits for second one  in eva quarantine.")
+        #
+#    really_released = policy_coefs["quarrantine_depo"].get_retested()
+            
+
 
     # prisoners back to quarrantine
     if len(prisoners) > 0:
@@ -456,7 +492,7 @@ def _do_testing(released, memberships):
     if memberships is None:
         raise ValueError("Sorry, we need states to make a decision.")
     if not len(released) > 0:
-        return np.array([]), np.array([]), np.array([])
+        return  np.array([]), np.array([])
 
     # recovered release, other stay
     # todo first and second testing
@@ -464,7 +500,7 @@ def _do_testing(released, memberships):
     really_released = released[node_is_R]
     still_ill = released[node_is_R == False]
 
-    return really_released, np.array([]), still_ill
+    return really_released,  still_ill
 
 
 def _get_last_day(history, tseries, time):
