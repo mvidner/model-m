@@ -1,8 +1,8 @@
 from quarrantine_policy import quarrantine_policy_setup, quarrantine_with_contact_tracing_policy, simple_quarrantine_policy
-from quarrantine_policy import wee_cold_policy, wee_cold_policy_setup
+from quarrantine_policy import wee_cold_policy, wee_cold_policy_setup, petra_policy, RISK_FOR_LAYERS
 from policy_utils import load_scenario_dict
 from functools import partial
-
+import numpy as  np
 
 class PlainVanilla:
     def __init__(self):
@@ -18,14 +18,18 @@ class PlainVanilla:
 
 def switch_on_simple_policy(graph, policy_coefs, *args, **kwargs):
     policy_object = policy_coefs["policy_object"]
-    policy_object.set_policy(quarrantine_with_contact_tracing_policy)
+    policy_object.set_policy(petra_policy)
     return {}
 
 
 def switch_on_eva_policy(graph, policy_coefs, *args, **kwargs):
+    risk_for_layers = RISK_FOR_LAYERS
+    riskiness = np.array([risk_for_layers[i] for i in range(0, 31)])
+    policy_coefs["riskiness"] = riskiness
     policy_object = policy_coefs["policy_object"]
     policy_object.set_policy(quarrantine_with_contact_tracing_policy)
     return {}
+
 
 
 def update_layers(coefs, graph, *args, **kwargs):
@@ -45,6 +49,23 @@ def setup(graph, normal_life=None):
     policy_coefs = quarrantine_policy_setup(graph, normal_life)
     wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
 
+    calendar_adds = load_scenario_dict("../data/policy_params/vanilla.csv")
+    print(calendar_adds)
+    for t, clist in calendar_adds.items():
+        CALENDAR[int(t)] = partial(update_layers, clist)
+
+    print(CALENDAR)
+    return {**policy_coefs,
+            **{"policy_object": policy_object,
+               "calendar": CALENDAR,
+               "wee_cold": wee_cold_coefs}
+            }
+
+def setup_sour(graph, normal_life=None):
+    policy_object = PlainVanilla()
+    policy_coefs = quarrantine_policy_setup(graph, normal_life)
+    wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
+
     calendar_adds = load_scenario_dict("../data/policy_params/sour_2.csv")
     print(calendar_adds)
     for t, clist in calendar_adds.items():
@@ -56,6 +77,7 @@ def setup(graph, normal_life=None):
                "calendar": CALENDAR,
                "wee_cold": wee_cold_coefs}
             }
+
 
 
 def policy(graph, policy_coefs, history, tseries, time, contact_history=None, memberships=None):
