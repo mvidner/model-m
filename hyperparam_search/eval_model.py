@@ -20,7 +20,7 @@ def model_r_squared(model, y_true):
     y_mean = np.mean(y_true)
     tss = np.sum((y_true - y_mean) ** 2)
     rss = np.sum((y_true - infected_count) ** 2)
-    return 1 - rss / tss
+    return -(1 - rss / tss)
 
 
 return_func_zoo = {
