@@ -226,7 +226,7 @@ class LightGraph:
         if len(active_edges_indices) == 0:
             return np.array([]), np.array([])
         edge_lists = self.edges_repo[active_edges_indices]
-        result = np.array(concat_lists(edge_lists), dtype="uint16")
+        result = np.array(concat_lists(edge_lists))
         if dirs:
             dirs_lists = self.edges_directions[active_edges_indices]
             result_dirs = np.array(concat_lists(dirs_lists), dtype=bool)
@@ -240,7 +240,7 @@ class LightGraph:
             print("Warning: no edges for nodes", nodes)
             return np.array([])
         edge_lists = self.edges_repo[active_edges_indices]
-        result = concat_lists(edge_lists, dtype="uint16")
+        result = concat_lists(edge_lists)
         return result
 
     def get_edges_probs(self, edges):
