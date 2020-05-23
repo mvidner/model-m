@@ -214,16 +214,27 @@ class EngineM(SequentialEngine):
         assert b_intensities.shape == intensities.shape
         # print(b_intensitites.shape, intensities.shape,
         #      prob_of_no_infection.shape)
+        relevant_sources_unique = np.unique(relevant_sources)
+        relevant_sources = relevant_sources.reshape(-1, 1)
 
-        relevant_sources_unique, unique_indices = np.unique(relevant_sources, return_inverse=True)
+        #print(relevant_sources.shape, relevant_sources_unique.shape)
+        A = scipy.sparse.csr_matrix(
+            (np.ones(len(b_intensities)),
+             np.where((relevant_sources == relevant_sources_unique).T)
+             ),
+            shape=(len(relevant_sources_unique), len(relevant_sources))
+        )
+        assert A.shape[0] == len(
+            relevant_sources_unique) and A.shape[1] == len(b_intensities)
+
         no_infection = (1 - b_intensities * intensities).ravel()
+        #print(no_infection.shape, A.shape)
+        prob_of_no_infection = scipy.sparse.csr_matrix(
+            A.multiply(no_infection)
+        )
+        #        print(prob_of_no_infection.shape)
 
-        res = np.ones(len(relevant_sources_unique), dtype='float32')
-        for i in range(len(unique_indices)):
-            res[unique_indices[i]] = res[unique_indices[i]]*no_infection[i]
-        prob_of_no_infection = res
-        # prob_of_no_infection2 = np.fromiter((np.prod(no_infection, where=(relevant_sources==v).T)
-        #                         for v in relevant_sources_unique), dtype='float32')
+        prob_of_no_infection = prop_of_row(prob_of_no_infection)
 
         result = np.zeros(self.num_nodes)
         result[relevant_sources_unique] = 1 - prob_of_no_infection
