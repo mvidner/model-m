@@ -3,8 +3,6 @@ import copy
 import pickle
 from model_zoo import model_zoo
 
-import numpy as np
-
 from graph_gen import GraphGenerator, CSVGraphGenerator, RandomSingleGraphGenerator
 #from light_graph import LightGraph
 from light import LightGraph
@@ -153,12 +151,6 @@ class ModelM():
 
         raise TypeError("Unknown type of graph")
 
-def save_arrays(g):
-    arrs = {"e_types": g.e_types, 'e_subtypes': g.e_subtypes, 'e_probs': g.e_probs,
-            'e_intensities': g.e_intensities, 'e_source': g.e_source, 'e_dest': g.e_dest, 'e_valid': g.e_valid,
-            'edges_repo': g.edges_repo, 'edges_directions': g.edges_directions}
-    np.savez('graph_arrays.npz', **arrs)
-    np.savez_compressed('graph_arrays_compressed.npz', **arrs)
 
 def _load_graph(cf: ConfigFile):
     num_nodes = cf.section_as_dict("TASK").get("num_nodes", None)
@@ -187,7 +179,6 @@ def _load_graph(cf: ConfigFile):
     if graph_name == "pickle":
         with open(filename, "rb") as f:
             g = pickle.load(f)
-            # save_arrays(g)
             if isinstance(g, GraphGenerator):
                 if g.A_valid:
                     print("Wow, matrix A is ready.")
