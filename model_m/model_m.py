@@ -74,7 +74,7 @@ class ModelM():
     def setup(self):
 
         # working copy of graph and matrix
-        self.graph = self.start_graph.copy()
+        self.graph = copy.deepcopy(self.start_graph)
         self.A = self.init_matrix()
 
         # model
@@ -108,7 +108,7 @@ class ModelM():
             self.setup()
         else:
             del self.graph
-            self.graph = self.start_graph.copy()
+            self.graph = copy.deepcopy(self.start_graph)
             del self.A
             self.A = self.init_matrix()
 

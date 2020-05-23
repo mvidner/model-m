@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from copy import copy
 from scipy.sparse import csr_matrix, lil_matrix
 
 # novej light graph
@@ -26,7 +25,6 @@ class LightGraph:
     def __init__(self, random_seed=None):
         if random_seed:
             np.random.seed(random_seed)
-        self.random_seed = random_seed
         self.edge_repo = None
         self.A = None
         self.invalids = None
@@ -324,18 +322,4 @@ class LightGraph:
             print(f"Closing {name}", end="")
             i = self.layer_name.index(name)
             self.layer_weights[i] = 0 if not coefs else coefs[idx]
-
-    def copy(self):
-        """
-        Optimized version of shallow/deepcopy of self.
-        Since most fields never change between runs, we do shallow copies on them.
-        :return: Shallow/deep copy of self.
-        """
-        heavy_fields = ['e_valid', 'layer_weights',]
-        new = copy(self)
-        for key in heavy_fields:
-            field = getattr(self, key)
-            setattr(new, key, field.copy())
-        return new
-
 
