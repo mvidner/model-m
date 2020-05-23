@@ -26,7 +26,7 @@ def perform_gridsearch(model_func, hyperparam_config, n_jobs=1, output_file=None
     header = grid.keys()
     _init_output_file(output_file, header)
 
-    run_model = partial(_run_model_with_hyperparams, model_func)
+    run_model = partial(_run_model_with_hyperparams, model_func, output_file=output_file)
     with Pool(processes=n_jobs) as pool:
         res = pool.map(run_model, param_grid)
 
