@@ -324,7 +324,6 @@ class LightGraph:
             print(f"Closing {name}", end="")
             i = self.layer_name.index(name)
             self.layer_weights[i] = 0 if not coefs else coefs[idx]
-<<<<<<< HEAD
 
     def copy(self):
         """
