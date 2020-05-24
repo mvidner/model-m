@@ -14,7 +14,9 @@ def _run_model_with_hyperparams(model_func, hyperparams, output_file=None):
     print(f"Running with hyperparams: {hyperparams}", flush=True)
 
     res = model_func(hyperparams=hyperparams)
-    _log_inidividual(output_file, hyperparams.values(), res, 0)
+
+    fitness = np.mean(res["result"]) 
+    _log_inidividual(output_file, hyperparams.values(), fitness, 0)
     print(f"Finished run with hyperparams: {hyperparams}")
     return res
 
@@ -29,7 +31,6 @@ def perform_gridsearch(model_func, hyperparam_config, n_jobs=1, output_file=None
     run_model = partial(_run_model_with_hyperparams, model_func, output_file=output_file)
     with Pool(processes=n_jobs) as pool:
         res = pool.map(run_model, param_grid)
-
     return res
 
 

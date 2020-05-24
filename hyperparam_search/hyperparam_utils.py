@@ -8,7 +8,7 @@ from typing import Dict
 from config_utils import ConfigFile
 from hyperparam_search.eval_model import return_func_zoo
 from hyperparam_search.search_methods import hyperparam_search_zoo
-from model_m import load_model_from_config, ModelM
+from model_m import load_model_from_config, ModelM, load_graph
 
 
 def run_hyperparam_search(model_config: str,
@@ -47,9 +47,12 @@ def run_hyperparam_search(model_config: str,
     cf = ConfigFile()
     cf.load(model_config)
 
+    graph = load_graph(cf)
+
     # wrapper for running one model same time with different seed
     model_load_func = partial(_run_models_from_config,
                               cf,
+                              preloaded_graph=graph, 
                               model_random_seed=model_random_seed,
                               run_n_times=run_n_times,
                               use_policy=use_policy,
@@ -67,6 +70,7 @@ def run_single_model(model, T, print_interval=10, verbose=False):
 
 
 def _run_models_from_config(cf: ConfigFile,
+                            preloaded_graph: None, 
                             hyperparams: Dict = None,
                             model_random_seed: int = 42,
                             run_n_times: int = 1,
@@ -93,8 +97,7 @@ def _run_models_from_config(cf: ConfigFile,
     hyperparams["beta_in_family"] = hyperparams["beta"] 
     hyperparams["beta_A_in_family"] = hyperparams["beta_A"] 
 
-    
-    model = load_model_from_config(cf, use_policy, model_random_seed, hyperparams=hyperparams)
+    model = load_model_from_config(cf, use_policy, model_random_seed, preloaded_graph=preloaded_graph, hyperparams=hyperparams)
     
 
     # for different seeds
