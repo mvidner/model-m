@@ -12,7 +12,7 @@ from policy import bound_policy
 from config_utils import ConfigFile
 
 
-def load_model_from_config(cf, use_policy, model_random_seed, hyperparams=None):
+def load_model_from_config(cf, use_policy, model_random_seed, preloaded_graph=None, hyperparams=None):
 
     # load model hyperparameters
     model_params = cf.section_as_dict("MODEL")
@@ -20,7 +20,10 @@ def load_model_from_config(cf, use_policy, model_random_seed, hyperparams=None):
         model_params = {**model_params, **hyperparams}
 
     # load graph as described in config file
-    graph = _load_graph(cf)
+    if preloaded_graph is not None:
+        graph = preloaded_graph 
+    else:
+        graph = load_graph(cf)
 
     # apply policy on model
     policy, policy_setup, policy_cfg = _load_policy_function(
@@ -69,6 +72,7 @@ class ModelM():
         self.policy_setup = policy_setup
         self.policy_cfg = policy_cfg
 
+        self.model = None
         self.ready = False
 
     def setup(self):
@@ -94,6 +98,23 @@ class ModelM():
             self.model.set_periodic_update(policy_function)
 
         self.ready = True
+
+    def duplicate(self):
+        if self.ready: 
+            raise NotImplementedError("We duplicate only newbie models")
+        twin = ModelM(
+            self.start_graph,
+            self.policy, self.policy_setup, self.policy_cfg,
+            self.model_params,
+            self.scenario,
+            random_seed=self.random_seed,
+            model_type=self.model_type
+        ) 
+        twin.graph = twin.start_graph.copy()
+        twin.A = twin.init_matrix()
+        twin.ready = False 
+        return twin 
+
 
     def set_model_params(self, model_params: dict):
         self.model.setup_model_params(model_params)
@@ -160,7 +181,7 @@ def save_arrays(g):
     np.savez('graph_arrays.npz', **arrs)
     np.savez_compressed('graph_arrays_compressed.npz', **arrs)
 
-def _load_graph(cf: ConfigFile):
+def load_graph(cf: ConfigFile):
     num_nodes = cf.section_as_dict("TASK").get("num_nodes", None)
 
     graph_name = cf.section_as_dict("GRAPH")["name"]
