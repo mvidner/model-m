@@ -99,7 +99,7 @@ class ModelM():
 
         self.ready = True
 
-    def duplicate(self):
+    def duplicate(self, random_seed=None):
         if self.ready: 
             raise NotImplementedError("We duplicate only newbie models")
         twin = ModelM(
@@ -107,7 +107,7 @@ class ModelM():
             self.policy, self.policy_setup, self.policy_cfg,
             self.model_params,
             self.scenario,
-            random_seed=self.random_seed,
+            random_seed=self.random_seed if random_seed is None else random_seed,
             model_type=self.model_type
         ) 
         twin.graph = twin.start_graph.copy()
