@@ -344,7 +344,7 @@ class LightGraph:
         Since most fields never change between runs, we do shallow copies on them.
         :return: Shallow/deep copy of self.
         """
-        heavy_fields = ['e_probs', 'e_intensities', ]
+        heavy_fields = ['e_valid', 'layer_weights', ]
         new = copy(self)
         for key in heavy_fields:
             field = getattr(self, key)
