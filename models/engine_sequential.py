@@ -46,6 +46,8 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.state_counts[state][self.t] = self.state_counts[state][self.t-1]
             self.state_increments[state][self.t] = 0
 
+        self.durations += 1
+
         self.N[self.t] = self.N[self.t-1]
 #        self.states_history[self.t] = self.states_history[self.t-1]
         # self.meaneprobs[self.t] = self.meaneprobs[self.t-1]
@@ -114,6 +116,8 @@ class SequentialEngine(SeirsPlusLikeEngine):
                 # stalking
                 print(f"ACTION LOG ({self.t}): node {node} changing state to {self.state_str_dict[e]}")
 
+            self.states_durations[s].append(self.durations[node])
+            self.durations[node] = 0
             self.delta[s, node, :] = -1
             self.delta[e, node, :] = 1
             self.state_counts[s][self.t] -= 1
@@ -322,6 +326,11 @@ class SequentialEngine(SeirsPlusLikeEngine):
         df = self.to_df()
         df.to_csv(file_or_filename)
         print(df)
+
+    def save_durations(self, f):
+        for s in self.states:
+            line = ",".join([str(x) for x in self.states_durations[s]])
+            print(f"{s},{line}", file=f)
 
     def save_node_states(self, filename):
         index = range(0, self.t+1)
