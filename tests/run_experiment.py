@@ -7,8 +7,6 @@ import numpy as np
 
 from config_utils import ConfigFile
 from graph_gen import GraphGenerator
-from load_model import create_graph, matrix,  load_graph
-from policy import bound_policy
 
 from model_zoo import model_zoo
 
@@ -67,7 +65,6 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
     cf = ConfigFile()
     cf.load(filename)
 
-
     # create model
     model = load_model_from_config(cf, use_policy, model_random_seed)
 
@@ -120,7 +117,8 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
 def test(set_random_seed, policy, print_interval, n_repeat, filename, test_id):
     """ Run the demo test inside the timeit """
 
-    random_seed = 42 if set_random_seed else random.randint(0, 10000)
+    random_seed = 6321 if set_random_seed else random.randint(0, 10000)
+    print(f"ACTION LOG: random seed {random_seed}")
     def demo_fce(): return demo(filename, test_id,
                                 model_random_seed=random_seed, use_policy=policy, print_interval=print_interval, n_repeat=n_repeat)
     print(timeit.timeit(demo_fce, number=1))

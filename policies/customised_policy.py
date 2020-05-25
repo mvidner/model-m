@@ -1,99 +1,51 @@
-from quarrantine_policy import quarrantine_policy_setup, quarrantine_with_contact_tracing_policy, simple_quarrantine_policy
-from quarrantine_policy import wee_cold_policy, wee_cold_policy_setup, petra_policy, RISK_FOR_LAYERS
+import json
+from policy import Policy
 from policy_utils import load_scenario_dict
-from functools import partial
-import numpy as  np
-
-class PlainVanilla:
-    def __init__(self):
-        # do nothing function
-        self.policy = lambda *args, **kwargs: {}
-
-    def set_policy(self, func):
-        self.policy = func
-
-    def run(self, *args):
-        return self.policy(*args)
 
 
-def switch_on_simple_policy(graph, policy_coefs, *args, **kwargs):
-    policy_object = policy_coefs["policy_object"]
-    policy_object.set_policy(petra_policy)
-    return {}
+class CustomPolicy(Policy):
 
+    def __init__(self,
+                 graph,
+                 model,
+                 layer_changes_filename,
+                 policy_calendar_filename
+                 ):
+        super().__init__(graph, model)
 
-def switch_on_eva_policy(graph, policy_coefs, *args, **kwargs):
-    risk_for_layers = RISK_FOR_LAYERS
-    riskiness = np.array([risk_for_layers[i] for i in range(0, 31)])
-    policy_coefs["riskiness"] = riskiness
-    policy_object = policy_coefs["policy_object"]
-    policy_object.set_policy(quarrantine_with_contact_tracing_policy)
-    return {}
+        self.layer_changes_calendar = load_scenario_dict(
+            layer_changes_filename)
 
+        with open(policy_calendar_filename, "r") as f:
+            self.policy_calendar = json.load(f)
 
+        self.policies = {}
 
-def update_layers(coefs, graph, *args, **kwargs):
-    print("--->", graph.layer_name, coefs)
-    graph.close_layers(graph.layer_name[:31], coefs)
-    return {"graph": None}
+    def update_layers(self, coefs):
+        self.graph.close_layers(self.graph.layer_name[:31], coefs)
 
+    def run(self):
+        print("CustomPolicy", int(self.model.t))
+        today = str(int(self.model.t))
 
-CALENDAR = {
-    5: switch_on_simple_policy,
-    66: switch_on_eva_policy,
-}
+        if today in self.policy_calendar:
+            print("changing quarantine policy")
+            # change the quaratine policy function
+            for action, policy in self.policy_calendar[today]:
+                if action == "start":
+                    filename, object_name = policy.strip().split(":")
+                    PolicyClass = getattr(__import__(filename), object_name)
+                    self.policies[policy] = PolicyClass(self.graph, self.model)
+                elif action == "stop":
+                    del self.policies[policy]
+                else:
+                    raise ValueError(f"Unknown action {action}")
 
+        if today in self.layer_changes_calendar:
+            print("updating layers")
+            self.update_layers(self.layer_changes_calendar[today])
 
-def setup(graph, normal_life=None):
-    policy_object = PlainVanilla()
-    policy_coefs = quarrantine_policy_setup(graph, normal_life)
-    wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
-
-    calendar_adds = load_scenario_dict("../data/policy_params/vanilla.csv")
-    print(calendar_adds)
-    for t, clist in calendar_adds.items():
-        CALENDAR[int(t)] = partial(update_layers, clist)
-
-    print(CALENDAR)
-    return {**policy_coefs,
-            **{"policy_object": policy_object,
-               "calendar": CALENDAR,
-               "wee_cold": wee_cold_coefs}
-            }
-
-def setup_sour(graph, normal_life=None):
-    policy_object = PlainVanilla()
-    policy_coefs = quarrantine_policy_setup(graph, normal_life)
-    wee_cold_coefs = wee_cold_policy_setup(graph, normal_life)
-
-    calendar_adds = load_scenario_dict("../data/policy_params/sour_2.csv")
-    print(calendar_adds)
-    for t, clist in calendar_adds.items():
-        CALENDAR[int(t)] = partial(update_layers, clist)
-
-    print(CALENDAR)
-    return {**policy_coefs,
-            **{"policy_object": policy_object,
-               "calendar": CALENDAR,
-               "wee_cold": wee_cold_coefs}
-            }
-
-
-
-def policy(graph, policy_coefs, history, tseries, time, contact_history=None, memberships=None):
-
-    calendar = policy_coefs["calendar"]
-    today = int(time)
-
-    ret = {}
-    if today in calendar:
-        # run today action
-        ret = calendar[today](graph, policy_coefs, history,
-                              tseries, time, contact_history)
-
-    ret_wee = wee_cold_policy(
-        graph, policy_coefs["wee_cold"], history, tseries, time, None, memberships)
-    ret2 = policy_coefs["policy_object"].run(graph, policy_coefs, history,
-                                             tseries, time, contact_history, memberships)
-
-    return {**ret, **ret_wee, **ret2}
+        # perform registred policies
+        for name, policy in self.policies.items():
+            print("run policy", name)
+            policy.run()
