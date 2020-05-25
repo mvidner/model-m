@@ -6,7 +6,10 @@ from scipy.sparse import csr_matrix, lil_matrix
 # novej light graph
 from itertools import chain
 
-from functools import reduce; from operator import iconcat
+from functools import reduce
+from operator import iconcat
+
+
 def concat_lists(l):
     """
     Returns concatenation of lists in the iterable l
@@ -14,6 +17,7 @@ def concat_lists(l):
     :return: concatenation of lists in l
     """
     return list(chain.from_iterable(l))
+
 
 class LightGraph:
     # __slots__ = ['e_types', 'e_subtypes', 'e_probs', 'e_intensities', 'e_source', 'e_dest', 'e_valid', 'edges_repo',
@@ -26,6 +30,7 @@ class LightGraph:
         self.A = None
         self.invalids = None
         self.quarantined_probs_repo = {}
+        self.is_quarantined = None
 
     def read_csv(self,
                  path_to_nodes='p.csv',
@@ -142,8 +147,10 @@ class LightGraph:
 
             if tmpA[i_row, i_col] == 0:
                 # first edge between (row, col)
-                self.edges_repo[key], self.edges_directions[key] = [i], forward_edge
-                self.edges_repo[key + 1], self.edges_directions[key+1] = [i], backward_edge
+                self.edges_repo[key], self.edges_directions[key] = [
+                    i], forward_edge
+                self.edges_repo[key + 1], self.edges_directions[key +
+                                                                1] = [i], backward_edge
                 tmpA[i_row, i_col] = key
                 tmpA[i_col, i_row] = key + 1
                 key += 2
@@ -179,7 +186,8 @@ class LightGraph:
         #     subedges_counts.append(len(value_set))
         # self.edges_repo = data
         # the above can be replaced by
-        self.edges_repo = np.array(list(self.edges_repo.values()), dtype=object)
+        self.edges_repo = np.array(
+            list(self.edges_repo.values()), dtype=object)
         subedges_counts = [len(s) for s in self.edges_repo]
         # subedges_counts = [len(s) for s in np.nditer(self.edges_repo, flags=['refs_ok'], op_flags=['readonly'])]
         print("level done")
@@ -263,14 +271,22 @@ class LightGraph:
         etypes = self.e_types[edges]
         return np.logical_or(etypes == 1, etypes == 2)
 
-    def modify_layers_for_nodes(self, node_id_list, what_by_what, is_quarrantined=None):
+    def modify_layers_for_nodes(self, node_id_list, what_by_what):
         """ changes edges' weights """
+
+        if self.is_quarantined is None:
+            self.is_quarantined = np.zeros(self.number_of_nodes, dtype=bool)
+
+        self.is_quarantined[node_id_list] = True
 
         if not what_by_what:
             return
+
         relevant_edges = np.unique(self.get_nodes_edges(node_id_list))
+
         if len(relevant_edges) == 0:
             return
+
         valid = self.e_valid[relevant_edges]
         relevant_edges = relevant_edges[valid == 2]
         edges_types = self.e_types[relevant_edges]
@@ -287,7 +303,9 @@ class LightGraph:
             np.clip(self.e_valid[edges_on_this_layer], 0.0,
                     1.0, out=self.e_valid[edges_on_this_layer])
 
-    def recover_edges_for_nodes(self, release, normal_life, is_quarrantined):
+    def recover_edges_for_nodes(self, release, normal_life):
+
+        self.is_quarantined[release] = False
 
         relevant_edges = np.unique(self.get_nodes_edges(release))
         if len(relevant_edges) == 0:
@@ -297,10 +315,10 @@ class LightGraph:
         source_nodes = self.e_source[relevant_edges]
         dest_nodes = self.e_dest[relevant_edges]
 
-        is_quarrantined_source = is_quarrantined[source_nodes]
-        is_quarrantined_dest = is_quarrantined[dest_nodes]
+        is_quarrantined_source = self.is_quarantined[source_nodes]
+        is_quarrantined_dest = self.is_quarantined[dest_nodes]
 
-        # leave only edges where both nodes are free
+        # recover only edges where both nodes are free
         relevant_edges = relevant_edges[np.logical_not(
             np.logical_or(is_quarrantined_source, is_quarrantined_dest))]
 
@@ -326,11 +344,9 @@ class LightGraph:
         Since most fields never change between runs, we do shallow copies on them.
         :return: Shallow/deep copy of self.
         """
-        heavy_fields = ['e_valid', 'layer_weights',]
+        heavy_fields = ['e_valid', 'layer_weights', ]
         new = copy(self)
         for key in heavy_fields:
             field = getattr(self, key)
             setattr(new, key, field.copy())
         return new
-
-

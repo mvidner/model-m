@@ -4,7 +4,7 @@ import click
 import random
 import pickle
 from config_utils import ConfigFile
-from model_m import _load_graph
+from model_m import load_graph
 
 
 @click.command()
@@ -17,7 +17,7 @@ def main(filename, outputname, precalc_matrix):
     cf = ConfigFile()
     cf.load(filename)
 
-    graph = _load_graph(cf)
+    graph = load_graph(cf)
 
     # for e in set(graph.G.edges()):
     #     print(e)

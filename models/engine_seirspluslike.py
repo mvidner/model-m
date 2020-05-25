@@ -48,6 +48,11 @@ class SeirsPlusLikeEngine(BaseEngine):
         self.states_history = TransitionHistory(
             1, width=self.num_nodes)
 
+        self.states_durations = {
+            s: []
+            for s in self.states
+        }
+
         # state_counts ... numbers of inidividuals in given states
         self.state_counts = {
             state: TimeSeries(self.expected_num_days, dtype=int)
@@ -58,7 +63,6 @@ class SeirsPlusLikeEngine(BaseEngine):
             state: TimeSeries(self.expected_num_days, dtype=int)
             for state in self.states
         }
-
 
         # self.propensities_repo = {
         #     transition: TimeSeries(tseries_len, dtype=float)
@@ -85,7 +89,6 @@ class SeirsPlusLikeEngine(BaseEngine):
         for state in state_counts.keys():
             self.state_increments[state][0] = 0
 
-
         nodes_left = self.num_nodes - sum(
             [self.state_counts[s][0] for s in self.states]
         )
@@ -97,7 +100,7 @@ class SeirsPlusLikeEngine(BaseEngine):
             [self.state_counts[s][0] for s in self.invisible_states]
         )
 
-        #self.states_history[0] ... initial array of states
+        # self.states_history[0] ... initial array of states
         start = 0
         for state, count in self.state_counts.items():
             self.states_history[0][start:start+count[0]].fill(state)
@@ -115,6 +118,8 @@ class SeirsPlusLikeEngine(BaseEngine):
         # print(np.all(self.memberships.sum(axis=0) == 1))
         # print(self.memberships.sum(axis=1))
         # exit()
+
+        self.durations = np.zeros(self.num_nodes, dtype="uint16")
 
     def node_degrees(self, Amat):
         """ return number of degrees of  nodes,
@@ -301,13 +306,13 @@ class SeirsPlusLikeEngine(BaseEngine):
     def save(self, file_or_filename):
         index = self.tseries
         col_increments = {
-            "inc_" + self.state_str_dict[x]: col_inc 
+            "inc_" + self.state_str_dict[x]: col_inc
             for x, col_inc in self.state_increments
-        } 
-        col_states =  { 
-            self.state_str_dic[x]: count 
-            for x, count in self.state_counts 
-        } 
+        }
+        col_states = {
+            self.state_str_dic[x]: count
+            for x, count in self.state_counts
+        }
         columns = {**col_states, **col_increments}
         columns["day"] = np.floor(index).astype(int)
         df = pd.DataFrame(columns, index=index)

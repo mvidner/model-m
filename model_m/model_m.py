@@ -8,7 +8,6 @@ import numpy as np
 from graph_gen import GraphGenerator, CSVGraphGenerator, RandomSingleGraphGenerator
 #from light_graph import LightGraph
 from light import LightGraph
-from policy import bound_policy
 from config_utils import ConfigFile
 
 
@@ -21,13 +20,12 @@ def load_model_from_config(cf, use_policy, model_random_seed, preloaded_graph=No
 
     # load graph as described in config file
     if preloaded_graph is not None:
-        graph = preloaded_graph 
+        graph = preloaded_graph
     else:
         graph = load_graph(cf)
 
     # apply policy on model
-    policy, policy_setup, policy_cfg = _load_policy_function(
-        cf, use_policy)
+    policy = _load_policy_function(cf)
 
     # sceanario
     scenario = cf.section_as_dict("SCENARIO")
@@ -38,7 +36,7 @@ def load_model_from_config(cf, use_policy, model_random_seed, preloaded_graph=No
         "model", "TGMNetworkModel")
 
     model = ModelM(graph,
-                   policy, policy_setup, policy_cfg,
+                   policy,
                    model_params,
                    scenario,
                    random_seed=model_random_seed,
@@ -51,7 +49,7 @@ class ModelM():
 
     def __init__(self,
                  graph,
-                 policy, policy_setup, policy_cfg,
+                 policy,
                  model_params: dict = None,
                  scenario: list = None,
                  model_type: str = "ExtendedSequentialNetworkModel",
@@ -69,8 +67,6 @@ class ModelM():
         self.model_params = model_params
         self.random_seed = random_seed
         self.policy = policy
-        self.policy_setup = policy_setup
-        self.policy_cfg = policy_cfg
 
         self.model = None
         self.ready = False
@@ -86,17 +82,9 @@ class ModelM():
         self.model = Model(self.A,
                            **self.model_params,
                            random_seed=self.random_seed)
-
-        policy_coefs = dict()
-        if self.policy_setup:
-            policy_coefs = self.policy_setup(self.graph, self.start_graph)
-        if self.policy_cfg:
-            policy_coefs.update(self.policy_cfg)
-        if self.policy:
-            policy_function = bound_policy(
-                self.policy, self.graph, coefs=policy_coefs)
-            self.model.set_periodic_update(policy_function)
-
+        self.policy_object = self.policy[0](
+            self.graph, self.model, **self.policy[1])
+        self.model.set_periodic_update(self.policy_object)
         self.ready = True
 
     def duplicate(self, random_seed=None):
@@ -104,17 +92,16 @@ class ModelM():
             raise NotImplementedError("We duplicate only newbie models")
         twin = ModelM(
             self.start_graph,
-            self.policy, self.policy_setup, self.policy_cfg,
+            self.policy,
             self.model_params,
             self.scenario,
             random_seed=self.random_seed if random_seed is None else random_seed,
             model_type=self.model_type
-        ) 
+        )
         twin.graph = twin.start_graph.copy()
         twin.A = twin.init_matrix()
-        twin.ready = False 
-        return twin 
-
+        twin.ready = False
+        return twin
 
     def set_model_params(self, model_params: dict):
         self.model.setup_model_params(model_params)
@@ -174,12 +161,14 @@ class ModelM():
 
         raise TypeError("Unknown type of graph")
 
+
 def save_arrays(g):
     arrs = {"e_types": g.e_types, 'e_subtypes': g.e_subtypes, 'e_probs': g.e_probs,
             'e_intensities': g.e_intensities, 'e_source': g.e_source, 'e_dest': g.e_dest, 'e_valid': g.e_valid,
             'edges_repo': g.edges_repo, 'edges_directions': g.edges_directions}
     np.savez('graph_arrays.npz', **arrs)
     np.savez_compressed('graph_arrays_compressed.npz', **arrs)
+
 
 def load_graph(cf: ConfigFile):
     num_nodes = cf.section_as_dict("TASK").get("num_nodes", None)
@@ -219,23 +208,18 @@ def load_graph(cf: ConfigFile):
     raise ValueError(f"Graph {graph_name} not available.")
 
 
-def _load_policy_function(cf: ConfigFile, policy_name: str):
+def _load_policy_function(cf: ConfigFile):
     policy_cfg = cf.section_as_dict("POLICY")
 
-    if not policy_name:
-        policy_name = policy_cfg.get("switch_on", None)
-        if not policy_name:
-            return (None, None, {})
-    elif policy_name not in policy_cfg["name"]:
-        raise ValueError("Unknown policy name.")
+    policy_name = policy_cfg.get("name", None)
+    if policy_name is None:
+        return None, None
 
-    if policy_cfg and "filename" in policy_cfg:
-        policy = getattr(__import__(
+    if "filename" in policy_cfg:
+        PolicyClass = getattr(__import__(
             policy_cfg["filename"]), policy_name)
-        setup = policy_cfg.get("setup", None)
-        policy_setup = getattr(__import__(
-            policy_cfg["filename"]), setup) if setup else None
-        return policy, policy_setup, cf.section_as_dict(policy_name.upper())
+        setup = cf.section_as_dict("POLICY_SETUP")
+        return PolicyClass, setup
     else:
         print("Warning: NO POLICY IN CFG")
         print(policy_cfg)
