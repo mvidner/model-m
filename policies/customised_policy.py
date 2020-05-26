@@ -37,7 +37,7 @@ class CustomPolicy(Policy):
                     PolicyClass = getattr(__import__(filename), object_name)
                     self.policies[policy] = PolicyClass(self.graph, self.model)
                 elif action == "stop":
-                    del self.policies[policy]
+                    self.policies[policy].stop()
                 else:
                     raise ValueError(f"Unknown action {action}")
 

@@ -203,6 +203,10 @@ class QuarantinePolicy(Policy):
         self.depo = QuarrantineDepo(graph.number_of_nodes)
         self.coefs = None
         self.duration = None
+        self.stopped = False
+
+    def stop(self):
+        self.stopped = True
 
     def get_last_day(self):
         current_day = int(self.model.t)
@@ -331,35 +335,36 @@ class PetraQuarantinePolicy(QuarantinePolicy):
 
     def run(self):
 
-        print("Hello world! This is the petra policy function speaking.")
+        print(f"Hello world! This is the petra policy function speaking. {'(STOPPED)' if self.stopped else ''}")
         if self.model.contact_history is not None:
             print("Contact tracing is ON.")
         else:
             print("Warning: Contact tracing is OFF.")
 
-        last_day = self.get_last_day()
+        if not self.stopped:
+            last_day = self.get_last_day()
 
-        # those who became infected today
-        detected_nodes = [
-            node
-            for node, _, e in last_day
-            if e == states.I_d and not self.depo.is_locked(node)
-        ]
-        if 29691 in detected_nodes:
-            print(f"ACTION LOG({int(time)}): node {29691} was dectected and qurantined by petra.")
+            # those who became infected today
+            detected_nodes = [
+                node
+                for node, _, e in last_day
+                if e == states.I_d and not self.depo.is_locked(node)
+            ]
+            if 29691 in detected_nodes:
+                print(f"ACTION LOG({int(time)}): node {29691} was dectected and qurantined by petra.")
 
-        if self.model.contact_history is not None:
-            contacts = self.select_contacts(detected_nodes)
-        else:
-            contacts = []
+            if self.model.contact_history is not None:
+                contacts = self.select_contacts(detected_nodes)
+            else:
+                contacts = []
 
             print(f"Qurantined nodes: {len(detected_nodes)}")
             print(f"Quaratinted contacts: {len(contacts)}")
             if 29691 in list(contacts):
                 print(f"ACTION LOG({int(time)}): node {29691} has detected family member and stays home.")
 
-        self.quarrantine_nodes(detected_nodes)
-        self.quarrantine_nodes(list(contacts), depo=self.stayhome_depo)
+            self.quarrantine_nodes(detected_nodes)
+            self.quarrantine_nodes(list(contacts), depo=self.stayhome_depo)
 
         released = self.tick()
         really_released, prisoners = self.do_testing(released)
@@ -397,7 +402,7 @@ class EvaQuarantinePolicy(QuarantinePolicy):
 
     def run(self):
 
-        print("Hello world! This is the eva policy function speaking.")
+        print(f"Hello world! This is the eva policy function speaking.  {'(STOPPED)' if self.stopped else ''}")
         if self.model.contact_history is not None:
             print("Contact tracing is ON.")
         else:
