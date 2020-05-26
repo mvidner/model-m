@@ -87,15 +87,15 @@ class ModelM():
         self.model.set_periodic_update(self.policy_object)
         self.ready = True
 
-    def duplicate(self):
-        if self.ready:
+    def duplicate(self, random_seed=None):
+        if self.ready: 
             raise NotImplementedError("We duplicate only newbie models")
         twin = ModelM(
             self.start_graph,
             self.policy,
             self.model_params,
             self.scenario,
-            random_seed=self.random_seed,
+            random_seed=self.random_seed if random_seed is None else random_seed,
             model_type=self.model_type
         )
         twin.graph = twin.start_graph.copy()

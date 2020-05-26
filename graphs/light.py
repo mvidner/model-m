@@ -345,6 +345,8 @@ class LightGraph:
         :return: Shallow/deep copy of self.
         """
         heavy_fields = ['e_valid', 'layer_weights', ]
+        if self.is_quarantined is not None:
+            heavy_fields.append('is_quarantined')
         new = copy(self)
         for key in heavy_fields:
             field = getattr(self, key)
