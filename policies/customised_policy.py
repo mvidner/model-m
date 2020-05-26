@@ -22,7 +22,7 @@ class CustomPolicy(Policy):
         self.policies = {}
 
     def update_layers(self, coefs):
-        self.graph.close_layers(self.graph.layer_name[:31], coefs)
+        self.graph.set_layer_weights(coefs)
 
     def run(self):
         print("CustomPolicy", int(self.model.t))
@@ -42,7 +42,7 @@ class CustomPolicy(Policy):
                     raise ValueError(f"Unknown action {action}")
 
         if today in self.layer_changes_calendar:
-            print("updating layers")
+            print(f"{today} updating layers")
             self.update_layers(self.layer_changes_calendar[today])
 
         # perform registred policies
