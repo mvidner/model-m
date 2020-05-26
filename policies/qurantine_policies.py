@@ -1,6 +1,9 @@
 import numpy as np
+from scipy.sparse import csr_matrix
+from functools import partial
+from graph_gen import GraphGenerator
+from light import LightGraph
 from extended_network_model import STATES as states
-from policy import Policy
 
 
 class QuarrantineDepo:
@@ -196,27 +199,23 @@ RISK_FOR_LAYERS_FOR_SIMPLE = {
 }
 
 
-class QuarantinePolicy(Policy):
+class QuaratinePolicy(Policy):
 
     def __init__(self, graph, model):
         super().__init__(graph, model)
         self.depo = QuarrantineDepo(graph.number_of_nodes)
         self.coefs = None
         self.duration = None
-        self.stopped = False
-
-    def stop(self):
-        self.stopped = True
 
     def get_last_day(self):
-        current_day = int(self.model.t)
+        current_day = int(model.t)
         start = np.searchsorted(
-            self.model.tseries[:self.model.tidx+1], current_day, side="left")
+            model.tseries[:model.tidx+1], current_day, side="left")
         if start == 0:
             start = 1
-        end = np.searchsorted(
-            self.model.tseries[:self.model.tidx+1], current_day+1, side="left")
-        return self.model.history[start:end]
+            end = np.searchsorted(
+                model.tseries[:model.tidx+1], current_day+1, side="left")
+        return history[start:end]
 
     def quarrantine_nodes(self, detected_nodes, depo=None):
         if depo is None:
@@ -227,7 +226,7 @@ class QuarantinePolicy(Policy):
             depo.lock_up(detected_nodes, self.duration)
 
     def tick(self):
-        released = self.depo.tick_and_get_released(self.model.memberships)
+        released = self.depo.tick_and_get_released(memberships)
         return released
 
     def release_nodes(self, released):
@@ -254,14 +253,14 @@ class QuarantinePolicy(Policy):
         if self.riskiness is None:
             return [
                 contact[1]
-                for contact_list in self.model.contact_history
+                for contact_list in self.contact_history
                 for contact in contact_list
                 if contact[0] in detected_nodes
             ]
         else:
             relevant_contacts = [
                 (contact[1], _riskiness(contact[2], self.graph, self.riskiness))
-                for contact_list in self.model.contact_history
+                for contact_list in self.contact_history
                 for contact in contact_list
                 if contact[0] in detected_nodes
             ]
@@ -277,16 +276,16 @@ class QuarantinePolicy(Policy):
             ]
 
     def select_contacts(self, detected_nodes):
-        if not self.model.contact_history:
+        if not self.contact_history:
             return []
 
-        my_contact_history = self.model.contact_history[-self.days_back:]
+        my_contact_history = self.contact_history[-self.days_back:]
 
         relevant_contacts = self.filter_contact_history(detected_nodes)
         return set(relevant_contacts)
 
 
-class WeeCold(QuarantinePolicy):
+class WeeCold(QurantinePolicy):
 
     def __init__(self, graph, model):
         super().__init__(graph, model)
@@ -309,7 +308,7 @@ class WeeCold(QuarantinePolicy):
         ]
 
         if 29691 in list(detected_nodes):
-            print(f"ACTION LOG({int(self.model.t)}): node {29691} does not feel well and stays home.")
+            print(f"ACTION LOG({int(time)}): node {29691} does not feel well and stays home.")
 
         print(f"Nodes with a wee cold: {len(detected_nodes)}")
 
@@ -317,12 +316,12 @@ class WeeCold(QuarantinePolicy):
 
         released = self.tick()
         if 29691 in list(released):
-            print(f"ACTION LOG({int(self.model.t)}: node {29691} feels well again and stops staying home.")
+            print(f"ACTION LOG({int(time)}: node {29691} feels well again and stops staying home.")
 
             to_change = self.release_nodes(released)
 
 
-class PetraQuarantinePolicy(QuarantinePolicy):
+class PetraQuarantinePolicy(QurantinePolicy):
 
     def __init__(self, graph, model):
         super().__init__(graph, model)
@@ -331,40 +330,39 @@ class PetraQuarantinePolicy(QuarantinePolicy):
         self.duration = 14
         self.threshold = 0.7
         self.days_back = 7
-        self.riskiness = RISK_FOR_LAYERS_FOR_SIMPLE
+        self.riskiness = np.array(RISK_FOR_LAYERS_FOR_SIMPLE)
 
     def run(self):
 
-        print(f"Hello world! This is the petra policy function speaking. {'(STOPPED)' if self.stopped else ''}")
+        print("Hello world! This is the petra policy function speaking.")
         if self.model.contact_history is not None:
             print("Contact tracing is ON.")
         else:
             print("Warning: Contact tracing is OFF.")
 
-        if not self.stopped:
-            last_day = self.get_last_day()
+        last_day = self.get_last_day()
 
-            # those who became infected today
-            detected_nodes = [
-                node
-                for node, _, e in last_day
-                if e == states.I_d and not self.depo.is_locked(node)
-            ]
-            if 29691 in detected_nodes:
-                print(f"ACTION LOG({int(time)}): node {29691} was dectected and qurantined by petra.")
+        # those who became infected today
+        detected_nodes = [
+            node
+            for node, _, e in last_day
+            if e == states.I_d and not self.depo.is_locked(node)
+        ]
+        if 29691 in detected_nodes:
+            print(f"ACTION LOG({int(time)}): node {29691} was dectected and qurantined by petra.")
 
-            if self.model.contact_history is not None:
-                contacts = self.select_contacts(detected_nodes)
-            else:
-                contacts = []
+        if self.contact_history is not None:
+            contacts = self.select_contacts(detected_nodes)
+        else:
+            contacts = []
 
             print(f"Qurantined nodes: {len(detected_nodes)}")
             print(f"Quaratinted contacts: {len(contacts)}")
             if 29691 in list(contacts):
                 print(f"ACTION LOG({int(time)}): node {29691} has detected family member and stays home.")
 
-            self.quarrantine_nodes(detected_nodes)
-            self.quarrantine_nodes(list(contacts), depo=self.stayhome_depo)
+        self.quarrantine_nodes(detected_nodes)
+        self.quarrantine_nodes(list(contacts), depo=self.stayhome_depo)
 
         released = self.tick()
         really_released, prisoners = self.do_testing(released)
@@ -374,15 +372,14 @@ class PetraQuarantinePolicy(QuarantinePolicy):
             self.depo.lock_up(prisoners, 2)
 
             if 29691 in list(prisoners):
-                print(f"ACTION LOG({int(self.model.t)}): node {29691} tested and stays in quarantine by petra.")
+                print(f"ACTION LOG({int(time)}): node {29691} tested and stays in quarantine by petra.")
 
         if 29691 in list(really_released):
-            print(f"ACTION LOG({int(self.model.t)}): node {29691} was released from quarantine by petra.")
+            print(f"ACTION LOG({int(time)}): node {29691} was released from quarantine by petra.")
 
-        released = self.stayhome_depo.tick_and_get_released(
-            self.model.memberships)
+        released = self.stayhome_depo.tick_and_get_released()
         if 29691 in list(released):
-            print(f"ACTION LOG({int(self.model.t)}): node {29691} stops staying home.")
+            print(f"ACTION LOG({int(time)}): node {29691} stops staying home.")
 
         to_change = self.release_nodes(
             list(really_released)+list(released))
@@ -390,7 +387,7 @@ class PetraQuarantinePolicy(QuarantinePolicy):
         return to_change
 
 
-class EvaQuarantinePolicy(QuarantinePolicy):
+class EvaQuarantinePolicy(QurantinePolicy):
 
     def __init__(self, graph, model):
         super().__init__(graph, model)
@@ -398,11 +395,11 @@ class EvaQuarantinePolicy(QuarantinePolicy):
         self.duration = 14
         self.threshold = 0.7
         self.days_back = 7
-        self.riskiness = RISK_FOR_LAYERS
+        self.riskiness = np.array(RISK_FOR_LAYERS)
 
     def run(self):
 
-        print(f"Hello world! This is the eva policy function speaking.  {'(STOPPED)' if self.stopped else ''}")
+        print("Hello world! This is the eva policy function speaking.")
         if self.model.contact_history is not None:
             print("Contact tracing is ON.")
         else:
@@ -418,7 +415,7 @@ class EvaQuarantinePolicy(QuarantinePolicy):
         ]
 
         if 29691 in detected_nodes:
-            print(f"ACTION LOG({int(self.model.t)}): node {29691} was detected and is quarantined by eva and asked for contacts.")
+            print(f"ACTION LOG({int(time)}): node {29691} was detected and is quarantined by eva and asked for contacts.")
 
         if self.model.contact_history is not None:
             contacts = self.select_contacts(detected_nodes)
@@ -428,7 +425,7 @@ class EvaQuarantinePolicy(QuarantinePolicy):
         print(f"Qurantined nodes: {len(detected_nodes)}")
         print(f"Found contacts: {len(contacts)}")
         if 29691 in list(contacts):
-            print(f"ACTION LOG({int(self.model.t)}): node {29691} was marked as contact.")
+            print(f"ACTION LOG({int(time)}): node {29691} was marked as contact.")
 
         released_waiting_nodes = [
             x
@@ -439,7 +436,7 @@ class EvaQuarantinePolicy(QuarantinePolicy):
         self.depo.wait(list(contacts))
         print(f"Quaratinted contacts: {len(released_waiting_nodes)}")
         if 29691 in list(released_waiting_nodes):
-            print(f"ACTION LOG({int(self.model.t)}): node {29691} was quarantined by Eva (because beeing contact).")
+            print(f"ACTION LOG({int(time)}): node {29691} was quarantined by Eva (because beeing contact).")
 
         released = self.tick()
         self.quarrantine_nodes(detected_nodes+list(released_waiting_nodes))
@@ -450,18 +447,18 @@ class EvaQuarantinePolicy(QuarantinePolicy):
         if len(prisoners) > 0:
             self.depo.lock_up(prisoners, 2)
         if 29691 in list(prisoners):
-            print(f"ACTION LOG({int(self.model.t)}): node {29691} waits for negative test in eva quarantine.")
+            print(f"ACTION LOG({int(time)}): node {29691} waits for negative test in eva quarantine.")
 
         # realease candidates are waiting for the second test
         if len(release_candidates) > 0:
             self.depo.wait_for_test(release_candidates)
         if 29691 in list(release_candidates):
-            print(f"ACTION LOG({int(self.model.t)}): node {29691} has negative test and waits for second one  in eva quarantine.")
+            print(f"ACTION LOG({int(time)}): node {29691} has negative test and waits for second one  in eva quarantine.")
 
         really_released = self.depo.get_retested()
 
         if 29691 in list(really_released):
-            print(f"ACTION LOG({int(self.model.t)}): node {29691} was released from quarantine by eva.")
+            print(f"ACTION LOG({int(time)}): node {29691} was released from quarantine by eva.")
 
         self.release_nodes(really_released)
 
@@ -478,4 +475,4 @@ def is_R(node_ids, memberships):
 
 
 def _riskiness(contact, graph, riskiness):
-    return riskiness[graph.get_layer_for_edge(contact)]
+    return np.max(riskiness[graph.get_layer_for_edge(contact)])
