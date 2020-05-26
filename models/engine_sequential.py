@@ -171,15 +171,21 @@ class SequentialEngine(SeirsPlusLikeEngine):
                 self.beta_A *= self.beta_reduction
                 self.beta_A = np.clip(self.beta_A, 0.0, 1.0)
 
+            if self.t == 1:
+                self.theta_Is[:] = 0.0
+                self.theta_E[:] = 0.0
+                self.theta_In = self.theta_E
+                self.theta_Ia = self.theta_E
+
             if self.t == 10:
-                self.theta_Is[:] = 0.05
-                self.theta_E[:] = 0.005
+                self.theta_Is[:] = 0.005
+                self.theta_E[:] = 0.0005
                 self.theta_In = self.theta_E
                 self.theta_Ia = self.theta_E
 
             if self.t == 20:
-                self.theta_Is[:] = 0.1
-                self.theta_E[:] = 0.01
+                self.theta_Is[:] = 0.05
+                self.theta_E[:] = 0.005
                 self.theta_In = self.theta_E
                 self.theta_Ia = self.theta_E
 
@@ -209,7 +215,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             running = self.run_iteration()
 
             # run periodical update
-            if self.periodic_update_callback:
+            if self.periodic_update_callback is not None:
                 self.periodic_update_callback.run()
                 # changes = self.periodic_update_callback(
                 #     self.history, self.tseries[:self.tidx +
@@ -259,6 +265,12 @@ class SequentialEngine(SeirsPlusLikeEngine):
                     self.state_increments[state][t] = 0
 
         self.t = T
+
+        # finalize durations
+        for s in self.states:
+            durations = self.durations[self.memberships[s]]
+            self.states_durations[s].extend(list(durations))
+
 
         if print_interval >= 0:
             self.print(verbose)
@@ -330,7 +342,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
     def save_durations(self, f):
         for s in self.states:
             line = ",".join([str(x) for x in self.states_durations[s]])
-            print(f"{s},{line}", file=f)
+            print(f"{self.state_str_dict[s]},{line}", file=f)
 
     def save_node_states(self, filename):
         index = range(0, self.t+1)
