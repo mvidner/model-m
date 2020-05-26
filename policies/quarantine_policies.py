@@ -28,15 +28,19 @@ class QuarrantineDepo:
         self.waiting_for_test[nodes] = 2
 
     def get_retested(self):
-        released = np.nonzero(self.quarrantine == 1)[0]
-        self.quarrantine[self.quarrantine > 0] -= 1
+        released = np.nonzero(self.waiting_for_test == 1)[0]
+        self.waiting_for_test[self.waiting_for_test > 0] -= 1
         return released
 
     def lock_up(self, nodes, duration):
         self.quarrantine[nodes] = duration
 
     def tick_and_get_released(self, memberships):
+        if self.quarrantine[29691] > 0:
+            print(f"ACTION LOG(?): node {29691} in quarantine, sentence {self.quarrantine[29691]}")
         released = np.nonzero(self.quarrantine == 1)[0]
+        # if 29691 in released:
+        #     print("LOG in released") 
         # release only if leave_cond is true
         if len(released) > 0 and self.leave_cond is not None:
             print("Applying security check")
@@ -46,11 +50,15 @@ class QuarrantineDepo:
                 released, memberships) == 1]
         else:
             really_released = released
+        # if 29691 in really_released:
+        #     print("LOG in really_released") 
         # for those who are staying tick one day
         self.quarrantine[self.quarrantine > 1] -= 1
+#        print("LOG after change 1", self.quarrantine[29691])
         # == 1 are on leave, those who are leased are set to zero
         # others are left with 1 day sentence
         self.quarrantine[really_released] -= 1
+#        print("LOG after change 2", self.quarrantine[29691])
         print("REALLY RELEASED", really_released)
         return really_released
 
@@ -452,13 +460,16 @@ class EvaQuarantinePolicy(QuarantinePolicy):
         if 29691 in list(prisoners):
             print(f"ACTION LOG({int(self.model.t)}): node {29691} waits for negative test in eva quarantine.")
 
+
+        really_released = self.depo.get_retested()
+
+            
         # realease candidates are waiting for the second test
         if len(release_candidates) > 0:
             self.depo.wait_for_test(release_candidates)
-        if 29691 in list(release_candidates):
-            print(f"ACTION LOG({int(self.model.t)}): node {29691} has negative test and waits for second one  in eva quarantine.")
+            if 29691 in list(release_candidates):
+                print(f"ACTION LOG({int(self.model.t)}): node {29691} has negative test and waits for second one  in eva quarantine.")
 
-        really_released = self.depo.get_retested()
 
         if 29691 in list(really_released):
             print(f"ACTION LOG({int(self.model.t)}): node {29691} was released from quarantine by eva.")
