@@ -351,7 +351,7 @@ class PetraQuarantinePolicy(QuarantinePolicy):
                 if e == states.I_d and not self.depo.is_locked(node)
             ]
             if 29691 in detected_nodes:
-                print(f"ACTION LOG({int(time)}): node {29691} was dectected and qurantined by petra.")
+                print(f"ACTION LOG({int(self.model.t)}): node {29691} was dectected and qurantined by petra.")
 
             if self.model.contact_history is not None:
                 contacts = self.select_contacts(detected_nodes)
@@ -361,7 +361,7 @@ class PetraQuarantinePolicy(QuarantinePolicy):
             print(f"Qurantined nodes: {len(detected_nodes)}")
             print(f"Quaratinted contacts: {len(contacts)}")
             if 29691 in list(contacts):
-                print(f"ACTION LOG({int(time)}): node {29691} has detected family member and stays home.")
+                print(f"ACTION LOG({int(self.model.t)}): node {29691} has detected family member and stays home.")
 
             self.quarrantine_nodes(detected_nodes)
             self.quarrantine_nodes(list(contacts), depo=self.stayhome_depo)
