@@ -352,3 +352,17 @@ class SequentialEngine(SeirsPlusLikeEngine):
         # df = df.replace(self.state_str_dict)
         # df.to_csv(filename)
         # print(df)
+
+
+    def detected_node(self, node_number):
+        orig_state = self.memberships[:, node_number].nonzero()[0][0]
+
+        if orig_state != STATES.I_d:
+            if 29691 == node_number:
+                print(f"ACTION LOG({self.t}): node 29691 forced to change state to Id from {self.state_str_dict[orig_state]}")
+            self.state_counts[STATES.I_d][self.t] += 1
+            self.state_counts[orig_state][self.t] -= 1
+            self.state_increments[STATES.I_d][self.t] += 1
+            self.memberships[STATES.I_d][node_number] = 1
+            self.memberships[orig_state][node_number] = 0
+        

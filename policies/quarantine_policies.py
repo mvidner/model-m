@@ -254,6 +254,9 @@ class QuarantinePolicy(Policy):
         node_is_R = is_R(released, self.model.memberships) == 1
         really_released = released[node_is_R]
         still_ill = released[node_is_R == False]
+        
+        if 29691 in list(still_ill):
+            print(f"ACTION LOG({int(self.model.t)}: node {29691} tested positivily.")
 
         return really_released,  still_ill
 
@@ -379,6 +382,8 @@ class PetraQuarantinePolicy(QuarantinePolicy):
 
         # prisoners back to quarrantine
         if len(prisoners) > 0:
+            for p in  set(prisoners):
+                self.model.detected_node(p)
             self.depo.lock_up(prisoners, 2)
 
             if 29691 in list(prisoners):
@@ -456,6 +461,8 @@ class EvaQuarantinePolicy(QuarantinePolicy):
 
         # prisoners back to quarrantine
         if len(prisoners) > 0:
+            for p in set(prisoners):
+                self.model.detected_node(p)            
             self.depo.lock_up(prisoners, 2)
         if 29691 in list(prisoners):
             print(f"ACTION LOG({int(self.model.t)}): node {29691} waits for negative test in eva quarantine.")
