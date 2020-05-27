@@ -483,6 +483,27 @@ class EvaQuarantinePolicy(QuarantinePolicy):
 
         self.release_nodes(really_released)
 
+class SuperEvaQuarantinePolicy(EvaQuarantinePolicy):
+
+    def __init__(self, graph, model):
+        super().__init__(graph, model)
+        self.riskiness = { 
+            key: 1.0
+            for key in RISK_FOR_LAYERS
+        }
+
+
+class HalfEvaQuarantinePolicy(EvaQuarantinePolicy):
+
+    def __init__(self, graph, model):
+        super().__init__(graph, model)
+        self.riskiness = { 
+            key: 0.5 * value if key > 2 else value 
+            for key, value in RISK_FOR_LAYERS.items() 
+        }
+        print(self.riskiness)
+
+
 
 def is_R(node_ids, memberships):
     if memberships is None:
@@ -490,7 +511,9 @@ def is_R(node_ids, memberships):
     recovered_states_flags = (memberships[states.R_u] +
                               memberships[states.R_d] +
                               memberships[states.S] +
-                              memberships[states.S_s])
+                              memberships[states.S_s]
+                              + memberships[states.D_u] +
+                              memberships[states.D_d])
     release_recovered = recovered_states_flags.ravel()[node_ids]
     return release_recovered
 
