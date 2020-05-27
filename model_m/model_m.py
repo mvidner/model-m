@@ -82,8 +82,11 @@ class ModelM():
         self.model = Model(self.A,
                            **self.model_params,
                            random_seed=self.random_seed)
-        self.policy_object = self.policy[0](
-            self.graph, self.model, **self.policy[1])
+        if self.policy[0] is not None:
+            self.policy_object = self.policy[0](
+                self.graph, self.model, **self.policy[1])
+        else:
+            self.policy_object = None
         self.model.set_periodic_update(self.policy_object)
         self.ready = True
 
@@ -119,6 +122,17 @@ class ModelM():
             self.graph = self.start_graph.copy()
             del self.A
             self.A = self.init_matrix()
+
+        if self.policy_object is not None:
+            del self.policy_object 
+        if self.policy[0] is not None:
+            self.policy_object = self.policy[0](
+                self.graph, self.model, **self.policy[1])
+        else:
+            self.policy_object = None
+        self.model.set_periodic_update(self.policy_object)
+
+
 
         if random_seed:
             self.model.set_seed(random_seed)
