@@ -62,13 +62,7 @@ def create_custom_model(clsname, states, state_str_dict, transitions,
         # definition is couple (default value, description)
         self.G = G
         self.A = None
-
-        for argdict in (self.fixed_model_parameters,
-                        self.common_arguments,
-                        self.model_parameters):
-            for name, definition in argdict.items():
-                value = kwargs.get(name, definition[0])
-                setattr(self, name, value)
+        self.init_kwargs = kwargs
 
         # 2. model initialization
         self.inicialization()
@@ -77,12 +71,8 @@ def create_custom_model(clsname, states, state_str_dict, transitions,
         self.setup_series_and_time_keeping()
 
         # 4. init states and their counts
-        self.init_state_counts = {
-            s: kwargs.get(f"init_{self.state_str_dict[s]}", 0)
-            for s in self.states
-        }
         # print(self.init_state_counts)
-        self.states_and_counts_init(self.init_state_counts)
+        self.states_and_counts_init()
 
         # 5. set callback to None
         self.periodic_update_callback = None

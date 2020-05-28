@@ -15,6 +15,14 @@ class SeirsPlusLikeEngine(BaseEngine):
     def inicialization(self):
         """ model inicialization """
 
+        for argdict in (self.fixed_model_parameters,
+                        self.common_arguments,
+                        self.model_parameters):
+            for name, definition in argdict.items():
+                value = self.init_kwargs.get(name, definition[0])
+                setattr(self, name, value)
+
+
         if self.random_seed:
             np.random.seed(self.random_seed)
 
@@ -80,13 +88,19 @@ class SeirsPlusLikeEngine(BaseEngine):
         self.tidx = 0  # time index to time series
         self.tseries[0] = 0
 
-    def states_and_counts_init(self, state_counts):
+    def states_and_counts_init(self):
         """ Initialize Counts of inidividuals with each state """
 
-        for state, init_value in state_counts.items():
+        self.init_state_counts = {
+            s: self.init_kwargs.get(f"init_{self.state_str_dict[s]}", 0)
+            for s in self.states
+        }
+
+
+        for state, init_value in self.init_state_counts.items():
             self.state_counts[state][0] = init_value
 
-        for state in state_counts.keys():
+        for state in self.init_state_counts.keys():
             self.state_increments[state][0] = 0
 
         nodes_left = self.num_nodes - sum(
@@ -127,10 +141,6 @@ class SeirsPlusLikeEngine(BaseEngine):
         # TODO FIX ME
         return Amat.sum(axis=0).reshape(self.num_nodes, 1)
 
-    def set_periodic_update(self, callback):
-        """ set callback function
-        callback function is called every midnigh """
-        self.periodic_update_callback = callback
 
     # TODO: need this???
 

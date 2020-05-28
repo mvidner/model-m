@@ -59,12 +59,12 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
         plist = self.calc_propensities()
 
-        s_and_ss = self.memberships[0] + self.memberships[1]
-        p_infect = (plist[0] + plist[3])[s_and_ss == 1]
+        #s_and_ss = self.memberships[0] + self.memberships[1]
+        #p_infect = (plist[0] + plist[3])[s_and_ss == 1]
         # print(p_infect.mean()>0, np.median(p_infect)>0)
         # exit()
-        self.meaneprobs[self.t] = p_infect.mean()
-        self.medianeprobs[self.t] = np.median(p_infect)
+        #self.meaneprobs[self.t] = p_infect.mean()
+        #self.medianeprobs[self.t] = np.median(p_infect)
 
         propensities = np.column_stack(plist)
 
@@ -172,37 +172,61 @@ class SequentialEngine(SeirsPlusLikeEngine):
                 self.beta_A = np.clip(self.beta_A, 0.0, 1.0)
 
             if self.t == 1:
-                self.theta_Is[:] = 0.0
-                self.theta_E[:] = 0.0
+                self.theta_Is[:] = 0.01
+                self.theta_E[:] = 0.001
                 self.theta_In = self.theta_E
                 self.theta_Ia = self.theta_E
 
             if self.t == 10:
-                self.theta_Is[:] = 0.005
-                self.theta_E[:] = 0.0005
-                self.theta_In = self.theta_E
-                self.theta_Ia = self.theta_E
-
-            if self.t == 20:
                 self.theta_Is[:] = 0.05
                 self.theta_E[:] = 0.005
                 self.theta_In = self.theta_E
                 self.theta_Ia = self.theta_E
 
-            if self.t == 30:
-                self.theta_Is[:] = 0.2
-                self.theta_E[:] = 0.02
+            if self.t == 15:
+                self.theta_Is[:] = 0.08
+                self.theta_E[:] = 0.008
                 self.theta_In = self.theta_E
                 self.theta_Ia = self.theta_E
 
+
+            if self.t == 20:
+                self.theta_Is[:] = 0.12
+                self.theta_E[:] = 0.012
+                self.theta_In = self.theta_E
+                self.theta_Ia = self.theta_E
+
+            if self.t == 25:
+                self.theta_Is[:] = 0.18
+                self.theta_E[:] = 0.018
+                self.theta_In = self.theta_E
+                self.theta_Ia = self.theta_E
+
+            if self.t == 30:
+                self.theta_Is[:] = 0.22
+                self.theta_E[:] = 0.022
+                self.theta_In = self.theta_E
+                self.theta_Ia = self.theta_E
+
+            if self.t == 35:
+                self.theta_Is[:] = 0.25
+                self.theta_E[:] = 0.025
+                self.theta_In = self.theta_E
+                self.theta_Ia = self.theta_E
+
+
             if self.t == 40:
-                self.theta_Is[:] = 0.2
-                self.theta_E[:] = 0.02
+                self.theta_Is[:] = 0.3
+                self.theta_E[:] = 0.03
                 self.theta_In = self.theta_E
                 self.theta_Ia = self.theta_E
 
             if self.t == 50:
-                self.theta_Is[:] = 0.2
+                self.theta_Is[:] = 0.35
+                self.theta_E[:] = 0.035
+                self.theta_In = self.theta_E
+                self.theta_Ia = self.theta_E
+
 
             # print(self.t)
             # print(len(self.state_counts[0]))
@@ -326,8 +350,8 @@ class SequentialEngine(SeirsPlusLikeEngine):
         }
         columns = {**col_states, **col_increments}
         columns["day"] = np.floor(index).astype(int)
-        columns["mean_p_infection"] = self.meaneprobs
-        columns["median_p_infection"] = self.medianeprobs
+        #        columns["mean_p_infection"] = self.meaneprobs
+        #        columns["median_p_infection"] = self.medianeprobs
         df = pd.DataFrame(columns, index=index)
         df.index.rename('T', inplace=True)
         return df
@@ -358,6 +382,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         orig_state = self.memberships[:, node_number].nonzero()[0][0]
 
         if orig_state != STATES.I_d:
+            assert orig_state in (STATES.E, STATES.I_a, STATES.I_n, STATES.I_s) 
             if 29691 == node_number:
                 print(f"ACTION LOG({self.t}): node 29691 forced to change state to Id from {self.state_str_dict[orig_state]}")
             self.state_counts[STATES.I_d][self.t] += 1

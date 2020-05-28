@@ -24,6 +24,15 @@ class BaseEngine():
 
     def inicialization(self):
         """ model inicialization """
+
+        for argdict in (self.fixed_model_parameters,
+                        self.common_arguments,
+                        self.model_parameters):
+            for name, definition in argdict.items():
+                value = self.init_kwargs.get(name, definition[0])
+                setattr(self, name, value)
+
+
         if self.random_seed:
             np.random.seed(self.random_seed)
 
@@ -39,7 +48,7 @@ class BaseEngine():
     def setup_series_and_time_keeping(self):
         pass
 
-    def states_and_counts_init(self, state_counts):
+    def states_and_counts_init(self):
         pass
 
     def update_graph(self, new_G):
@@ -74,6 +83,7 @@ class BaseEngine():
         """ set callback function
         callback function is called every midnigh """
         self.periodic_update_callback = callback
+        print(f"DBD callback set {callback.graph}")
 
     # TODO: need this???
 
