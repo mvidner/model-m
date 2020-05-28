@@ -28,8 +28,6 @@ class LightGraph:
         self.random_seed = random_seed
         self.edge_repo = None
         self.A = None
-        self.invalids = None
-        self.quarantined_probs_repo = {}
         self.is_quarantined = None
 
     def read_csv(self,
@@ -293,7 +291,6 @@ class LightGraph:
 
         print("relevant edges", len(relevant_edges))
         # print(edges_types)
-
         for layer_type, coef in what_by_what.items():
             # print(layer_type)
             edges_on_this_layer = relevant_edges[edges_types == layer_type]
@@ -358,4 +355,5 @@ class LightGraph:
             field = getattr(self, key)
             setattr(new, key, field.copy())
         new.is_quarantined = None
+        new.e_valid.fill(2)
         return new
