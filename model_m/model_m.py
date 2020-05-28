@@ -72,7 +72,7 @@ class ModelM():
         self.ready = False
 
     def setup(self):
-
+ #       print("DBD setup")
         # working copy of graph and matrix
         self.graph = self.start_graph.copy()
         self.A = self.init_matrix()
@@ -91,6 +91,8 @@ class ModelM():
         self.ready = True
 
     def duplicate(self, random_seed=None):
+#        pritn("DBD duplicate")
+
         if self.ready: 
             raise NotImplementedError("We duplicate only newbie models")
         twin = ModelM(
@@ -103,6 +105,7 @@ class ModelM():
         )
         twin.graph = twin.start_graph.copy()
         twin.A = twin.init_matrix()
+        twin.model.update_graph(twin.graph)
         twin.ready = False
         return twin
 
@@ -115,6 +118,7 @@ class ModelM():
         self.model.run(*args, **kwargs)
 
     def reset(self, random_seed=None):
+#        print("DBD reset")
         if not self.ready:
             self.setup()
         else:
@@ -122,25 +126,24 @@ class ModelM():
             self.graph = self.start_graph.copy()
             del self.A
             self.A = self.init_matrix()
+            self.model.update_graph(self.graph)
 
-        if self.policy_object is not None:
-            del self.policy_object 
-        if self.policy[0] is not None:
-            self.policy_object = self.policy[0](
-                self.graph, self.model, **self.policy[1])
-        else:
-            self.policy_object = None
-        self.model.set_periodic_update(self.policy_object)
-
-
+            if self.policy_object is not None:
+                del self.policy_object 
+            if self.policy[0] is not None:
+                self.policy_object = self.policy[0](
+                    self.graph, self.model, **self.policy[1])
+            else:
+                self.policy_object = None
+            self.model.set_periodic_update(self.policy_object)
 
         if random_seed:
             self.model.set_seed(random_seed)
 
+        self.model.inicialization()
         self.model.setup_series_and_time_keeping()
-        self.model.states_and_counts_init(self.model.init_state_counts)
+        self.model.states_and_counts_init()
 
-        # self.set_model_params() TODO
 
     def get_results(self,
                     states):
