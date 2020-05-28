@@ -305,9 +305,17 @@ class WeeCold(QuarantinePolicy):
         self.coefs = WEE_COLD_COEFS
         self.duration = 7
         self.threshold = 0.7
+#        self.first_run = True 
 
     def run(self):
         print("Hello, this is the wee cold policy")
+
+        #if self.first_run:
+        #    self.first_run = False
+        #    print("CHECK", self.graph.layer_weights[:31])
+        #    print("CHECK", self.graph.is_quarantined is None)
+        #    assert np.all(self.graph.e_valid == 2)
+        #    assert self.graph == self.model.graph
 
         last_day = self.get_last_day()
 
@@ -330,7 +338,7 @@ class WeeCold(QuarantinePolicy):
         if 29691 in list(released):
             print(f"ACTION LOG({int(self.model.t)}: node {29691} feels well again and stops staying home.")
 
-            to_change = self.release_nodes(released)
+        to_change = self.release_nodes(released)
 
 
 class PetraQuarantinePolicy(QuarantinePolicy):
