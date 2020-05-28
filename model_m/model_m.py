@@ -105,7 +105,6 @@ class ModelM():
         )
         twin.graph = twin.start_graph.copy()
         twin.A = twin.init_matrix()
-        twin.model.update_graph(twin.graph)
         twin.ready = False
         return twin
 
