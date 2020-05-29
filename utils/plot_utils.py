@@ -104,7 +104,7 @@ def _load_history(filename: str, max_days=None) -> pd.DataFrame:
         history = history[:max_days]
     if "day" not in history.columns:
         history["day"] = range(len(history))
-    print(history)
+#    print(history)
     return history
 
 
