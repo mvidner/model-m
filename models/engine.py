@@ -19,6 +19,7 @@ class BaseEngine():
                         np.full(fill_value=param, shape=(self.num_nodes, 1)))
 
     def set_seed(self, random_seed):
+        print("set_seed", random_seed)
         np.random.seed(random_seed)
         self.random_seed = random_seed
 
@@ -83,7 +84,7 @@ class BaseEngine():
         """ set callback function
         callback function is called every midnigh """
         self.periodic_update_callback = callback
-        print(f"DBD callback set {callback.graph}")
+        #        print(f"DBD callback set {callback.graph}")
 
     # TODO: need this???
 

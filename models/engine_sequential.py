@@ -163,6 +163,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
 #                input()
             #            print(f"day {self.t}")
 
+
             # TODO - tohle tu nebude, ma delat policy !!!! :(
 
             if self.t == 23:
@@ -226,7 +227,6 @@ class SequentialEngine(SeirsPlusLikeEngine):
                 self.theta_E[:] = 0.035
                 self.theta_In = self.theta_E
                 self.theta_Ia = self.theta_E
-
 
             # print(self.t)
             # print(len(self.state_counts[0]))

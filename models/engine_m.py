@@ -49,7 +49,7 @@ class EngineM(SequentialEngine):
         self.G = new_G # just for backward compability, TODO: remove G from everywhere and replace by graph
         self.graph = new_G
         self.num_nodes = self.graph.num_nodes
-        print(f"DBD: graph udpate {self.graph}")
+#        print(f"DBD: graph udpate {self.graph}")
 
     def node_degrees(self, Amat):
         raise NotImplementedError("We use the graph directly, not matrix.")
