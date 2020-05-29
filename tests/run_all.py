@@ -24,11 +24,11 @@ def evaluate_model(model, setup):
     idx, random_seed, test_id, config, args = setup 
     ndays, print_interval, verbose = args
 
+
     if random_seed is not None:
         my_model.reset(random_seed=random_seed)
-    
-    my_model.run(ndays, print_interval=print_interval, verbose=verbose)
 
+    my_model.run(ndays, print_interval=print_interval, verbose=verbose)
     # save history
     suffix = "" if not test_id else "_" + test_id
     file_name = f"history{suffix}.csv"
@@ -38,7 +38,7 @@ def evaluate_model(model, setup):
         cfg_string = "#" + "#".join(f.readlines())
     with open(file_name, "w") as f:
         f.write(cfg_string)
-        f.write(f"# RANDOM_SEED = {my_model.random_seed}\n")
+        f.write(f"# RANDOM_SEED = {my_model.model.random_seed}\n")
         my_model.save_history(f)
 
 #    with open(f"durations{suffix}.csv", "w") as f:
@@ -74,6 +74,7 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
     for i in range(1, n_jobs):
         print(f"{i} copy", flush=True) 
         models.append(model.duplicate(random_seed=random_seed + i)) 
+    print("DB ORIG", *list(range(random_seed, random_seed+n_jobs)))
     #random_seeds = [ model_random_seed + i for i in range(0, n_repeat)]
 
 
