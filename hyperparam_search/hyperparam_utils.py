@@ -93,6 +93,8 @@ def _run_models_from_config(cf: ConfigFile,
     if "A" in hyperparams:
         hyperparams["beta_A"] = hyperparams["beta"]*hyperparams["A"]
         del hyperparams["A"] 
+    else:
+        hyperparams["beta_A"] = 0.5 * hyperparams["beta"]
 
     hyperparams["beta_in_family"] = hyperparams["beta"] 
     hyperparams["beta_A_in_family"] = hyperparams["beta_A"] 
