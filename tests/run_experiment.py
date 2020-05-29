@@ -101,8 +101,8 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
             f.write(f"# RANDOM_SEED = {model_random_seed}\n")
             model.save_history(f)
 
-        with open(f"durations{suffix}.csv", "w") as f:
-            model.model.save_durations(f)
+        #with open(f"durations{suffix}.csv", "w") as f:
+        #    model.model.save_durations(f)
 
         save_nodes = cf.section_as_dict("TASK").get(
             "save_node_states", "No") == "Yes"
@@ -120,7 +120,7 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
 def test(set_random_seed, policy, print_interval, n_repeat, filename, test_id):
     """ Run the demo test inside the timeit """
 
-    random_seed = 6321 if set_random_seed else random.randint(0, 10000)
+    random_seed = 6321 if set_random_seed else random.randint(0, 429496729)
     print(f"ACTION LOG: random seed {random_seed}")
     def demo_fce(): return demo(filename, test_id,
                                 model_random_seed=random_seed, use_policy=policy, print_interval=print_interval, n_repeat=n_repeat)
