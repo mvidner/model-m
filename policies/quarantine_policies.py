@@ -386,7 +386,7 @@ class PetraQuarantinePolicy(QuarantinePolicy):
             self.quarrantine_nodes(list(contacts), depo=self.stayhome_depo)
 
         released = self.tick()
-        really_released, prisoners = self.do_testing(released)
+        release_candidates, prisoners = self.do_testing(released)
 
         # prisoners back to quarrantine
         if len(prisoners) > 0:
@@ -396,6 +396,16 @@ class PetraQuarantinePolicy(QuarantinePolicy):
 
             if 29691 in list(prisoners):
                 print(f"ACTION LOG({int(self.model.t)}): node {29691} tested and stays in quarantine by petra.")
+
+
+        really_released = self.depo.get_retested()
+            
+        # realease candidates are waiting for the second test
+        if len(release_candidates) > 0:
+            self.depo.wait_for_test(release_candidates)
+            if 29691 in list(release_candidates):
+                print(f"ACTION LOG({int(self.model.t)}): node {29691} has negative test and waits for second one  in petra quarantine.")
+
 
         if 29691 in list(really_released):
             print(f"ACTION LOG({int(self.model.t)}): node {29691} was released from quarantine by petra.")
