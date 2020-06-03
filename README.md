@@ -90,9 +90,6 @@ init_I_d = 0
 ## References:
 + [Model antiCOVID-19 pro ČR při IDEA CERGE-EI](https://idea.cerge-ei.cz/anti-covid-19/iniciativa-model-anticovid-19-pro-cr)
 + [Změmy chování české populace v době COVID-19 a jejich reflexe v epidemiologických modelech](https://idea.cerge-ei.cz/anti-covid-19/iniciativa-model-anticovid-19-pro-cr) (CERGE-EI, 19. 5. 2020)
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Ps2RQAZJtys" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 + [konference NZIS a ISIN Open 2020](https://nzis-open.uzis.cz) (ÚZIS, 27.5. 2020)
 
 
