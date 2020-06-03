@@ -1,4 +1,4 @@
-# model-m
+# model-m :mask:
 Model of an imaginary town 
 
 ## Requirements 
