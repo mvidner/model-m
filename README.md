@@ -1,8 +1,108 @@
-# model-m
+# model-m :mask:
 Model of an imaginary town 
 
+## Requirements 
+
+numpy,scipy, pandas, matplotlib, seaborn, scikit-learn, click, (networkx) 
+
+## Usage 
+
+1. Loading a graph from CSV files takes minutes. Load the graph once and save it to a pickle file.  
+```
+Usage: preload_graph.py [OPTIONS] [FILENAME] [OUTPUTNAME]
+
+  Load the graph and pickle.
+
+$ python preload_graph.py load.ini town.pickle
+```
+
+2. Run your experiment. 
+```
+Usage: run_experiment.py [OPTIONS] [FILENAME] [TEST_ID]
+
+  Run the demo test inside the timeit
+
+Options:
+  --set-random-seed / -r, --no-random-seed
+  -p, --policy TEXT
+  --print_interval INTEGER
+  --n_repeat INTEGER
+  --help                          Show this message and exit.
+
+$ python run_experiment.py -r baseline.ini
+``` 
+
+3. Example of INI file:
+(**warning:** this is an example only, the model parameters are not final)
+```
+[TASK]
+duration_in_days = 150
+print_interval = 1
+verbose = Yes
+model = TGMNetworkModel
+save_node_states = No
+
+[GRAPH]
+name = pickle
+file = papertown.pickle
+
+[POLICY]
+filename = customised_policy 
+name = CustomPolicy
+
+[POLICY_SETUP]
+layer_changes_filename = ../data/policy_params/bourbon.csv
+policy_calendar_filename = ../data/policy_params/policy_calendar.json
+param_changes_filename = ../data/policy_params/param_changes31.5.json
+
+[MODEL]
+beta=0.5
+beta_reduction=0.20
+beta_in_family=0.5
+beta_A=0.25
+beta_A_in_family=0.25
+sigma=0.174947033019464
+gamma_In=0.0689372202959773
+mu=0.000399920010665578
+p=0.00
+beta_D=0
+gamma_Is=0.0465030451665233
+gamma_Id=0.0465030451665233
+theta_E=0.0
+theta_Ia=0.0
+theta_Is=0.0
+theta_In=0.0
+psi_E=1
+psi_Ia=1
+psi_Is=1
+psi_In=1
+q=0
+false_symptoms_rate=0.005
+false_symptoms_recovery_rate=0.4
+asymptomatic_rate=0.3
+symptoms_manifest_rate=0.393469340287367
+init_E = 6
+init_I_n = 0
+init_I_a = 0
+init_I_s = 0
+init_I_d = 0
+```
+
+## References:
+
+:bookmark: [Model antiCOVID-19 pro ČR při IDEA CERGE-EI](https://idea.cerge-ei.cz/anti-covid-19/iniciativa-model-anticovid-19-pro-cr)
+
+:bookmark: [Změmy chování české populace v době COVID-19 a jejich reflexe v epidemiologických modelech](https://idea.cerge-ei.cz/anti-covid-19/iniciativa-model-anticovid-19-pro-cr) (CERGE-EI, 19. 5. 2020)
+
+:bookmark: [konference NZIS a ISIN Open 2020](https://nzis-open.uzis.cz) (ÚZIS, 27.5. 2020)
+
+
+<hr>
+
+:construction:
 TODO: rewrite README completely
 
+**old stuff (to be updated soon):** 
 
 The model started as an extension of [seirsplus
 model](https://github.com/ryansmcgee/seirsplus) adding more states. Later it
@@ -11,9 +111,6 @@ difference is the state-update only once a day and possibility of plugin callbac
 policy function that may modify the given graph (i.e. delete or weaken adges
 for nodes in quarantine).  See [doc/model.pdf](doc/model.pdf) for more details
 
-## Requirements 
-
-networkx, numpy, matplotlib, seaborn, click
 
 
 
@@ -28,6 +125,7 @@ Options:
   -p, --policy TEXT
   --print_interval INTEGER
   --help                          Show this message and exit.
+
 
 ```
 
