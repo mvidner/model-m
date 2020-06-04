@@ -32,7 +32,8 @@ Options:
 $ python run_experiment.py -r baseline.ini
 ``` 
 
-3. Example of INI file: 
+3. Example of INI file:
+(**warning:** this is an example only, the model parameters are not final)
 ```
 [TASK]
 duration_in_days = 150
