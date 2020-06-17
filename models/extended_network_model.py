@@ -410,7 +410,7 @@ def calc_propensities(model, use_dict=True):
     propensity_J_s_to_D_u = model.memberships[STATES.J_s] * model.mu
     not_R_or_D = 1.0 - propensity_J_s_to_R_u - propensity_J_s_to_D_u
     propensity_J_s_to_J_ds = (
-        model.memberships[STATES.J_ds] * not_R_or_D * model.theta_Is * model.psi_Is)
+        model.memberships[STATES.J_s] * not_R_or_D * model.theta_Is * model.psi_Is)
     propensity_J_s_to_J_s = model.memberships[STATES.J_s] * (1.0 - propensity_J_s_to_R_u -
                                                              propensity_J_s_to_D_u - propensity_J_s_to_J_ds)
 
