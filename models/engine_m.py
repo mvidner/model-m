@@ -21,7 +21,14 @@ class STATES():
     I_n = 3
     I_a = 4
     I_s = 5
-    I_d = 6
+    I_ds = 6
+    J_s = 11
+    J_n = 12
+    E_d = 13
+    I_da = 14
+    I_dn = 15
+    J_ds = 16
+    J_dn = 17
     R_d = 7
     R_u = 8
     D_d = 9
@@ -46,7 +53,7 @@ class EngineM(SequentialEngine):
 
     def update_graph(self, new_G):
         """ create adjacency matrix for G """
-        self.G = new_G # just for backward compability, TODO: remove G from everywhere and replace by graph
+        self.G = new_G  # just for backward compability, TODO: remove G from everywhere and replace by graph
         self.graph = new_G
         self.num_nodes = self.graph.num_nodes
 #        print(f"DBD: graph udpate {self.graph}")
@@ -192,7 +199,9 @@ class EngineM(SequentialEngine):
         # reduce asymptomatic
         is_A = (
             self.memberships[STATES.I_a][relevant_dests] +
-            self.memberships[STATES.I_n][relevant_dests]
+            self.memberships[STATES.I_n][relevant_dests] +
+            self.memberships[STATES.I_dn][relevant_dests] +
+            self.memberships[STATES.I_da][relevant_dests]
         )
         b_original_intensities = (
             beta_in_family[relevant_sources] * (1 - is_A) +
@@ -216,7 +225,8 @@ class EngineM(SequentialEngine):
         assert b_intensities.shape == intensities.shape
         # print(b_intensitites.shape, intensities.shape,
         #      prob_of_no_infection.shape)
-        relevant_sources_unique, unique_indices = np.unique(relevant_sources, return_inverse=True)
+        relevant_sources_unique, unique_indices = np.unique(
+            relevant_sources, return_inverse=True)
         no_infection = (1 - b_intensities * intensities).ravel()
 
         res = np.ones(len(relevant_sources_unique), dtype='float32')

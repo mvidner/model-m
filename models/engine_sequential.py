@@ -19,7 +19,14 @@ class STATES():
     I_n = 3
     I_a = 4
     I_s = 5
-    I_d = 6
+    I_ds = 6
+    J_s = 11
+    J_n = 12
+    E_d = 13
+    I_da = 14
+    I_dn = 15
+    J_ds = 16
+    J_dn = 17
     R_d = 7
     R_u = 8
     D_d = 9
@@ -80,6 +87,14 @@ class SequentialEngine(SeirsPlusLikeEngine):
         # print(propensities.sum(axis=1q))
 
         assert np.allclose(propensities.sum(axis=1), 1.0)
+        # print(propensities.sum(axis=1))
+        # print(np.logical_not(np.isclose(propensities.sum(axis=1), 1.0)).nonzero())
+        # index = np.logical_not(np.isclose(
+        #     propensities.sum(axis=1), 1.0)).nonzero()[0][0]
+        # print(propensities[index])
+        # print(propensities[index].nonzero())
+        # print(self.memberships[:, index].nonzero())
+        # exit()
 
         # add column with pst P[X->X]
         # what is the fastest way to add a column?
@@ -163,7 +178,6 @@ class SequentialEngine(SeirsPlusLikeEngine):
 #                input()
             #            print(f"day {self.t}")
 
-
             # print(self.t)
             # print(len(self.state_counts[0]))
             # print(len(self.states_history))
@@ -230,7 +244,6 @@ class SequentialEngine(SeirsPlusLikeEngine):
         for s in self.states:
             durations = self.durations[self.memberships[s]]
             self.states_durations[s].extend(list(durations))
-
 
         if print_interval >= 0:
             self.print(verbose)
@@ -313,17 +326,31 @@ class SequentialEngine(SeirsPlusLikeEngine):
         # df.to_csv(filename)
         # print(df)
 
-
     def detected_node(self, node_number):
         orig_state = self.memberships[:, node_number].nonzero()[0][0]
 
-        if orig_state != STATES.I_d:
-            assert orig_state in (STATES.E, STATES.I_a, STATES.I_n, STATES.I_s) 
-            if 29691 == node_number:
-                print(f"ACTION LOG({self.t}): node 29691 forced to change state to Id from {self.state_str_dict[orig_state]}")
-            self.state_counts[STATES.I_d][self.t] += 1
-            self.state_counts[orig_state][self.t] -= 1
-            self.state_increments[STATES.I_d][self.t] += 1
-            self.memberships[STATES.I_d][node_number] = 1
-            self.memberships[orig_state][node_number] = 0
-        
+        if orig_state in (STATES.E_d, STATES.I_da, STATES.I_dn, STATES.I_ds, STATES.J_dn, STATES.J_ds):
+            return
+
+        transitions = (
+            (STATES.E, STATES.E_d),
+            (STATES.I_a, STATES.I_da),
+            (STATES.I_n, STATES.I_dn),
+            (STATES.I_s, STATES.I_ds),
+            (STATES.J_n, STATES.J_dn),
+            (STATES.J_s, STATES.J_ds)
+        )
+
+        for t in transitions:
+            if orig_state == t[0]:
+                new_state = t[1]
+                if 29691 == node_number:
+                    print(f"ACTION LOG({self.t}): node 29691 forced to change state to {self.state_str_dict[new_state]} from {self.state_str_dict[orig_state]}")
+                self.state_counts[new_state][self.t] += 1
+                self.state_counts[orig_state][self.t] -= 1
+                self.state_increments[new_state][self.t] += 1
+                self.memberships[new_state][node_number] = 1
+                self.memberships[orig_state][node_number] = 0
+                return
+
+        raise ValueError(f"Unexpected state: {self.state_str_dict[orig_state]}")
