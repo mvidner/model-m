@@ -31,6 +31,15 @@ class STATES():
     D_d = 9
     D_u = 10
 
+    detected = {
+        I_ds,
+        E_d,
+        I_da,
+        I_dn,
+        J_ds,
+        J_dn
+    }
+
     pass
 
 
