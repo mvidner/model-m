@@ -1,19 +1,34 @@
 import numpy as np
 import pandas as pd
+from copy import copy
 from scipy.sparse import csr_matrix, lil_matrix
 
 # novej light graph
+from itertools import chain
+
+from functools import reduce
+from operator import iconcat
+
+
+def concat_lists(l):
+    """
+    Returns concatenation of lists in the iterable l
+    :param l: iterable of lists
+    :return: concatenation of lists in l
+    """
+    return list(chain.from_iterable(l))
 
 
 class LightGraph:
-
+    # __slots__ = ['e_types', 'e_subtypes', 'e_probs', 'e_intensities', 'e_source', 'e_dest', 'e_valid', 'edges_repo',
+     # 'edges_directions', '__dict__'] # not really helpful here, beneficial only for lots of small objects
     def __init__(self, random_seed=None):
         if random_seed:
             np.random.seed(random_seed)
+        self.random_seed = random_seed
         self.edge_repo = None
         self.A = None
-        self.invalids = None
-        self.quarantined_probs_repo = {}
+        self.is_quarantined = None
 
     def read_csv(self,
                  path_to_nodes='p.csv',
@@ -25,7 +40,7 @@ class LightGraph:
         nodes = pd.read_csv(path_to_nodes, **csv_hacking)
         edges = pd.read_csv(path_to_edges, **csv_hacking)
         layers = pd.read_csv(path_to_layers, **csv_hacking)
-        external_nodes = pd.read_csv("../data/newtown/e.csv", **csv_hacking)
+        external_nodes = pd.read_csv(path_to_external, **csv_hacking)
 
         # layer names, ids and weights go to graph
         layers_to_add = layers.to_dict('list')
@@ -89,12 +104,12 @@ class LightGraph:
         self.e_dest = np.empty(n_edges, dtype="uint16")
         # if value == 2 than is valid, other numbers prob in quarantine
         self.e_valid = 2 * np.ones(n_edges, dtype="float32")
-        # edges repo
+        # edges repo which will eventually be list of sets and not a dict
         self.edges_repo = {
-            0: None
+            0: []
         }
         self.edges_directions = {
-            0: None
+            0: []
         }
         key = 1
         # working matrix
@@ -132,8 +147,8 @@ class LightGraph:
                 # first edge between (row, col)
                 self.edges_repo[key], self.edges_directions[key] = [
                     i], forward_edge
-                self.edges_repo[key +
-                                1], self.edges_directions[key+1] = [i], backward_edge
+                self.edges_repo[key + 1], self.edges_directions[key +
+                                                                1] = [i], backward_edge
                 tmpA[i_row, i_col] = key
                 tmpA[i_col, i_row] = key + 1
                 key += 2
@@ -158,23 +173,28 @@ class LightGraph:
         print("level done")
         del tmpA
 
-        print("Converting edges_repo to numpy array ...", end="")
-        data = [None]
-        subedges_counts = [0]
-        for i_key in range(1, key):
-            value_list = self.edges_repo[i_key]
-            # if len(value_list) > 1:
-            #     print(i_key)
-            data.append(np.array(value_list, dtype="uint32"))
-            subedges_counts.append(len(value_list))
-        self.edges_repo = np.array(data, dtype=object)
+        print("Converting edges_repo to list ...", end="")
+        # data = [None]
+        # subedges_counts = [0]
+        # for i_key in range(1, key):
+        #     value_set = self.edges_repo[i_key]
+        #     # if len(value_list) > 1:
+        #     #     print(i_key)
+        #     data.append(value_set)
+        #     subedges_counts.append(len(value_set))
+        # self.edges_repo = data
+        # the above can be replaced by
+        self.edges_repo = np.array(
+            list(self.edges_repo.values()), dtype=object)
+        subedges_counts = [len(s) for s in self.edges_repo]
+        # subedges_counts = [len(s) for s in np.nditer(self.edges_repo, flags=['refs_ok'], op_flags=['readonly'])]
         print("level done")
 
-        print("Converting edges_directions to numpy bool array ... ", end="")
+        print("Converting edges_directions to list ... ", end="")
         data = [None]
         for i_key in range(1, key):
             dir_list = [self.edges_directions[i_key]] * subedges_counts[i_key]
-            data.append(np.array(dir_list, dtype="bool"))
+            data.append(dir_list)
         self.edges_directions = np.array(data, dtype=object)
         print("level done")
 
@@ -214,10 +234,10 @@ class LightGraph:
         if len(active_edges_indices) == 0:
             return np.array([]), np.array([])
         edge_lists = self.edges_repo[active_edges_indices]
-        result = np.concatenate(edge_lists)
+        result = np.array(concat_lists(edge_lists))
         if dirs:
             dirs_lists = self.edges_directions[active_edges_indices]
-            result_dirs = np.concatenate(dirs_lists)
+            result_dirs = np.array(concat_lists(dirs_lists), dtype=bool)
             return result, result_dirs
         return result
 
@@ -228,7 +248,7 @@ class LightGraph:
             print("Warning: no edges for nodes", nodes)
             return np.array([])
         edge_lists = self.edges_repo[active_edges_indices]
-        result = np.concatenate(edge_lists)
+        result = concat_lists(edge_lists)
         return result
 
     def get_edges_probs(self, edges):
@@ -244,19 +264,33 @@ class LightGraph:
         assert type(edges) == np.ndarray
         return self.e_intensities[edges]
 
-    def modify_layers_for_nodes(self, node_id_list, what_by_what, is_quarrantined=None):
+    def is_family_edge(self, edges):
+        assert type(edges) == np.ndarray
+        etypes = self.e_types[edges]
+        return np.logical_or(etypes == 1, etypes == 2)
+
+    def modify_layers_for_nodes(self, node_id_list, what_by_what):
         """ changes edges' weights """
+
+        if self.is_quarantined is None:
+            self.is_quarantined = np.zeros(self.number_of_nodes, dtype=bool)
+
+        self.is_quarantined[node_id_list] = True
 
         if not what_by_what:
             return
+
         relevant_edges = np.unique(self.get_nodes_edges(node_id_list))
+
+        if len(relevant_edges) == 0:
+            return
+
         valid = self.e_valid[relevant_edges]
         relevant_edges = relevant_edges[valid == 2]
         edges_types = self.e_types[relevant_edges]
 
         print("relevant edges", len(relevant_edges))
         # print(edges_types)
-
         for layer_type, coef in what_by_what.items():
             # print(layer_type)
             edges_on_this_layer = relevant_edges[edges_types == layer_type]
@@ -266,7 +300,9 @@ class LightGraph:
             np.clip(self.e_valid[edges_on_this_layer], 0.0,
                     1.0, out=self.e_valid[edges_on_this_layer])
 
-    def recover_edges_for_nodes(self, release, normal_life, is_quarrantined):
+    def recover_edges_for_nodes(self, release, normal_life):
+
+        self.is_quarantined[release] = False
 
         relevant_edges = np.unique(self.get_nodes_edges(release))
         if len(relevant_edges) == 0:
@@ -276,10 +312,10 @@ class LightGraph:
         source_nodes = self.e_source[relevant_edges]
         dest_nodes = self.e_dest[relevant_edges]
 
-        is_quarrantined_source = is_quarrantined[source_nodes]
-        is_quarrantined_dest = is_quarrantined[dest_nodes]
+        is_quarrantined_source = self.is_quarantined[source_nodes]
+        is_quarrantined_dest = self.is_quarantined[dest_nodes]
 
-        # leave only edges where both nodes are free
+        # recover only edges where both nodes are free
         relevant_edges = relevant_edges[np.logical_not(
             np.logical_or(is_quarrantined_source, is_quarrantined_dest))]
 
@@ -293,8 +329,31 @@ class LightGraph:
     def get_layer_for_edge(self, e):
         return self.e_types[e]
 
+    def set_layer_weights(self, weights):
+        print("Updating layer weights", weights)
+        for i, w in enumerate(weights):
+            self.layer_weights[i] = w
+        print(self.layer_weights)
+
+
     def close_layers(self, list_of_layers, coefs=None):
+        print(f"Closing {list_of_layers}")
         for idx, name in enumerate(list_of_layers):
-            print(f"Closing {name}")
             i = self.layer_name.index(name)
             self.layer_weights[i] = 0 if not coefs else coefs[idx]
+        print(self.layer_weights)
+			    
+    def copy(self):
+        """
+        Optimized version of shallow/deepcopy of self.
+        Since most fields never change between runs, we do shallow copies on them.
+        :return: Shallow/deep copy of self.
+        """
+        heavy_fields = ['e_valid', 'layer_weights', ]
+        new = copy(self)
+        for key in heavy_fields:
+            field = getattr(self, key)
+            setattr(new, key, field.copy())
+        new.is_quarantined = None
+        new.e_valid.fill(2)
+        return new

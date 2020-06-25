@@ -12,6 +12,29 @@ from engine_seirspluslike import SeirsPlusLikeEngine
 # from extended_network_model import STATES as s
 
 
+class STATES():
+    S = 0
+    S_s = 1
+    E = 2
+    I_n = 3
+    I_a = 4
+    I_s = 5
+    I_ds = 6
+    J_s = 11
+    J_n = 12
+    E_d = 13
+    I_da = 14
+    I_dn = 15
+    J_ds = 16
+    J_dn = 17
+    R_d = 7
+    R_u = 8
+    D_d = 9
+    D_u = 10
+
+    pass
+
+
 def _searchsorted2d(a, b):
     m, n = a.shape
     max_num = np.maximum(a.max() - a.min(), b.max() - b.min()) + 1
@@ -29,6 +52,11 @@ class SequentialEngine(SeirsPlusLikeEngine):
         for state in self.states:
             self.state_counts[state][self.t] = self.state_counts[state][self.t-1]
             self.state_increments[state][self.t] = 0
+            
+        self.num_tests[self.t] = 0
+        self.num_qtests[self.t] = 0
+
+        self.durations += 1
 
         self.N[self.t] = self.N[self.t-1]
 #        self.states_history[self.t] = self.states_history[self.t-1]
@@ -41,16 +69,16 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
         plist = self.calc_propensities()
 
-        s_and_ss = self.memberships[0] + self.memberships[1]
-        p_infect = (plist[0] + plist[3])[s_and_ss == 1]
+        #s_and_ss = self.memberships[0] + self.memberships[1]
+        #p_infect = (plist[0] + plist[3])[s_and_ss == 1]
         # print(p_infect.mean()>0, np.median(p_infect)>0)
         # exit()
-        self.meaneprobs[self.t] = p_infect.mean()
-        self.medianeprobs[self.t] = np.median(p_infect)
+        #self.meaneprobs[self.t] = p_infect.mean()
+        #self.medianeprobs[self.t] = np.median(p_infect)
 
         propensities = np.column_stack(plist)
 
-        #assert np.all(propensities >= 0) and np.all(propensities <= 1), \
+        # assert np.all(propensities >= 0) and np.all(propensities <= 1), \
         #    f">=0 & <= 1 failed for {propensities[propensities >= 0]} a \
         #    {propensities[propensities<=1]} "
 
@@ -61,6 +89,15 @@ class SequentialEngine(SeirsPlusLikeEngine):
         # print(propensities[0])
         # print(propensities.sum(axis=1q))
 
+        if not np.allclose(propensities.sum(axis=1), 1.0):
+            print(propensities.sum(axis=1))
+            print(np.logical_not(np.isclose(propensities.sum(axis=1), 1.0)).nonzero())
+            index = np.logical_not(np.isclose(
+                propensities.sum(axis=1), 1.0)).nonzero()[0][0]
+            print(propensities[index])
+            print(propensities[index].nonzero())
+            print(self.memberships[:, index].nonzero())
+            exit()
         assert np.allclose(propensities.sum(axis=1), 1.0)
 
         # add column with pst P[X->X]
@@ -94,13 +131,28 @@ class SequentialEngine(SeirsPlusLikeEngine):
             # print(f"{node} goes from {self.state_str_dict[s]} to {self.state_str_dict[e]}")
             # if self.memberships[s, node, 0] != 1:
             #     print(f"node not in state {self.state_str_dict[s]}")
+            if node == 29691:
+                # stalking
+                print(f"ACTION LOG ({self.t}): node {node} changing state to {self.state_str_dict[e]}")
 
+            self.states_durations[s].append(self.durations[node])
+            if e in (
+                    STATES.I_ds,
+                    STATES.E_d,
+                    STATES.I_da,
+                    STATES.I_dn,
+                    STATES.J_ds,
+                    STATES.J_dn
+            ):
+                self.num_tests[self.t] += 1 
+
+            self.durations[node] = 0
             self.delta[s, node, :] = -1
             self.delta[e, node, :] = 1
             self.state_counts[s][self.t] -= 1
             self.state_counts[e][self.t] += 1
             self.state_increments[e][self.t] += 1
-#            self.states_history[self.t][node] = e
+            #self.states_history[self.t][node] = e
             self.tidx += 1
             if self.tidx >= len(self.history):
                 self.increase_history_len()
@@ -134,15 +186,11 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.print(verbose)
 
         for self.t in range(1, T+1):
-#            os.system("free -h")
+            #            os.system("free -h")
             if __debug__ and print_interval >= 0 and verbose:
                 print(flush=True)
 #                input()
             #            print(f"day {self.t}")
-
-            if self.t == 23:
-                self.beta *= self.beta_reduction 
-                self.beta = np.clip(self.beta, 0.0, 1.0)
 
             # print(self.t)
             # print(len(self.state_counts[0]))
@@ -155,15 +203,16 @@ class SequentialEngine(SeirsPlusLikeEngine):
             running = self.run_iteration()
 
             # run periodical update
-            if self.periodic_update_callback:
-                changes = self.periodic_update_callback(
-                    self.history, self.tseries[:self.tidx +
-                                               1], self.t, self.contact_history,
-                    self.memberships)
+            if self.periodic_update_callback is not None:
+                self.periodic_update_callback.run()
+                # changes = self.periodic_update_callback(
+                #     self.history, self.tseries[:self.tidx +
+                #                                1], self.t, self.contact_history,
+                #     self.memberships)
 
-                if "graph" in changes:
-                    print("CHANGING GRAPH")
-                    self.update_graph(changes["graph"])
+                # if "graph" in changes:
+                #     print("CHANGING GRAPH")
+                #     self.update_graph(changes["graph"])
             end = time.time()
             if print_interval > 0:
                 print("Last day took: ", end - start, "seconds")
@@ -175,9 +224,25 @@ class SequentialEngine(SeirsPlusLikeEngine):
             numI = sum([self.current_state_count(s)
                         for s in self.unstable_states
                         ])
+            if True:
+                GIRL = 29691
+                # infect the girl 29691
+                if self.graph.layer_weights[30] == 1.0:
+                    # move node 29691 to E
+                    orig_state = self.memberships[:, GIRL].nonzero()[0][0]
+                    if orig_state == STATES.E:
+                        print(f"ACTION LOG(92): node 29691 enters the party already exposed")
+                    else:
+                        print(f"ACTION LOG(92): node 29691 feeded by infection")
+                        self.state_counts[STATES.E][self.t] += 1
+                        self.state_counts[orig_state][self.t] -= 1
+                        self.state_increments[STATES.E][self.t] += 1
+                        self.memberships[STATES.E][GIRL] = 1
+                        self.memberships[orig_state][GIRL] = 0
+
             if not numI > 0:
                 break
-            #gc.collect()
+            # gc.collect()
 
         if self.t < T:
             for t in range(self.t+1, T+1):
@@ -189,6 +254,11 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
         self.t = T
 
+        # finalize durations
+        for s in self.states:
+            durations = self.durations[self.memberships[s]]
+            self.states_durations[s].extend(list(durations))
+
         if print_interval >= 0:
             self.print(verbose)
         self.finalize_data_series()
@@ -198,8 +268,10 @@ class SequentialEngine(SeirsPlusLikeEngine):
         for state in self.states:
             self.state_counts[state].bloat(100)
             self.state_increments[state].bloat(100)
+        self.num_tests.bloat(100)
+        self.num_qtests.bloat(100)
         self.N.bloat(100)
-#        self.states_history.bloat(100)
+        # self.states_history.bloat(100)
         self.meaneprobs.bloat(100)
         self.medianeprobs.bloat(100)
 
@@ -210,11 +282,14 @@ class SequentialEngine(SeirsPlusLikeEngine):
     def finalize_data_series(self):
         self.tseries.finalize(self.tidx)
         self.history.finalize(self.tidx)
+        self.num_tests.finalize(self.t)
+        self.num_qtests.finalize(self.t)
+
         for state in self.states:
             self.state_counts[state].finalize(self.t)
             self.state_increments[state].finalize(self.t)
         self.N.finalize(self.t)
-#        self.states_history.finalize(self.t)
+        # self.states_history.finalize(self.t)
         self.meaneprobs.finalize(self.t)
         self.medianeprobs.finalize(self.t)
 
@@ -234,17 +309,21 @@ class SequentialEngine(SeirsPlusLikeEngine):
     def to_df(self):
         index = range(0, self.t+1)
         col_increments = {
-            "inc_" + self.state_str_dict[x]: col_inc 
+            "inc_" + self.state_str_dict[x]: col_inc
             for x, col_inc in self.state_increments.items()
-        } 
-        col_states =  { 
-            self.state_str_dict[x]: count 
-            for x, count in self.state_counts.items() 
-        } 
-        columns = {**col_states, **col_increments}
+        }
+        col_states = {
+            self.state_str_dict[x]: count
+            for x, count in self.state_counts.items()
+        }
+        col_tests = {
+            "tests": self.num_tests,
+            "quarantine_tests": self.num_qtests
+        }
+        columns = {**col_states, **col_increments, **col_tests}
         columns["day"] = np.floor(index).astype(int)
-        columns["mean_p_infection"] = self.meaneprobs
-        columns["median_p_infection"] = self.medianeprobs
+        #        columns["mean_p_infection"] = self.meaneprobs
+        #        columns["median_p_infection"] = self.medianeprobs
         df = pd.DataFrame(columns, index=index)
         df.index.rename('T', inplace=True)
         return df
@@ -256,6 +335,11 @@ class SequentialEngine(SeirsPlusLikeEngine):
         df.to_csv(file_or_filename)
         print(df)
 
+    def save_durations(self, f):
+        for s in self.states:
+            line = ",".join([str(x) for x in self.states_durations[s]])
+            print(f"{self.state_str_dict[s]},{line}", file=f)
+
     def save_node_states(self, filename):
         index = range(0, self.t+1)
         columns = self.states_history.values
@@ -263,4 +347,34 @@ class SequentialEngine(SeirsPlusLikeEngine):
         df.to_csv(filename)
         # df = df.replace(self.state_str_dict)
         # df.to_csv(filename)
-        print(df)
+        # print(df)
+
+    def detected_node(self, node_number):
+        # self.num_qtests[self.t] += 1
+        orig_state = self.memberships[:, node_number].nonzero()[0][0]
+
+        if orig_state in (STATES.E_d, STATES.I_da, STATES.I_dn, STATES.I_ds, STATES.J_dn, STATES.J_ds):
+            return
+
+        transitions = (
+            (STATES.E, STATES.E_d),
+            (STATES.I_a, STATES.I_da),
+            (STATES.I_n, STATES.I_dn),
+            (STATES.I_s, STATES.I_ds),
+            (STATES.J_n, STATES.J_dn),
+            (STATES.J_s, STATES.J_ds)
+        )
+
+        for t in transitions:
+            if orig_state == t[0]:
+                new_state = t[1]
+                if 29691 == node_number:
+                    print(f"ACTION LOG({self.t}): node 29691 forced to change state to {self.state_str_dict[new_state]} from {self.state_str_dict[orig_state]}")
+                self.state_counts[new_state][self.t] += 1
+                self.state_counts[orig_state][self.t] -= 1
+                self.state_increments[new_state][self.t] += 1
+                self.memberships[new_state][node_number] = 1
+                self.memberships[orig_state][node_number] = 0
+                return
+
+        raise ValueError(f"Unexpected state: {self.state_str_dict[orig_state]}")
