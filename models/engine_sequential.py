@@ -52,6 +52,9 @@ class SequentialEngine(SeirsPlusLikeEngine):
         for state in self.states:
             self.state_counts[state][self.t] = self.state_counts[state][self.t-1]
             self.state_increments[state][self.t] = 0
+            
+        self.num_tests[self.t] = 0
+        self.num_qtests[self.t] = 0
 
         self.durations += 1
 
@@ -86,15 +89,16 @@ class SequentialEngine(SeirsPlusLikeEngine):
         # print(propensities[0])
         # print(propensities.sum(axis=1q))
 
+        if not np.allclose(propensities.sum(axis=1), 1.0):
+            print(propensities.sum(axis=1))
+            print(np.logical_not(np.isclose(propensities.sum(axis=1), 1.0)).nonzero())
+            index = np.logical_not(np.isclose(
+                propensities.sum(axis=1), 1.0)).nonzero()[0][0]
+            print(propensities[index])
+            print(propensities[index].nonzero())
+            print(self.memberships[:, index].nonzero())
+            exit()
         assert np.allclose(propensities.sum(axis=1), 1.0)
-        # print(propensities.sum(axis=1))
-        # print(np.logical_not(np.isclose(propensities.sum(axis=1), 1.0)).nonzero())
-        # index = np.logical_not(np.isclose(
-        #     propensities.sum(axis=1), 1.0)).nonzero()[0][0]
-        # print(propensities[index])
-        # print(propensities[index].nonzero())
-        # print(self.memberships[:, index].nonzero())
-        # exit()
 
         # add column with pst P[X->X]
         # what is the fastest way to add a column?
@@ -132,6 +136,16 @@ class SequentialEngine(SeirsPlusLikeEngine):
                 print(f"ACTION LOG ({self.t}): node {node} changing state to {self.state_str_dict[e]}")
 
             self.states_durations[s].append(self.durations[node])
+            if e in (
+                    STATES.I_ds,
+                    STATES.E_d,
+                    STATES.I_da,
+                    STATES.I_dn,
+                    STATES.J_ds,
+                    STATES.J_dn
+            ):
+                self.num_tests[self.t] += 1 
+
             self.durations[node] = 0
             self.delta[s, node, :] = -1
             self.delta[e, node, :] = 1
@@ -254,6 +268,8 @@ class SequentialEngine(SeirsPlusLikeEngine):
         for state in self.states:
             self.state_counts[state].bloat(100)
             self.state_increments[state].bloat(100)
+        self.num_tests.bloat(100)
+        self.num_qtests.bloat(100)
         self.N.bloat(100)
         # self.states_history.bloat(100)
         self.meaneprobs.bloat(100)
@@ -266,6 +282,9 @@ class SequentialEngine(SeirsPlusLikeEngine):
     def finalize_data_series(self):
         self.tseries.finalize(self.tidx)
         self.history.finalize(self.tidx)
+        self.num_tests.finalize(self.t)
+        self.num_qtests.finalize(self.t)
+
         for state in self.states:
             self.state_counts[state].finalize(self.t)
             self.state_increments[state].finalize(self.t)
@@ -297,7 +316,11 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.state_str_dict[x]: count
             for x, count in self.state_counts.items()
         }
-        columns = {**col_states, **col_increments}
+        col_tests = {
+            "tests": self.num_tests,
+            "quarantine_tests": self.num_qtests
+        }
+        columns = {**col_states, **col_increments, **col_tests}
         columns["day"] = np.floor(index).astype(int)
         #        columns["mean_p_infection"] = self.meaneprobs
         #        columns["median_p_infection"] = self.medianeprobs
@@ -327,6 +350,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
         # print(df)
 
     def detected_node(self, node_number):
+        # self.num_qtests[self.t] += 1
         orig_state = self.memberships[:, node_number].nonzero()[0][0]
 
         if orig_state in (STATES.E_d, STATES.I_da, STATES.I_dn, STATES.I_ds, STATES.J_dn, STATES.J_ds):

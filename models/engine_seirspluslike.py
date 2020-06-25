@@ -67,6 +67,10 @@ class SeirsPlusLikeEngine(BaseEngine):
             for state in self.states
         }
 
+        self.num_tests = TimeSeries(self.expected_num_days, dtype=int)
+        self.num_qtests = TimeSeries(self.expected_num_days, dtype=int)
+        
+
         self.state_increments = {
             state: TimeSeries(self.expected_num_days, dtype=int)
             for state in self.states

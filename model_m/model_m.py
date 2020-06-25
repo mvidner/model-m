@@ -90,7 +90,7 @@ class ModelM():
         self.model.set_periodic_update(self.policy_object)
         self.ready = True
 
-    def duplicate(self, random_seed=None):
+    def duplicate(self, random_seed=None, hyperparams=None):
 #        pritn("DBD duplicate")
 
         if self.ready: 
@@ -98,7 +98,7 @@ class ModelM():
         twin = ModelM(
             self.start_graph,
             self.policy,
-            self.model_params,
+            self.model_params if hyperparams is None else dict(self.model_params, **hyperparams),
             self.scenario,
             random_seed=self.random_seed if random_seed is None else random_seed,
             model_type=self.model_type
@@ -194,16 +194,22 @@ def load_graph(cf: ConfigFile):
     nodes = cf.section_as_dict("GRAPH").get("nodes", "nodes.csv")
     edges = cf.section_as_dict("GRAPH").get("edges", "edges.csv")
     layers = cf.section_as_dict("GRAPH").get("layers", "etypes.csv")
+    externals = cf.section_as_dict("GRAPH").get("externals", "e.csv")
 
     if graph_name == "csv":
-        return CSVGraphGenerator(path_to_nodes=nodes, path_to_edges=edges, path_to_layers=layers)
+        return CSVGraphGenerator(path_to_nodes=nodes, 
+                                 path_to_external=externals,
+                                 path_to_edges=edges, 
+                                 path_to_layers=layers)
 
 #    if graph_name == "csv_light":
 #        return LightGraph(path_to_nodes=nodes, path_to_edges=edges, path_to_layers=layers)
 
     if graph_name == "light":
         g = LightGraph()
-        g.read_csv(path_to_nodes=nodes, path_to_edges=edges,
+        g.read_csv(path_to_nodes=nodes, 
+                   path_to_external=externals,
+                   path_to_edges=edges,
                    path_to_layers=layers)
         return g
 

@@ -261,6 +261,8 @@ class QuarantinePolicy(Policy):
         if not len(released) > 0:
             return np.array([]), np.array([])
 
+        self.model.num_qtests[self.model.t] += len(released)
+
         # recovered release, other stay
         # todo first and second testing
         node_is_R = is_R(released, self.model.memberships) == 1
