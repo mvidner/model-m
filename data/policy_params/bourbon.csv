@@ -29,4 +29,5 @@ id,name,0,15,16,18,55,62,76,90
 27,shops_workers_to_clients,1,1,1,0.2,0.3,0.5,0.5,0.6
 28,pubs_customers,1,1,0.5,0,0,0,0.1,1
 29,pubs_workers_to_clients,1,1,0.5,0,0,0,0.1,1
-30,superspreader,0,0,0,0,0,0,0,0
+30,others,1,0.5,0.3,0.2,0.3,0.4,0.5,0.8
+31,superspreader,0,0,0,0,0,0,0,0
