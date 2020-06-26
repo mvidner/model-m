@@ -40,7 +40,7 @@ class LightGraph:
         nodes = pd.read_csv(path_to_nodes, **csv_hacking)
         edges = pd.read_csv(path_to_edges, **csv_hacking)
         layers = pd.read_csv(path_to_layers, **csv_hacking)
-        external_nodes = pd.read_csv("../data/newtown/e.csv", **csv_hacking)
+        external_nodes = pd.read_csv(path_to_external, **csv_hacking)
 
         # layer names, ids and weights go to graph
         layers_to_add = layers.to_dict('list')

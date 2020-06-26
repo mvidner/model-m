@@ -31,6 +31,15 @@ class STATES():
     D_d = 9
     D_u = 10
 
+    detected = {
+        I_ds,
+        E_d,
+        I_da,
+        I_dn,
+        J_ds,
+        J_dn
+    }
+
     pass
 
 
@@ -344,49 +353,41 @@ def calc_propensities(model, use_dict=True):
     #    print("S->S", propensity_S_to_S[0])
 
     # state E
-    propensity_E_to_E_d = (model.memberships[STATES.E] *
-                           model.theta_E * model.psi_E)
-    propensity_E_to_I_n = (model.memberships[STATES.E] * (
-        1.0 - propensity_E_to_E_d) * model.sigma * model.asymptomatic_rate)
-    propensity_E_to_I_a = (model.memberships[STATES.E] *
-                           (1.0 - propensity_E_to_E_d) * model.sigma *
-                           (1.0 - model.asymptomatic_rate))
+    propensity_E_to_E_d = model.memberships[STATES.E] * model.theta_E * model.psi_E
+    propensity_E_to_I_n = model.memberships[STATES.E] * model.sigma * model.asymptomatic_rate
+    propensity_E_to_I_a = model.memberships[STATES.E] * model.sigma * (1.0 - model.asymptomatic_rate)
     propensity_E_to_E = model.memberships[STATES.E] * (1.0 - propensity_E_to_E_d -
                                                        propensity_E_to_I_n - propensity_E_to_I_a)
 
     # state I_n
     propensity_I_n_to_J_n = model.memberships[STATES.I_n] * model.delta_n
-    propensity_I_n_to_I_dn = (
-        model.memberships[STATES.I_n] * (1.0 - model.delta_n) * model.theta_In * model.psi_In)
+    propensity_I_n_to_I_dn = model.memberships[STATES.I_n]  * model.theta_In * model.psi_In
     propensity_I_n_to_I_n = model.memberships[STATES.I_n] * (
         1.0 - propensity_I_n_to_J_n - propensity_I_n_to_I_dn)
 
     # state I_a
-    propensity_I_a_to_I_da = (
-        model.memberships[STATES.I_a] * model.theta_Ia * model.psi_Ia)
-    propensity_I_a_to_I_s = (
-        model.memberships[STATES.I_a] * (1.0 - propensity_I_a_to_I_da) * model.symptoms_manifest_rate)
+    propensity_I_a_to_I_da = model.memberships[STATES.I_a] * model.theta_Ia * model.psi_Ia
+    propensity_I_a_to_I_s =  model.memberships[STATES.I_a] * model.symptoms_manifest_rate
     propensity_I_a_to_I_a = model.memberships[STATES.I_a] * (
         1.0 - propensity_I_a_to_I_da - propensity_I_a_to_I_s)
 
     # state I_s
     propensity_I_s_to_J_s = (model.memberships[STATES.I_s] * model.delta_s)
-    propensity_I_s_to_D_u = (model.memberships[STATES.I_s] * model.mu)
-    not_R_or_D = 1.0 - propensity_I_s_to_J_s - propensity_I_s_to_D_u
-    propensity_I_s_to_I_ds = (
-        model.memberships[STATES.I_s] * not_R_or_D * model.theta_Is * model.psi_Is)
+    propensity_I_s_to_D_u = 0.0 * model.memberships[STATES.I_s] 
+    #    not_R_or_D = 1.0 - propensity_I_s_to_J_s - propensity_I_s_to_D_u
+    propensity_I_s_to_I_ds = model.memberships[STATES.I_s]  * model.theta_Is * model.psi_Is
     propensity_I_s_to_I_s = model.memberships[STATES.I_s] * (1.0 - propensity_I_s_to_J_s -
                                                              propensity_I_s_to_D_u - propensity_I_s_to_I_ds)
 
     # state I_dn
     propensity_I_dn_to_J_dn = model.memberships[STATES.I_dn] * model.delta_n
-    propensity_I_dn_to_D_d = model.memberships[STATES.I_dn] * model.mu
+    propensity_I_dn_to_D_d = 0.0 * model.memberships[STATES.I_dn] 
     propensity_I_dn_to_I_dn = model.memberships[STATES.I_dn] * (
         1.0 - propensity_I_dn_to_J_dn - propensity_I_dn_to_D_d)
 
     # state I_ds
     propensity_I_ds_to_J_ds = model.memberships[STATES.I_ds] * model.delta_s
-    propensity_I_ds_to_D_d = model.memberships[STATES.I_ds] * model.mu
+    propensity_I_ds_to_D_d = 0.0 * model.memberships[STATES.I_ds] 
     propensity_I_ds_to_I_ds = model.memberships[STATES.I_ds] * (
         1.0 - propensity_I_ds_to_J_ds - propensity_I_ds_to_D_d)
 
@@ -408,16 +409,15 @@ def calc_propensities(model, use_dict=True):
     # state J_s
     propensity_J_s_to_R_u = model.memberships[STATES.J_s] * model.gamma_Is
     propensity_J_s_to_D_u = model.memberships[STATES.J_s] * model.mu
-    not_R_or_D = 1.0 - propensity_J_s_to_R_u - propensity_J_s_to_D_u
+    #    not_R_or_D = 1.0 - propensity_J_s_to_R_u - propensity_J_s_to_D_u
     propensity_J_s_to_J_ds = (
-        model.memberships[STATES.J_s] * not_R_or_D * model.theta_Is * model.psi_Is)
+        model.memberships[STATES.J_s]  * model.theta_Is * model.psi_Is)
     propensity_J_s_to_J_s = model.memberships[STATES.J_s] * (1.0 - propensity_J_s_to_R_u -
                                                              propensity_J_s_to_D_u - propensity_J_s_to_J_ds)
 
     # state J_n
     propensity_J_n_to_R_u = model.memberships[STATES.J_n] * model.gamma_In
-    propensity_J_n_to_J_dn = model.memberships[STATES.J_n] * (
-        1.0 - propensity_J_n_to_R_u) * model.theta_In * model.psi_In
+    propensity_J_n_to_J_dn = model.memberships[STATES.J_n] * model.theta_In * model.psi_In
     propensity_J_n_to_J_n = model.memberships[STATES.J_n] * \
         (1.0 - propensity_J_n_to_R_u - propensity_J_n_to_J_dn)
 
