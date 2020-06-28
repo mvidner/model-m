@@ -41,8 +41,8 @@ def evaluate_model(model, setup):
         f.write(f"# RANDOM_SEED = {my_model.model.random_seed}\n")
         my_model.save_history(f)
 
-#    with open(f"durations{suffix}.csv", "w") as f:
-#        my_model.model.save_durations(f)
+    with open(f"durations{suffix}.csv", "w") as f:
+        my_model.model.save_durations(f)
 
     return idx
 #    del my_model 
