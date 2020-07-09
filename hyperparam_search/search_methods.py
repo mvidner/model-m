@@ -8,7 +8,7 @@ from multiprocessing import Pool
 
 from cma.optimization_tools import EvalParallel2
 from sklearn.model_selection import ParameterGrid
-
+import gc
 
 def _run_model_with_hyperparams(model_func, hyperparams, output_file=None):
     print(f"Running with hyperparams: {hyperparams}", flush=True)
@@ -38,7 +38,7 @@ def evaluate_with_params(param_array: np.ndarray, model_func, param_keys, param_
     assert len(param_array) == len(param_keys)
 
     hyperparam_dict = _compile_individual(param_array, param_keys=param_keys, param_ranges=param_ranges)
-    model_res = model_func(hyperparam_dict)["result"]
+    model_res = model_func(hyperparams=hyperparam_dict)["result"]
 
     return np.mean(model_res)
 
@@ -61,6 +61,7 @@ def _log_inidividual(output_file, x, fitness, gen):
 
 
 def _inverse_sigmoid(x):
+    x = np.clip(x, 0+np.finfo(np.float32).eps, 1-np.finfo(np.float32).eps)
     return np.log(x/(1-x))
 
 
@@ -130,6 +131,7 @@ def cma_es(model_func, hyperparam_config: dict, return_only_best=False, output_f
                 _log_inidividual(output_file, list(ind), f, gen_n)
 
             gen_n += 1
+            gc.collect()
 
     res = es.result
     x = _compile_individual(res[0], initial_kwargs.keys(), param_ranges=param_ranges)
