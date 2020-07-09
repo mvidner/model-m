@@ -48,11 +48,13 @@ def run_hyperparam_search(model_config: str,
     cf.load(model_config)
 
     graph = load_graph(cf)
+    base_model = load_model_from_config(cf, use_policy, model_random_seed, preloaded_graph=graph)
 
     # wrapper for running one model same time with different seed
     model_load_func = partial(_run_models_from_config,
                               cf,
                               preloaded_graph=graph, 
+                              preloaded_model=base_model, 
                               model_random_seed=model_random_seed,
                               run_n_times=run_n_times,
                               use_policy=use_policy,
@@ -71,6 +73,7 @@ def run_single_model(model, T, print_interval=10, verbose=False):
 
 def _run_models_from_config(cf: ConfigFile,
                             preloaded_graph: None, 
+                            preloaded_model: None,
                             hyperparams: Dict = None,
                             model_random_seed: int = 42,
                             run_n_times: int = 1,
@@ -90,16 +93,18 @@ def _run_models_from_config(cf: ConfigFile,
                         })
         del hyperparams["theta"]
 
-    if "A" in hyperparams:
-        hyperparams["beta_A"] = hyperparams["beta"]*hyperparams["A"]
-        del hyperparams["A"] 
-    else:
-        hyperparams["beta_A"] = 0.5 * hyperparams["beta"]
+    if "a_reduction" in hyperparams:
+        hyperparams["beta_A"] = hyperparams["beta"]*hyperparams["a_reduction"]
+        del hyperparams["a_reduction"] 
 
     hyperparams["beta_in_family"] = hyperparams["beta"] 
-    hyperparams["beta_A_in_family"] = hyperparams["beta_A"] 
+    if "beta_A" in hyperparams:
+        hyperparams["beta_A_in_family"] = hyperparams["beta_A"] 
 
-    model = load_model_from_config(cf, use_policy, model_random_seed, preloaded_graph=preloaded_graph, hyperparams=hyperparams)
+    if preloaded_model is None:
+        model = load_model_from_config(cf, use_policy, model_random_seed, preloaded_graph=preloaded_graph, hyperparams=hyperparams)
+    else:
+        model = preloaded_model.duplicate(model_random_seed, hyperparams)
     
 
     # for different seeds
