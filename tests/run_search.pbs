@@ -1,0 +1,102 @@
+#  pbs template
+#  to be run with qsub -v FILE=name_of_ini_file, ID=whatever_label
+source .bashrc
+conda activate covid
+cd /storage/home/vidnerova/covid/model-m/tests/
+export PYTHONPATH=$PYTHONPATH:/storage/home/vidnerova/covid/model-m/models:/storage/home/vidnerova/covid/model-m/graphs:/storage/home/vidnerova/covid/model-m/utils:/storage/home/vidnerova/covid/model-m/policies
+
+#python run_search.py -r --n_jobs 40 --first_n_zeros 0 --run_n_times 32 --data_column 8 --return_func r2 --out_dir fit_cr_22_sour_r2 --log_csv_file --fit_data ../data/fit_me.csv sour.ini fit_me.json > fit_cr2.log
+
+#python run_search.py -r --n_jobs 100 --first_n_zeros 0 --run_n_times 30 --data_column 8 --return_func r2 --out_dir fit_cr_gs_r2_23 --log_csv_file --fit_data ../data/fit_me.csv plain_vanilla.ini fit_gs.json > fit_cr_gs.log
+
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_30.8 --log_csv_file #--fit_data ../data/fit_me.csv fit2.ini fit_cmaes1.json > fit_cr_cmaes2.log &
+#pidv=$!
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_30.9 --log_csv_file --fit_data ../data/fit_me.csv fit.ini fit_cmaes1.json > fit_cr_cmaes2.log &
+#pidv=$!
+
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs30.2 --log_csv_file --fit_data ../data/fit_me.csv fit2.ini fit_gs.json > fit_cr_gs.log & 
+#pids=$!
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs30.3 --log_csv_file --fit_data ../data/fit_me.csv fit.ini fit_gs.json > fit_cr_gs.log & 
+#pids=$!
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs30.4 --log_csv_file --fit_data ../data/fit_me.csv new_fit.ini small_gs.json > fit_cr_gs.log & 
+#pids=$!
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs30.5 --log_csv_file --fit_data ../data/fit_me.csv new_fit.ini small_gs.json > fit_cr_gs.log & 
+#pids=$!
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs30.6 --log_csv_file --fit_data ../data/fit_me.csv new_fit.ini small_gs.json > fit_cr_gs.log & 
+#pids=$!
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs30.7 --log_csv_file --fit_data ../data/fit_me.csv new_fit.ini small_gs.json > fit_cr_gs.log & 
+#pids=$!
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs30.8 --log_csv_file --fit_data ../data/fit_me.csv fit_sour.ini fit_gs.json > fit_cr_gs.log & 
+#pids=$!
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs31.1 --log_csv_file --fit_data ../data/fit_me3.csv fit_sour.ini small_gs.json > fit_cr_gs.log &
+ 
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs31.1a --log_csv_file --fit_data ../data/fit_me3.csv fit_sour.ini small_gs2.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs31.1b --log_csv_file --fit_data ../data/fit_me3.csv fit_sour.ini gs31.1b.json > fit_cr_gs.log & 
+
+
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs31.2 --log_csv_file --fit_data ../data/fit_me3.csv fit_sour.ini small_gs2.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs31.3 --log_csv_file --fit_data ../data/fit_me3.csv fit_vanilla.ini small_gs2.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs31.4 --log_csv_file --fit_data ../data/fit_me3.csv fit_sour2.ini small_gs2.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs31.5 --log_csv_file --fit_data ../data/fit_me3.csv fit_vanilla2.ini small_gs2.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs31.5a --log_csv_file --fit_data ../data/fit_me3.csv fit_vanilla2.ini small_gs3.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs31.5b --log_csv_file --fit_data ../data/fit_me3.csv fit_vanilla2.ini gs31.5b.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs31.6 --log_csv_file --fit_data ../data/fit_me3.csv fit_bourbon.ini bourbon31.6a.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs31.6a --log_csv_file --fit_data ../data/fit_me3.csv fit_bourbon.ini bourbon31.6a.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_cm31.6a --log_csv_file --fit_data ../data/fit_me3.csv fit_bourbon.ini cm_bourbon31.6a.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_cm31.6b --log_csv_file --fit_data ../data/fit_me3.csv fit_bourbon.ini cm_bourbon31.6b.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_cm31.6c --log_csv_file --fit_data ../data/fit_me3.csv fit_bourbon2.ini cm_bourbon31.6b.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_cm31.6d --log_csv_file --fit_data ../data/fit_me3.csv fit_baseline.ini cm_bourbon31.6d.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_cm31.6e --log_csv_file --fit_data ../data/fit_me3.csv fit_baseline.ini cm_bourbon31.6e.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_cm31.6f --log_csv_file --fit_data ../data/fit_me3.csv fit_baseline.ini cm_bourbon31.6d.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_cm31.6h --log_csv_file --fit_data ../data/fit_me3.csv fit_baseline.ini cm_bourbon31.6h.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs1.6 --log_csv_file --fit_data ../data/fit_me3.csv fit_baseline.ini gs1.6.json > fit_cr_gs.log & 
+
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs31.7 --log_csv_file --fit_data ../data/fit_me3.csv fit_sour_2.ini small_gs.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_cm2.6b --log_csv_file --fit_data ../data/fit_me3.csv fit_baseline.ini cm_2.6b.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_cm3.6 --log_csv_file --fit_data ../data/fit_me3.csv fit_baseline.ini cm_3.6.json > fit_cr_gs.log & 
+
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs4.6 --log_csv_file --fit_data ../data/fit_me3.csv fit_paper.ini gs4.6.json > fit_cr_gs.log & 
+
+#python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_gs18.6 --log_csv_file --fit_data ../data/fit_me3.csv fit_paper.ini gs.json > fit_cr_gs.log & 
+
+python run_search.py -r --n_jobs 30 --first_n_zeros 0 --run_n_times 100 --data_column 8 --return_func r2 --out_dir fit_cmaes_0708 --log_csv_file --fit_data ../data/fit_me3.csv template_filled.ini cmaes.json > fit_0708.log & 
+
+
+pids=$!
+
+
+#wait $pidv
+wait $pids
+
+echo "finished"

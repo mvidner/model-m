@@ -118,6 +118,7 @@ class LightGraph:
         forward_edge = True
         backward_edge = False
 
+
         # fill data and get indicies
         for i, row in enumerate(edges.itertuples()):
             self.e_types[i] = row.layer
@@ -166,6 +167,8 @@ class LightGraph:
 
             if i % 1000 == 0:
                 print("\nEdges loaded", i)
+                
+        self.e_intensities *= 5.0 
 
         # create matrix (A[i,j] is an index of edge (i,j) in array of edges)
         print("\nConverting lil_matrix A to csr ...", end="")
@@ -204,6 +207,8 @@ class LightGraph:
                 self.edges_directions[i_key])
         print("ok")
         print("LightGraph is ready to use.")
+
+        print("Max intensity ", self.e_intensities.max())
 
     @property
     def number_of_nodes(self):
