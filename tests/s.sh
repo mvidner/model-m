@@ -19,7 +19,7 @@
 
 #qsub -N test_multi -q qprod1234 -l "select=1:ncpus=44" -v NAME="baseline1115",NJ=40 multirun.sh
 ZADANI=$1
-qsub -N $ZADANI -q qprod5 -l "select=1:ncpus=125" -v NAME="$ZADANI",NJ=80 multirun.sh
+qsub -N $ZADANI -q qprod5 -l "select=1:ncpus=125" -v NAME="$ZADANI",NJ=100 multirun.sh
 #qsub -N $ZADANI -q qprod1234 -l "select=1:ncpus=44" -v NAME="$ZADANI",NJ=40 multirun.sh
 #qsub -N test_multi -q qprod1234 -l "select=1:ncpus=44" -v NAME="b1542",NJ=40 multirun.sh
 #qsub -N test_multi -q qprod1234 -l "select=1:ncpus=44" -v NAME="b1543",NJ=40 multirun.sh

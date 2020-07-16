@@ -101,8 +101,8 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
             f.write(f"# RANDOM_SEED = {model_random_seed}\n")
             model.save_history(f)
 
-        #with open(f"durations{suffix}.csv", "w") as f:
-        #    model.model.save_durations(f)
+        with open(f"durations{suffix}.csv", "w") as f:
+            model.model.save_durations(f)
 
         save_nodes = cf.section_as_dict("TASK").get(
             "save_node_states", "No") == "Yes"

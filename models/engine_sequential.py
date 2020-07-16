@@ -256,7 +256,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
 
         # finalize durations
         for s in self.states:
-            durations = self.durations[self.memberships[s]]
+            durations = self.durations[self.memberships[s].flatten() == 1]
             self.states_durations[s].extend(list(durations))
 
         if print_interval >= 0:
@@ -370,6 +370,8 @@ class SequentialEngine(SeirsPlusLikeEngine):
                 new_state = t[1]
                 if 29691 == node_number:
                     print(f"ACTION LOG({self.t}): node 29691 forced to change state to {self.state_str_dict[new_state]} from {self.state_str_dict[orig_state]}")
+                self.states_durations[orig_state].append(self.durations[node_number])
+                self.durations[node_number] = 0 
                 self.state_counts[new_state][self.t] += 1
                 self.state_counts[orig_state][self.t] -= 1
                 self.state_increments[new_state][self.t] += 1

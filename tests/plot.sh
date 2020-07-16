@@ -1,3 +1,3 @@
-python plot_cmp.py haklnv$1 haklnv$1
-#python plot_t.py smidovina_fit10 smidovina_fit10
-#python plot_test.py r1313 $NAMES
+unzip history_$1.zip 
+python plot_cmp.py $1 $1
+rm history_$1_*.csv durations_$1_*.csv

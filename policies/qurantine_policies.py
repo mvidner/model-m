@@ -92,7 +92,8 @@ QUARANTINE_COEFS = {
     27: 0,  # shops_workers_to_clients
     28: 0,  # pubs_customers
     29: 0,  # pubs_workers_to_clients
-    30: 0,  # superspreader
+    30: 0,  # other
+    31: 0  # superspreader
 }
 
 WEE_COLD_COEFS = {
@@ -126,7 +127,8 @@ WEE_COLD_COEFS = {
     27: 0,  # shops_workers_to_clients
     28: 0,  # pubs_customers
     29: 0,  # pubs_workers_to_clients
-    30: 0,  # superspreader
+    30: 0,  # other,1
+    31: 0  # superspreader
 }
 
 
@@ -161,7 +163,8 @@ RISK_FOR_LAYERS = {
     27: 0,  # shops_workers_to_clients
     28: 0,  # pubs_customers
     29: 0,  # pubs_workers_to_clients
-    30: 0,  # superspreader
+    30: 0,  # other
+    31: 0  # superspreader
 }
 
 RISK_FOR_LAYERS_FOR_SIMPLE = {
@@ -195,7 +198,8 @@ RISK_FOR_LAYERS_FOR_SIMPLE = {
     27: 0,  # shops_workers_to_clients
     28: 0,  # pubs_customers
     29: 0,  # pubs_workers_to_clients
-    30: 0,  # superspreader
+    30: 0,  # other
+    31: 0  # superspreader
 }
 
 
