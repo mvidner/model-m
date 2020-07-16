@@ -23,9 +23,18 @@ for variant in variants_list:
         for i in range(0, 61)
     ]
 
-variant_dict["CR"] = [
+variant_dict["olomouc"] = [
+       f"../data/fit_me_o.csv"
+]
+
+variant_dict["rakovnik"] = [
+       f"../data/fit_me_r.csv"
+]
+
+variant_dict["cr"] = [
        f"../data/fit_me3.csv"
 ]
+
 
 #variant_dict["gold"] = [ "../data/litovel_plot.csv" ]
 
@@ -34,4 +43,4 @@ variant_dict["CR"] = [
 #                       group_func="max",  save_path=f"{filename}_all_ill.png", max_days=150)
 
 plot_mutliple_policies(variant_dict, group_days=None,
-                       group_func="max", value="I_d", save_path=f"{filename}.png", max_days=300)
+                       group_func="max", value="I_d", save_path=f"{filename}.png", max_days=100)
