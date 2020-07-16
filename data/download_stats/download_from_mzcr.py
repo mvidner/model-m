@@ -18,7 +18,7 @@ def fix_column_name(name_tuple):
 @click.argument('out_path', default="okres-nakazeni-vyleceni-umrti.csv")
 @click.option('--path', default='https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/kraj-okres-nakazeni-vyleceni-umrti.csv')
 #@click.option('--tests_path', default='https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/testy.csv')
-@click.option('--round_func', default='ceil')
+@click.option('--round_func', default='none')
 @click.option('--scale', default=56102)
 def run(out_path, path, round_func, scale):
     codes = pd.read_csv('kody.csv', delimiter=';')
@@ -46,7 +46,7 @@ def run(out_path, path, round_func, scale):
     dead = 'kumulativni_pocet_umrti'
 
     i_d = covid_stats[infected] - covid_stats[cured] - covid_stats[dead]
-    covid_stats.insert(2, 'kumulativni_pocet_I_d', i_d)
+    covid_stats.insert(2, 'pocet_I_d', i_d)
     covid_stats.drop(columns=['kumulativni_pocet_nakazenych'], inplace=True)
 
     # Number of tests
@@ -59,6 +59,8 @@ def run(out_path, path, round_func, scale):
         round_func = np.ceil
     elif round_func == 'floor':
         round_func = np.floor
+    elif round_func == 'none':
+        round_func = lambda x: x 
     else:
         raise ValueError("Invalid round function string.")
 
@@ -70,7 +72,7 @@ def run(out_path, path, round_func, scale):
     columns_to_scale = ['kumulativni_pocet_I_d', 'kumulativni_pocet_vylecenych', 'kumulativni_pocet_umrti']
                         #'kumulativni_pocet_testu']  # TODO testy?
     for column in columns_to_scale:
-        covid_stats[f"{column}_prepocitano"] = round_func(covid_stats[column] / population_stats * scale).astype(int)
+        covid_stats[f"{column}_prepocitano"] = round_func(covid_stats[column] / population_stats * scale).astype(float)
 
     # Move "okres" to columns
     pivot = covid_stats.pivot(index="datum", columns="okres",
@@ -78,6 +80,9 @@ def run(out_path, path, round_func, scale):
 
     result = pd.DataFrame(pivot.to_records())
     result.columns = [fix_column_name(c) for c in result.columns]
+
+    #    selected_columns = ["datum"] + [c for c in result.columns if "Rakovník" in c] 
+    #    result = result[selected_columns] 
 
     result.to_csv(out_path, index=False)
 
