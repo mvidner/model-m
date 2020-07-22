@@ -47,7 +47,7 @@ class LightGraph:
 
         self.layer_ids = layers_to_add['id']
         self.layer_name = layers_to_add['name']
-        self.layer_weights = np.array(layers_to_add['weight'])
+        self.layer_weights = np.array(layers_to_add['weight'], dtype=float)
 
         # nodes
         # select categorical columns
@@ -335,10 +335,15 @@ class LightGraph:
         return self.e_types[e]
 
     def set_layer_weights(self, weights):
-        print("Updating layer weights", weights)
+        print("DBG Updating layer weights", weights)
+        print(weights, type(weights))
+        print(self.layer_weights, type(self.layer_weights),
+              self.layer_weights.dtype)
         for i, w in enumerate(weights):
+            print("DBG ", i, " --> ", w, end=" ")
             self.layer_weights[i] = w
-        print(self.layer_weights)
+            print(self.layer_weights[i])
+        print("DBG new weigths", self.layer_weights)
 
 
     def close_layers(self, list_of_layers, coefs=None):
