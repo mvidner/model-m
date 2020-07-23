@@ -137,12 +137,13 @@ class ModelM():
             self.model.set_periodic_update(self.policy_object)
 
         self.model.inicialization()
+        if random_seed:
+            self.model.set_seed(random_seed)
+            print(f"GDB changed to {self.model.random_seed}")
+
         self.model.setup_series_and_time_keeping()
         self.model.states_and_counts_init()
 
-        if random_seed:
-            self.model.set_seed(random_seed)
-            print(f"RS changed to {random_seed}")
 
     def get_results(self,
                     states):
