@@ -186,6 +186,7 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.print(verbose)
 
         for self.t in range(1, T+1):
+            print("DBG graph.layer_weights", self.graph.layer_weights)
             #            os.system("free -h")
             if __debug__ and print_interval >= 0 and verbose:
                 print(flush=True)
@@ -224,21 +225,21 @@ class SequentialEngine(SeirsPlusLikeEngine):
             numI = sum([self.current_state_count(s)
                         for s in self.unstable_states
                         ])
-            if True:
-                GIRL = 29691
-                # infect the girl 29691
-                if self.graph.layer_weights[30] == 1.0:
-                    # move node 29691 to E
-                    orig_state = self.memberships[:, GIRL].nonzero()[0][0]
-                    if orig_state == STATES.E:
-                        print(f"ACTION LOG(92): node 29691 enters the party already exposed")
-                    else:
-                        print(f"ACTION LOG(92): node 29691 feeded by infection")
-                        self.state_counts[STATES.E][self.t] += 1
-                        self.state_counts[orig_state][self.t] -= 1
-                        self.state_increments[STATES.E][self.t] += 1
-                        self.memberships[STATES.E][GIRL] = 1
-                        self.memberships[orig_state][GIRL] = 0
+            # if True:
+            #     GIRL = 29691
+            #     # infect the girl 29691
+            #     if self.graph.layer_weights[30] == 1.0:
+            #         # move node 29691 to E
+            #         orig_state = self.memberships[:, GIRL].nonzero()[0][0]
+            #         if orig_state == STATES.E:
+            #             print(f"ACTION LOG(92): node 29691 enters the party already exposed")
+            #         else:
+            #             print(f"ACTION LOG(92): node 29691 feeded by infection")
+            #             self.state_counts[STATES.E][self.t] += 1
+            #             self.state_counts[orig_state][self.t] -= 1
+            #             self.state_increments[STATES.E][self.t] += 1
+            #             self.memberships[STATES.E][GIRL] = 1
+            #             self.memberships[orig_state][GIRL] = 0
 
             #if not numI > 0:
             #    break
