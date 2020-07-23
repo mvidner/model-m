@@ -111,16 +111,21 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
 
 
 @click.command()
-@click.option('--set-random-seed/--no-random-seed', ' /-r', default=True)
+@click.option('--const-random-seed/--no-random-seed', ' /-r', default=True)
+@click.option('--user_random_seed', '-R', default=None)
 @click.option('--policy', '-p', default=None)
 @click.option('--print_interval',  default=1)
 @click.option('--n_repeat',  default=1)
 @click.argument('filename', default="example.ini")
 @click.argument('test_id', default="")
-def test(set_random_seed, policy, print_interval, n_repeat, filename, test_id):
+def test(const_random_seed, user_random_seed, policy, print_interval, n_repeat, filename, test_id):
     """ Run the demo test inside the timeit """
 
-    random_seed = 6321 if set_random_seed else random.randint(0, 429496729)
+    if user_random_seed is not None:
+        random_seed = int(user_random_seed)
+    else:
+        random_seed = 6321 if const_random_seed else random.randint(0, 429496729)
+
     print(f"ACTION LOG: random seed {random_seed}")
     def demo_fce(): return demo(filename, test_id,
                                 model_random_seed=random_seed, use_policy=policy, print_interval=print_interval, n_repeat=n_repeat)

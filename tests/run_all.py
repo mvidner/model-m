@@ -59,9 +59,13 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
     print_interval = cf.section_as_dict("TASK").get("print_interval", 1)
     verbose = cf.section_as_dict("TASK").get("verbose", "Yes") == "Yes"
 
-
+    if not isinstance(model_random_seed, list):
+        model_random_seed = [ model_random_seed + i
+                              for i in range(n_repeat)
+        ]
+    
     # create model
-    model = load_model_from_config(cf, use_policy, model_random_seed, preloaded_graph=graph)
+    model = load_model_from_config(cf, use_policy, model_random_seed[0], preloaded_graph=graph)
     print("model loaded", flush=True) 
 
     # run parameters
@@ -70,12 +74,10 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
         test_id = ""
 
     models = [ model ]  
-    random_seed = model.random_seed
     for i in range(1, n_jobs):
         print(f"{i} copy", flush=True) 
-        models.append(model.duplicate(random_seed=random_seed + i)) 
-    print("DB ORIG", *list(range(random_seed, random_seed+n_jobs)))
-    #random_seeds = [ model_random_seed + i for i in range(0, n_repeat)]
+        models.append(model.duplicate(random_seed=model_random_seed[i])) 
+
 
 
     pool = Pool(processors=n_jobs, evalfunc=evaluate_model, models=models)    
@@ -84,12 +86,10 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
         
     i = n_jobs
     answers = 0
-    rseed = models[-1].random_seed 
     while i < n_repeat:
         idx = pool.getAnswer()
         answers += 1 
-        rseed += 1 
-        pool.putQuerry((idx, rseed, 
+        pool.putQuerry((idx, model_random_seed[i], 
                         f"{test_id}_{i}", cf, (ndays, print_interval, verbose)))
         i += 1
 
@@ -102,17 +102,25 @@ def demo(filename, test_id=None, model_random_seed=42, use_policy=None, print_in
 
 
 @click.command()
-@click.option('--set-random-seed/--no-random-seed', ' /-r', default=True)
+@click.option('--const-random-seed/--no-random-seed', ' /-r', default=True)
+@click.option('--user-random-seeds', '-R', default=None) 
 @click.option('--policy', '-p', default=None)
 @click.option('--print_interval',  default=1)
 @click.option('--n_repeat',  default=1)
 @click.option('--n_jobs', default=1) 
 @click.argument('filename', default="example.ini")
 @click.argument('test_id', default="")
-def test(set_random_seed, policy, print_interval, n_repeat, n_jobs, filename, test_id):
+def test(const_random_seed,  user_random_seeds, policy, print_interval, n_repeat, n_jobs, filename, test_id):
     """ Run the demo test inside the timeit """
 
-    random_seed = 42 if set_random_seed else random.randint(0, 10000)
+    random_seed = 42 if const_random_seed else random.randint(0, 10000)
+    if user_random_seeds is not None:
+        with open(user_random_seeds, "r") as f:
+            random_seeds = [] 
+            for line in f:
+                random_seeds.append(int(line.strip())) 
+            random_seed = random_seeds 
+    
     def demo_fce(): return demo(filename, test_id,
                                 model_random_seed=random_seed, use_policy=policy, print_interval=print_interval, 
                                 n_repeat=n_repeat, n_jobs=n_jobs)
