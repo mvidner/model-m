@@ -137,6 +137,8 @@ class ModelM():
             self.model.set_periodic_update(self.policy_object)
 
         self.model.inicialization()
+
+        ## random_seed has to be setup AFTER inicialization and BEFORE states_and_counts_init !
         if random_seed:
             self.model.set_seed(random_seed)
             print(f"GDB changed to {self.model.random_seed}")
