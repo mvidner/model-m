@@ -37,6 +37,23 @@ def plot_mutliple_policies(policy_dict: Dict[str, List[str]],
                    hue="policy_name", **kwargs)
 
 
+def plot_mutliple_policies_everything(policy_dict: Dict[str, List[str]],
+                                      group_days: int = None, group_func: str = "max", 
+                                      max_days=None, **kwargs):
+    histories = []
+    for policy_key, history_list in policy_dict.items():
+        histories.extend([_history_with_fname(filename,
+                                              group_days=group_days,
+                                              group_func=group_func,
+                                              policy_name=policy_key,
+                                              max_days=max_days)
+                          for filename in history_list])
+
+    history_one_df = pd.concat(histories)
+    _plot_lineplot3(history_one_df, "day", 
+                    hue="policy_name", **kwargs)
+
+
 def plot_state_histogram(filename: str, title: str = "Simulation", states: List[str] = None, save_path: str = None):
     def animate(i):
         fig.suptitle(f"{title} - day {day_labels.iloc[i]}")
@@ -77,6 +94,37 @@ def _plot_lineplot(history_df, x, y, hue=None, save_path=None,  **kwargs):
         sns_plot.get_figure().savefig(save_path)
         
     plt.show()
+
+
+def _plot_lineplot3(history_df, x,  hue=None, save_path=None,  **kwargs):
+
+    title = kwargs["title"] 
+    del kwargs["title"]
+
+    fig, axs = plt.subplots(ncols=3)
+
+    sns_plot = sns.lineplot(x=x, y="I_d", data=history_df,
+                            hue=hue, estimator=np.median, ci='sd', ax=axs[0], **kwargs)
+    # dirty hack (ro)
+    axs[0].set(ylim=(0,50))
+
+    sns_plot2 = sns.lineplot(x=x, y="all_infectious", data=history_df,
+                             hue=hue, estimator=np.median, ci='sd', ax=axs[1], **kwargs)
+    # dirty hack (ro)
+    axs[1].set(ylim=(0,100))
+
+    sns_plot3 = sns.lineplot(x=x, y="tests", data=history_df,
+                             hue=hue, estimator=np.median, ci='sd', ax=axs[2], **kwargs)
+    # dirty hack (ro)
+    axs[2].set(ylim=(0,50))
+
+    fig.suptitle('test title', fontsize=20)
+
+    if save_path is not None:
+        plt.savefig(save_path)
+        
+    plt.show()
+
 
 
 def _history_with_fname(filename, group_days: int = None, group_func: str = "max", policy_name: str = None,
