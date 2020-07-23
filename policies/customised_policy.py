@@ -11,7 +11,8 @@ class CustomPolicy(Policy):
                  model,
                  layer_changes_filename = None,
                  param_changes_filename = None, 
-                 policy_calendar_filename = None
+                 policy_calendar_filename = None,
+                 face_masks_filename = None
              ):
         super().__init__(graph, model)
 
@@ -31,10 +32,29 @@ class CustomPolicy(Policy):
             with open(param_changes_filename, "r") as f:
                 self.param_changes_calendar = json.load(f)
 
+        if face_masks_filename is not None:
+            with open(face_masks_filename, "r") as f:
+                self.face_masks_calendar = json.load(f) 
+        else:
+            self.face_masks_calendar = None
+
         self.policies = {}
 
     def update_layers(self, coefs):
         self.graph.set_layer_weights(coefs)
+
+    def update_beta(self, masks):
+        orig_beta = self.model.init_kwargs["beta"]
+        orig_beta_A = self.model.init_kwargs["beta_A"] 
+        reduction = (1 - 0.9 * masks)**0.81
+        for name, value in ("beta", orig_beta), ("beta_A", orig_beta_A):
+            new_value = value * reduction 
+            if isinstance(new_value, (list)):
+                np_new_value = np.array(new_value).reshape((self.model.num_nodes, 1))
+            else:
+                np_new_value = np.full(fill_value=new_value, shape=(self.model.num_nodes, 1))
+            setattr(self.model, name, np_new_value)
+        print(f"DBG beta: {self.model.beta[0][0]} {self.model.beta_A[0][0]}")   
 
     def run(self):
         print("CustomPolicy", int(self.model.t))
@@ -72,6 +92,10 @@ class CustomPolicy(Policy):
         if self.layer_changes_calendar is not None and today in self.layer_changes_calendar:
             print(f"{today} updating layers")
             self.update_layers(self.layer_changes_calendar[today])
+
+        if self.face_masks_calendar is not None and today in self.face_masks_calendar:
+            print(f"DBG face masks update")
+            self.update_beta(self.face_masks_calendar[today])
 
         # perform registred policies
         for name, policy in self.policies.items():

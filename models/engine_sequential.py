@@ -240,8 +240,8 @@ class SequentialEngine(SeirsPlusLikeEngine):
                         self.memberships[STATES.E][GIRL] = 1
                         self.memberships[orig_state][GIRL] = 0
 
-            if not numI > 0:
-                break
+            #if not numI > 0:
+            #    break
             # gc.collect()
 
         if self.t < T:

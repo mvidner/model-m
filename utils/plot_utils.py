@@ -66,10 +66,13 @@ def plot_state_histogram(filename: str, title: str = "Simulation", states: List[
 
 def _plot_lineplot(history_df, x, y, hue=None, save_path=None,  **kwargs):
 
+    title = kwargs["title"] 
+    del kwargs["title"]
     sns_plot = sns.lineplot(x=x, y=y, data=history_df,
                             hue=hue, estimator=np.median, ci='sd', **kwargs)
     # dirty hack (ro)
     sns_plot.set(ylim=(0,50))
+    sns_plot.set_title(title)
     if save_path is not None:
         sns_plot.get_figure().savefig(save_path)
         
