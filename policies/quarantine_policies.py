@@ -22,6 +22,9 @@ class QuarrantineDepo:
         self.waiting_room = np.zeros(size, dtype=bool)
         self.waiting_for_test = np.zeros(size, dtype="uint8")
 
+    def num_of_prisoners(self):
+        return (self.quarrantine > 0).sum()
+
     def wait(self, nodes):
         #        print("nodes w", nodes)
         if len(nodes) == 0:
@@ -372,7 +375,9 @@ class PetraQuarantinePolicy(QuarantinePolicy):
 
     def run(self):
 
-        print(f"Hello world! This is the petra policy function speaking. {'(STOPPED)' if self.stopped else ''}")
+        print(f"QP: Hello world! This is the petra policy function speaking. {'(STOPPED)' if self.stopped else ''}")
+        print(f"QP: Quarantined nodes {self.depo.num_of_prisoners()} {self.stayhome_depo.num_of_prisoners()}")
+
         if self.model.contact_history is not None:
             print("Contact tracing is ON.")
         else:
@@ -381,7 +386,7 @@ class PetraQuarantinePolicy(QuarantinePolicy):
         if not self.stopped:
             last_day = self.get_last_day()
 
-            # those who became deteected today
+            # those who became detected today
             detected_nodes = [
                 node
                 for node, _, e in last_day
@@ -400,6 +405,7 @@ class PetraQuarantinePolicy(QuarantinePolicy):
             if GIRL in list(contacts):
                 print(f"ACTION LOG({int(self.model.t)}): node {GIRL} has detected family member and stays home.")
 
+                
             self.quarrantine_nodes(detected_nodes)
             self.quarrantine_nodes(list(contacts), depo=self.stayhome_depo)
 
@@ -435,6 +441,13 @@ class PetraQuarantinePolicy(QuarantinePolicy):
             list(really_released)+list(released))
 
         return to_change
+
+class WeakPetraQuarantinePolicy(PetraQuarantinePolicy):
+
+    def __init__(self, graph, model):
+        super().__init__(graph, model)
+        self.riskiness[1] = 0.2 
+        self.riskiness[2] = 0.2
 
 
 class EvaQuarantinePolicy(QuarantinePolicy):
@@ -537,7 +550,9 @@ class HalfEvaQuarantinePolicy(EvaQuarantinePolicy):
 
 
 def is_R(node_ids, memberships):
+
     if memberships is None:
+        raise ValueError("Missing memberships")
         return np.ones(len(node_ids), dtype="bool")
     recovered_states_flags = (memberships[states.R_u] +
                               memberships[states.R_d] +
