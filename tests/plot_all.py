@@ -39,7 +39,7 @@ variant_dict["cr"] = [
 
 #variant_dict["gold"] = [ "../data/litovel_plot.csv" ]
 
-#plt.rcParams["figure.figsize"] = (20, 15)
+plt.rcParams["figure.figsize"] = (30, 15)
 #plot_mutliple_policies(variant_dict, group_days=None, 
 #                       group_func="max",  save_path=f"{filename}_all_ill.png", max_days=150)
 
