@@ -294,6 +294,7 @@ class QuarantinePolicy(Policy):
             relevant_contacts = [
                 (contact[1], _riskiness(contact[2], self.graph, self.riskiness))
                 for contact_list in self.model.contact_history
+
                 for contact in contact_list
                 if contact[0] in detected_nodes
             ]
@@ -378,6 +379,8 @@ class PetraQuarantinePolicy(QuarantinePolicy):
         print(f"QP: Hello world! This is the petra policy function speaking. {'(STOPPED)' if self.stopped else ''}")
         print(f"QP: Quarantined nodes {self.depo.num_of_prisoners()} {self.stayhome_depo.num_of_prisoners()}")
 
+        print(f"QP: nodes in quarantine {self.depo.num_of_prisoners()} {self.stayhome_depo.num_of_prisoners()}") 
+
         if self.model.contact_history is not None:
             print("Contact tracing is ON.")
         else:
@@ -400,8 +403,8 @@ class PetraQuarantinePolicy(QuarantinePolicy):
             else:
                 contacts = []
 
-            print(f"Qurantined nodes: {len(detected_nodes)}")
-            print(f"Quaratinted contacts: {len(contacts)}")
+            print(f"{self.model.t} DBG QP: Qurantined nodes: {len(detected_nodes)}")
+            print(f"{self.model.t} DBG QP: Quaratinted contacts: {len(contacts)}")
             if GIRL in list(contacts):
                 print(f"ACTION LOG({int(self.model.t)}): node {GIRL} has detected family member and stays home.")
 
@@ -468,6 +471,8 @@ class EvaQuarantinePolicy(QuarantinePolicy):
         else:
             print("Warning: Contact tracing is OFF.")
 
+        print(f"QE: Nodes in qurantine {self.depo.num_of_prisoners()}")
+
         last_day = self.get_last_day()
 
         # those who became infected today
@@ -485,8 +490,8 @@ class EvaQuarantinePolicy(QuarantinePolicy):
         else:
             contacts = []
 
-        print(f"Qurantined nodes: {len(detected_nodes)}")
-        print(f"Found contacts: {len(contacts)}")
+        print(f"{self.model.t} DBG QE: Qurantined nodes: {len(detected_nodes)}")
+        print(f"{self.model.t} DBG QE: Found contacts: {len(contacts)}")
         if GIRL in list(contacts):
             print(f"ACTION LOG({int(self.model.t)}): node {GIRL} was marked as contact.")
 
@@ -497,7 +502,7 @@ class EvaQuarantinePolicy(QuarantinePolicy):
         ]
 
         self.depo.wait(list(contacts))
-        print(f"Quaratinted contacts: {len(released_waiting_nodes)}")
+        print(f"{self.model.t} DBG QE: Quaratinted contacts: {len(released_waiting_nodes)}")
         if GIRL in list(released_waiting_nodes):
             print(f"ACTION LOG({int(self.model.t)}): node {GIRL} was quarantined by Eva (because beeing contact).")
 

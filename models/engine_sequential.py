@@ -55,7 +55,9 @@ class SequentialEngine(SeirsPlusLikeEngine):
             
         self.num_tests[self.t] = 0
         self.num_qtests[self.t] = 0
-
+        self.w_times[self.t] = 0
+        self.all_positive_tests[self.t] = 0 
+        
         self.durations += 1
 
         self.N[self.t] = self.N[self.t-1]
@@ -67,6 +69,13 @@ class SequentialEngine(SeirsPlusLikeEngine):
         # print(np.all(self.memberships.sum(axis=0) == 1))
         # print(self.memberships.sum(axis=1))
 
+        # undetected symptomatic
+        symptomatic_states = [STATES.I_s, STATES.J_s]
+        symptomatic_flags = self.memberships[symptomatic_states, :, :].reshape(
+            len(symptomatic_states), self.num_nodes).sum(axis=0)
+
+        self.test_waiting[symptomatic_flags == 1] += 1 
+        
         plist = self.calc_propensities()
 
         #s_and_ss = self.memberships[0] + self.memberships[1]
@@ -144,7 +153,9 @@ class SequentialEngine(SeirsPlusLikeEngine):
                     STATES.J_ds,
                     STATES.J_dn
             ):
-                self.num_tests[self.t] += 1 
+                self.num_tests[self.t] += 1
+                self.w_times[self.t] += self.test_waiting[node] 
+                self.all_positive_tests[self.t] += 1
 
             self.durations[node] = 0
             self.delta[s, node, :] = -1
@@ -271,6 +282,9 @@ class SequentialEngine(SeirsPlusLikeEngine):
             self.state_increments[state].bloat(100)
         self.num_tests.bloat(100)
         self.num_qtests.bloat(100)
+        self.w_times.bloat(100)
+        self.all_positive_tests.bloat(100)
+
         self.N.bloat(100)
         # self.states_history.bloat(100)
         self.meaneprobs.bloat(100)
@@ -285,6 +299,9 @@ class SequentialEngine(SeirsPlusLikeEngine):
         self.history.finalize(self.tidx)
         self.num_tests.finalize(self.t)
         self.num_qtests.finalize(self.t)
+        self.w_times.finalize(self.t)
+        self.all_positive_tests.finalize(self.t)
+        
 
         for state in self.states:
             self.state_counts[state].finalize(self.t)
@@ -319,7 +336,9 @@ class SequentialEngine(SeirsPlusLikeEngine):
         }
         col_tests = {
             "tests": self.num_tests,
-            "quarantine_tests": self.num_qtests
+            "quarantine_tests": self.num_qtests,
+            "sum_of_waiting": self.w_times,
+            "all_positive_tests": self.all_positive_tests
         }
         columns = {**col_states, **col_increments, **col_tests}
         columns["day"] = np.floor(index).astype(int)
@@ -365,6 +384,9 @@ class SequentialEngine(SeirsPlusLikeEngine):
             (STATES.J_n, STATES.J_dn),
             (STATES.J_s, STATES.J_ds)
         )
+
+        self.w_times[self.t] += self.test_waiting[node_number]
+        self.all_positive_tests[self.t] += 1 
 
         for t in transitions:
             if orig_state == t[0]:

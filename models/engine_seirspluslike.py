@@ -44,7 +44,7 @@ class SeirsPlusLikeEngine(BaseEngine):
     def setup_series_and_time_keeping(self):
 
         self.expected_num_transitions = 10  # TO: change to our situation
-        self.expected_num_days = 101
+        self.expected_num_days = 150
         tseries_len = (self.num_transitions + 1) * self.num_nodes
 
         self.tseries = TimeSeries(tseries_len, dtype=float)
@@ -68,6 +68,8 @@ class SeirsPlusLikeEngine(BaseEngine):
         }
 
         self.num_tests = TimeSeries(self.expected_num_days, dtype=int)
+        self.w_times = TimeSeries(self.expected_num_days, dtype=int)
+        self.all_positive_tests = TimeSeries(self.expected_num_days, dtype=int)
         self.num_qtests = TimeSeries(self.expected_num_days, dtype=int)
         
 
@@ -138,6 +140,7 @@ class SeirsPlusLikeEngine(BaseEngine):
         # exit()
 
         self.durations = np.zeros(self.num_nodes, dtype="uint16")
+        self.test_waiting = np.zeros(self.num_nodes, dtype=int)
 
     def node_degrees(self, Amat):
         """ return number of degrees of  nodes,
