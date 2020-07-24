@@ -38,7 +38,7 @@ def plot_mutliple_policies(policy_dict: Dict[str, List[str]],
 
 
 def plot_mutliple_policies_everything(policy_dict: Dict[str, List[str]],
-                                      group_days: int = None, group_func: str = "max", 
+                                      group_days: int = None, group_func: str = "max",
                                       max_days=None, **kwargs):
     histories = []
     for policy_key, history_list in policy_dict.items():
@@ -50,7 +50,7 @@ def plot_mutliple_policies_everything(policy_dict: Dict[str, List[str]],
                           for filename in history_list])
 
     history_one_df = pd.concat(histories)
-    _plot_lineplot3(history_one_df, "day", 
+    _plot_lineplot3(history_one_df, "day",
                     hue="policy_name", **kwargs)
 
 
@@ -83,22 +83,22 @@ def plot_state_histogram(filename: str, title: str = "Simulation", states: List[
 
 def _plot_lineplot(history_df, x, y, hue=None, save_path=None,  **kwargs):
 
-    title = kwargs["title"] 
+    title = kwargs["title"]
     del kwargs["title"]
     sns_plot = sns.lineplot(x=x, y=y, data=history_df,
                             hue=hue, estimator=np.median, ci='sd', **kwargs)
     # dirty hack (ro)
-    sns_plot.set(ylim=(0,50))
+    sns_plot.set(ylim=(0, 50))
     sns_plot.set_title(title)
     if save_path is not None:
         sns_plot.get_figure().savefig(save_path)
-        
+
     plt.show()
 
 
 def _plot_lineplot3(history_df, x,  hue=None, save_path=None,  **kwargs):
 
-    title = kwargs["title"] 
+    title = kwargs["title"]
     del kwargs["title"]
 
     fig, axs = plt.subplots(ncols=3)
@@ -106,25 +106,27 @@ def _plot_lineplot3(history_df, x,  hue=None, save_path=None,  **kwargs):
     sns_plot = sns.lineplot(x=x, y="I_d", data=history_df,
                             hue=hue, estimator=np.median, ci='sd', ax=axs[0], **kwargs)
     # dirty hack (ro)
-    axs[0].set(ylim=(0,50))
+    axs[0].set(ylim=(0, 50))
+    axs[0].set_title("detected - active cases")
 
     sns_plot2 = sns.lineplot(x=x, y="all_infectious", data=history_df,
                              hue=hue, estimator=np.median, ci='sd', ax=axs[1], **kwargs)
     # dirty hack (ro)
-    axs[1].set(ylim=(0,100))
+    axs[1].set(ylim=(0, 50))
+    axs[1].set_title("all active cases")
 
     sns_plot3 = sns.lineplot(x=x, y="tests", data=history_df,
                              hue=hue, estimator=np.median, ci='sd', ax=axs[2], **kwargs)
-    # dirty hack (ro)
-    axs[2].set(ylim=(0,50))
+    # # dirty hack (ro)
+    # axs[2].set(ylim=(0, 25))
+    axs[2].set_title("tests (without forced tests)")
 
-    fig.suptitle('test title', fontsize=20)
+    fig.suptitle(title, fontsize=20)
 
     if save_path is not None:
         plt.savefig(save_path)
-        
-    plt.show()
 
+#    plt.show()
 
 
 def _history_with_fname(filename, group_days: int = None, group_func: str = "max", policy_name: str = None,
@@ -150,7 +152,7 @@ def _load_history(filename: str, max_days=None) -> pd.DataFrame:
     history = pd.read_csv(filename, comment="#")
     if "E" in history.columns:
         history["all_infectious"] = history[[
-            "I_n", "I_a", "I_s","E",
+            "I_n", "I_a", "I_s", "E",
             "I_dn", "I_da", "I_ds", "E_d", "J_ds", "J_dn",
             "J_n", "J_s"]].sum(axis=1)
         history["I_d"] = history[[
