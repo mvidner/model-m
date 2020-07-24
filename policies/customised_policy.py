@@ -50,19 +50,27 @@ class CustomPolicy(Policy):
     def update_layers(self, coefs):
         self.graph.set_layer_weights(coefs)
 
+
+    #TODO fix for diff betas
     def update_beta(self, masks):
         orig_beta = self.model.init_kwargs["beta"]
         orig_beta_A = self.model.init_kwargs["beta_A"]
         reduction = (1 - 0.9 * masks)**0.81
-        for name, value in ("beta", orig_beta), ("beta_A", orig_beta_A):
-            new_value = value * reduction
-            if isinstance(new_value, (list)):
-                np_new_value = np.array(new_value).reshape(
-                    (self.model.num_nodes, 1))
-            else:
-                np_new_value = np.full(
-                    fill_value=new_value, shape=(self.model.num_nodes, 1))
-            setattr(self.model, name, np_new_value)
+        new_value = orig_beta * reduction 
+        new_value_A = orig_beta_A * reduction 
+
+        self.model.beta.fill(new_value)
+        self.model.beta_A.fill(new_value_A)
+
+        # for name, value in ("beta", orig_beta), ("beta_A", orig_beta_A):
+        #     new_value = value * reduction
+        #     if isinstance(new_value, (list)):
+        #         np_new_value = np.array(new_value).reshape(
+        #             (self.model.num_nodes, 1))
+        #     else:
+        #         np_new_value = np.full(
+        #             fill_value=new_value, shape=(self.model.num_nodes, 1))
+        #setattr(self.model, name, np_new_value)
         print(f"DBG beta: {self.model.beta[0][0]} {self.model.beta_A[0][0]}")
 
     # TODO: make general func update_param ?
@@ -70,14 +78,15 @@ class CustomPolicy(Policy):
 
     def update_theta(self, coef):
         orig_theta = self.model.init_kwargs["theta_Is"]
-        new_value = orig_theta * coef
-        if isinstance(new_value, (list)):
-            np_new_value = np.array(new_value).reshape(
-                (self.model.num_nodes, 1))
-        else:
-            np_new_value = np.full(
-                fill_value=new_value, shape=(self.model.num_nodes, 1))
-        setattr(self.model, "theta_Is", np_new_value)
+        new_value = orig_theta * coef 
+        self.model.theta_Is.fill(new_value)
+        # if isinstance(new_value, (list)):
+        #     np_new_value = np.array(new_value).reshape(
+        #         (self.model.num_nodes, 1))
+        # else:
+        #     np_new_value = np.full(
+        #         fill_value=new_value, shape=(self.model.num_nodes, 1))
+        # setattr(self.model, "theta_Is", np_new_value)
         print(f"DBG theta: {self.model.theta_Is[0][0]}")
 
     def run(self):
