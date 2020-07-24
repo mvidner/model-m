@@ -123,7 +123,7 @@ class CustomPolicy(Policy):
             print(f"DBG face masks update")
             self.update_beta(self.face_masks_calendar[today])
 
-        if self.theta_calendar is not None and today in self.theta_masks_calendar:
+        if self.theta_calendar is not None and today in self.theta_calendar:
             print(f"DBG face masks update")
             self.update_theta(self.theta_calendar[today])
 
