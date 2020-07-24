@@ -100,7 +100,7 @@ init_I_d = 0
 <hr>
 
 :construction:
-TODO: rewrite README completely
+<h1> TODO: rewrite README completely !!!! </h1> 
 
 **old stuff (to be updated soon):** 
 
