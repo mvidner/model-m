@@ -145,6 +145,7 @@ def _plot_lineplot3(history_df, x,  hue=None, save_path=None,  **kwargs):
 #    plt.show()
 
 
+
 def _history_with_fname(filename, group_days: int = None, group_func: str = "max", policy_name: str = None,
                         keep_only_all: bool = False, max_days=None):
     history = _load_history(filename, max_days=max_days)
@@ -182,6 +183,8 @@ def _load_history(filename: str, max_days=None) -> pd.DataFrame:
         history["all_s"] = history[[
             "I_s", "I_ds", "J_s", "J_ds"]].sum(axis=1)
         history["tests_ratio_to_s"] = history["tests"] / history["all_s"]
+
+        history["mean_waiting"] = history["sum_of_waiting"] / history["all_positive_tests"] 
 
     if max_days is not None:
         history = history[:max_days]
