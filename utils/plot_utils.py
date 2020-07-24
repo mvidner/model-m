@@ -101,7 +101,12 @@ def _plot_lineplot3(history_df, x,  hue=None, save_path=None,  **kwargs):
     title = kwargs["title"]
     del kwargs["title"]
 
-    fig, axs = plt.subplots(ncols=3)
+    fig = plt.figure()
+    axs = [None, None, None, None]
+    axs[0] = fig.add_subplot(131)
+    axs[1] = fig.add_subplot(132)
+    axs[2] = fig.add_subplot(233)
+    axs[3] = fig.add_subplot(236)
 
     sns_plot = sns.lineplot(x=x, y="I_d", data=history_df,
                             hue=hue, estimator=np.median, ci='sd', ax=axs[0], **kwargs)
@@ -117,9 +122,20 @@ def _plot_lineplot3(history_df, x,  hue=None, save_path=None,  **kwargs):
 
     sns_plot3 = sns.lineplot(x=x, y="tests", data=history_df,
                              hue=hue, estimator=np.median, ci='sd', ax=axs[2], **kwargs)
+    sns.lineplot(x=x, y="all_tests", data=history_df,
+                 hue=hue, estimator=np.median, ci='sd', ax=axs[2], color="r", **kwargs)
+    axs[2].set(ylim=(0, 15))
+
     # # dirty hack (ro)
     # axs[2].set(ylim=(0, 25))
     axs[2].set_title("tests (without forced tests)")
+
+    sns.lineplot(x=x, y="tests_ratio", data=history_df,
+                 hue=hue, estimator=np.median, ci='sd', ax=axs[3], **kwargs)
+    sns.lineplot(x=x, y="tests_ratio_to_s", data=history_df,
+                 hue=hue, estimator=np.median, ci='sd', ax=axs[3], **kwargs)
+    axs[3].set_title("tests ratio to all infected, symptomatic infected")
+    axs[3].set(ylim=(0, None))
 
     fig.suptitle(title, fontsize=20)
 
@@ -159,6 +175,14 @@ def _load_history(filename: str, max_days=None) -> pd.DataFrame:
             "I_dn", "I_da", "I_ds", "E_d", "J_ds", "J_dn"]].sum(axis=1)
         history["all_tests"] = history[[
             "tests", "quarantine_tests"]].sum(axis=1)
+
+        history["tests_ratio"] = history["tests"] / \
+            history["all_infectious"]
+
+        history["all_s"] = history[[
+            "I_s", "I_ds", "J_s", "J_ds"]].sum(axis=1)
+        history["tests_ratio_to_s"] = history["tests"] / history["all_s"]
+
     if max_days is not None:
         history = history[:max_days]
     if "day" not in history.columns:
