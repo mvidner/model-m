@@ -9,34 +9,41 @@ class CustomPolicy(Policy):
     def __init__(self,
                  graph,
                  model,
-                 layer_changes_filename = None,
-                 param_changes_filename = None, 
-                 policy_calendar_filename = None,
-                 face_masks_filename = None
-             ):
+                 layer_changes_filename=None,
+                 param_changes_filename=None,
+                 policy_calendar_filename=None,
+                 face_masks_filename=None,
+                 theta_filename=None
+                 ):
         super().__init__(graph, model)
 
         if layer_changes_filename is not None:
             self.layer_changes_calendar = load_scenario_dict(
                 layer_changes_filename)
         else:
-            self.layer_changes_calendar = None 
+            self.layer_changes_calendar = None
 
         if policy_calendar_filename is not None:
             with open(policy_calendar_filename, "r") as f:
                 self.policy_calendar = json.load(f)
         else:
-            self.policy_calendar = None 
+            self.policy_calendar = None
 
-        if  param_changes_filename is not None:
+        if param_changes_filename is not None:
             with open(param_changes_filename, "r") as f:
                 self.param_changes_calendar = json.load(f)
 
         if face_masks_filename is not None:
             with open(face_masks_filename, "r") as f:
-                self.face_masks_calendar = json.load(f) 
+                self.face_masks_calendar = json.load(f)
         else:
             self.face_masks_calendar = None
+
+        if theta_filename is not None:
+            with open(theta_filename, "r") as f:
+                self.theta_calendar = json.load(f)
+        else:
+            self.theta_calendar = None
 
         self.policies = {}
 
@@ -45,16 +52,33 @@ class CustomPolicy(Policy):
 
     def update_beta(self, masks):
         orig_beta = self.model.init_kwargs["beta"]
-        orig_beta_A = self.model.init_kwargs["beta_A"] 
+        orig_beta_A = self.model.init_kwargs["beta_A"]
         reduction = (1 - 0.9 * masks)**0.81
         for name, value in ("beta", orig_beta), ("beta_A", orig_beta_A):
-            new_value = value * reduction 
+            new_value = value * reduction
             if isinstance(new_value, (list)):
-                np_new_value = np.array(new_value).reshape((self.model.num_nodes, 1))
+                np_new_value = np.array(new_value).reshape(
+                    (self.model.num_nodes, 1))
             else:
-                np_new_value = np.full(fill_value=new_value, shape=(self.model.num_nodes, 1))
+                np_new_value = np.full(
+                    fill_value=new_value, shape=(self.model.num_nodes, 1))
             setattr(self.model, name, np_new_value)
-        print(f"DBG beta: {self.model.beta[0][0]} {self.model.beta_A[0][0]}")   
+        print(f"DBG beta: {self.model.beta[0][0]} {self.model.beta_A[0][0]}")
+
+    # TODO: make general func update_param ?
+    # (beta includes beta_A, theta includes various thetas)
+
+    def update_theta(self, coef):
+        orig_theta = self.model.init_kwargs["theta_Is"]
+        new_value = orig_theta * coef
+        if isinstance(new_value, (list)):
+            np_new_value = np.array(new_value).reshape(
+                (self.model.num_nodes, 1))
+        else:
+            np_new_value = np.full(
+                fill_value=new_value, shape=(self.model.num_nodes, 1))
+        setattr(self.model, "theta_Is", np_new_value)
+        print(f"DBG theta: {self.model.theta_Is[0][0]}")
 
     def run(self):
         print("CustomPolicy", int(self.model.t))
@@ -74,18 +98,20 @@ class CustomPolicy(Policy):
                     raise ValueError(f"Unknown action {action}")
 
         if self.param_changes_calendar is not None and today in self. param_changes_calendar:
-            for action, param, new_value in self.param_changes_calendar[today]: 
+            for action, param, new_value in self.param_changes_calendar[today]:
                 if action == "set":
                     if isinstance(new_value, (list)):
-                        np_new_value = np.array(new_value).reshape((self.model.num_nodes, 1))
+                        np_new_value = np.array(new_value).reshape(
+                            (self.model.num_nodes, 1))
                     else:
-                        np_new_value = np.full(fill_value=new_value, shape=(self.model.num_nodes, 1))
+                        np_new_value = np.full(
+                            fill_value=new_value, shape=(self.model.num_nodes, 1))
                     setattr(self.model, param, np_new_value)
                 elif action == "*":
                     attr = getattr(self.model, param)
                     if type(new_value) == str:
                         new_value = getattr(self.model, new_value)
-                    setattr(self.model, param, attr * new_value) 
+                    setattr(self.model, param, attr * new_value)
                 else:
                     raise ValueError("Unknown value")
 
@@ -96,6 +122,10 @@ class CustomPolicy(Policy):
         if self.face_masks_calendar is not None and today in self.face_masks_calendar:
             print(f"DBG face masks update")
             self.update_beta(self.face_masks_calendar[today])
+
+        if self.theta_calendar is not None and today in self.theta_masks_calendar:
+            print(f"DBG face masks update")
+            self.update_theta(self.theta_calendar[today])
 
         # perform registred policies
         for name, policy in self.policies.items():
