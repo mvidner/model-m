@@ -3,7 +3,20 @@ Model of an imaginary town
 
 ## Requirements 
 
-numpy,scipy, pandas, matplotlib, seaborn, scikit-learn, click, (networkx) 
+Install them:
+
+```console
+$ python3 -m venv myenv
+$ source myenv/bin/activate
+$ pip install -r requirements.txt
+```
+
+Find our packages:
+
+```console
+$ cd tests
+$ export PYTHONPATH=../models:../model_m:../graphs:../policies:../utils
+```
 
 ## Usage 
 
